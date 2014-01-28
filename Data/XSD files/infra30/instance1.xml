@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.sifassociation.org/infrastructure/3.0 file:/Users/jlovell/Documents/Infrastructure/Schemas/Infrastructure_3_0_XSDs-10/environment.xsd" type="DIRECT" id="00000000-0000-1000-0000-000000000000">
+    <sessionToken>sessionToken0</sessionToken>
+    <solutionId>solutionId0</solutionId>
+    <defaultZone id="00000000-0000-1000-0000-000000000000">
+        <description>description0</description>
+        <properties>
+            <property name="name1">property0</property>
+        </properties>
+    </defaultZone>
+    <authenticationMethod>authenticationMethod0</authenticationMethod>
+    <instanceId>instanceId0</instanceId>
+    <userToken>userToken0</userToken>
+    <consumerName>consumerName0</consumerName>
+    <applicationInfo>
+        <applicationKey>applicationKey0</applicationKey>
+        <supportedInfrastructureVersion>supportedInfrastructureVersion0</supportedInfrastructureVersion>
+        <dataModelNamespace>http://www.oxygenxml.com/</dataModelNamespace>
+        <transport>transport0</transport>
+        <applicationProduct>
+            <vendorName>vendorName0</vendorName>
+            <productName>productName0</productName>
+            <productVersion>productVersion0</productVersion>
+            <iconURI>http://www.oxygenxml.com/</iconURI>
+        </applicationProduct>
+        <adapterProduct>
+            <vendorName>vendorName1</vendorName>
+            <productName>productName1</productName>
+            <productVersion>productVersion1</productVersion>
+            <iconURI>http://www.oxygenxml.com/</iconURI>
+        </adapterProduct>
+    </applicationInfo>
+    <infrastructureServices>
+        <infrastructureService name="name3">infrastructureService0</infrastructureService>
+        <infrastructureService name="name5">infrastructureService1</infrastructureService>
+    </infrastructureServices>
+    <provisionedZones>
+        <provisionedZone id="id5">
+            <services>
+                <service name="name7" contextId="contextId1" type="UTILITY">
+                    <rights>
+                        <right type="QUERY">APPROVED</right>
+                        <right type="QUERY">APPROVED</right>
+                    </rights>
+                </service>
+                <service name="name9" contextId="contextId3" type="UTILITY">
+                    <rights>
+                        <right type="QUERY">APPROVED</right>
+                        <right type="QUERY">APPROVED</right>
+                    </rights>
+                </service>
+            </services>
+        </provisionedZone>
+        <provisionedZone id="id7">
+            <services>
+                <service name="name11" contextId="contextId5" type="UTILITY">
+                    <rights>
+                        <right type="QUERY">APPROVED</right>
+                        <right type="QUERY">APPROVED</right>
+                    </rights>
+                </service>
+                <service name="name13" contextId="contextId7" type="UTILITY">
+                    <rights>
+                        <right type="QUERY">APPROVED</right>
+                        <right type="QUERY">APPROVED</right>
+                    </rights>
+                </service>
+            </services>
+        </provisionedZone>
+    </provisionedZones>
+</environment>

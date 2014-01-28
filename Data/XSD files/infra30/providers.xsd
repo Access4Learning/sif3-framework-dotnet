@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.sifassociation.org/infrastructure/3.0"
+    targetNamespace="http://www.sifassociation.org/infrastructure/3.0"
+    elementFormDefault="qualified">
+    <xs:include schemaLocation="provider.xsd"></xs:include>
+    
+    <xs:complexType name="providerCollectionType">
+        <xs:sequence>
+            <xs:element name="provider" type="providerType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="providers" type="providerCollectionType"/>
+</xs:schema>

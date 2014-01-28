@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.sifassociation.org/infrastructure/3.0"
+	targetNamespace="http://www.sifassociation.org/infrastructure/3.0"
+	elementFormDefault="qualified">
+	<xs:include schemaLocation="infrastructurecommontypes.xsd"/>
+	<xs:element name="queue">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="type" minOccurs="0">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Type</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>Determines, when no messages are queued, whether the Consumer will have to periodically reissue Polling Requests at timed intervals or can reissue a Polling Request immediately.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="IMMEDIATE_POLLING"/>
+							<xs:enumeration value="LONG_POLLING"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="name" type="xs:token" minOccurs="0">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Name</elementName>
+							<sifChar>O</sifChar>
+						</xs:appinfo>
+						<xs:documentation>A name which the Consumer assigns to the Queue.  It is useful for reporting purposes, but is not guaranteed to be unique.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="queueURI" type="xs:anyURI" minOccurs="1">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Queue URL</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>The URI of the Messages Service associated with the Queue instance.  This is the endpoint where the 'get next message' requests are issued.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="idleTimeout" type="xs:unsignedInt" minOccurs="1">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Idle Time</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>Is the maximum time in seconds the Messages Service will wait for a message to arrive, before returning an HTTPS Response of 'no message seen' to the Consumer.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="minWaitTime" type="xs:unsignedInt" minOccurs="0">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Wait Time</elementName>
+							<sifChar>C</sifChar>
+						</xs:appinfo>
+						<xs:documentation>indicates the minimum time in seconds that the Consumer should wait after receiving a 'no message seen' response to a previous query, before posting another.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="maxConcurrentConnections" minOccurs="0">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Connections</elementName>
+							<sifChar>O</sifChar>
+						</xs:appinfo>
+						<xs:documentation>Number of (properly identified) concurrent connections supported by (the consumer, if suggested, and) the queue.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:unsignedInt">
+							<xs:minInclusive value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="created" type="xs:dateTime" minOccurs="1">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Created</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>Time that Queue Instance was Created</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lastAccessed" type="xs:dateTime" minOccurs="1">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Last Accessed</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>Time that Queue Instance was last Accessed and a message was dequeued.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lastModified" type="xs:dateTime" minOccurs="1">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Last Modified</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>Time that Queue Instance was last Modified by receiving a new incoming message.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="messageCount" type="xs:unsignedInt" minOccurs="1">
+					<xs:annotation>
+						<xs:appinfo>
+							<elementName>Message Count</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+						<xs:documentation>The number of messages currently residing in the Queue.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="uuidType"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

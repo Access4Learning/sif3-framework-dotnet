@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{202E8CB9-9AED-4034-908F-0B3BB04B171A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sif.Framework</RootNamespace>
+    <AssemblyName>Sif.Framework.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
+    <Compile Include="Model\Infrastructure\Environment.cs" />
+    <Compile Include="Model\Infrastructure\EnvironmentRegister.cs" />
+    <Compile Include="Model\Infrastructure\EnvironmentType.cs" />
+    <Compile Include="Model\Infrastructure\ProductIdentity.cs" />
+    <Compile Include="Model\Infrastructure\Property.cs" />
+    <Compile Include="Model\Infrastructure\ProvisionedZone.cs" />
+    <Compile Include="Model\Infrastructure\Right.cs" />
+    <Compile Include="Model\Infrastructure\RightType.cs" />
+    <Compile Include="Model\Infrastructure\RightValue.cs" />
+    <Compile Include="Model\Infrastructure\Service.cs" />
+    <Compile Include="Model\Infrastructure\ServiceType.cs" />
+    <Compile Include="Model\Infrastructure\Zone.cs" />
+    <Compile Include="Persistence\IEnvironmentRegisterRepository.cs" />
+    <Compile Include="Persistence\IEnvironmentRepository.cs" />
+    <Compile Include="Persistence\IGenericRepository.cs" />
+    <Compile Include="Model\Persistence\IPersistable.cs" />
+    <Compile Include="Persistence\NHibernate\EnvironmentRegisterRepository.cs" />
+    <Compile Include="Persistence\NHibernate\EnvironmentRepository.cs" />
+    <Compile Include="Persistence\NHibernate\GenericRepository.cs" />
+    <Compile Include="Persistence\NHibernate\NHibernateHelper.cs" />
+    <Compile Include="Persistence\RepositoryFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\GenericService.cs" />
+    <Compile Include="Service\IGenericService.cs" />
+    <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
+    <Compile Include="Service\Infrastructure\IEnvironmentService.cs" />
+    <Compile Include="Service\Mapper\MapperFactory.cs" />
+    <Compile Include="Service\ServiceFactory.cs" />
+    <Compile Include="Utils\AuthenticationUtils.cs" />
+    <Compile Include="Utils\SerialisationUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
+      <Link>AutoMapper.Net4.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Sif.Framework.Infrastructure\Sif.Framework.Infrastructure.csproj">
+      <Project>{b65e93ee-ad73-45ab-8c97-a3120cd7e353}</Project>
+      <Name>Sif.Framework.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

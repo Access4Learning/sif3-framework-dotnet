@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.sifassociation.org/infrastructure/3.0"
+    targetNamespace="http://www.sifassociation.org/infrastructure/3.0"
+    elementFormDefault="qualified">
+    <xs:include schemaLocation="alert.xsd"></xs:include>
+
+    <xs:complexType name="alertCollectionType">
+        <xs:sequence>
+            <xs:element name="alert" type="alertType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="alerts" type="alertCollectionType"/>
+</xs:schema>
