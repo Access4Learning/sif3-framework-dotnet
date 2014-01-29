@@ -21,6 +21,14 @@ namespace Sif.Framework.Persistence
 
     interface IEnvironmentRepository : IGenericRepository<Environment>
     {
+
+        /// <summary>
+        /// Retrieve the Environment based upon it's session token.
+        /// </summary>
+        /// <param name="sessionToken">Session token for the Environment.</param>
+        /// <returns>Environment defined by the passed session token.</returns>
+        Environment RetrieveBySessionToken(string sessionToken);
+
     }
 
 }

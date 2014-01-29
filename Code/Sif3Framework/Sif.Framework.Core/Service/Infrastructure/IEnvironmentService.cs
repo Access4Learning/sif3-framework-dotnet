@@ -22,6 +22,9 @@ namespace Sif.Framework.Service.Infrastructure
 
     interface IEnvironmentService : IGenericService<environmentType, Environment>
     {
+
+        environmentType RetrieveBySessionToken(string sessionToken);
+
     }
 
 }

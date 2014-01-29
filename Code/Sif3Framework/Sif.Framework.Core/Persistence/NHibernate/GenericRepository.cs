@@ -15,6 +15,7 @@
  */
 
 using NHibernate;
+using NHibernate.Criterion;
 using Sif.Framework.Model.Persistence;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Sif.Framework.Persistence.NHibernate
     public class GenericRepository<T> : IGenericRepository<T> where T : IPersistable, new()
     {
 
-        /// <see cref="Systemic.Sif.Sbp.Framework.Persistence.IGenericDao{T}.Delete(T)">Delete</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(T)">Delete</see>
         public virtual void Delete(T obj)
         {
 
@@ -47,7 +48,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Systemic.Sif.Sbp.Framework.Persistence.IGenericDao{T}.Delete(ICollection<T>)">Delete</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(ICollection<T>)">Delete</see>
         public virtual void Delete(ICollection<T> objs)
         {
 
@@ -74,7 +75,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Systemic.Sif.Sbp.Framework.Persistence.IGenericDao{T}.Retrieve(long)">Retrieve</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(long)">Retrieve</see>
         public virtual T Retrieve(long objId)
         {
 
@@ -85,7 +86,24 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Systemic.Sif.Sbp.Framework.Persistence.IGenericDao{T}.Retrieve()">Retrieve</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(T)">Retrieve</see>
+        public virtual ICollection<T> Retrieve(T obj)
+        {
+
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                Example example = Example.Create(obj).EnableLike(MatchMode.Anywhere).ExcludeZeroes().IgnoreCase();
+                return session.CreateCriteria(typeof(T)).Add(example).List<T>();
+            }
+
+        }
+
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve()">Retrieve</see>
         public virtual ICollection<T> Retrieve()
         {
 
@@ -96,7 +114,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Systemic.Sif.Sbp.Framework.Persistence.IGenericDao{T}.Save(T)">Save</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(T)">Save</see>
         public virtual long Save(T obj)
         {
 
@@ -129,7 +147,7 @@ namespace Sif.Framework.Persistence.NHibernate
             return objId;
         }
 
-        /// <see cref="Systemic.Sif.Sbp.Framework.Persistence.IGenericDao{T}.Save(ICollection<T>)">Save</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(ICollection<T>)">Save</see>
         public virtual void Save(ICollection<T> objs)
         {
 

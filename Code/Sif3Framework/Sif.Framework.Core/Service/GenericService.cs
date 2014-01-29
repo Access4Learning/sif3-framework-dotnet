@@ -24,10 +24,10 @@ namespace Sif.Framework.Service
 
     public abstract class GenericService<UI, DB> : IGenericService<UI, DB> where DB : IPersistable, new()
     {
-        private IGenericRepository<DB> repository;
+        protected IGenericRepository<DB> repository;
 
         // Need to inject repository.
-        public abstract IGenericRepository<DB> GetRepository();
+        protected abstract IGenericRepository<DB> GetRepository();
 
         public GenericService()
         {
@@ -62,6 +62,13 @@ namespace Sif.Framework.Service
         {
             DB repoItem = repository.Retrieve(id);
             return MapperFactory.CreateInstance<DB, UI>(repoItem);
+        }
+
+        public virtual IEnumerable<UI> Retrieve(UI item)
+        {
+            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
+            ICollection<DB> repoItems = repository.Retrieve(repoItem);
+            return MapperFactory.CreateInstances<DB, UI>(repoItems);
         }
 
         public virtual IEnumerable<UI> Retrieve()

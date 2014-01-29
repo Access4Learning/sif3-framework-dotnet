@@ -31,35 +31,41 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         where UI : new()
         where DB : IPersistable, new()
     {
-        private IGenericService<UI, DB> service;
+        protected IGenericService<UI, DB> service;
 
         string ConsumerSecret(string token)
         {
             return "SecretDem0";
         }
 
-        private bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
+        protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
+        {
+            return VerifyAuthorisationHeader(header);
+        }
+
+        protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header, out string sessionToken)
         {
             bool verified = false;
-            string scheme = header.Scheme;
+            string sessionTokenChecked = null;
 
-            if ("Basic".Equals(scheme))
+            if ("Basic".Equals(header.Scheme))
             {
                 AuthenticationUtils.GetConsumerSecret consumerSecret = ConsumerSecret;
-                string sessionToken;
-                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), consumerSecret, out sessionToken);
+                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), consumerSecret, out sessionTokenChecked);
             }
-            else if ("SIF_HMACSHA256".Equals(scheme))
+            else if ("SIF_HMACSHA256".Equals(header.Scheme))
             {
                 verified = true;
             }
+
+            sessionToken = sessionTokenChecked;
 
             return verified;
         }
 
         // Need to inject repository.
         [NonAction]
-        public abstract IGenericService<UI, DB> GetService();
+        protected abstract IGenericService<UI, DB> GetService();
 
         public GenericController()
         {

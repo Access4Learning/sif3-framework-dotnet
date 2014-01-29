@@ -33,6 +33,8 @@ namespace Sif.Framework.Service
 
         UI Retrieve(long id);
 
+        IEnumerable<UI> Retrieve(UI item);
+
         IEnumerable<UI> Retrieve();
 
         void Update(UI item);

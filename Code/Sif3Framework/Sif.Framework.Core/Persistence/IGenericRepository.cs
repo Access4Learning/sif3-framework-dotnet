@@ -45,6 +45,12 @@ namespace Sif.Framework.Persistence
         T Retrieve(long objId);
 
         /// <summary>
+        /// Retrieve all objects based upon the example instance.
+        /// </summary>
+        /// <returns>All objects that match the example instance.</returns>
+        ICollection<T> Retrieve(T obj);
+
+        /// <summary>
         /// Retrieve all objects.
         /// </summary>
         /// <returns>All objects.</returns>

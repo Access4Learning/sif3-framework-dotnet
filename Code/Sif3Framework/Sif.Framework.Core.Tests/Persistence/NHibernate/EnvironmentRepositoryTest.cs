@@ -16,6 +16,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.Model.Infrastructure;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
@@ -56,6 +58,64 @@ namespace Sif.Framework.Persistence.NHibernate
             Assert.AreEqual(saved.ApplicationInfo.SupportedInfrastructureVersion, retrieved.ApplicationInfo.SupportedInfrastructureVersion);
             Assert.AreEqual(saved.ApplicationInfo.SupportedDataModel, retrieved.ApplicationInfo.SupportedDataModel);
             Assert.AreEqual(saved.ApplicationInfo.SupportedDataModelVersion, retrieved.ApplicationInfo.SupportedDataModelVersion);
+        }
+
+        [TestMethod]
+        public void SaveAndRetrieveByExample()
+        {
+            Environment saved = DataFactory.CreateEnvironmentRequest();
+            long environmentId = (new EnvironmentRepository()).Save(saved);
+            ApplicationInfo applicationInfo = new ApplicationInfo
+            {
+                ApplicationKey = "UnitTesting",            };
+            Environment example = new Environment
+            {
+                ApplicationInfo = applicationInfo,
+                InstanceId = "ThisInstance01",
+                SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
+                SifId = "5b72f2d4-7a83-4297-a71f-8b5fb26cbf14",
+                SolutionId = "auTestSolution",
+                UserToken = "UserToken01"
+            };
+            ICollection<Environment> environments = (new EnvironmentRepository()).Retrieve(example);
+
+            foreach (Environment retrieved in environments)
+            {
+                Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
+                Assert.AreEqual(saved.InstanceId, retrieved.InstanceId);
+                Assert.AreEqual(saved.SessionToken, retrieved.SessionToken);
+                Assert.AreEqual(saved.SifId, retrieved.SifId);
+                Assert.AreEqual(saved.SolutionId, retrieved.SolutionId);
+                Assert.AreEqual(saved.UserToken, retrieved.UserToken);
+            }
+
+        }
+
+        [TestMethod]
+        public void SaveAndRetrieveBySessionToken()
+        {
+            Environment saved = DataFactory.CreateEnvironmentRequest();
+            long environmentId = (new EnvironmentRepository()).Save(saved);
+            ApplicationInfo applicationInfo = new ApplicationInfo
+            {
+                ApplicationKey = "UnitTesting",
+            };
+            Environment example = new Environment
+            {
+                ApplicationInfo = applicationInfo,
+                InstanceId = "ThisInstance01",
+                SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
+                SifId = "5b72f2d4-7a83-4297-a71f-8b5fb26cbf14",
+                SolutionId = "auTestSolution",
+                UserToken = "UserToken01"
+            };
+            Environment retrieved = (new EnvironmentRepository()).RetrieveBySessionToken("2e5dd3ca282fc8ddb3d08dcacc407e8a");
+            Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
+            Assert.AreEqual(saved.InstanceId, retrieved.InstanceId);
+            Assert.AreEqual(saved.SessionToken, retrieved.SessionToken);
+            Assert.AreEqual(saved.SifId, retrieved.SifId);
+            Assert.AreEqual(saved.SolutionId, retrieved.SolutionId);
+            Assert.AreEqual(saved.UserToken, retrieved.UserToken);
         }
 
     }

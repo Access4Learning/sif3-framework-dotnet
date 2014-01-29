@@ -14,13 +14,33 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using NHibernate;
+using System;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
 
     public class EnvironmentRepository : GenericRepository<Environment>, IEnvironmentRepository
     {
+
+        /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.Retrieve(string)">Retrieve</see>
+        public virtual Environment RetrieveBySessionToken(string sessionToken)
+        {
+
+            if (string.IsNullOrWhiteSpace(sessionToken))
+            {
+                throw new ArgumentNullException("sessionToken");
+            }
+
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                return session.QueryOver<Environment>().Where(e => e.SessionToken == sessionToken).SingleOrDefault();
+            }
+
+
+        }
+
     }
 
 }

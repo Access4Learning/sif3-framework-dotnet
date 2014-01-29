@@ -16,7 +16,9 @@
 
 using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
+using Sif.Framework.Service.Mapper;
 
 namespace Sif.Framework.Service.Infrastructure
 {
@@ -24,9 +26,15 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentService : GenericService<environmentType, Environment>, IEnvironmentService
     {
 
-        public override Persistence.IGenericRepository<Environment> GetRepository()
+        protected override IGenericRepository<Environment> GetRepository()
         {
             return new EnvironmentRepository();
+        }
+
+        public virtual environmentType RetrieveBySessionToken(string sessionToken)
+        {
+            Environment environment = ((EnvironmentRepository)repository).RetrieveBySessionToken(sessionToken);
+            return MapperFactory.CreateInstance<Environment, environmentType>(environment);
         }
 
     }
