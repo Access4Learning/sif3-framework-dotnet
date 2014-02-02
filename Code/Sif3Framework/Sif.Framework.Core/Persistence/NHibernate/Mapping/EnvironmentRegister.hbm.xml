@@ -5,7 +5,6 @@
       <generator class="native"/>
     </id>
     <property name="ApplicationKey" column="APPLICATION_KEY" length="256"/>
-    <property name="ConsumerSecret" column="CONSUMER_SECRET" length="256"/>
     <property name="InstanceId" column="INSTANCE_ID" length="256"/>
     <property name="SolutionId" column="SOLUTION_ID" length="256"/>
     <property name="UserToken" column="USER_TOKEN" length="256"/>

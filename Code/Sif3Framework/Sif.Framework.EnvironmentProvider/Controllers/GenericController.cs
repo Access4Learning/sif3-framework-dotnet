@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
+using Sif.Framework.Service.Authentication;
 using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
@@ -31,11 +33,12 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         where UI : new()
         where DB : IPersistable, new()
     {
-        protected IGenericService<UI, DB> service;
+        protected IInfrastructureService<UI, DB> service;
 
-        string ConsumerSecret(string token)
+        string SharedSecret(string applicationKey)
         {
-            return "SecretDem0";
+            ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(applicationKey);
+            return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
         protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
@@ -50,8 +53,8 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
             if ("Basic".Equals(header.Scheme))
             {
-                AuthenticationUtils.GetConsumerSecret consumerSecret = ConsumerSecret;
-                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), consumerSecret, out sessionTokenChecked);
+                AuthenticationUtils.GetSharedSecret sharedSecret = SharedSecret;
+                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
             }
             else if ("SIF_HMACSHA256".Equals(header.Scheme))
             {
@@ -65,7 +68,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
         // Need to inject repository.
         [NonAction]
-        protected abstract IGenericService<UI, DB> GetService();
+        protected abstract IInfrastructureService<UI, DB> GetService();
 
         public GenericController()
         {

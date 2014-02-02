@@ -15,17 +15,17 @@
  */
 
 using NHibernate;
-using NHibernate.Criterion;
 using Sif.Framework.Model.Infrastructure;
 using System;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
 
-    public class EnvironmentRegisterRepository : GenericRepository<EnvironmentRegister>, IEnvironmentRegisterRepository
+    public class ApplicationRegisterRepository : GenericRepository<ApplicationRegister>, IApplicationRegisterRepository
     {
 
-        public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId)
+        /// <see cref="Sif.Framework.Persistence.IApplicationRegisterRepository{T}.RetrieveByApplicationKey(string)">RetrieveByApplicationKey</see>
+        public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
         {
 
             if (string.IsNullOrWhiteSpace(applicationKey))
@@ -35,25 +35,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                var query = session.QueryOver<EnvironmentRegister>();
-                query.Where(e => e.ApplicationKey == applicationKey);
-
-                if (!string.IsNullOrWhiteSpace(instanceId))
-                {
-                    query.And(e => e.InstanceId == instanceId);
-                }
-
-                if (!string.IsNullOrWhiteSpace(userToken))
-                {
-                    query.And(e => e.UserToken == userToken);
-                }
-
-                if (!string.IsNullOrWhiteSpace(solutionId))
-                {
-                    query.And(e => e.SolutionId == solutionId);
-                }
-
-                return query.SingleOrDefault();
+                return session.QueryOver<ApplicationRegister>().Where(e => e.ApplicationKey == applicationKey).SingleOrDefault();
             }
 
         }

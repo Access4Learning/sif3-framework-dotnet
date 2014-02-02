@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
-using System.Collections.Generic;
+using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Persistence
 {
 
-    public class EnvironmentRegister : IPersistable
+    interface IApplicationRegisterRepository : IGenericRepository<ApplicationRegister>
     {
 
-        public virtual long? Id { get; set; }
-
-        public virtual string ApplicationKey { get; set; }
-
-        public virtual IDictionary<string, Property> InfrastructureServices { get; set; }
-
-        public virtual string InstanceId { get; set; }
-
-        public virtual IDictionary<string, ProvisionedZone> ProvisionedZones { get; set; }
-
-        public virtual string SolutionId { get; set; }
-
-        public virtual string UserToken { get; set; }
+        /// <summary>
+        /// Retrieve the Application Register based upon it's application key.
+        /// </summary>
+        /// <param name="applicationKey">Application key for the Application Register.</param>
+        /// <returns>Application Register defined by the passed application key.</returns>
+        ApplicationRegister RetrieveByApplicationKey(string applicationKey);
 
     }
 

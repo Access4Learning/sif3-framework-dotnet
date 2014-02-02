@@ -19,16 +19,48 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
+using Sif.Framework.Utils;
+using System;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Infrastructure
 {
 
-    public class EnvironmentService : GenericService<environmentType, Environment>, IEnvironmentService
+    public class EnvironmentService : InfrastructureService<environmentType, Environment>, IEnvironmentService
     {
 
         protected override IGenericRepository<Environment> GetRepository()
         {
             return new EnvironmentRepository();
+        }
+
+        public override long Create(environmentType item)
+        {
+            EnvironmentRegister environmentRegister =
+                (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers
+                    (item.applicationInfo.applicationKey, item.instanceId, item.userToken, item.solutionId);
+
+            if (environmentRegister == null)
+            {
+                throw new ArgumentException("item");
+            }
+
+            string sessionToken = AuthenticationUtils.GenerateSessionToken(item.applicationInfo.applicationKey, item.instanceId, item.userToken, item.solutionId);
+
+            environmentType environmentType = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
+
+            if (environmentType != null)
+            {
+                throw new ArgumentException("item");
+            }
+
+            Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
+            repoItem.InfrastructureServices = environmentRegister.InfrastructureServices;
+            repoItem.ProvisionedZones = environmentRegister.ProvisionedZones;
+            repoItem.SessionToken = sessionToken;
+            repoItem.SifId = Guid.NewGuid().ToString();
+
+            return repository.Save(repoItem);
         }
 
         public virtual environmentType RetrieveBySessionToken(string sessionToken)

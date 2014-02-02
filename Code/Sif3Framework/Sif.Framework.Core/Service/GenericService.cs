@@ -16,77 +16,46 @@
 
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Mapper;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Service
 {
 
-    public abstract class GenericService<UI, DB> : IGenericService<UI, DB> where DB : IPersistable, new()
+    public abstract class GenericService<T> : IGenericService<T> where T : IPersistable, new()
     {
-        protected IGenericRepository<DB> repository;
+        protected IGenericRepository<T> repository;
 
         // Need to inject repository.
-        protected abstract IGenericRepository<DB> GetRepository();
+        protected abstract IGenericRepository<T> GetRepository();
 
         public GenericService()
         {
             repository = GetRepository();
         }
 
-        public virtual long Create(UI item)
+        public virtual void Delete(T obj)
         {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            return repository.Save(repoItem);
+            repository.Delete(obj);
         }
 
-        public virtual void Create(IEnumerable<UI> items)
+        public virtual T Retrieve(long id)
         {
-            ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
-            repository.Save(repoItems);
+            return repository.Retrieve(id);
         }
 
-        public virtual void Delete(UI item)
+        public virtual ICollection<T> Retrieve(T obj)
         {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            repository.Delete(repoItem);
+            return repository.Retrieve(obj);
         }
 
-        public virtual void Delete(IEnumerable<UI> items)
+        public virtual ICollection<T> Retrieve()
         {
-            ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
-            repository.Delete(repoItems);
+            return repository.Retrieve();
         }
 
-        public virtual UI Retrieve(long id)
+        public virtual long Save(T obj)
         {
-            DB repoItem = repository.Retrieve(id);
-            return MapperFactory.CreateInstance<DB, UI>(repoItem);
-        }
-
-        public virtual IEnumerable<UI> Retrieve(UI item)
-        {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            ICollection<DB> repoItems = repository.Retrieve(repoItem);
-            return MapperFactory.CreateInstances<DB, UI>(repoItems);
-        }
-
-        public virtual IEnumerable<UI> Retrieve()
-        {
-            ICollection<DB> repoItems = repository.Retrieve();
-            return MapperFactory.CreateInstances<DB, UI>(repoItems);
-        }
-
-        public virtual void Update(UI item)
-        {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            repository.Save(repoItem);
-        }
-
-        public virtual void Update(IEnumerable<UI> items)
-        {
-            ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
-            repository.Save(repoItems);
+            return repository.Save(obj);
         }
 
     }

@@ -23,11 +23,14 @@ namespace Sif.Framework.Persistence.NHibernate
     [TestClass]
     public class DatabaseCreator
     {
+        private static void PopulateApplicationRegister()
+        {
+            (new ApplicationRegisterRepository()).Save(DataFactory.CreateApplicationRegister());
+        }
 
         private static void PopulateEnvironmentRegister()
         {
             EnvironmentRegister environmentRegister = DataFactory.CreateEnvironmentRegister();
-            environmentRegister.ConsumerSecret = "SecretDem0";
             (new EnvironmentRegisterRepository()).Save(environmentRegister);
         }
 
@@ -59,8 +62,7 @@ namespace Sif.Framework.Persistence.NHibernate
         [TestMethod]
         public void PopulateDatabase()
         {
-            PopulateEnvironmentRegister();
-            PopulateEnvironmentRequest();
+            PopulateApplicationRegister();
         }
 
     }

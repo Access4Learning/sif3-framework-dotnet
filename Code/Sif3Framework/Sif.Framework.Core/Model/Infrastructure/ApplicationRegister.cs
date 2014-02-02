@@ -20,22 +20,16 @@ using System.Collections.Generic;
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class EnvironmentRegister : IPersistable
+    public class ApplicationRegister : IPersistable
     {
 
         public virtual long? Id { get; set; }
 
         public virtual string ApplicationKey { get; set; }
 
-        public virtual IDictionary<string, Property> InfrastructureServices { get; set; }
+        public virtual ICollection<EnvironmentRegister> EnvironmentRegisters { get; set; }
 
-        public virtual string InstanceId { get; set; }
-
-        public virtual IDictionary<string, ProvisionedZone> ProvisionedZones { get; set; }
-
-        public virtual string SolutionId { get; set; }
-
-        public virtual string UserToken { get; set; }
+        public virtual string SharedSecret { get; set; }
 
     }
 

@@ -20,26 +20,18 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public interface IGenericService<UI, DB> where DB : IPersistable
+    public interface IGenericService<T> where T : IPersistable
     {
 
-        long Create(UI item);
+        void Delete(T obj);
 
-        void Create(IEnumerable<UI> items);
+        T Retrieve(long objId);
 
-        void Delete(UI item);
+        ICollection<T> Retrieve(T obj);
 
-        void Delete(IEnumerable<UI> items);
+        ICollection<T> Retrieve();
 
-        UI Retrieve(long id);
-
-        IEnumerable<UI> Retrieve(UI item);
-
-        IEnumerable<UI> Retrieve();
-
-        void Update(UI item);
-
-        void Update(IEnumerable<UI> items);
+        long Save(T obj);
 
     }
 

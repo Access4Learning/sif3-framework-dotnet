@@ -25,14 +25,14 @@ namespace Sif.Framework.Utils
     {
         enum AuthorisationMethod { Basic, HMACSHA256 };
 
-        public delegate string GetConsumerSecret(string sessionToken);
+        public delegate string GetSharedSecret(string sessionToken);
 
-        public static string GenerateBasicAuthorisationToken(string sessionToken, string consumerSecret)
+        public static string GenerateBasicAuthorisationToken(string sessionToken, string sharedSecret)
         {
 
-            if (String.IsNullOrWhiteSpace(consumerSecret))
+            if (String.IsNullOrWhiteSpace(sharedSecret))
             {
-                throw new ArgumentNullException("consumerSecret");
+                throw new ArgumentNullException("sharedSecret");
             }
 
             if (String.IsNullOrWhiteSpace(sessionToken))
@@ -40,10 +40,10 @@ namespace Sif.Framework.Utils
                 throw new ArgumentNullException("sessionToken");
             }
 
-            return AuthorisationMethod.Basic.ToString() + " " + Convert.ToBase64String(Encoding.UTF8.GetBytes(sessionToken + ":" + consumerSecret));
+            return AuthorisationMethod.Basic.ToString() + " " + Convert.ToBase64String(Encoding.UTF8.GetBytes(sessionToken + ":" + sharedSecret));
         }
 
-        public static bool VerifyBasicAuthorisationToken(string authorisationToken, GetConsumerSecret getConsumerSecret, out string sessionToken)
+        public static bool VerifyBasicAuthorisationToken(string authorisationToken, GetSharedSecret getSharedSecret, out string sessionToken)
         {
 
             if (String.IsNullOrWhiteSpace(authorisationToken))
@@ -51,9 +51,9 @@ namespace Sif.Framework.Utils
                 throw new ArgumentNullException("authorisationToken");
             }
 
-            if (getConsumerSecret == null)
+            if (getSharedSecret == null)
             {
-                throw new ArgumentNullException("getConsumerSecret");
+                throw new ArgumentNullException("getSharedSecret");
             }
 
             string[] tokens = authorisationToken.Split(' ');
@@ -72,18 +72,18 @@ namespace Sif.Framework.Utils
                 throw new ArgumentException("Invalid authorisation token.", "authorisationToken");
             }
 
-            string consumerSecret = nextTokens[1];
+            string sharedSecret = nextTokens[1];
             sessionToken = nextTokens[0];
 
-            return consumerSecret.Equals(getConsumerSecret(sessionToken));
+            return sharedSecret.Equals(getSharedSecret(sessionToken));
         }
 
-        public static string GenerateHMACSHA256AuthorisationToken(string sessionToken, string consumerSecret, out string dateString)
+        public static string GenerateHMACSHA256AuthorisationToken(string sessionToken, string sharedSecret, out string dateString)
         {
 
-            if (String.IsNullOrWhiteSpace(consumerSecret))
+            if (String.IsNullOrWhiteSpace(sharedSecret))
             {
-                throw new ArgumentNullException("consumerSecret");
+                throw new ArgumentNullException("sharedSecret");
             }
 
             if (String.IsNullOrWhiteSpace(sessionToken))
@@ -96,7 +96,7 @@ namespace Sif.Framework.Utils
             // 1. Combine the Token and current date time in UTC using ISO 8601 format.
             byte[] messageBytes = Encoding.ASCII.GetBytes(sessionToken + ":" + dateString);
             // 2. Calculate the HMAC SHA 256 using the Consumer Secret and then Base64 encode.
-            byte[] keyBytes = Encoding.ASCII.GetBytes(consumerSecret);
+            byte[] keyBytes = Encoding.ASCII.GetBytes(sharedSecret);
             string hmacsha256EncodedString;
 
             using (HMACSHA256 hmacsha256 = new HMACSHA256(keyBytes))
@@ -114,7 +114,7 @@ namespace Sif.Framework.Utils
             return AuthorisationMethod.HMACSHA256.ToString() + " " + base64EncodedString;
         }
 
-        public static bool VerifyHMACSHA256AuthorisationToken(string authorisationToken, string dateString, GetConsumerSecret getConsumerSecret, out string sessionToken)
+        public static bool VerifyHMACSHA256AuthorisationToken(string authorisationToken, string dateString, GetSharedSecret getSharedSecret, out string sessionToken)
         {
 
             if (String.IsNullOrWhiteSpace(authorisationToken))
@@ -145,13 +145,13 @@ namespace Sif.Framework.Utils
 
             string hmacsha256EncodedString = nextTokens[1];
             sessionToken = nextTokens[0];
-            string consumerSecret = getConsumerSecret(sessionToken);
+            string sharedSecret = getSharedSecret(sessionToken);
 
             // Recalculate the encoded HMAC SHA256 string.
             // NOTE: Currently there are no checks for the date to be in UTC ISO 8601 format. I don't see how date
             // can be relevant for verification purposes.
             byte[] messageBytes = Encoding.ASCII.GetBytes(sessionToken + ":" + dateString);
-            byte[] keyBytes = Encoding.ASCII.GetBytes(consumerSecret);
+            byte[] keyBytes = Encoding.ASCII.GetBytes(sharedSecret);
             string newHmacsha256EncodedString;
 
             using (HMACSHA256 hmacsha256 = new HMACSHA256(keyBytes))
@@ -161,6 +161,11 @@ namespace Sif.Framework.Utils
             }
 
             return hmacsha256EncodedString.Equals(newHmacsha256EncodedString);
+        }
+
+        public static string GenerateSessionToken(string applicationKey, string instanceId, string userToken, string solutionId)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(applicationKey + ":" + instanceId + ":" + userToken + ":" + solutionId));
         }
 
     }

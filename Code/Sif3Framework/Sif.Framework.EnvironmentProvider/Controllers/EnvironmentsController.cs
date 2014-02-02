@@ -34,7 +34,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     public class EnvironmentsController : GenericController<environmentType, Environment>
     {
 
-        protected override IGenericService<environmentType, Environment> GetService()
+        protected override IInfrastructureService<environmentType, Environment> GetService()
         {
             return new EnvironmentService();
         }
@@ -48,9 +48,9 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         // POST api/{controller}
         public override HttpResponseMessage Post(environmentType item)
         {
-            string sessionToken;
+            string initialToken;
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization, out sessionToken))
+            if (!VerifyAuthorisationHeader(Request.Headers.Authorization, out initialToken))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -60,7 +60,8 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
             try
             {
                 long id = service.Create(item);
-                responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, item);
+                environmentType newItem = service.Retrieve(id);
+                responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
                 string uri = Url.Link("DefaultApi", new { id = id });
                 responseMessage.Headers.Location = new Uri(uri);
             }

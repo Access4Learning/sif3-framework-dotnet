@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
+    <Compile Include="Model\Infrastructure\ApplicationRegister.cs" />
     <Compile Include="Model\Infrastructure\Environment.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentRegister.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentType.cs" />
@@ -66,19 +67,27 @@
     <Compile Include="Model\Infrastructure\Service.cs" />
     <Compile Include="Model\Infrastructure\ServiceType.cs" />
     <Compile Include="Model\Infrastructure\Zone.cs" />
+    <Compile Include="Persistence\IApplicationRegisterRepository.cs" />
     <Compile Include="Persistence\IEnvironmentRegisterRepository.cs" />
     <Compile Include="Persistence\IEnvironmentRepository.cs" />
     <Compile Include="Persistence\IGenericRepository.cs" />
     <Compile Include="Model\Persistence\IPersistable.cs" />
+    <Compile Include="Persistence\NHibernate\ApplicationRegisterRepository.cs" />
     <Compile Include="Persistence\NHibernate\EnvironmentRegisterRepository.cs" />
     <Compile Include="Persistence\NHibernate\EnvironmentRepository.cs" />
     <Compile Include="Persistence\NHibernate\GenericRepository.cs" />
     <Compile Include="Persistence\NHibernate\NHibernateHelper.cs" />
     <Compile Include="Persistence\RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Authentication\ApplicationRegisterService.cs" />
+    <Compile Include="Service\Authentication\IApplicationRegisterService.cs" />
     <Compile Include="Service\GenericService.cs" />
     <Compile Include="Service\IGenericService.cs" />
+    <Compile Include="Service\InfrastructureService.cs" />
+    <Compile Include="Service\IInfrastructureService.cs" />
+    <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
+    <Compile Include="Service\Infrastructure\IEnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\IEnvironmentService.cs" />
     <Compile Include="Service\Mapper\MapperFactory.cs" />
     <Compile Include="Service\ServiceFactory.cs" />
@@ -119,6 +128,9 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -15,14 +15,24 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Persistence;
+using Sif.Framework.Persistence.NHibernate;
 
-namespace Sif.Framework.Persistence
+namespace Sif.Framework.Service.Authentication
 {
 
-    interface IEnvironmentRegisterRepository : IGenericRepository<EnvironmentRegister>
+    public class ApplicationRegisterService : GenericService<ApplicationRegister>, IApplicationRegisterService
     {
 
-        EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId);
+        protected override IGenericRepository<ApplicationRegister> GetRepository()
+        {
+            return new ApplicationRegisterRepository();
+        }
+
+        public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
+        {
+            return ((ApplicationRegisterRepository)repository).RetrieveByApplicationKey(applicationKey);
+        }
 
     }
 

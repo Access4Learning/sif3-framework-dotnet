@@ -17,25 +17,29 @@
 using Sif.Framework.Model.Persistence;
 using System.Collections.Generic;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Service
 {
 
-    public class EnvironmentRegister : IPersistable
+    public interface IInfrastructureService<UI, DB> where DB : IPersistable
     {
 
-        public virtual long? Id { get; set; }
+        long Create(UI item);
 
-        public virtual string ApplicationKey { get; set; }
+        void Create(IEnumerable<UI> items);
 
-        public virtual IDictionary<string, Property> InfrastructureServices { get; set; }
+        void Delete(UI item);
 
-        public virtual string InstanceId { get; set; }
+        void Delete(IEnumerable<UI> items);
 
-        public virtual IDictionary<string, ProvisionedZone> ProvisionedZones { get; set; }
+        UI Retrieve(long id);
 
-        public virtual string SolutionId { get; set; }
+        IEnumerable<UI> Retrieve(UI item);
 
-        public virtual string UserToken { get; set; }
+        IEnumerable<UI> Retrieve();
+
+        void Update(UI item);
+
+        void Update(IEnumerable<UI> items);
 
     }
 

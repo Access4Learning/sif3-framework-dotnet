@@ -24,7 +24,7 @@ namespace Sif.Framework.Utils
     public class AuthenticationUtilsTest
     {
 
-        string ConsumerSecret(string token)
+        string SharedSecret(string token)
         {
             return "guest";
         }
@@ -34,9 +34,9 @@ namespace Sif.Framework.Utils
         {
             string authorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken("new", "guest");
             Console.WriteLine("Authorisation token is " + authorisationToken + ".");
-            AuthenticationUtils.GetConsumerSecret consumerSecret = ConsumerSecret;
+            AuthenticationUtils.GetSharedSecret sharedSecret = SharedSecret;
             string sessionToken;
-            bool authorised = AuthenticationUtils.VerifyBasicAuthorisationToken(authorisationToken, consumerSecret, out sessionToken);
+            bool authorised = AuthenticationUtils.VerifyBasicAuthorisationToken(authorisationToken, sharedSecret, out sessionToken);
             Assert.AreEqual(sessionToken, "new");
             Assert.IsTrue(authorised);
         }
@@ -48,9 +48,9 @@ namespace Sif.Framework.Utils
             string authorisationToken = AuthenticationUtils.GenerateHMACSHA256AuthorisationToken("new", "guest", out dateString);
             Console.WriteLine("Authorisation token is " + authorisationToken + ".");
             Console.WriteLine("Generated UTC ISO 8601 date is " + dateString + ".");
-            AuthenticationUtils.GetConsumerSecret consumerSecret = ConsumerSecret;
+            AuthenticationUtils.GetSharedSecret sharedSecret = SharedSecret;
             string sessionToken;
-            bool authorised = AuthenticationUtils.VerifyHMACSHA256AuthorisationToken(authorisationToken, dateString, consumerSecret, out sessionToken);
+            bool authorised = AuthenticationUtils.VerifyHMACSHA256AuthorisationToken(authorisationToken, dateString, sharedSecret, out sessionToken);
             Assert.AreEqual(sessionToken, "new");
             Assert.IsTrue(authorised);
         }

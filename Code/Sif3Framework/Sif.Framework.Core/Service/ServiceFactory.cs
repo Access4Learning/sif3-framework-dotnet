@@ -24,13 +24,13 @@ namespace Sif.Framework.Service
     public static class ServiceFactory
     {
 
-        public static IGenericService<UI, IPersistable> CreateInstance<UI>()
+        public static IInfrastructureService<UI, IPersistable> CreateInstance<UI>()
         {
-            IGenericService<UI, IPersistable> service = null;
+            IInfrastructureService<UI, IPersistable> service = null;
 
             if (typeof(UI) == typeof(environmentType))
             {
-                service = (IGenericService<UI, IPersistable>)new EnvironmentService();
+                service = (IInfrastructureService<UI, IPersistable>)new EnvironmentService();
             }
 
             return service;

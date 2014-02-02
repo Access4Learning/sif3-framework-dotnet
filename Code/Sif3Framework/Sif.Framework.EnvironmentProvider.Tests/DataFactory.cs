@@ -18,6 +18,7 @@ using NHibernate.Tool.hbm2ddl;
 using Sif.Framework.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
+using System.Collections.ObjectModel;
 using System.IO;
 using Configuration = NHibernate.Cfg.Configuration;
 
@@ -42,6 +43,19 @@ namespace Sif.Framework.Model.Infrastructure
                 environmentTypeResponse = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
             }
 
+        }
+
+        public static ApplicationRegister CreateApplicationRegister()
+        {
+            Environment environmentRequest = CreateEnvironmentRequest();
+            EnvironmentRegister environmentRegister = CreateEnvironmentRegister();
+            ApplicationRegister applicationRegister = new ApplicationRegister
+            {
+                ApplicationKey = environmentRequest.ApplicationInfo.ApplicationKey,
+                SharedSecret = "SecretDem0",
+                EnvironmentRegisters = new Collection<EnvironmentRegister> { { environmentRegister } }
+            };
+            return applicationRegister;
         }
 
         public static void CreateDatabase()

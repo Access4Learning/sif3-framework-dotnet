@@ -24,7 +24,7 @@ namespace Sif.Framework.Persistence.NHibernate
     public class EnvironmentRepository : GenericRepository<Environment>, IEnvironmentRepository
     {
 
-        /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.Retrieve(string)">Retrieve</see>
+        /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.RetrieveBySessionToken(string)">RetrieveBySessionToken</see>
         public virtual Environment RetrieveBySessionToken(string sessionToken)
         {
 

@@ -14,29 +14,16 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
-using System.Collections.Generic;
+using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Service.Infrastructure
 {
 
-    public class EnvironmentRegister : IPersistable
+    interface IEnvironmentRegisterService : IGenericService<EnvironmentRegister>
     {
 
-        public virtual long? Id { get; set; }
-
-        public virtual string ApplicationKey { get; set; }
-
-        public virtual IDictionary<string, Property> InfrastructureServices { get; set; }
-
-        public virtual string InstanceId { get; set; }
-
-        public virtual IDictionary<string, ProvisionedZone> ProvisionedZones { get; set; }
-
-        public virtual string SolutionId { get; set; }
-
-        public virtual string UserToken { get; set; }
-
+        EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId);
+    
     }
 
 }
