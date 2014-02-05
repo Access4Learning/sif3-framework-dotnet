@@ -130,6 +130,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
                 using (ITransaction transaction = session.BeginTransaction())
                 {
+
                     if (obj.Id.HasValue)
                     {
                         session.Update(obj);
@@ -139,6 +140,7 @@ namespace Sif.Framework.Persistence.NHibernate
                     {
                         objId = (long)session.Save(obj);
                     }
+
                     transaction.Commit();
                 }
 

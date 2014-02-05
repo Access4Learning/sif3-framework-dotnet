@@ -22,14 +22,14 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public abstract class InfrastructureService<UI, DB> : IInfrastructureService<UI, DB> where DB : IPersistable, new()
+    public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : ISifPersistable, new()
     {
-        protected IGenericRepository<DB> repository;
+        protected ISifRepository<DB> repository;
 
         // Need to inject repository.
-        protected abstract IGenericRepository<DB> GetRepository();
+        protected abstract ISifRepository<DB> GetRepository();
 
-        public InfrastructureService()
+        public SifService()
         {
             repository = GetRepository();
         }
@@ -61,6 +61,12 @@ namespace Sif.Framework.Service
         public virtual UI Retrieve(long id)
         {
             DB repoItem = repository.Retrieve(id);
+            return MapperFactory.CreateInstance<DB, UI>(repoItem);
+        }
+
+        public virtual UI Retrieve(string sifId)
+        {
+            DB repoItem = repository.Retrieve(sifId);
             return MapperFactory.CreateInstance<DB, UI>(repoItem);
         }
 

@@ -14,27 +14,13 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Infrastructure;
-using Sif.Framework.Model.Persistence;
-using Sif.Framework.Service.Infrastructure;
-
-namespace Sif.Framework.Service
+namespace Sif.Framework.Model.Persistence
 {
 
-    public static class ServiceFactory
+    public interface ISifPersistable : IPersistable
     {
 
-        public static IInfrastructureService<UI, IPersistable> CreateInstance<UI>()
-        {
-            IInfrastructureService<UI, IPersistable> service = null;
-
-            if (typeof(UI) == typeof(environmentType))
-            {
-                service = (IInfrastructureService<UI, IPersistable>)new EnvironmentService();
-            }
-
-            return service;
-        }
+        string SifId { get; set; }
 
     }
 

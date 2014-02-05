@@ -31,10 +31,10 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     /// Valid single operations: POST, GET, DELETE.
     /// Valid multiple operations: none.
     /// </summary>
-    public class EnvironmentsController : GenericController<environmentType, Environment>
+    public class EnvironmentsController : SifController<environmentType, Environment>
     {
 
-        protected override IInfrastructureService<environmentType, Environment> GetService()
+        protected override ISifService<environmentType, Environment> GetService()
         {
             return new EnvironmentService();
         }
@@ -48,9 +48,17 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         // POST api/{controller}
         public override HttpResponseMessage Post(environmentType item)
         {
+            throw new HttpResponseException(HttpStatusCode.Forbidden);
+        }
+
+        // POST api/{controller}
+        [HttpPost]
+        [Route("api/solutions/Sif3DemoSolution/{controller}/environment")]
+        public HttpResponseMessage Create(environmentType item)
+        {
             string initialToken;
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization, out initialToken))
+            if (!VerifyInitialAuthorisationHeader(Request.Headers.Authorization, out initialToken))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }

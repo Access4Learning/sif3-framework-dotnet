@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class Zone : IPersistable
+    public class Zone : ISifPersistable
     {
 
         public virtual long? Id { get; set; }

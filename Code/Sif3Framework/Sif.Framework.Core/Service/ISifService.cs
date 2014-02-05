@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public interface IInfrastructureService<UI, DB> where DB : IPersistable
+    public interface ISifService<UI, DB> where DB : ISifPersistable
     {
 
         long Create(UI item);
@@ -32,6 +32,8 @@ namespace Sif.Framework.Service
         void Delete(IEnumerable<UI> items);
 
         UI Retrieve(long id);
+
+        UI Retrieve(string sifId);
 
         IEnumerable<UI> Retrieve(UI item);
 

@@ -26,10 +26,10 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 namespace Sif.Framework.Service.Infrastructure
 {
 
-    public class EnvironmentService : InfrastructureService<environmentType, Environment>, IEnvironmentService
+    public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
 
-        protected override IGenericRepository<Environment> GetRepository()
+        protected override ISifRepository<Environment> GetRepository()
         {
             return new EnvironmentRepository();
         }
@@ -47,11 +47,11 @@ namespace Sif.Framework.Service.Infrastructure
 
             string sessionToken = AuthenticationUtils.GenerateSessionToken(item.applicationInfo.applicationKey, item.instanceId, item.userToken, item.solutionId);
 
-            environmentType environmentType = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
+            environmentType environmentType = RetrieveBySessionToken(sessionToken);
 
             if (environmentType != null)
             {
-                throw new ArgumentException("item");
+                throw new ArgumentException("A session token already exists for environment.", "item");
             }
 
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);

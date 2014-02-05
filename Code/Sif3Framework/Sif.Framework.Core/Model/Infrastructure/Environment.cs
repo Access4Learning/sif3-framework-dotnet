@@ -30,7 +30,7 @@ namespace Sif.Framework.Model.Infrastructure
     /// /environment/applicationInfo/supportedDataModel
     /// /environment/applicationInfo/supportedDataModelVersion
     /// </summary>
-    public class Environment : IPersistable
+    public class Environment : ISifPersistable
     {
 
         public virtual long? Id { get; set; }

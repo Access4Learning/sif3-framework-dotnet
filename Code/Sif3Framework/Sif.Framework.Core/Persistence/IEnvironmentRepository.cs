@@ -19,7 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 namespace Sif.Framework.Persistence
 {
 
-    interface IEnvironmentRepository : IGenericRepository<Environment>
+    interface IEnvironmentRepository : ISifRepository<Environment>
     {
 
         /// <summary>

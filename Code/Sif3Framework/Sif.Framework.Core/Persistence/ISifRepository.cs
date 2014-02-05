@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Persistence;
-using Sif.Framework.Persistence.NHibernate;
 
 namespace Sif.Framework.Persistence
 {
 
-    static class RepositoryFactory
+    public interface ISifRepository<T> : IGenericRepository<T> where T : ISifPersistable
     {
 
-        public static IGenericRepository<IPersistable> CreateInstance<UI>()
-        {
-            IGenericRepository<IPersistable> repo = null;
-
-            if (typeof(UI) == typeof(environmentType))
-            {
-                repo = (IGenericRepository<IPersistable>)new EnvironmentRepository();
-            }
-
-            return repo;
-        }
+        /// <summary>
+        /// Retrieve the object based upon it's SIF identifier.
+        /// </summary>
+        /// <param name="sifId">SIF identifier for the object.</param>
+        /// <returns>Object defined by the passed SIF identifier.</returns>
+        T Retrieve(string sifId);
 
     }
 

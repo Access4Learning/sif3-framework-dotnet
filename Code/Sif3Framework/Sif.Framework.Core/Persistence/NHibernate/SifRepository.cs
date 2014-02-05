@@ -15,27 +15,28 @@
  */
 
 using NHibernate;
+using NHibernate.Criterion;
+using Sif.Framework.Model.Persistence;
 using System;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
 
-    public class EnvironmentRepository : SifRepository<Environment>, IEnvironmentRepository
+    public class SifRepository<T> : GenericRepository<T>, ISifRepository<T> where T : ISifPersistable, new()
     {
 
-        /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.RetrieveBySessionToken(string)">RetrieveBySessionToken</see>
-        public virtual Environment RetrieveBySessionToken(string sessionToken)
+        /// <see cref="Sif.Framework.Persistence.ISifRepository{T}.Retrieve(string)">Retrieve</see>
+        public virtual T Retrieve(string sifId)
         {
 
-            if (string.IsNullOrWhiteSpace(sessionToken))
+            if (string.IsNullOrWhiteSpace(sifId))
             {
-                throw new ArgumentNullException("sessionToken");
+                throw new ArgumentNullException("sifId");
             }
 
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                return session.QueryOver<Environment>().Where(e => e.SessionToken == sessionToken).SingleOrDefault();
+                return session.CreateCriteria(typeof(T)).Add(Expression.Eq("SifId", sifId)).UniqueResult<T>();
             }
 
         }

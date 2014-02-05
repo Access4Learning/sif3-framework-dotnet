@@ -19,7 +19,9 @@ namespace Sif.Framework.Model.Persistence
 
     public interface IPersistable
     {
+
         long? Id { get; set; }
+
     }
 
 }

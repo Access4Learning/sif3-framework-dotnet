@@ -18,12 +18,13 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Xml;
 
 namespace Sif.Framework.Demo.Consumer
 {
     class DemoConsumer
     {
-        private static string environmentUrl = "http://localhost:62921/api/solutions/Sif3DemoSolution/environments";
+        private static string environmentUrl = "http://localhost:62921/api/solutions/Sif3DemoSolution/environments/environment";
         private static string password = "SecretDem0";
         private static string studentUrl = "StudentPersonals";
         private static string username = "Sif3DemoApp";
@@ -121,13 +122,27 @@ namespace Sif.Framework.Demo.Consumer
             try
             {
                 string xml = demo.PostRequest(environmentUrl, body.ToString());
-                //XmlDocument environmentXml = new XmlDocument();
-                //environmentXml.LoadXml(xml);
-                //string sessionToken = environmentXml.SelectSingleNode("//sessionToken").InnerText;
-                //string baseUrl = environmentXml.SelectSingleNode("//infrastructureService[@name='requestsConnector']").InnerText;
-                //xml = demo.GetRequest(baseUrl + "/" + studentUrl, sessionToken);
+
+                XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
+                xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0");
+
+                XmlDocument environmentXml = new XmlDocument();
+                environmentXml.LoadXml(xml);
+
+                string sifId = environmentXml.SelectSingleNode("/ns:environment/@id", xmlNamespaceManager).Value;
+                Console.WriteLine("SIF identifier is " + sifId);
+                string sessionToken = environmentXml.SelectSingleNode("//ns:sessionToken", xmlNamespaceManager).InnerText;
+                Console.WriteLine("Session Token is " + sessionToken);
+                string baseEnvironmentUrl = environmentXml.SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager).InnerText;
+                Console.WriteLine("Environment Url is " + baseEnvironmentUrl + "/" + sifId);
+
+                xml = demo.GetRequest(baseEnvironmentUrl + "/" + sifId, sessionToken);
+
+                //string baseStudentUrl = environmentXml.SelectSingleNode("//ns:infrastructureService[@name='requestsConnector']", xmlNamespaceManager).InnerText;
+                //xml = demo.GetRequest(baseStudentUrl + "/" + studentUrl, sessionToken);
                 //XmlDocument studentXml = new XmlDocument();
                 //studentXml.LoadXml(xml);
+
                 Console.WriteLine("Request stream retrieved without error");
                 Console.Out.WriteLine(xml);
             }

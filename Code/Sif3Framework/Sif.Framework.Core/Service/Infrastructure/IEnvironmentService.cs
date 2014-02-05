@@ -20,7 +20,7 @@ using Sif.Framework.Model.Infrastructure;
 namespace Sif.Framework.Service.Infrastructure
 {
 
-    interface IEnvironmentService : IInfrastructureService<environmentType, Environment>
+    interface IEnvironmentService : ISifService<environmentType, Environment>
     {
 
         environmentType RetrieveBySessionToken(string sessionToken);

@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
+using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
@@ -29,24 +31,26 @@ using System.Web.Http;
 namespace Sif.Framework.EnvironmentProvider.Controllers
 {
 
-    public abstract class GenericController<UI, DB> : ApiController
+    public abstract class SifController<UI, DB> : ApiController
         where UI : new()
-        where DB : IPersistable, new()
+        where DB : ISifPersistable, new()
     {
-        protected IInfrastructureService<UI, DB> service;
+        protected ISifService<UI, DB> service;
 
-        string SharedSecret(string applicationKey)
+        string InitialSharedSecret(string applicationKey)
         {
             ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(applicationKey);
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
-        protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
+        string SharedSecret(string sessionToken)
         {
-            return VerifyAuthorisationHeader(header);
+            environmentType environment = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
+            ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
+            return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
-        protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header, out string sessionToken)
+        protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
         {
             bool verified = false;
             string sessionTokenChecked = null;
@@ -61,6 +65,24 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
                 verified = true;
             }
 
+            return verified;
+        }
+
+        protected bool VerifyInitialAuthorisationHeader(AuthenticationHeaderValue header, out string sessionToken)
+        {
+            bool verified = false;
+            string sessionTokenChecked = null;
+
+            if ("Basic".Equals(header.Scheme))
+            {
+                AuthenticationUtils.GetSharedSecret sharedSecret = InitialSharedSecret;
+                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
+            }
+            else if ("SIF_HMACSHA256".Equals(header.Scheme))
+            {
+                verified = true;
+            }
+
             sessionToken = sessionTokenChecked;
 
             return verified;
@@ -68,14 +90,14 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
         // Need to inject repository.
         [NonAction]
-        protected abstract IInfrastructureService<UI, DB> GetService();
+        protected abstract ISifService<UI, DB> GetService();
 
-        public GenericController()
+        public SifController()
         {
             service = GetService();
         }
 
-        // DELETE api/{controller}/{id}
+        // DELETE api/{controller}/{sifId}
         public virtual void Delete(int id)
         {
 
@@ -106,7 +128,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // GET api/{controller}/{id}
-        public virtual UI Get(int id)
+        public virtual UI Get(string id)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -182,7 +204,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
             return responseMessage;
         }
 
-        // PUT api/{controller}/{id}
+        // PUT api/{controller}/{sifId}
         public virtual void Put(int id, UI item)
         {
 
