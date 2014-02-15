@@ -19,10 +19,10 @@ using Sif.Framework.Model.Persistence;
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class ApplicationInfo : IPersistable
+    public class ApplicationInfo : IPersistable<long>
     {
 
-        public virtual long? Id { get; set; }
+        public virtual long Id { get; set; }
 
         public virtual ProductIdentity AdapterProduct { get; set; }
 

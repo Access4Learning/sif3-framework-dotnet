@@ -20,8 +20,14 @@ using System.Collections.Generic;
 namespace Sif.Framework.Persistence
 {
 
-    public interface IGenericRepository<T> where T : IPersistable
+    public interface IGenericRepository<T, PK> where T : IPersistable<PK>
     {
+
+        /// <summary>
+        /// Delete the object using it's unique identifier.
+        /// </summary>
+        /// <param name="objId">Unique identifier for the object.</param>
+        void Delete(PK objId);
 
         /// <summary>
         /// Delete the object.
@@ -31,10 +37,10 @@ namespace Sif.Framework.Persistence
         void Delete(T obj);
 
         /// <summary>
-        /// Delete multiple object.
+        /// Delete multiple objects.
         /// </summary>
         /// <param name="objs">Objects delete.</param>
-        /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
+        /// <exception cref="System.ArgumentNullException">objs parameter is null.</exception>
         void Delete(ICollection<T> objs);
 
         /// <summary>
@@ -42,11 +48,12 @@ namespace Sif.Framework.Persistence
         /// </summary>
         /// <param name="objId">Unique identifier for the object.</param>
         /// <returns>Object defined by the passed unique identifier.</returns>
-        T Retrieve(long objId);
+        T Retrieve(PK objId);
 
         /// <summary>
         /// Retrieve all objects based upon the example instance.
         /// </summary>
+        /// <param name="obj">Example instance to match on.</param>
         /// <returns>All objects that match the example instance.</returns>
         ICollection<T> Retrieve(T obj);
 
@@ -62,7 +69,7 @@ namespace Sif.Framework.Persistence
         /// <param name="obj">Object to save.</param>
         /// <returns>Unique identifier for the object.</returns>
         /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
-        long Save(T obj);
+        PK Save(T obj);
 
         /// <summary>
         /// Save multiple objects.

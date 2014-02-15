@@ -19,7 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 namespace Sif.Framework.Service.Authentication
 {
 
-    interface IApplicationRegisterService : IGenericService<ApplicationRegister>
+    interface IApplicationRegisterService : IGenericService<ApplicationRegister, long>
     {
 
         ApplicationRegister RetrieveByApplicationKey(string applicationKey);

@@ -17,10 +17,10 @@
 namespace Sif.Framework.Model.Persistence
 {
 
-    public interface IPersistable
+    public interface IPersistable<PK>
     {
 
-        long? Id { get; set; }
+        PK Id { get; set; }
 
     }
 

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using System;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence
 {
 
-    interface IEnvironmentRepository : ISifRepository<Environment>
+    interface IEnvironmentRepository : IGenericRepository<Environment, Guid>
     {
 
         /// <summary>

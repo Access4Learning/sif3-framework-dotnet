@@ -20,10 +20,10 @@ using System.Collections.Generic;
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class EnvironmentRegister : IPersistable
+    public class EnvironmentRegister : IPersistable<long>
     {
 
-        public virtual long? Id { get; set; }
+        public virtual long Id { get; set; }
 
         public virtual string ApplicationKey { get; set; }
 

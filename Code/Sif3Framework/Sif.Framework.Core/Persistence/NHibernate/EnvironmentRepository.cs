@@ -21,7 +21,7 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
-    public class EnvironmentRepository : SifRepository<Environment>, IEnvironmentRepository
+    public class EnvironmentRepository : GenericRepository<Environment, Guid>, IEnvironmentRepository
     {
 
         /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.RetrieveBySessionToken(string)">RetrieveBySessionToken</see>

@@ -21,10 +21,10 @@ using Sif.Framework.Persistence.NHibernate;
 namespace Sif.Framework.Service.Authentication
 {
 
-    public class ApplicationRegisterService : GenericService<ApplicationRegister>, IApplicationRegisterService
+    public class ApplicationRegisterService : GenericService<ApplicationRegister, long>, IApplicationRegisterService
     {
 
-        protected override IGenericRepository<ApplicationRegister> GetRepository()
+        protected override IGenericRepository<ApplicationRegister, long> GetRepository()
         {
             return new ApplicationRegisterRepository();
         }

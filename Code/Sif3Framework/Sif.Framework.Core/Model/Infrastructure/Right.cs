@@ -19,10 +19,10 @@ using Sif.Framework.Model.Persistence;
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class Right : IPersistable
+    public class Right : IPersistable<long>
     {
 
-        public virtual long? Id { get; set; }
+        public virtual long Id { get; set; }
 
         public virtual RightType Type { get; set; }
 

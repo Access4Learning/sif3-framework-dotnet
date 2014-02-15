@@ -21,7 +21,7 @@ using System;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
-    public class ApplicationRegisterRepository : GenericRepository<ApplicationRegister>, IApplicationRegisterRepository
+    public class ApplicationRegisterRepository : GenericRepository<ApplicationRegister, long>, IApplicationRegisterRepository
     {
 
         /// <see cref="Sif.Framework.Persistence.IApplicationRegisterRepository{T}.RetrieveByApplicationKey(string)">RetrieveByApplicationKey</see>

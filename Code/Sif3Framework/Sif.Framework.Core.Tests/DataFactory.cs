@@ -44,8 +44,7 @@ namespace Sif.Framework.Model.Infrastructure
             Zone theNegativeZone = new Zone
             {
                 Description = "The Negative Zone",
-                Properties = zoneProperties,
-                SifId = "12345678-1234-1123-1234-123456789000"
+                Properties = zoneProperties
             };
             ApplicationInfo applicationInfo = new ApplicationInfo
             {
@@ -65,7 +64,6 @@ namespace Sif.Framework.Model.Infrastructure
                 DefaultZone = theNegativeZone,
                 InstanceId = "ThisInstance01",
                 SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
-                SifId = "5b72f2d4-7a83-4297-a71f-8b5fb26cbf14",
                 SolutionId = "auTestSolution",
                 Type = Model.Infrastructure.EnvironmentType.DIRECT,
                 UserToken = "UserToken01"

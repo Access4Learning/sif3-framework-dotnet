@@ -15,21 +15,20 @@
  */
 
 using Sif.Framework.Model.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class Zone : ISifPersistable
+    public class Zone : IPersistable<Guid>
     {
 
-        public virtual long? Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string Description { get; set; }
 
         public virtual IDictionary<string, Property> Properties { get; set; }
-
-        public virtual string SifId { get; set; }
 
     }
 

@@ -33,7 +33,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
     public abstract class SifController<UI, DB> : ApiController
         where UI : new()
-        where DB : ISifPersistable, new()
+        where DB : IPersistable<Guid>, new()
     {
         protected ISifService<UI, DB> service;
 
@@ -97,8 +97,8 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
             service = GetService();
         }
 
-        // DELETE api/{controller}/{sifId}
-        public virtual void Delete(int id)
+        // DELETE api/{controller}/{id}
+        public virtual void Delete(Guid id)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -116,7 +116,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
                 }
                 else
                 {
-                    service.Delete(item);
+                    service.Delete(id);
                 }
 
             }
@@ -128,7 +128,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // GET api/{controller}/{id}
-        public virtual UI Get(string id)
+        public virtual UI Get(Guid id)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -191,7 +191,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
             try
             {
-                long id = service.Create(item);
+                Guid id = service.Create(item);
                 responseMessage = Request.CreateResponse<UI>(HttpStatusCode.Created, item);
                 string uri = Url.Link("DefaultApi", new { id = id });
                 responseMessage.Headers.Location = new Uri(uri);
@@ -204,8 +204,8 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
             return responseMessage;
         }
 
-        // PUT api/{controller}/{sifId}
-        public virtual void Put(int id, UI item)
+        // PUT api/{controller}/{id}
+        public virtual void Put(Guid id, UI item)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))

@@ -19,7 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 namespace Sif.Framework.Service.Infrastructure
 {
 
-    interface IEnvironmentRegisterService : IGenericService<EnvironmentRegister>
+    interface IEnvironmentRegisterService : IGenericService<EnvironmentRegister, long>
     {
 
         EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId);

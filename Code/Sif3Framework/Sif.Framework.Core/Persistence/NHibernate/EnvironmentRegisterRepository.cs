@@ -22,7 +22,7 @@ using System;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
-    public class EnvironmentRegisterRepository : GenericRepository<EnvironmentRegister>, IEnvironmentRegisterRepository
+    public class EnvironmentRegisterRepository : GenericRepository<EnvironmentRegister, long>, IEnvironmentRegisterRepository
     {
 
         public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId)

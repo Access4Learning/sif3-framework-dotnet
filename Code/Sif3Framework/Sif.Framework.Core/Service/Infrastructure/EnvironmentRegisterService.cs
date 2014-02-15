@@ -21,10 +21,10 @@ using Sif.Framework.Persistence.NHibernate;
 namespace Sif.Framework.Service.Infrastructure
 {
 
-    public class EnvironmentRegisterService : GenericService<EnvironmentRegister>, IEnvironmentRegisterService
+    public class EnvironmentRegisterService : GenericService<EnvironmentRegister, long>, IEnvironmentRegisterService
     {
 
-        protected override IGenericRepository<EnvironmentRegister> GetRepository()
+        protected override IGenericRepository<EnvironmentRegister, long> GetRepository()
         {
             return new EnvironmentRegisterRepository();
         }

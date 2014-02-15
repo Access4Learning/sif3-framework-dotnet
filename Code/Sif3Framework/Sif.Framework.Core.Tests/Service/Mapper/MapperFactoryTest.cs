@@ -15,10 +15,8 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Model;
-using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Infrastructure;
-using System.Collections.Generic;
+using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.Service.Mapper
 {
@@ -48,6 +46,8 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
             Assert.AreEqual(source.DefaultZone.Description, destination.defaultZone.description);
+            Assert.AreEqual(source.DefaultZone.Id.ToString(), destination.defaultZone.id);
+            Assert.AreEqual(source.Id.ToString(), destination.id);
         }
 
         [TestMethod]
@@ -71,6 +71,8 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
             Assert.AreEqual(source.DefaultZone.Description, destination.defaultZone.description);
+            Assert.AreEqual(source.DefaultZone.Id.ToString(), destination.defaultZone.id);
+            Assert.AreEqual(source.Id.ToString(), destination.id);
             int index = 0;
 
             foreach (Property sourceProperty in source.InfrastructureServices.Values)

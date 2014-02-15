@@ -23,8 +23,36 @@ using System.Collections.Generic;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
-    public class GenericRepository<T> : IGenericRepository<T> where T : IPersistable, new()
+    public class GenericRepository<T, PK> : IGenericRepository<T, PK> where T : IPersistable<PK>, new()
     {
+
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(PK)">Delete</see>
+        public virtual void Delete(PK objId)
+        {
+
+            if (objId == null)
+            {
+                throw new ArgumentNullException("objId");
+            }
+
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    T obj = session.Get<T>(objId);
+
+                    if (obj != null)
+                    {
+                        session.Delete(obj);
+                        transaction.Commit();
+                    }
+
+                }
+
+            }
+
+        }
 
         /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(T)">Delete</see>
         public virtual void Delete(T obj)
@@ -75,8 +103,8 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(long)">Retrieve</see>
-        public virtual T Retrieve(long objId)
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(PK)">Retrieve</see>
+        public virtual T Retrieve(PK objId)
         {
 
             using (ISession session = NHibernateHelper.OpenSession())
@@ -115,7 +143,7 @@ namespace Sif.Framework.Persistence.NHibernate
         }
 
         /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(T)">Save</see>
-        public virtual long Save(T obj)
+        public virtual PK Save(T obj)
         {
 
             if (obj == null)
@@ -123,7 +151,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("obj");
             }
 
-            long objId;
+            PK objId;
 
             using (ISession session = NHibernateHelper.OpenSession())
             {
@@ -131,14 +159,14 @@ namespace Sif.Framework.Persistence.NHibernate
                 using (ITransaction transaction = session.BeginTransaction())
                 {
 
-                    if (obj.Id.HasValue)
+                    if (!EqualityComparer<PK>.Default.Equals(obj.Id, default(PK)))
                     {
                         session.Update(obj);
-                        objId = (long)obj.Id;
+                        objId = obj.Id;
                     }
                     else
                     {
-                        objId = (long)session.Save(obj);
+                        objId = (PK)session.Save(obj);
                     }
 
                     transaction.Commit();

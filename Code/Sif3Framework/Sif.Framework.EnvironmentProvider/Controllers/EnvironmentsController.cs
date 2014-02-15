@@ -67,7 +67,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
             try
             {
-                long id = service.Create(item);
+                Guid id = service.Create(item);
                 environmentType newItem = service.Retrieve(id);
                 responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
                 string uri = Url.Link("DefaultApi", new { id = id });
@@ -82,7 +82,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // PUT api/{controller}/{id}
-        public override void Put(int id, environmentType item)
+        public override void Put(Guid id, environmentType item)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }

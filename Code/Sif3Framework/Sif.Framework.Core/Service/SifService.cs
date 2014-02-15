@@ -17,24 +17,25 @@
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
+using System;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Service
 {
 
-    public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : ISifPersistable, new()
+    public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
     {
-        protected ISifRepository<DB> repository;
+        protected IGenericRepository<DB, Guid> repository;
 
         // Need to inject repository.
-        protected abstract ISifRepository<DB> GetRepository();
+        protected abstract IGenericRepository<DB, Guid> GetRepository();
 
         public SifService()
         {
             repository = GetRepository();
         }
 
-        public virtual long Create(UI item)
+        public virtual Guid Create(UI item)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             return repository.Save(repoItem);
@@ -44,6 +45,11 @@ namespace Sif.Framework.Service
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Save(repoItems);
+        }
+
+        public virtual void Delete(Guid id)
+        {
+            repository.Delete(id);
         }
 
         public virtual void Delete(UI item)
@@ -58,15 +64,9 @@ namespace Sif.Framework.Service
             repository.Delete(repoItems);
         }
 
-        public virtual UI Retrieve(long id)
+        public virtual UI Retrieve(Guid id)
         {
             DB repoItem = repository.Retrieve(id);
-            return MapperFactory.CreateInstance<DB, UI>(repoItem);
-        }
-
-        public virtual UI Retrieve(string sifId)
-        {
-            DB repoItem = repository.Retrieve(sifId);
             return MapperFactory.CreateInstance<DB, UI>(repoItem);
         }
 

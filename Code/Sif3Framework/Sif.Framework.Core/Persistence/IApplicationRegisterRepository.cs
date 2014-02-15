@@ -19,7 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 namespace Sif.Framework.Persistence
 {
 
-    interface IApplicationRegisterRepository : IGenericRepository<ApplicationRegister>
+    interface IApplicationRegisterRepository : IGenericRepository<ApplicationRegister, long>
     {
 
         /// <summary>

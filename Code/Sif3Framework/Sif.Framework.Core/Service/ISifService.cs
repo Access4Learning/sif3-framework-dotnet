@@ -15,25 +15,26 @@
  */
 
 using Sif.Framework.Model.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Service
 {
 
-    public interface ISifService<UI, DB> where DB : ISifPersistable
+    public interface ISifService<UI, DB> where DB : IPersistable<Guid>
     {
 
-        long Create(UI item);
+        Guid Create(UI item);
 
         void Create(IEnumerable<UI> items);
+
+        void Delete(Guid id);
 
         void Delete(UI item);
 
         void Delete(IEnumerable<UI> items);
 
-        UI Retrieve(long id);
-
-        UI Retrieve(string sifId);
+        UI Retrieve(Guid id);
 
         IEnumerable<UI> Retrieve(UI item);
 

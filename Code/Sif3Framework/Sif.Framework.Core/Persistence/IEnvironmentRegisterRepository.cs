@@ -19,7 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 namespace Sif.Framework.Persistence
 {
 
-    interface IEnvironmentRegisterRepository : IGenericRepository<EnvironmentRegister>
+    interface IEnvironmentRegisterRepository : IGenericRepository<EnvironmentRegister, long>
     {
 
         EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId);

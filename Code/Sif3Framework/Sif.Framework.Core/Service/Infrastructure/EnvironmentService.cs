@@ -21,6 +21,7 @@ using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
 using System;
+using System.Collections.Generic;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Infrastructure
@@ -29,12 +30,99 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
 
-        protected override ISifRepository<Environment> GetRepository()
+        private IDictionary<string, Property> CopyInfrastructureServices(IDictionary<string, Property> sourceInfrastructureServices)
+        {
+            IDictionary<string, Property> destinationInfrastructureServices = new Dictionary<string, Property>();
+
+            if (sourceInfrastructureServices != null && sourceInfrastructureServices.Count > 0)
+            {
+
+                foreach (Property sourceInfrastructureService in sourceInfrastructureServices.Values)
+                {
+                    Property destinationInfrastructureService = new Property { Name = sourceInfrastructureService.Name, Value = sourceInfrastructureService.Value };
+                    destinationInfrastructureServices.Add(destinationInfrastructureService.Name, destinationInfrastructureService);
+                }
+
+            }
+
+            return destinationInfrastructureServices;
+        }
+
+        private IDictionary<RightType, Right> CopyRights(IDictionary<RightType, Right> sourceRights)
+        {
+            IDictionary<RightType, Right> destinationRights = new Dictionary<RightType, Right>();
+
+            if (sourceRights != null && sourceRights.Count > 0)
+            {
+
+                foreach (Right sourceRight in sourceRights.Values)
+                {
+                    Right destinationRight = new Right { Type = sourceRight.Type, Value = sourceRight.Value };
+                    destinationRights.Add(destinationRight.Type, destinationRight);
+                }
+
+            }
+
+            return destinationRights;
+        }
+
+        private ICollection<Model.Infrastructure.Service> CopyServices(ICollection<Model.Infrastructure.Service> sourceServices)
+        {
+            ICollection<Model.Infrastructure.Service> destinationServices = new List<Model.Infrastructure.Service>();
+
+            if (sourceServices != null && sourceServices.Count > 0)
+            {
+
+                foreach (Model.Infrastructure.Service sourceService in sourceServices)
+                {
+                    Model.Infrastructure.Service destinationService = new Model.Infrastructure.Service { ContextId = sourceService.ContextId, Name = sourceService.Name, Type = sourceService.Type };
+                    IDictionary<RightType, Right> rights = CopyRights(sourceService.Rights);
+
+                    if (rights.Count > 0)
+                    {
+                        destinationService.Rights = rights;
+                    }
+
+                    destinationServices.Add(destinationService);
+                }
+
+            }
+
+            return destinationServices;
+        }
+
+        private IDictionary<string, ProvisionedZone> CopyProvisionedZones(IDictionary<string, ProvisionedZone> sourceProvisionedZones)
+        {
+            IDictionary<string, ProvisionedZone> destinationProvisionedZones = new Dictionary<string, ProvisionedZone>();
+
+            if (sourceProvisionedZones != null && sourceProvisionedZones.Count > 0)
+            {
+
+                foreach (ProvisionedZone sourceProvisionedZone in sourceProvisionedZones.Values)
+                {
+
+                    ProvisionedZone destinationProvisionedZone = new ProvisionedZone { SifId = sourceProvisionedZone.SifId };
+                    ICollection<Model.Infrastructure.Service> services = CopyServices(sourceProvisionedZone.Services);
+
+                    if (services.Count > 0)
+                    {
+                        destinationProvisionedZone.Services = services;
+                    }
+
+                    destinationProvisionedZones.Add(destinationProvisionedZone.SifId, destinationProvisionedZone);
+                }
+
+            }
+
+            return destinationProvisionedZones;
+        }
+
+        protected override IGenericRepository<Environment, Guid> GetRepository()
         {
             return new EnvironmentRepository();
         }
 
-        public override long Create(environmentType item)
+        public override Guid Create(environmentType item)
         {
             EnvironmentRegister environmentRegister =
                 (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers
@@ -54,11 +142,21 @@ namespace Sif.Framework.Service.Infrastructure
                 throw new ArgumentException("A session token already exists for environment.", "item");
             }
 
+            IDictionary<string, Property> infrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
+            IDictionary<string, ProvisionedZone> provisionedZones = CopyProvisionedZones(environmentRegister.ProvisionedZones);
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
-            repoItem.InfrastructureServices = environmentRegister.InfrastructureServices;
-            repoItem.ProvisionedZones = environmentRegister.ProvisionedZones;
+
+            if (infrastructureServices.Count > 0)
+            {
+                repoItem.InfrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
+            }
+
+            if (provisionedZones.Count > 0)
+            {
+                repoItem.ProvisionedZones = CopyProvisionedZones(environmentRegister.ProvisionedZones);
+            }
+
             repoItem.SessionToken = sessionToken;
-            repoItem.SifId = Guid.NewGuid().ToString();
 
             return repository.Save(repoItem);
         }

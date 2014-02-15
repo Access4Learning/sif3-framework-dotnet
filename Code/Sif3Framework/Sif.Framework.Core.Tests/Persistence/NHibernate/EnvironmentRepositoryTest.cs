@@ -16,8 +16,10 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.Model.Infrastructure;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
@@ -49,7 +51,7 @@ namespace Sif.Framework.Persistence.NHibernate
         public void SaveAndRetrieve()
         {
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            long environmentId = (new EnvironmentRepository()).Save(saved);
+            Guid environmentId = (new EnvironmentRepository()).Save(saved);
             Environment retrieved = (new EnvironmentRepository()).Retrieve(environmentId);
             Assert.AreEqual(saved.Type, retrieved.Type);
             Assert.AreEqual(saved.AuthenticationMethod, retrieved.AuthenticationMethod);
@@ -64,7 +66,7 @@ namespace Sif.Framework.Persistence.NHibernate
         public void SaveAndRetrieveByExample()
         {
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            long environmentId = (new EnvironmentRepository()).Save(saved);
+            Guid environmentId = (new EnvironmentRepository()).Save(saved);
             ApplicationInfo applicationInfo = new ApplicationInfo
             {
                 ApplicationKey = "UnitTesting",            };
@@ -73,7 +75,6 @@ namespace Sif.Framework.Persistence.NHibernate
                 ApplicationInfo = applicationInfo,
                 InstanceId = "ThisInstance01",
                 SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
-                SifId = "5b72f2d4-7a83-4297-a71f-8b5fb26cbf14",
                 SolutionId = "auTestSolution",
                 UserToken = "UserToken01"
             };
@@ -84,7 +85,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
                 Assert.AreEqual(saved.InstanceId, retrieved.InstanceId);
                 Assert.AreEqual(saved.SessionToken, retrieved.SessionToken);
-                Assert.AreEqual(saved.SifId, retrieved.SifId);
+                Assert.AreEqual(saved.Id, retrieved.Id);
                 Assert.AreEqual(saved.SolutionId, retrieved.SolutionId);
                 Assert.AreEqual(saved.UserToken, retrieved.UserToken);
             }
@@ -95,7 +96,7 @@ namespace Sif.Framework.Persistence.NHibernate
         public void SaveAndRetrieveBySessionToken()
         {
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            long environmentId = (new EnvironmentRepository()).Save(saved);
+            Guid environmentId = (new EnvironmentRepository()).Save(saved);
             ApplicationInfo applicationInfo = new ApplicationInfo
             {
                 ApplicationKey = "UnitTesting",
@@ -105,7 +106,6 @@ namespace Sif.Framework.Persistence.NHibernate
                 ApplicationInfo = applicationInfo,
                 InstanceId = "ThisInstance01",
                 SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
-                SifId = "5b72f2d4-7a83-4297-a71f-8b5fb26cbf14",
                 SolutionId = "auTestSolution",
                 UserToken = "UserToken01"
             };
@@ -113,7 +113,7 @@ namespace Sif.Framework.Persistence.NHibernate
             Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
             Assert.AreEqual(saved.InstanceId, retrieved.InstanceId);
             Assert.AreEqual(saved.SessionToken, retrieved.SessionToken);
-            Assert.AreEqual(saved.SifId, retrieved.SifId);
+            Assert.AreEqual(saved.Id, retrieved.Id);
             Assert.AreEqual(saved.SolutionId, retrieved.SolutionId);
             Assert.AreEqual(saved.UserToken, retrieved.UserToken);
         }

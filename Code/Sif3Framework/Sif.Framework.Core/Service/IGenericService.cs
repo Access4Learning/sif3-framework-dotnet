@@ -20,18 +20,18 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public interface IGenericService<T> where T : IPersistable
+    public interface IGenericService<T, PK> where T : IPersistable<PK>
     {
 
         void Delete(T obj);
 
-        T Retrieve(long objId);
+        T Retrieve(PK objId);
 
         ICollection<T> Retrieve(T obj);
 
         ICollection<T> Retrieve();
 
-        long Save(T obj);
+        PK Save(T obj);
 
     }
 

@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Model.Infrastructure
@@ -30,10 +31,13 @@ namespace Sif.Framework.Model.Infrastructure
     /// /environment/applicationInfo/supportedDataModel
     /// /environment/applicationInfo/supportedDataModelVersion
     /// </summary>
-    public class Environment : ISifPersistable
+    public class Environment : IPersistable<Guid>
     {
 
-        public virtual long? Id { get; set; }
+        /// <summary>
+        /// The ID of the Environment as managed by the Environment Provider.
+        /// </summary>
+        public virtual Guid Id { get; set; }
 
         public virtual ApplicationInfo ApplicationInfo { get; set; }
 
@@ -69,11 +73,6 @@ namespace Sif.Framework.Model.Infrastructure
         /// The ID associated with an instance of the Environment.
         /// </summary>
         public virtual string SessionToken { get; set; }
-
-        /// <summary>
-        /// The ID of the Environment as managed by the Environment Provider.
-        /// </summary>
-        public virtual string SifId { get; set; }
 
         /// <summary>
         /// The solution the Application would like to participate in. This is optional only, is advisory, and may be

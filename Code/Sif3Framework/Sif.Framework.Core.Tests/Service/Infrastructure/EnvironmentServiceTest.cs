@@ -38,7 +38,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
             Environment saved = DataFactory.CreateEnvironmentRequest();
             (new EnvironmentRepository()).Save(saved);
-            environmentType retrieved = (new EnvironmentService()).Retrieve((long)saved.Id);
+            environmentType retrieved = (new EnvironmentService()).Retrieve(saved.Id);
             Assert.AreEqual(saved.ApplicationInfo.AdapterProduct.IconURI, retrieved.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(saved.ApplicationInfo.AdapterProduct.ProductName, retrieved.applicationInfo.adapterProduct.productName);
             Assert.AreEqual(saved.ApplicationInfo.AdapterProduct.ProductVersion, retrieved.applicationInfo.adapterProduct.productVersion);

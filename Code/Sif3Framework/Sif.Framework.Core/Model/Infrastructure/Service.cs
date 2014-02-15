@@ -21,10 +21,10 @@ using System.Collections.Generic;
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class Service : IPersistable, IComparable<Service>
+    public class Service : IPersistable<long>, IComparable<Service>
     {
 
-        public virtual long? Id { get; set; }
+        public virtual long Id { get; set; }
 
         /// <summary>
         /// The unique identity of a context element, which is associated with a Provider of this name and type

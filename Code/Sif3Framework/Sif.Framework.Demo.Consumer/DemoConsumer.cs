@@ -22,12 +22,45 @@ using System.Xml;
 
 namespace Sif.Framework.Demo.Consumer
 {
+
     class DemoConsumer
     {
         private static string environmentUrl = "http://localhost:62921/api/solutions/Sif3DemoSolution/environments/environment";
         private static string password = "SecretDem0";
         private static string studentUrl = "StudentPersonals";
         private static string username = "Sif3DemoApp";
+
+        private string DeleteRequest(string url, string sessionToken)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.ContentType = "application/xml";
+            request.Method = "DELETE";
+            request.KeepAlive = false;
+            request.Accept = "application/xml";
+            request.Headers.Add("Authorization", "Basic " + System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:" + password, sessionToken))));
+
+            using (WebResponse response = request.GetResponse())
+            {
+                string responseString = null;
+
+                if (response == null)
+                {
+                    Console.WriteLine("Response is null");
+                }
+                else
+                {
+
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseString = reader.ReadToEnd().Trim();
+                    }
+
+                }
+
+                return responseString;
+            }
+
+        }
 
         private string GetRequest(string url, string sessionToken)
         {
@@ -119,9 +152,15 @@ namespace Sif.Framework.Demo.Consumer
             body.Append("  </applicationInfo>");
             body.Append("</environment>");
 
+            string sifId = null;
+            string sessionToken = null;
+            string baseEnvironmentUrl = null;
+
             try
             {
                 string xml = demo.PostRequest(environmentUrl, body.ToString());
+                Console.WriteLine("Environment XML from Post request");
+                Console.Out.WriteLine(xml);
 
                 XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
                 xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0");
@@ -129,11 +168,11 @@ namespace Sif.Framework.Demo.Consumer
                 XmlDocument environmentXml = new XmlDocument();
                 environmentXml.LoadXml(xml);
 
-                string sifId = environmentXml.SelectSingleNode("/ns:environment/@id", xmlNamespaceManager).Value;
-                Console.WriteLine("SIF identifier is " + sifId);
-                string sessionToken = environmentXml.SelectSingleNode("//ns:sessionToken", xmlNamespaceManager).InnerText;
+                sifId = environmentXml.SelectSingleNode("/ns:environment/@id", xmlNamespaceManager).Value;
+                Console.WriteLine("Environment identifier is " + sifId);
+                sessionToken = environmentXml.SelectSingleNode("//ns:sessionToken", xmlNamespaceManager).InnerText;
                 Console.WriteLine("Session Token is " + sessionToken);
-                string baseEnvironmentUrl = environmentXml.SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager).InnerText;
+                baseEnvironmentUrl = environmentXml.SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager).InnerText;
                 Console.WriteLine("Environment Url is " + baseEnvironmentUrl + "/" + sifId);
 
                 xml = demo.GetRequest(baseEnvironmentUrl + "/" + sifId, sessionToken);
@@ -152,6 +191,13 @@ namespace Sif.Framework.Demo.Consumer
             }
             finally
             {
+
+                if (!string.IsNullOrWhiteSpace(baseEnvironmentUrl) && !string.IsNullOrWhiteSpace(sifId) && !string.IsNullOrWhiteSpace(sessionToken))
+                {
+                    demo.DeleteRequest(baseEnvironmentUrl + "/" + sifId, sessionToken);
+                    Console.WriteLine("Environment deleted");
+                }
+
                 Console.Out.WriteLine("Press any key");
                 Console.ReadKey();
             }

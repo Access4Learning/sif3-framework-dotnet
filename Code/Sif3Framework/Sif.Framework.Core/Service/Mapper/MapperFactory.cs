@@ -124,12 +124,9 @@ namespace Sif.Framework.Service.Mapper
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             AutoMapper.Mapper.CreateMap<Environment, environmentType>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.SifId))
                 .ForMember(dest => dest.infrastructureServices, opt => opt.MapFrom(src => src.InfrastructureServices.Values))
                 .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values));
-            AutoMapper.Mapper.CreateMap<environmentType, Environment>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.SifId, opt => opt.MapFrom(src => src.id));
+            AutoMapper.Mapper.CreateMap<environmentType, Environment>();
 
             AutoMapper.Mapper.CreateMap<ProductIdentity, productIdentityType>();
             AutoMapper.Mapper.CreateMap<productIdentityType, ProductIdentity>()
@@ -163,9 +160,7 @@ namespace Sif.Framework.Service.Mapper
             AutoMapper.Mapper.CreateMap<Zone, zoneType>()
                 .ForMember(dest => dest.properties, opt => opt.ResolveUsing<ZonePropertiesFlattenResolver>());
             AutoMapper.Mapper.CreateMap<zoneType, Zone>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.Properties, opt => opt.ResolveUsing<ZonePropertiesUnflattenResolver>())
-                .ForMember(dest => dest.SifId, opt => opt.MapFrom(src => src.id));
+                .ForMember(dest => dest.Properties, opt => opt.ResolveUsing<ZonePropertiesUnflattenResolver>());
 
             AutoMapper.Mapper.AssertConfigurationIsValid();
         }

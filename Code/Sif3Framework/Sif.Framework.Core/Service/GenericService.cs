@@ -21,12 +21,12 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public abstract class GenericService<T> : IGenericService<T> where T : IPersistable, new()
+    public abstract class GenericService<T, PK> : IGenericService<T, PK> where T : IPersistable<PK>, new()
     {
-        protected IGenericRepository<T> repository;
+        protected IGenericRepository<T, PK> repository;
 
         // Need to inject repository.
-        protected abstract IGenericRepository<T> GetRepository();
+        protected abstract IGenericRepository<T, PK> GetRepository();
 
         public GenericService()
         {
@@ -38,7 +38,7 @@ namespace Sif.Framework.Service
             repository.Delete(obj);
         }
 
-        public virtual T Retrieve(long id)
+        public virtual T Retrieve(PK id)
         {
             return repository.Retrieve(id);
         }
@@ -53,7 +53,7 @@ namespace Sif.Framework.Service
             return repository.Retrieve();
         }
 
-        public virtual long Save(T obj)
+        public virtual PK Save(T obj)
         {
             return repository.Save(obj);
         }
