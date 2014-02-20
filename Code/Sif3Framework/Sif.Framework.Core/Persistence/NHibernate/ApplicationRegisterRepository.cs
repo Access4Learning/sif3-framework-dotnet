@@ -24,6 +24,9 @@ namespace Sif.Framework.Persistence.NHibernate
     public class ApplicationRegisterRepository : GenericRepository<ApplicationRegister, long>, IApplicationRegisterRepository
     {
 
+        public ApplicationRegisterRepository()
+            : base(EnvironmentProviderSessionFactory.Instance) { }
+
         /// <see cref="Sif.Framework.Persistence.IApplicationRegisterRepository{T}.RetrieveByApplicationKey(string)">RetrieveByApplicationKey</see>
         public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
         {
@@ -33,7 +36,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("applicationKey");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
                 return session.QueryOver<ApplicationRegister>().Where(e => e.ApplicationKey == applicationKey).SingleOrDefault();
             }

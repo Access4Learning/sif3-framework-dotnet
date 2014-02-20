@@ -24,6 +24,9 @@ namespace Sif.Framework.Persistence.NHibernate
     public class EnvironmentRepository : GenericRepository<Environment, Guid>, IEnvironmentRepository
     {
 
+        public EnvironmentRepository()
+            : base(EnvironmentProviderSessionFactory.Instance) { }
+
         /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.RetrieveBySessionToken(string)">RetrieveBySessionToken</see>
         public virtual Environment RetrieveBySessionToken(string sessionToken)
         {
@@ -33,7 +36,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("sessionToken");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
                 return session.QueryOver<Environment>().Where(e => e.SessionToken == sessionToken).SingleOrDefault();
             }

@@ -25,6 +25,12 @@ namespace Sif.Framework.Persistence.NHibernate
 
     public class GenericRepository<T, PK> : IGenericRepository<T, PK> where T : IPersistable<PK>, new()
     {
+        protected IBaseSessionFactory sessionFactory;
+
+        public GenericRepository(IBaseSessionFactory sessionFactory)
+        {
+            this.sessionFactory = sessionFactory;
+        }
 
         /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(PK)">Delete</see>
         public virtual void Delete(PK objId)
@@ -35,7 +41,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("objId");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
 
                 using (ITransaction transaction = session.BeginTransaction())
@@ -63,7 +69,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("obj");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
 
                 using (ITransaction transaction = session.BeginTransaction())
@@ -85,7 +91,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("objs");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
 
                 using (ITransaction transaction = session.BeginTransaction())
@@ -107,7 +113,7 @@ namespace Sif.Framework.Persistence.NHibernate
         public virtual T Retrieve(PK objId)
         {
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
                 return session.Get<T>(objId);
             }
@@ -123,7 +129,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("obj");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
                 Example example = Example.Create(obj).EnableLike(MatchMode.Anywhere).ExcludeZeroes().IgnoreCase();
                 return session.CreateCriteria(typeof(T)).Add(example).List<T>();
@@ -135,7 +141,7 @@ namespace Sif.Framework.Persistence.NHibernate
         public virtual ICollection<T> Retrieve()
         {
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
                 return session.CreateCriteria(typeof(T)).List<T>();
             }
@@ -153,7 +159,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
             PK objId;
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
 
                 using (ITransaction transaction = session.BeginTransaction())
@@ -186,7 +192,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("objs");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
 
                 using (ITransaction transaction = session.BeginTransaction())

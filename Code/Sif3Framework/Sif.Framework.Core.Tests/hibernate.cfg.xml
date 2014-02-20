@@ -3,7 +3,7 @@
   <session-factory>
 
     <!-- Database type specific properties -->
-    <property name="connection.connection_string">Data Source=EnvironmentProvider-test.db;Version=3</property>
+    <property name="connection.connection_string">Data Source=..\..\..\..\..\Data\Databases\SifFrameworkCoreTests.db;Version=3</property>
     <property name="connection.driver_class">NHibernate.Driver.SQLite20Driver</property>
     <property name="dialect">NHibernate.Dialect.SQLiteDialect</property>
     <property name="query.substitutions">true=1;false=0</property>

@@ -73,9 +73,11 @@
     <Compile Include="Persistence\IGenericRepository.cs" />
     <Compile Include="Model\Persistence\IPersistable.cs" />
     <Compile Include="Persistence\NHibernate\ApplicationRegisterRepository.cs" />
+    <Compile Include="Persistence\NHibernate\EnvironmentProviderSessionFactory.cs" />
     <Compile Include="Persistence\NHibernate\EnvironmentRegisterRepository.cs" />
     <Compile Include="Persistence\NHibernate\EnvironmentRepository.cs" />
     <Compile Include="Persistence\NHibernate\GenericRepository.cs" />
+    <Compile Include="Persistence\NHibernate\IBaseSessionFactory.cs" />
     <Compile Include="Persistence\NHibernate\NHibernateHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Authentication\ApplicationRegisterService.cs" />

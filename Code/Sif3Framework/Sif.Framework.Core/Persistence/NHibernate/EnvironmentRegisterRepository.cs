@@ -15,7 +15,6 @@
  */
 
 using NHibernate;
-using NHibernate.Criterion;
 using Sif.Framework.Model.Infrastructure;
 using System;
 
@@ -25,6 +24,9 @@ namespace Sif.Framework.Persistence.NHibernate
     public class EnvironmentRegisterRepository : GenericRepository<EnvironmentRegister, long>, IEnvironmentRegisterRepository
     {
 
+        public EnvironmentRegisterRepository()
+            : base(EnvironmentProviderSessionFactory.Instance) { }
+
         public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId)
         {
 
@@ -33,7 +35,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 throw new ArgumentNullException("applicationKey");
             }
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (ISession session = sessionFactory.OpenSession())
             {
                 var query = session.QueryOver<EnvironmentRegister>();
                 query.Where(e => e.ApplicationKey == applicationKey);
