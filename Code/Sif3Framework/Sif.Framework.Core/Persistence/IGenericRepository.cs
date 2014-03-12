@@ -26,8 +26,8 @@ namespace Sif.Framework.Persistence
         /// <summary>
         /// Delete the object using it's unique identifier.
         /// </summary>
-        /// <param name="objId">Unique identifier for the object.</param>
-        void Delete(PK objId);
+        /// <param name="id">Unique identifier for the object.</param>
+        void Delete(PK id);
 
         /// <summary>
         /// Delete the object.
@@ -41,14 +41,14 @@ namespace Sif.Framework.Persistence
         /// </summary>
         /// <param name="objs">Objects delete.</param>
         /// <exception cref="System.ArgumentNullException">objs parameter is null.</exception>
-        void Delete(ICollection<T> objs);
+        void Delete(IEnumerable<T> objs);
 
         /// <summary>
         /// Retrieve the object based upon it's unique identifier.
         /// </summary>
-        /// <param name="objId">Unique identifier for the object.</param>
+        /// <param name="id">Unique identifier for the object.</param>
         /// <returns>Object defined by the passed unique identifier.</returns>
-        T Retrieve(PK objId);
+        T Retrieve(PK id);
 
         /// <summary>
         /// Retrieve all objects based upon the example instance.
@@ -76,7 +76,7 @@ namespace Sif.Framework.Persistence
         /// </summary>
         /// <param name="objs">Objects to save.</param>
         /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
-        void Save(ICollection<T> objs);
+        void Save(IEnumerable<T> objs);
 
     }
 

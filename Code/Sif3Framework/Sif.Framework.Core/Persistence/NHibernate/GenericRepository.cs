@@ -33,12 +33,12 @@ namespace Sif.Framework.Persistence.NHibernate
         }
 
         /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(PK)">Delete</see>
-        public virtual void Delete(PK objId)
+        public virtual void Delete(PK id)
         {
 
-            if (objId == null)
+            if (id == null)
             {
-                throw new ArgumentNullException("objId");
+                throw new ArgumentNullException("id");
             }
 
             using (ISession session = sessionFactory.OpenSession())
@@ -46,7 +46,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    T obj = session.Get<T>(objId);
+                    T obj = session.Get<T>(id);
 
                     if (obj != null)
                     {
@@ -82,8 +82,8 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(ICollection<T>)">Delete</see>
-        public virtual void Delete(ICollection<T> objs)
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(IEnumerable<T>)">Delete</see>
+        public virtual void Delete(IEnumerable<T> objs)
         {
 
             if (objs == null)
@@ -110,12 +110,12 @@ namespace Sif.Framework.Persistence.NHibernate
         }
 
         /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(PK)">Retrieve</see>
-        public virtual T Retrieve(PK objId)
+        public virtual T Retrieve(PK id)
         {
 
             using (ISession session = sessionFactory.OpenSession())
             {
-                return session.Get<T>(objId);
+                return session.Get<T>(id);
             }
 
         }
@@ -183,8 +183,8 @@ namespace Sif.Framework.Persistence.NHibernate
             return objId;
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(ICollection<T>)">Save</see>
-        public virtual void Save(ICollection<T> objs)
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(IEnumerable<T>)">Save</see>
+        public virtual void Save(IEnumerable<T> objs)
         {
 
             if (objs == null)

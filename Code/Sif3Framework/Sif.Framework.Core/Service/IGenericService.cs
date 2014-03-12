@@ -23,15 +23,25 @@ namespace Sif.Framework.Service
     public interface IGenericService<T, PK> where T : IPersistable<PK>
     {
 
+        PK Create(T obj);
+
+        void Create(IEnumerable<T> objs);
+
+        void Delete(PK id);
+
         void Delete(T obj);
 
-        T Retrieve(PK objId);
+        void Delete(IEnumerable<T> objs);
+
+        T Retrieve(PK id);
 
         ICollection<T> Retrieve(T obj);
 
         ICollection<T> Retrieve();
 
-        PK Save(T obj);
+        void Update(T obj);
+
+        void Update(IEnumerable<T> objs);
 
     }
 

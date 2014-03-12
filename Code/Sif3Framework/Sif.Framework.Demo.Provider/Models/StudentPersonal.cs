@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Controller;
-using Sif.Framework.Demo.Provider.Models;
-using Sif.Framework.Demo.Provider.Service;
-using Sif.Framework.Service;
+using Sif.Framework.Model.Persistence;
 using System;
+using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Provider.Controllers
+namespace Sif.Framework.Demo.Provider.Models
 {
 
-    public class StudentPersonalsController : GenericController<StudentPersonal, Guid>
+    [XmlRootAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
+    public partial class StudentPersonal : IPersistable<Guid>
     {
 
-        protected override IGenericService<StudentPersonal, Guid> GetService()
-        {
-            return new StudentPersonalService();
-        }
+        [XmlAttributeAttribute("RefId")]
+        public virtual Guid Id { get; set; }
+
+        public virtual string LocalId { get; set; }
+
+        public virtual PersonInfo PersonInfo { get; set; }
 
     }
 

@@ -1,20 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
   <session-factory>
-
     <!-- Database type specific properties -->
-    <property name="connection.connection_string">Data Source=|DataDirectory|\..\..\..\..\Data\Databases\EnvironmentProvider.db;Version=3</property>
+    <property name="connection.connection_string">Data Source=|DataDirectory|\..\..\..\..\Data\Databases\DemoProvider.db;Version=3</property>
     <property name="connection.driver_class">NHibernate.Driver.SQLite20Driver</property>
     <property name="dialect">NHibernate.Dialect.SQLiteDialect</property>
     <property name="query.substitutions">true=1;false=0</property>
-
     <!-- Properties that are not specific to a database type -->
     <property name="show_sql">true</property>
-
-    <!-- This entry is required due to a bug with version 1.0.74.0 of System.Data.SQLite using .NET 4 -->
-    <!--property name="hbm2ddl.keywords">none</property-->
-
     <!-- Mapping files -->
-    <mapping assembly="Sif.Framework.Core"/>
+    <mapping assembly="Sif.Framework.Demo.Provider"/>
   </session-factory>
 </hibernate-configuration>

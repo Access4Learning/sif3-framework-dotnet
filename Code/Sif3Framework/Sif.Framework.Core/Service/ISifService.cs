@@ -36,9 +36,9 @@ namespace Sif.Framework.Service
 
         UI Retrieve(Guid id);
 
-        IEnumerable<UI> Retrieve(UI item);
+        ICollection<UI> Retrieve(UI item);
 
-        IEnumerable<UI> Retrieve();
+        ICollection<UI> Retrieve();
 
         void Update(UI item);
 

@@ -78,7 +78,7 @@ namespace Sif.Framework.Persistence.NHibernate
                 SolutionId = "auTestSolution",
                 UserToken = "UserToken01"
             };
-            ICollection<Environment> environments = (new EnvironmentRepository()).Retrieve(example);
+            IEnumerable<Environment> environments = (new EnvironmentRepository()).Retrieve(example);
 
             foreach (Environment retrieved in environments)
             {

@@ -33,9 +33,29 @@ namespace Sif.Framework.Service
             repository = GetRepository();
         }
 
+        public virtual PK Create(T obj)
+        {
+            return repository.Save(obj);
+        }
+
+        public virtual void Create(IEnumerable<T> objs)
+        {
+            repository.Save(objs);
+        }
+
+        public virtual void Delete(PK id)
+        {
+            repository.Delete(id);
+        }
+
         public virtual void Delete(T obj)
         {
             repository.Delete(obj);
+        }
+
+        public virtual void Delete(IEnumerable<T> objs)
+        {
+            repository.Delete(objs);
         }
 
         public virtual T Retrieve(PK id)
@@ -53,9 +73,14 @@ namespace Sif.Framework.Service
             return repository.Retrieve();
         }
 
-        public virtual PK Save(T obj)
+        public virtual void Update(T obj)
         {
-            return repository.Save(obj);
+            repository.Save(obj);
+        }
+
+        public virtual void Update(IEnumerable<T> objs)
+        {
+            repository.Save(objs);
         }
 
     }

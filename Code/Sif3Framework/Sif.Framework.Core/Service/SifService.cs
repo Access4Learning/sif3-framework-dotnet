@@ -70,14 +70,14 @@ namespace Sif.Framework.Service
             return MapperFactory.CreateInstance<DB, UI>(repoItem);
         }
 
-        public virtual IEnumerable<UI> Retrieve(UI item)
+        public virtual ICollection<UI> Retrieve(UI item)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             ICollection<DB> repoItems = repository.Retrieve(repoItem);
             return MapperFactory.CreateInstances<DB, UI>(repoItems);
         }
 
-        public virtual IEnumerable<UI> Retrieve()
+        public virtual ICollection<UI> Retrieve()
         {
             ICollection<DB> repoItems = repository.Retrieve();
             return MapperFactory.CreateInstances<DB, UI>(repoItems);

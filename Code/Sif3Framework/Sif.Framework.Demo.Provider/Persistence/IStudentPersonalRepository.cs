@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Controller;
 using Sif.Framework.Demo.Provider.Models;
-using Sif.Framework.Demo.Provider.Service;
-using Sif.Framework.Service;
+using Sif.Framework.Persistence;
 using System;
 
-namespace Sif.Framework.Demo.Provider.Controllers
+namespace Sif.Framework.Demo.Provider.Persistence
 {
 
-    public class StudentPersonalsController : GenericController<StudentPersonal, Guid>
+    interface IStudentPersonalRepository : IGenericRepository<StudentPersonal, Guid>
     {
-
-        protected override IGenericService<StudentPersonal, Guid> GetService()
-        {
-            return new StudentPersonalService();
-        }
-
     }
 
 }

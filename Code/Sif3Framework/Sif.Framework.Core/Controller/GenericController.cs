@@ -14,91 +14,32 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Infrastructure;
-using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web.Http;
 
-namespace Sif.Framework.EnvironmentProvider.Controllers
+namespace Sif.Framework.Controller
 {
 
-    public abstract class SifController<UI, DB> : ApiController
-        where UI : new()
-        where DB : IPersistable<Guid>, new()
+    public abstract class GenericController<T, PK> : BaseController where T : IPersistable<PK>
     {
-        protected ISifService<UI, DB> service;
+        protected IGenericService<T, PK> service;
 
-        string InitialSharedSecret(string applicationKey)
-        {
-            ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(applicationKey);
-            return (applicationRegister == null ? null : applicationRegister.SharedSecret);
-        }
-
-        string SharedSecret(string sessionToken)
-        {
-            environmentType environment = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
-            ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
-            return (applicationRegister == null ? null : applicationRegister.SharedSecret);
-        }
-
-        protected bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
-        {
-            bool verified = false;
-            string sessionTokenChecked = null;
-
-            if ("Basic".Equals(header.Scheme))
-            {
-                AuthenticationUtils.GetSharedSecret sharedSecret = SharedSecret;
-                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
-            }
-            else if ("SIF_HMACSHA256".Equals(header.Scheme))
-            {
-                verified = true;
-            }
-
-            return verified;
-        }
-
-        protected bool VerifyInitialAuthorisationHeader(AuthenticationHeaderValue header, out string sessionToken)
-        {
-            bool verified = false;
-            string sessionTokenChecked = null;
-
-            if ("Basic".Equals(header.Scheme))
-            {
-                AuthenticationUtils.GetSharedSecret sharedSecret = InitialSharedSecret;
-                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
-            }
-            else if ("SIF_HMACSHA256".Equals(header.Scheme))
-            {
-                verified = true;
-            }
-
-            sessionToken = sessionTokenChecked;
-
-            return verified;
-        }
-
-        // Need to inject repository.
+        // Need to inject service.
         [NonAction]
-        protected abstract ISifService<UI, DB> GetService();
+        protected abstract IGenericService<T, PK> GetService();
 
-        public SifController()
+        public GenericController()
         {
             service = GetService();
         }
 
         // DELETE api/{controller}/{id}
-        public virtual void Delete(Guid id)
+        public virtual void Delete(PK id)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -108,7 +49,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
             try
             {
-                UI item = service.Retrieve(id);
+                T item = service.Retrieve(id);
 
                 if (item == null)
                 {
@@ -128,7 +69,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // GET api/{controller}/{id}
-        public virtual UI Get(Guid id)
+        public virtual T Get(PK id)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -136,7 +77,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
-            UI item;
+            T item;
 
             try
             {
@@ -156,7 +97,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // GET api/{controller}
-        public virtual IEnumerable<UI> Get()
+        public virtual ICollection<T> Get()
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -164,7 +105,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
-            IEnumerable<UI> items;
+            ICollection<T> items;
 
             try
             {
@@ -179,20 +120,20 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // POST api/{controller}
-        public virtual HttpResponseMessage Post(UI item)
+        public virtual HttpResponseMessage Post(T item)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
-            
+
             HttpResponseMessage responseMessage = null;
 
             try
             {
-                Guid id = service.Create(item);
-                responseMessage = Request.CreateResponse<UI>(HttpStatusCode.Created, item);
+                PK id = service.Create(item);
+                responseMessage = Request.CreateResponse<T>(HttpStatusCode.Created, item);
                 string uri = Url.Link("DefaultApi", new { id = id });
                 responseMessage.Headers.Location = new Uri(uri);
             }
@@ -205,7 +146,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // PUT api/{controller}/{id}
-        public virtual void Put(Guid id, UI item)
+        public virtual void Put(PK id, T item)
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -218,7 +159,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    UI existingItem = service.Retrieve(id);
+                    T existingItem = service.Retrieve(id);
 
                     if (existingItem == null)
                     {

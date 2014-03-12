@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Controller;
 using Sif.Framework.Infrastructure;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Infrastructure;
@@ -40,7 +41,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         }
 
         // GET api/{controller}
-        public override IEnumerable<environmentType> Get()
+        public override ICollection<environmentType> Get()
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
@@ -53,7 +54,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
 
         // POST api/{controller}
         [HttpPost]
-        [Route("api/solutions/Sif3DemoSolution/{controller}/environment")]
+        [Route("api/environments/environment")]
         public HttpResponseMessage Create(environmentType item)
         {
             string initialToken;
@@ -70,8 +71,8 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
                 Guid id = service.Create(item);
                 environmentType newItem = service.Retrieve(id);
                 responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
-                string uri = Url.Link("DefaultApi", new { id = id });
-                responseMessage.Headers.Location = new Uri(uri);
+                //string uri = Url.Link("DefaultApi", new { id = id });
+                //responseMessage.Headers.Location = new Uri(uri);
             }
             catch (Exception)
             {

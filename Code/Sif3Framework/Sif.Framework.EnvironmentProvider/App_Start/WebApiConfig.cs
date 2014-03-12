@@ -16,7 +16,7 @@ namespace Sif.Framework.EnvironmentProvider
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/solutions/Sif3DemoSolution/{controller}/{id}",
+                routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

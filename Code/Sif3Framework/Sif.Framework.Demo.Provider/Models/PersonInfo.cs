@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Controller;
-using Sif.Framework.Demo.Provider.Models;
-using Sif.Framework.Demo.Provider.Service;
-using Sif.Framework.Service;
-using System;
+using Sif.Framework.Model.Persistence;
+using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Provider.Controllers
+namespace Sif.Framework.Demo.Provider.Models
 {
 
-    public class StudentPersonalsController : GenericController<StudentPersonal, Guid>
+    public partial class PersonInfo : IPersistable<long>
     {
 
-        protected override IGenericService<StudentPersonal, Guid> GetService()
-        {
-            return new StudentPersonalService();
-        }
+        [XmlIgnoreAttribute]
+        public virtual long Id { get; set; }
+
+        public virtual Name Name { get; set; }
 
     }
 

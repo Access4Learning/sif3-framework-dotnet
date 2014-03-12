@@ -25,7 +25,7 @@ namespace Sif.Framework.Demo.Consumer
 
     class DemoConsumer
     {
-        private static string environmentUrl = "http://localhost:62921/api/solutions/Sif3DemoSolution/environments/environment";
+        private static string environmentUrl = "http://localhost:62921/api/environments/environment";
         private static string password = "SecretDem0";
         private static string studentUrl = "StudentPersonals";
         private static string username = "Sif3DemoApp";
@@ -159,8 +159,8 @@ namespace Sif.Framework.Demo.Consumer
             try
             {
                 string xml = demo.PostRequest(environmentUrl, body.ToString());
-                Console.WriteLine("Environment XML from Post request");
-                Console.Out.WriteLine(xml);
+                Console.WriteLine("Environment XML from POST request");
+                Console.WriteLine(xml);
 
                 XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
                 xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0");
@@ -176,14 +176,15 @@ namespace Sif.Framework.Demo.Consumer
                 Console.WriteLine("Environment Url is " + baseEnvironmentUrl + "/" + sifId);
 
                 xml = demo.GetRequest(baseEnvironmentUrl + "/" + sifId, sessionToken);
+                Console.WriteLine("Environment XML from GET request");
+                Console.WriteLine(xml);
 
-                //string baseStudentUrl = environmentXml.SelectSingleNode("//ns:infrastructureService[@name='requestsConnector']", xmlNamespaceManager).InnerText;
-                //xml = demo.GetRequest(baseStudentUrl + "/" + studentUrl, sessionToken);
-                //XmlDocument studentXml = new XmlDocument();
-                //studentXml.LoadXml(xml);
+                string baseStudentUrl = environmentXml.SelectSingleNode("//ns:infrastructureService[@name='requestsConnector']", xmlNamespaceManager).InnerText;
+                xml = demo.GetRequest(baseStudentUrl + "/" + studentUrl, sessionToken);
+                Console.WriteLine("List of StudentPersonal XMLs from GET request");
+                Console.WriteLine(xml);
 
                 Console.WriteLine("Request stream retrieved without error");
-                Console.Out.WriteLine(xml);
             }
             catch (Exception e)
             {
@@ -198,7 +199,7 @@ namespace Sif.Framework.Demo.Consumer
                     Console.WriteLine("Environment deleted");
                 }
 
-                Console.Out.WriteLine("Press any key");
+                Console.WriteLine("Press any key");
                 Console.ReadKey();
             }
 
