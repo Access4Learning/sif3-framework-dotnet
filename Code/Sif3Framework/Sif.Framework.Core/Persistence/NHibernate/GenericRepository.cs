@@ -23,16 +23,21 @@ using System.Collections.Generic;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
+    /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}">IGenericRepository</see>
     public class GenericRepository<T, PK> : IGenericRepository<T, PK> where T : IPersistable<PK>, new()
     {
         protected IBaseSessionFactory sessionFactory;
 
+        /// <summary>
+        /// Instantiate this class using a session factory for NHibernate.
+        /// </summary>
+        /// <param name="sessionFactory">Session factory for NHibernate.</param>
         public GenericRepository(IBaseSessionFactory sessionFactory)
         {
             this.sessionFactory = sessionFactory;
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(PK)">Delete</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Delete(PK)">Delete</see>
         public virtual void Delete(PK id)
         {
 
@@ -60,7 +65,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(T)">Delete</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Delete(T)">Delete</see>
         public virtual void Delete(T obj)
         {
 
@@ -82,7 +87,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Delete(IEnumerable<T>)">Delete</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Delete(IEnumerable<T>)">Delete</see>
         public virtual void Delete(IEnumerable<T> objs)
         {
 
@@ -109,7 +114,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(PK)">Retrieve</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve(PK)">Retrieve</see>
         public virtual T Retrieve(PK id)
         {
 
@@ -120,7 +125,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve(T)">Retrieve</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve(T)">Retrieve</see>
         public virtual ICollection<T> Retrieve(T obj)
         {
 
@@ -137,7 +142,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Retrieve()">Retrieve</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve()">Retrieve</see>
         public virtual ICollection<T> Retrieve()
         {
 
@@ -148,7 +153,7 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(T)">Save</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Save(T)">Save</see>
         public virtual PK Save(T obj)
         {
 
@@ -183,7 +188,7 @@ namespace Sif.Framework.Persistence.NHibernate
             return objId;
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T}.Save(IEnumerable<T>)">Save</see>
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Save(IEnumerable<T>)">Save</see>
         public virtual void Save(IEnumerable<T> objs)
         {
 

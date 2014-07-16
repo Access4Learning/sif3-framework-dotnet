@@ -23,10 +23,16 @@ using System.Collections.Generic;
 namespace Sif.Framework.Demo.Provider.Tests
 {
 
+    /// <summary>
+    /// This class is used to generate test data for unit testing.
+    /// </summary>
     static class DataFactory
     {
         private static Random random = new Random();
 
+        /// <summary>
+        /// Generate the database schema, apply it to the database and save the DDL used into a file.
+        /// </summary>
         public static void CreateDatabase()
         {
             Configuration configuration = new Configuration();

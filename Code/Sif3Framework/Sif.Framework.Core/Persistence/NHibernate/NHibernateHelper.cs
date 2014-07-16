@@ -20,6 +20,9 @@ using NHibernate.Cfg;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
+    /// <summary>
+    /// A Singleton helper class for managing NHibernate sessions.
+    /// </summary>
     class NHibernateHelper
     {
         private static ISessionFactory sessionFactory;
@@ -40,6 +43,10 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
+        /// <summary>
+        /// Open an NHibernate database session.
+        /// </summary>
+        /// <returns>NHibernate database session.</returns>
         public static ISession OpenSession()
         {
             return SessionFactory.OpenSession();

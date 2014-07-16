@@ -19,6 +19,9 @@ using NHibernate;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
+    /// <summary>
+    /// This interface defines base operations associated with session factories.
+    /// </summary>
     public interface IBaseSessionFactory
     {
         ISession OpenSession();

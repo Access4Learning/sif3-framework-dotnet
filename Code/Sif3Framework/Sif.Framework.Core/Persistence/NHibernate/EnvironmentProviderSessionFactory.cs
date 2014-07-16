@@ -20,17 +20,18 @@ using NHibernate.Cfg;
 namespace Sif.Framework.Persistence.NHibernate
 {
 
+    /// <summary>
+    /// A Singleton helper class for managing NHibernate sessions based upon the default configuration file.
+    /// </summary>
     class EnvironmentProviderSessionFactory : IBaseSessionFactory
     {
         private static EnvironmentProviderSessionFactory environmentProviderSessionFactory;
 
         private ISessionFactory SessionFactory { get; set; }
 
-        private EnvironmentProviderSessionFactory()
-        {
-
-        }
-
+        /// <summary>
+        /// Singleton instance of this class.
+        /// </summary>
         public static EnvironmentProviderSessionFactory Instance
         {
 
@@ -48,6 +49,18 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
+        /// <summary>
+        /// Private constructor to ensure instantiation as a Singleton.
+        /// </summary>
+        private EnvironmentProviderSessionFactory()
+        {
+
+        }
+
+        /// <summary>
+        /// Open an NHibernate database session.
+        /// </summary>
+        /// <returns>NHibernate database session.</returns>
         public ISession OpenSession()
         {
             return SessionFactory.OpenSession();

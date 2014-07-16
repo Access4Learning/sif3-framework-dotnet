@@ -20,6 +20,11 @@ using System.Collections.Generic;
 namespace Sif.Framework.Persistence
 {
 
+    /// <summary>
+    /// This interface defines CRUD operations associated with persistence to a repository.
+    /// </summary>
+    /// <typeparam name="T">Type of model object to be persisted.</typeparam>
+    /// <typeparam name="PK">Primary key type of the model object.</typeparam>
     public interface IGenericRepository<T, PK> where T : IPersistable<PK>
     {
 

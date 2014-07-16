@@ -17,9 +17,16 @@
 namespace Sif.Framework.Model.Persistence
 {
 
+    /// <summary>
+    /// This interface is used to denote an object that is able to be persisted.
+    /// </summary>
+    /// <typeparam name="PK">Type of the primary key.</typeparam>
     public interface IPersistable<PK>
     {
 
+        /// <summary>
+        /// Property that defines the primary key for an object.
+        /// </summary>
         PK Id { get; set; }
 
     }
