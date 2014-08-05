@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sif.Framework</RootNamespace>
-    <AssemblyName>Sif.Framework.Core.Tests</AssemblyName>
+    <AssemblyName>Sif.Framework.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -80,9 +80,9 @@
     <Compile Include="Utils\AuthenticationUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sif.Framework.Core\Sif.Framework.Core.csproj">
+    <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj">
       <Project>{202e8cb9-9aed-4034-908f-0b3bb04b171a}</Project>
-      <Name>Sif.Framework.Core</Name>
+      <Name>Sif.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

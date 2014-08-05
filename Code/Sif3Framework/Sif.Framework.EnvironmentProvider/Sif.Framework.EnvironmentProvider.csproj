@@ -126,9 +126,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sif.Framework.Core\Sif.Framework.Core.csproj">
+    <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj">
       <Project>{202e8cb9-9aed-4034-908f-0b3bb04b171a}</Project>
-      <Name>Sif.Framework.Core</Name>
+      <Name>Sif.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
