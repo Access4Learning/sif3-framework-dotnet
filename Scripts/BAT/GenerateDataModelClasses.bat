@@ -24,7 +24,7 @@ rem ============================================================================
 
 title "Generate Data Model classes"
 cmd /C %EXECUTABLE% /parameters:.\DataModelTypes.xml
-del /Q output\Au1_3DataModelTypes.cs
-rename output\SIF_Message.cs Au1_3DataModelTypes.cs
+del /Q output\DataModelTypes.cs
+rename output\SIF_Message.cs DataModelTypes.cs
 pause
 :end

@@ -15,9 +15,9 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence.NHibernate;
+using Sif.Specification.Infrastructure;
 
 namespace Sif.Framework.Service.Infrastructure
 {

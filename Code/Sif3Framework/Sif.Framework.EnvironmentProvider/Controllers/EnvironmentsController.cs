@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Controller;
-using Sif.Framework.Infrastructure;
-using Sif.Framework.Service;
-using Sif.Framework.Service.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Net;
+using Sif.Specification.Infrastructure;
 using System.Net.Http;
 using System.Web.Http;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.EnvironmentProvider.Controllers
 {
@@ -32,60 +25,15 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     /// Valid single operations: POST, GET, DELETE.
     /// Valid multiple operations: none.
     /// </summary>
-    public class EnvironmentsController : SifController<environmentType, Environment>
+    public class EnvironmentsController : Sif.Framework.Controller.EnvironmentsController
     {
-
-        protected override ISifService<environmentType, Environment> GetService()
-        {
-            return new EnvironmentService();
-        }
-
-        // GET api/{controller}
-        public override ICollection<environmentType> Get()
-        {
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
-        }
-
-        // POST api/{controller}
-        public override HttpResponseMessage Post(environmentType item)
-        {
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
-        }
 
         // POST api/{controller}
         [HttpPost]
         [Route("api/environments/environment")]
-        public HttpResponseMessage Create(environmentType item)
+        public override HttpResponseMessage Create(environmentType item)
         {
-            string initialToken;
-
-            if (!VerifyInitialAuthorisationHeader(Request.Headers.Authorization, out initialToken))
-            {
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
-            }
-
-            HttpResponseMessage responseMessage = null;
-
-            try
-            {
-                Guid id = service.Create(item);
-                environmentType newItem = service.Retrieve(id);
-                responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
-                //string uri = Url.Link("DefaultApi", new { id = id });
-                //responseMessage.Headers.Location = new Uri(uri);
-            }
-            catch (Exception)
-            {
-                responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-            return responseMessage;
-        }
-
-        // PUT api/{controller}/{id}
-        public override void Put(Guid id, environmentType item)
-        {
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
+            return base.Create(item);
         }
 
     }

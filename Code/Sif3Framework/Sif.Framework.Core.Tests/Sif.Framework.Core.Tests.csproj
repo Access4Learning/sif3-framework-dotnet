@@ -43,6 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Sif.Specification.Infrastructure">
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
@@ -81,12 +84,12 @@
       <Project>{202e8cb9-9aed-4034-908f-0b3bb04b171a}</Project>
       <Name>Sif.Framework.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sif.Framework.Infrastructure\Sif.Framework.Infrastructure.csproj">
-      <Project>{b65e93ee-ad73-45ab-8c97-a3120cd7e353}</Project>
-      <Name>Sif.Framework.Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SifFramework.cfg.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

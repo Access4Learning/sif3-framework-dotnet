@@ -41,7 +41,15 @@ namespace Sif.Framework.Persistence.NHibernate
                 if (environmentProviderSessionFactory == null)
                 {
                     environmentProviderSessionFactory = new EnvironmentProviderSessionFactory();
-                    environmentProviderSessionFactory.SessionFactory = new Configuration().Configure().BuildSessionFactory();
+                    string configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.cfg.xml");
+
+                    if (configurationFilePath == null)
+                    {
+                        configurationFilePath = "SifFramework.cfg.xml";
+                    }
+
+                    Configuration configuration = new Configuration().Configure(configurationFilePath);
+                    environmentProviderSessionFactory.SessionFactory = configuration.BuildSessionFactory();
                 }
 
                 return environmentProviderSessionFactory;

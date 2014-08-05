@@ -21,16 +21,13 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public abstract class GenericService<T, PK> : IGenericService<T, PK> where T : IPersistable<PK>, new()
+    public class GenericService<T, PK> : IGenericService<T, PK> where T : IPersistable<PK>, new()
     {
         protected IGenericRepository<T, PK> repository;
 
-        // Need to inject repository.
-        protected abstract IGenericRepository<T, PK> GetRepository();
-
-        public GenericService()
+        public GenericService(IGenericRepository<T, PK> repository)
         {
-            repository = GetRepository();
+            this.repository = repository;
         }
 
         public virtual PK Create(T obj)

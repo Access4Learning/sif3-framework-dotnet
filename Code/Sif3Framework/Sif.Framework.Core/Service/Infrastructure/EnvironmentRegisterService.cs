@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 
 namespace Sif.Framework.Service.Infrastructure
@@ -24,16 +23,17 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentRegisterService : GenericService<EnvironmentRegister, long>, IEnvironmentRegisterService
     {
 
-        protected override IGenericRepository<EnvironmentRegister, long> GetRepository()
+        public EnvironmentRegisterService()
+            : base(new EnvironmentRegisterRepository())
         {
-            return new EnvironmentRegisterRepository();
+
         }
 
         public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId)
         {
             return ((EnvironmentRegisterRepository)repository).RetrieveByUniqueIdentifiers(applicationKey, instanceId, userToken, solutionId);
         }
-    
+
     }
 
 }

@@ -9,18 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Core.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EnvironmentProvider", "Sif.Framework.EnvironmentProvider\Sif.Framework.EnvironmentProvider.csproj", "{A727F19D-BEDF-46A4-96E0-E0D9672457C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EnvironmentProvider.Tests", "Sif.Framework.EnvironmentProvider.Tests\Sif.Framework.EnvironmentProvider.Tests.csproj", "{D69F0821-7315-4AB7-AE16-D0B6F735B5D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Consumer", "Sif.Framework.Demo.Consumer\Sif.Framework.Demo.Consumer.csproj", "{3A2FDF02-9CA1-4B50-AB79-B34116A050F8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Infrastructure", "Sif.Framework.Infrastructure\Sif.Framework.Infrastructure.csproj", "{B65E93EE-AD73-45AB-8C97-A3120CD7E353}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.DataModel", "Sif.Framework.DataModel\Sif.Framework.DataModel.csproj", "{A2F983DC-8C5E-4F8A-9898-882DC3D8B35C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Provider", "Sif.Framework.Demo.Provider\Sif.Framework.Demo.Provider.csproj", "{62ADFCE7-DC9B-4553-9129-370D1A1B81BF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Provider.Tests", "Sif.Framework.Demo.Provider.Tests\Sif.Framework.Demo.Provider.Tests.csproj", "{46098D8A-84A4-40EB-9A63-5061249D0773}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,30 +27,6 @@ Global
 		{A727F19D-BEDF-46A4-96E0-E0D9672457C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A727F19D-BEDF-46A4-96E0-E0D9672457C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A727F19D-BEDF-46A4-96E0-E0D9672457C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D69F0821-7315-4AB7-AE16-D0B6F735B5D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D69F0821-7315-4AB7-AE16-D0B6F735B5D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D69F0821-7315-4AB7-AE16-D0B6F735B5D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D69F0821-7315-4AB7-AE16-D0B6F735B5D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A2FDF02-9CA1-4B50-AB79-B34116A050F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A2FDF02-9CA1-4B50-AB79-B34116A050F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A2FDF02-9CA1-4B50-AB79-B34116A050F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A2FDF02-9CA1-4B50-AB79-B34116A050F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B65E93EE-AD73-45AB-8C97-A3120CD7E353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B65E93EE-AD73-45AB-8C97-A3120CD7E353}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B65E93EE-AD73-45AB-8C97-A3120CD7E353}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B65E93EE-AD73-45AB-8C97-A3120CD7E353}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2F983DC-8C5E-4F8A-9898-882DC3D8B35C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2F983DC-8C5E-4F8A-9898-882DC3D8B35C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2F983DC-8C5E-4F8A-9898-882DC3D8B35C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2F983DC-8C5E-4F8A-9898-882DC3D8B35C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62ADFCE7-DC9B-4553-9129-370D1A1B81BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62ADFCE7-DC9B-4553-9129-370D1A1B81BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62ADFCE7-DC9B-4553-9129-370D1A1B81BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62ADFCE7-DC9B-4553-9129-370D1A1B81BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46098D8A-84A4-40EB-9A63-5061249D0773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46098D8A-84A4-40EB-9A63-5061249D0773}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46098D8A-84A4-40EB-9A63-5061249D0773}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46098D8A-84A4-40EB-9A63-5061249D0773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

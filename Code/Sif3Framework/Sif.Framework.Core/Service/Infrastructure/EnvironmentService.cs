@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
+using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -117,9 +116,10 @@ namespace Sif.Framework.Service.Infrastructure
             return destinationProvisionedZones;
         }
 
-        protected override IGenericRepository<Environment, Guid> GetRepository()
+        public EnvironmentService()
+            : base(new EnvironmentRepository())
         {
-            return new EnvironmentRepository();
+
         }
 
         public override Guid Create(environmentType item)

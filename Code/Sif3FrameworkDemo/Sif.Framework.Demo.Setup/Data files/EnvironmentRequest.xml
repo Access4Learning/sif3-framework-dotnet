@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.0" type="DIRECT">
+  <solutionId>Sif3DemoSolution</solutionId>
+  <authenticationMethod>Basic</authenticationMethod>
+  <instanceId></instanceId>
+  <userToken></userToken>
+  <consumerName>Sif3DemoStudentPersonalConsumer</consumerName>
+  <applicationInfo>
+    <applicationKey>Sif3DemoApp</applicationKey>
+    <supportedInfrastructureVersion>3.0</supportedInfrastructureVersion>
+    <supportedDataModel>SIF-AU</supportedDataModel>
+    <supportedDataModelVersion>1.3</supportedDataModelVersion>
+    <transport>REST</transport>
+  </applicationInfo>
+</environment>

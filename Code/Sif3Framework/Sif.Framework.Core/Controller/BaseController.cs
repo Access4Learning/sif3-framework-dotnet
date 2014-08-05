@@ -14,26 +14,39 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
+using Sif.Specification.Infrastructure;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace Sif.Framework.Controller
 {
 
+    /// <summary>
+    /// This class contains common operations used by all SIF-based Controllers.
+    /// </summary>
     public abstract class BaseController : ApiController
     {
 
+        /// <summary>
+        /// Retrieve the initial shared secret value.
+        /// </summary>
+        /// <param name="applicationKey">Application associated with the initial shared secret.</param>
+        /// <returns>Initial shared secret value.</returns>
         string InitialSharedSecret(string applicationKey)
         {
             ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(applicationKey);
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
+        /// <summary>
+        /// Retrieve the shared secret value.
+        /// </summary>
+        /// <param name="sessionToken">Authentication token associated with the shared secret.</param>
+        /// <returns>Shared secret value.</returns>
         string SharedSecret(string sessionToken)
         {
             environmentType environment = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
@@ -41,24 +54,40 @@ namespace Sif.Framework.Controller
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
+        /// <summary>
+        /// Verify the authentication header.
+        /// </summary>
+        /// <param name="header">Authentication header.</param>
+        /// <returns>True if the authentication header is valid; false otherwise.</returns>
         protected virtual bool VerifyAuthorisationHeader(AuthenticationHeaderValue header)
         {
             bool verified = false;
             string sessionTokenChecked = null;
 
-            if ("Basic".Equals(header.Scheme))
+            if (header != null)
             {
-                AuthenticationUtils.GetSharedSecret sharedSecret = SharedSecret;
-                verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
-            }
-            else if ("SIF_HMACSHA256".Equals(header.Scheme))
-            {
-                verified = true;
+
+                if ("Basic".Equals(header.Scheme))
+                {
+                    AuthenticationUtils.GetSharedSecret sharedSecret = SharedSecret;
+                    verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
+                }
+                else if ("SIF_HMACSHA256".Equals(header.Scheme))
+                {
+                    verified = true;
+                }
+
             }
 
             return verified;
         }
 
+        /// <summary>
+        /// Verify the initial authentication header.
+        /// </summary>
+        /// <param name="header">Authentication header.</param>
+        /// <param name="sessionToken">Authentication token generated from the verification process.</param>
+        /// <returns>True if the initial authentication header is valid; false otherwise.</returns>
         protected virtual bool VerifyInitialAuthorisationHeader(AuthenticationHeaderValue header, out string sessionToken)
         {
             bool verified = false;

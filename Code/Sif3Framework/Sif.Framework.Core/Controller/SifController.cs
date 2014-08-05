@@ -25,22 +25,30 @@ using System.Web.Http;
 namespace Sif.Framework.Controller
 {
 
+    /// <summary>
+    /// This class defines a base Controller containing common operations.
+    /// </summary>
+    /// <typeparam name="UI">Object type exposed at the presentation/API layer.</typeparam>
+    /// <typeparam name="DB">Object type used in the business layer.</typeparam>
     public abstract class SifController<UI, DB> : BaseController
         where UI : new()
         where DB : IPersistable<Guid>, new()
     {
         protected ISifService<UI, DB> service;
 
-        // Need to inject repository.
-        [NonAction]
-        protected abstract ISifService<UI, DB> GetService();
-
-        public SifController()
+        /// <summary>
+        /// Create an instance.
+        /// </summary>
+        /// <param name="service">Service used for managing conversion between the object types.</param>
+        public SifController(ISifService<UI, DB> service)
         {
-            service = GetService();
+            this.service = service;
         }
 
-        // DELETE api/{controller}/{id}
+        /// <summary>
+        /// DELETE api/{controller}/{id}
+        /// </summary>
+        /// <param name="id">Identifier of the object to delete.</param>
         public virtual void Delete(Guid id)
         {
 
@@ -70,7 +78,11 @@ namespace Sif.Framework.Controller
 
         }
 
-        // GET api/{controller}/{id}
+        /// <summary>
+        /// GET api/{controller}/{id}
+        /// </summary>
+        /// <param name="id">Identifier of the object to retrieve.</param>
+        /// <returns>Object with that identifier.</returns>
         public virtual UI Get(Guid id)
         {
 
@@ -98,7 +110,10 @@ namespace Sif.Framework.Controller
             return item;
         }
 
-        // GET api/{controller}
+        /// <summary>
+        /// GET api/{controller}
+        /// </summary>
+        /// <returns>All objects.</returns>
         public virtual ICollection<UI> Get()
         {
 
@@ -121,7 +136,11 @@ namespace Sif.Framework.Controller
             return items;
         }
 
-        // POST api/{controller}
+        /// <summary>
+        /// POST api/{controller}
+        /// </summary>
+        /// <param name="item">Object to create.</param>
+        /// <returns>HTTP response message indicating success or failure.</returns>
         public virtual HttpResponseMessage Post(UI item)
         {
 
@@ -147,7 +166,11 @@ namespace Sif.Framework.Controller
             return responseMessage;
         }
 
-        // PUT api/{controller}/{id}
+        /// <summary>
+        /// PUT api/{controller}/{id}
+        /// </summary>
+        /// <param name="id">Identifier for the object to update.</param>
+        /// <param name="item">Object to update.</param>
         public virtual void Put(Guid id, UI item)
         {
 

@@ -25,7 +25,10 @@ namespace Sif.Framework.Persistence.NHibernate
     {
 
         public ApplicationRegisterRepository()
-            : base(EnvironmentProviderSessionFactory.Instance) { }
+            : base(EnvironmentProviderSessionFactory.Instance)
+        {
+
+        }
 
         /// <see cref="Sif.Framework.Persistence.IApplicationRegisterRepository{T}.RetrieveByApplicationKey(string)">RetrieveByApplicationKey</see>
         public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)

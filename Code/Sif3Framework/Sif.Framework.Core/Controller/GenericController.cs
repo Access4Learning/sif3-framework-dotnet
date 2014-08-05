@@ -25,20 +25,28 @@ using System.Web.Http;
 namespace Sif.Framework.Controller
 {
 
+    /// <summary>
+    /// This class defines a base Controller containing common operations.
+    /// </summary>
+    /// <typeparam name="T">Type of object managed by the Controller.</typeparam>
+    /// <typeparam name="PK">Primary key type of the object.</typeparam>
     public abstract class GenericController<T, PK> : BaseController where T : IPersistable<PK>
     {
         protected IGenericService<T, PK> service;
 
-        // Need to inject service.
-        [NonAction]
-        protected abstract IGenericService<T, PK> GetService();
-
-        public GenericController()
+        /// <summary>
+        /// Create an instance.
+        /// </summary>
+        /// <param name="service">Service used for managing the object type.</param>
+        public GenericController(IGenericService<T, PK> service)
         {
-            service = GetService();
+            this.service = service;
         }
 
-        // DELETE api/{controller}/{id}
+        /// <summary>
+        /// DELETE api/{controller}/{id}
+        /// </summary>
+        /// <param name="id">Identifier of the object to delete.</param>
         public virtual void Delete(PK id)
         {
 
@@ -68,7 +76,11 @@ namespace Sif.Framework.Controller
 
         }
 
-        // GET api/{controller}/{id}
+        /// <summary>
+        /// GET api/{controller}/{id}
+        /// </summary>
+        /// <param name="id">Identifier of the object to retrieve.</param>
+        /// <returns>Object with that identifier.</returns>
         public virtual T Get(PK id)
         {
 
@@ -96,7 +108,10 @@ namespace Sif.Framework.Controller
             return item;
         }
 
-        // GET api/{controller}
+        /// <summary>
+        /// GET api/{controller}
+        /// </summary>
+        /// <returns>All objects.</returns>
         public virtual ICollection<T> Get()
         {
 
@@ -119,7 +134,11 @@ namespace Sif.Framework.Controller
             return items;
         }
 
-        // POST api/{controller}
+        /// <summary>
+        /// POST api/{controller}
+        /// </summary>
+        /// <param name="item">Object to create.</param>
+        /// <returns>HTTP response message indicating success or failure.</returns>
         public virtual HttpResponseMessage Post(T item)
         {
 
@@ -145,7 +164,11 @@ namespace Sif.Framework.Controller
             return responseMessage;
         }
 
-        // PUT api/{controller}/{id}
+        /// <summary>
+        /// PUT api/{controller}/{id}
+        /// </summary>
+        /// <param name="id">Identifier for the object to update.</param>
+        /// <param name="item">Object to update.</param>
         public virtual void Put(PK id, T item)
         {
 

@@ -1,5 +1,5 @@
 <xsd xmlns='http://microsoft.com/dotnet/tools/xsd/' output='output'>
-    <generateClasses language='CS' namespace='Sif.Framework.Infrastructure'>
+    <generateClasses language='CS' namespace='Sif.Specification.Infrastructure'>
         <schema>..\..\Data\XSD files\infra30\alert.xsd</schema>
         <schema>..\..\Data\XSD files\infra30\alerts.xsd</schema>
         <schema>..\..\Data\XSD files\infra30\codeset.xsd</schema>

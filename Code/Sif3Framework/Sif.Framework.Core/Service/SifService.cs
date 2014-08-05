@@ -23,16 +23,13 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
+    public class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
     {
         protected IGenericRepository<DB, Guid> repository;
 
-        // Need to inject repository.
-        protected abstract IGenericRepository<DB, Guid> GetRepository();
-
-        public SifService()
+        public SifService(IGenericRepository<DB, Guid> repository)
         {
-            repository = GetRepository();
+            this.repository = repository;
         }
 
         public virtual Guid Create(UI item)

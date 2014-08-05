@@ -25,7 +25,10 @@ namespace Sif.Framework.Persistence.NHibernate
     {
 
         public EnvironmentRegisterRepository()
-            : base(EnvironmentProviderSessionFactory.Instance) { }
+            : base(EnvironmentProviderSessionFactory.Instance)
+        {
+
+        }
 
         public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId)
         {

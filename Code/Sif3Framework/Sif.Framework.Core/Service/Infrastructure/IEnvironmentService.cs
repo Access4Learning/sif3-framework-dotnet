@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Specification.Infrastructure;
 
 namespace Sif.Framework.Service.Infrastructure
 {

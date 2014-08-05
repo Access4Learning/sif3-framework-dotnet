@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 
 namespace Sif.Framework.Service.Authentication
@@ -24,9 +23,10 @@ namespace Sif.Framework.Service.Authentication
     public class ApplicationRegisterService : GenericService<ApplicationRegister, long>, IApplicationRegisterService
     {
 
-        protected override IGenericRepository<ApplicationRegister, long> GetRepository()
+        public ApplicationRegisterService()
+            : base(new ApplicationRegisterRepository())
         {
-            return new ApplicationRegisterRepository();
+
         }
 
         public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)

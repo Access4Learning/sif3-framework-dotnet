@@ -15,8 +15,8 @@
  */
 
 using AutoMapper;
-using Sif.Framework.Infrastructure;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 

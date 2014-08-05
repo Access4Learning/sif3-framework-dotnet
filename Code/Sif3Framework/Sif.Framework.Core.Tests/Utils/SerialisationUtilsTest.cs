@@ -15,8 +15,7 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Infrastructure;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Specification.Infrastructure;
 using System.IO;
 
 namespace Sif.Framework.Utils
