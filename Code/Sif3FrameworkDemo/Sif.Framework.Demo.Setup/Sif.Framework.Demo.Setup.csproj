@@ -64,8 +64,9 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework">
-      <HintPath>..\..\..\SharedLibs\Sif.Framework\Sif.Framework.dll</HintPath>
+    <Reference Include="Sif.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.9.0\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
