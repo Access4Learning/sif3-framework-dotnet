@@ -38,7 +38,7 @@ namespace Sif.Framework.Demo.Setup
                 ApplicationRegisterRepository applicationRegisterRepository = new ApplicationRegisterRepository();
                 applicationRegisterRepository.Save(applicationRegister);
 
-                DatabaseManager demoDatabaseManager = new DatabaseManager("StudentPersonal.cfg.xml");
+                DatabaseManager demoDatabaseManager = new DatabaseManager("Demo.cfg.xml");
                 demoDatabaseManager.CreateDatabaseTables();
                 ICollection<StudentPersonal> students = DataFactory.CreateStudents(100);
                 StudentPersonalRepository studentPersonalRepository = new StudentPersonalRepository();

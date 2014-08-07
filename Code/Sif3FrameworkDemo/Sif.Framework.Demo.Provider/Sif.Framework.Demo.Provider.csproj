@@ -57,9 +57,12 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Framework, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.9.0\Sif.Framework.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.10.0\Sif.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Specification.Infrastructure">
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.93.0\lib\net45\System.Data.SQLite.dll</HintPath>
@@ -109,7 +112,7 @@
     <EmbeddedResource Include="Models\Name.hbm.xml" />
     <EmbeddedResource Include="Models\PersonInfo.hbm.xml" />
     <EmbeddedResource Include="Models\StudentPersonal.hbm.xml" />
-    <Content Include="StudentPersonal.cfg.xml">
+    <Content Include="Demo.cfg.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

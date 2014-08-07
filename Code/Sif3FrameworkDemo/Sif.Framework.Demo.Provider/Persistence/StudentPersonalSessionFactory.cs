@@ -41,11 +41,11 @@ namespace Sif.Framework.Demo.Provider.Persistence
                 if (studentPersonalSessionFactory == null)
                 {
                     studentPersonalSessionFactory = new StudentPersonalSessionFactory();
-                    string configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/StudentPersonal.cfg.xml");
+                    string configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/Demo.cfg.xml");
 
                     if (configurationFilePath == null)
                     {
-                        configurationFilePath = "StudentPersonal.cfg.xml";
+                        configurationFilePath = "Demo.cfg.xml";
                     }
 
                     studentPersonalSessionFactory.SessionFactory = new Configuration().Configure(configurationFilePath).BuildSessionFactory();

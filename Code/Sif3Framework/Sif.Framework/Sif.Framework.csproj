@@ -50,7 +50,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure">
+    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />

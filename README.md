@@ -88,3 +88,10 @@ If you want to use this option but don't have a client installed, one can be dow
 - Updated README.md to provide a more comprehensive version control history.
 - Recompiled and re-referenced libraries in SharedLibs.
 - Better organised the Scripts directory.
+
+**Aug 07, 2014 - 0.10.0 Fixed issues with assembly references**
+
+- Fixed issues with referencing of Sif.Specification.Infrastructure assembly.
+- Renamed StudentPersonal.cfg.xml to Demo.cfg.xml to make the file name less specific.
+- Fixed issue of incorrectly referenced Sif.Framework assembly in the Demo Provider.
+- Added scripts to ease demo execution.
