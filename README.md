@@ -31,6 +31,10 @@ From the command-line type: `git clone git@github.com:nsip/Sif3Framework-dotNet.
 
 If you want to use this option but don't have a client installed, one can be downloaded from [http://git-scm.com/download](http://git-scm.com/download "Git command-line client download").
 
+###Getting started
+
+To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
+
 ##Version control history
 
 **Jan 28, 2014 - 0.1.0 Initial commit; Beta release to be used for collaborative review**
@@ -95,3 +99,8 @@ If you want to use this option but don't have a client installed, one can be dow
 - Renamed StudentPersonal.cfg.xml to Demo.cfg.xml to make the file name less specific.
 - Fixed issue of incorrectly referenced Sif.Framework assembly in the Demo Provider.
 - Added scripts to ease demo execution.
+
+**Aug 19, 2014 - 0.10.0 Added user documentation**
+
+- Added a draft version of the Developer's Guide.
+- Added a draft version of the Demo Usage Guide.
