@@ -31,7 +31,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Sif.Framework.Demo.Consumer.StudentPersonalConsumer</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Framework">
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.11.0\Sif.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Specification.Infrastructure">
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,10 +57,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoConsumer.cs" />
+    <Compile Include="IStudentPersonalConsumer.cs" />
+    <Compile Include="Model\Name.cs" />
+    <Compile Include="Model\NameType.cs" />
+    <Compile Include="Model\PersonInfo.cs" />
+    <Compile Include="Model\StudentPersonal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudentPersonalConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="SifFramework.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
+      <Link>AutoMapper.Net4.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

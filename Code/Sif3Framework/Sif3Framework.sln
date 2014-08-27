@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EnvironmentProvider", "Sif.Framework.EnvironmentProvider\Sif.Framework.EnvironmentProvider.csproj", "{A727F19D-BEDF-46A4-96E0-E0D9672457C3}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework", "Sif.Framework\Sif.Framework.csproj", "{202E8CB9-9AED-4034-908F-0B3BB04B171A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Tests", "Sif.Framework.Tests\Sif.Framework.Tests.csproj", "{D8C0E0E8-B96F-42D5-9FB0-8D055546E308}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EnvironmentProvider", "Sif.Framework.EnvironmentProvider\Sif.Framework.EnvironmentProvider.csproj", "{A727F19D-BEDF-46A4-96E0-E0D9672457C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

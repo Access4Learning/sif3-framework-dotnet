@@ -47,11 +47,16 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
             Assert.AreEqual(source.DefaultZone.Description, destination.defaultZone.description);
             Assert.AreEqual(source.DefaultZone.Id.ToString(), destination.defaultZone.id);
+            Assert.AreEqual(source.InstanceId, destination.instanceId);
+            Assert.AreEqual(source.SessionToken, destination.sessionToken);
+            Assert.AreEqual(source.SolutionId, destination.solutionId);
+            Assert.AreEqual(source.Type.ToString(), destination.type.ToString());
+            Assert.AreEqual(source.UserToken, destination.userToken);
             Assert.AreEqual(source.Id.ToString(), destination.id);
         }
 
         [TestMethod]
-        public void EnvironmentResponsetMapperTest()
+        public void EnvironmentResponseMapperTest()
         {
             Environment source = DataFactory.CreateEnvironmentResponse();
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);

@@ -55,6 +55,7 @@
       <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -73,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consumer\GenericConsumer.cs" />
+    <Compile Include="Consumer\IGenericConsumer.cs" />
     <Compile Include="Controller\BaseController.cs" />
     <Compile Include="Controller\EnvironmentsController.cs" />
     <Compile Include="Controller\GenericController.cs" />
@@ -115,6 +118,7 @@
     <Compile Include="Service\Infrastructure\IEnvironmentService.cs" />
     <Compile Include="Service\Mapper\MapperFactory.cs" />
     <Compile Include="Utils\AuthenticationUtils.cs" />
+    <Compile Include="Utils\HttpUtils.cs" />
     <Compile Include="Utils\SerialisationUtils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +127,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="SifFramework.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -170,6 +178,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

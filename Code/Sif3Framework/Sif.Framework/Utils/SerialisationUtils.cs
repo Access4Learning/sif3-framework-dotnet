@@ -22,10 +22,18 @@ using System.Xml.Serialization;
 namespace Sif.Framework.Utils
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class SerialisationUtils
     {
         private static Dictionary<int, XmlSerializer> serializers = new Dictionary<int, XmlSerializer>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
         private static int GenerateKey(System.Type[] types)
         {
 
@@ -43,6 +51,12 @@ namespace Sif.Framework.Utils
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="derivedTypes"></param>
+        /// <returns></returns>
         private static XmlSerializer GetSerialiserInstance<T>(System.Type[] derivedTypes = null)
         {
             XmlSerializer serialiser;
@@ -66,6 +80,43 @@ namespace Sif.Framework.Utils
             return serialiser;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rootAttribute"></param>
+        /// <param name="derivedTypes"></param>
+        /// <returns></returns>
+        private static XmlSerializer GetSerialiserInstance<T>(XmlRootAttribute rootAttribute, System.Type[] derivedTypes = null)
+        {
+            XmlSerializer serialiser;
+
+            if (derivedTypes == null)
+            {
+                serialiser = new XmlSerializer(typeof(List<T>), rootAttribute);
+            }
+            else
+            {
+                int serialiserKey = GenerateKey(derivedTypes) + rootAttribute.GetHashCode();
+
+                if (!serializers.TryGetValue(serialiserKey, out serialiser))
+                {
+                    serialiser = new XmlSerializer(typeof(List<T>), null, derivedTypes, rootAttribute, null);
+                    serializers.Add(serialiserKey, serialiser);
+                }
+
+            }
+
+            return serialiser;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xmlStream"></param>
+        /// <param name="derivedTypes"></param>
+        /// <returns></returns>
         public static T XmlDeserialise<T>(Stream xmlStream, System.Type[] derivedTypes = null)
         {
 
@@ -79,6 +130,13 @@ namespace Sif.Framework.Utils
             return deserialisedObject;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xmlString"></param>
+        /// <param name="derivedTypes"></param>
+        /// <returns></returns>
         public static T XmlDeserialise<T>(string xmlString, System.Type[] derivedTypes = null)
         {
             T deserialisedObject;
@@ -91,6 +149,54 @@ namespace Sif.Framework.Utils
             return deserialisedObject;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xmlStream"></param>
+        /// <param name="rootAttribute"></param>
+        /// <param name="derivedTypes"></param>
+        /// <returns></returns>
+        public static ICollection<T> XmlDeserialise<T>(Stream xmlStream, XmlRootAttribute rootAttribute, System.Type[] derivedTypes = null)
+        {
+
+            if (xmlStream == null)
+            {
+                throw new System.ArgumentNullException("xmlStream");
+            }
+
+            ICollection<T> deserialisedObjects = (ICollection<T>)GetSerialiserInstance<T>(rootAttribute, derivedTypes).Deserialize(xmlStream);
+
+            return deserialisedObjects;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xmlString"></param>
+        /// <param name="rootAttribute"></param>
+        /// <param name="derivedTypes"></param>
+        /// <returns></returns>
+        public static ICollection<T> XmlDeserialise<T>(string xmlString, XmlRootAttribute rootAttribute, System.Type[] derivedTypes = null)
+        {
+            ICollection<T> deserialisedObjects;
+
+            using (Stream xmlStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlString)))
+            {
+                deserialisedObjects = XmlDeserialise<T>(xmlStream, rootAttribute, derivedTypes);
+            }
+
+            return deserialisedObjects;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serialiseObject"></param>
+        /// <param name="xmlStream"></param>
+        /// <param name="derivedTypes"></param>
         public static void XmlSerialise<T>(T serialiseObject, out Stream xmlStream, System.Type[] derivedTypes = null)
         {
 
@@ -111,10 +217,66 @@ namespace Sif.Framework.Utils
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serialiseObject"></param>
+        /// <param name="xmlString"></param>
+        /// <param name="derivedTypes"></param>
         public static void XmlSerialise<T>(T serialiseObject, out string xmlString, System.Type[] derivedTypes = null)
         {
             Stream xmlStream;
             XmlSerialise<T>(serialiseObject, out xmlStream, derivedTypes);
+            xmlStream.Position = 0;
+
+            using (StreamReader reader = new StreamReader(xmlStream))
+            {
+                xmlString = reader.ReadToEnd();
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serialiseObjects"></param>
+        /// <param name="rootAttribute"></param>
+        /// <param name="xmlStream"></param>
+        /// <param name="derivedTypes"></param>
+        public static void XmlSerialise<T>(IEnumerable<T> serialiseObjects, XmlRootAttribute rootAttribute, out Stream xmlStream, System.Type[] derivedTypes = null)
+        {
+
+            if (serialiseObjects == null)
+            {
+                throw new System.ArgumentNullException("serialiseObjects");
+            }
+
+            xmlStream = new MemoryStream();
+
+            using (Stream serialiseStream = new MemoryStream())
+            {
+                GetSerialiserInstance<T>(rootAttribute, derivedTypes).Serialize(serialiseStream, serialiseObjects);
+                serialiseStream.Position = 0;
+                serialiseStream.CopyTo(xmlStream);
+                xmlStream.Position = 0;
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serialiseObjects"></param>
+        /// <param name="rootAttribute"></param>
+        /// <param name="xmlString"></param>
+        /// <param name="derivedTypes"></param>
+        public static void XmlSerialise<T>(IEnumerable<T> serialiseObjects, XmlRootAttribute rootAttribute, out string xmlString, System.Type[] derivedTypes = null)
+        {
+            Stream xmlStream;
+            XmlSerialise<T>(serialiseObjects, rootAttribute, out xmlStream, derivedTypes);
             xmlStream.Position = 0;
 
             using (StreamReader reader = new StreamReader(xmlStream))

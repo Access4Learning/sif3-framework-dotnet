@@ -100,7 +100,15 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fixed issue of incorrectly referenced Sif.Framework assembly in the Demo Provider.
 - Added scripts to ease demo execution.
 
-**Aug 19, 2014 - 0.10.0 Added user documentation**
+**Aug 19, 2014 - 0.10.1 Added user documentation**
 
 - Added a draft version of the Developer's Guide.
 - Added a draft version of the Demo Usage Guide.
+
+**Aug 27, 2014 - 0.11.0 Implemented a Consumer framework**
+
+- Added a generic Consumer to the framework.
+- Added a utility class for HTTP operations.
+- Created a new StudentPersonal demo Consumer.
+- Updated .gitignore so that "x64" directories are no longer ignored (caused problems with SQLite DLLs).
+- Re-ordered the projects listed in the VS Solutions to manage the default projects run when debugging.

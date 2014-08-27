@@ -16,7 +16,10 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Specification.Infrastructure;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace Sif.Framework.Utils
 {
@@ -49,6 +52,41 @@ namespace Sif.Framework.Utils
             SerialisationUtils.XmlSerialise<environmentType>(environmentType, out xmlString);
             Assert.AreEqual(xmlString, environmentText.Trim(), true, "Environment deserialised does not match serialised version.");
             System.Console.WriteLine(xmlString);
+        }
+
+        [TestMethod]
+        public void environmentTypes_Serialisation()
+        {
+            environmentType environmentType1;
+
+            using (FileStream xmlStream = File.OpenRead(environmentXmlFile))
+            {
+                environmentType1 = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+            }
+
+            Assert.AreEqual(environmentType1.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
+
+            environmentType environmentType2;
+
+            using (FileStream xmlStream = File.OpenRead(environmentXmlFile))
+            {
+                environmentType2 = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+            }
+
+            Assert.AreEqual(environmentType2.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
+
+            ICollection<environmentType> environmentTypes = new Collection<environmentType>
+            {
+                environmentType1,
+                environmentType2
+            };
+
+            string xmlString;
+            SerialisationUtils.XmlSerialise<environmentType>(environmentTypes, new XmlRootAttribute("environments"), out xmlString);
+            System.Console.WriteLine(xmlString);
+
+            environmentTypes = SerialisationUtils.XmlDeserialise<environmentType>(xmlString, new XmlRootAttribute("environments"));
+            System.Console.WriteLine("Number deserialised is " + environmentTypes.Count);
         }
 
     }
