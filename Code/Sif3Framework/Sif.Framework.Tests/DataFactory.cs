@@ -57,8 +57,7 @@ namespace Sif.Framework.Model.Infrastructure
                 AdapterProduct = adapterProduct,
                 ApplicationKey = "UnitTesting",
                 ApplicationProduct = applicationProduct,
-                SupportedDataModel = "SIFAU",
-                SupportedDataModelVersion = "1.3",
+                DataModelNamespace = "http://www.sifassociation.org/au/datamodel/1.3",
                 SupportedInfrastructureVersion = "3.0",
                 Transport = "REST"
             };
@@ -80,12 +79,12 @@ namespace Sif.Framework.Model.Infrastructure
 
         public static Environment CreateEnvironmentResponse()
         {
-            Property environmentURL = new Property { Name = "environment", Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/environments/5b72f2d4-7a83-4297-a71f-8b5fb26cbf14" };
-            Property provisionRequestsURL = new Property { Name = "provisionRequests", Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/provisionRequests" };
-            Property queuesURL = new Property { Name = "queues", Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/queues" };
-            Property requestsConnectorURL = new Property { Name = "requestsConnector", Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/requestsConnector" };
-            Property subscriptionsURL = new Property { Name = "subscriptions", Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/subscriptions" };
-            IDictionary<string, Property> infrastructureServices = new Dictionary<string, Property>
+            InfrastructureService environmentURL = new InfrastructureService { Name = InfrastructureServiceNames.environment, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/environments/5b72f2d4-7a83-4297-a71f-8b5fb26cbf14" };
+            InfrastructureService provisionRequestsURL = new InfrastructureService { Name = InfrastructureServiceNames.provisionRequests, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/provisionRequests" };
+            InfrastructureService queuesURL = new InfrastructureService { Name = InfrastructureServiceNames.queues, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/queues" };
+            InfrastructureService requestsConnectorURL = new InfrastructureService { Name = InfrastructureServiceNames.requestsConnector, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/requestsConnector" };
+            InfrastructureService subscriptionsURL = new InfrastructureService { Name = InfrastructureServiceNames.subscriptions, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/subscriptions" };
+            IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>
             {
                 { environmentURL.Name, environmentURL },
                 { provisionRequestsURL.Name, provisionRequestsURL },
@@ -94,23 +93,23 @@ namespace Sif.Framework.Model.Infrastructure
                 { subscriptionsURL.Name, subscriptionsURL }
             };
 
-            Right adminRight = new Right { Type = RightType.ADMIN, Value = RightValue.APPROVED };
-            Right createRight = new Right { Type = RightType.CREATE, Value = RightValue.APPROVED };
-            IDictionary<RightType, Right> rights = new Dictionary<RightType, Right> { { adminRight.Type, adminRight } };
+            Right adminRight = new Right { Type = "ADMIN", Value = "APPROVED" };
+            Right createRight = new Right { Type = "CREATE", Value = "APPROVED" };
+            IDictionary<string, Right> rights = new Dictionary<string, Right> { { adminRight.Type, adminRight } };
 
             Infrastructure.Service studentPersonalsService = new Infrastructure.Service
             {
                 ContextId = "DEFAULT",
                 Name = "StudentPersonals",
                 Rights = rights,
-                Type = ServiceType.OBJECT
+                Type = "OBJECT"
             };
             Infrastructure.Service schoolInfosService = new Infrastructure.Service
             {
                 ContextId = "DEFAULT",
                 Name = "SchoolInfos",
                 Rights = rights,
-                Type = ServiceType.OBJECT
+                Type = "OBJECT"
             };
             ICollection<Infrastructure.Service> services = new SortedSet<Infrastructure.Service>
             {

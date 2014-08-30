@@ -44,7 +44,7 @@
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure">
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

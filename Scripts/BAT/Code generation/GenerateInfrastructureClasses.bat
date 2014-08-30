@@ -25,6 +25,6 @@ rem ============================================================================
 title "Generate Infrastructure classes"
 cmd /C %EXECUTABLE% /parameters:.\InfrastructureTypes.xml
 del /Q output\InfrastructureTypes.cs
-rename output\zones.cs InfrastructureTypes.cs
+rename output\zone.cs InfrastructureTypes.cs
 pause
 :end

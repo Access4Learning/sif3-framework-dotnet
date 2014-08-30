@@ -24,9 +24,9 @@ namespace Sif.Framework.Model.Infrastructure
 
         public virtual long Id { get; set; }
 
-        public virtual RightType Type { get; set; }
+        public virtual string Type { get; set; }
 
-        public virtual RightValue Value { get; set; }
+        public virtual string Value { get; set; }
 
     }
 

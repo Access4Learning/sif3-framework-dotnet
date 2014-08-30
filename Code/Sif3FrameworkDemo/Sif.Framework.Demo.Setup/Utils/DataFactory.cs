@@ -17,7 +17,7 @@
 using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Mapper;
-using Sif.Framework.Utils;
+using Sif.Framework.Service.Serialisation;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,12 +43,12 @@ namespace Sif.Framework.Demo.Setup.Utils
 
             using (FileStream xmlStream = File.OpenRead("Data files\\EnvironmentRequest.xml"))
             {
-                environmentTypeRequest = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+                environmentTypeRequest = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }
 
             using (FileStream xmlStream = File.OpenRead("Data files\\EnvironmentResponse.xml"))
             {
-                environmentTypeResponse = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+                environmentTypeResponse = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }
 
         }

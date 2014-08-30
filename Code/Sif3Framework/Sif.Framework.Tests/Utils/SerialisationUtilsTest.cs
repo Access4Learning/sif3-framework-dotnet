@@ -15,6 +15,7 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Sif.Framework.Service.Serialisation;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,7 +37,7 @@ namespace Sif.Framework.Utils
 
             using (FileStream xmlStream = File.OpenRead(environmentXmlFile))
             {
-                environmentType = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+                environmentType = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }
 
             Assert.AreEqual(environmentType.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
@@ -48,8 +49,7 @@ namespace Sif.Framework.Utils
                 environmentText = reader.ReadToEnd();
             }
 
-            string xmlString;
-            SerialisationUtils.XmlSerialise<environmentType>(environmentType, out xmlString);
+            string xmlString = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentType);
             Assert.AreEqual(xmlString, environmentText.Trim(), true, "Environment deserialised does not match serialised version.");
             System.Console.WriteLine(xmlString);
         }
@@ -61,7 +61,7 @@ namespace Sif.Framework.Utils
 
             using (FileStream xmlStream = File.OpenRead(environmentXmlFile))
             {
-                environmentType1 = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+                environmentType1 = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }
 
             Assert.AreEqual(environmentType1.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
@@ -70,7 +70,7 @@ namespace Sif.Framework.Utils
 
             using (FileStream xmlStream = File.OpenRead(environmentXmlFile))
             {
-                environmentType2 = SerialisationUtils.XmlDeserialise<environmentType>(xmlStream);
+                environmentType2 = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }
 
             Assert.AreEqual(environmentType2.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
@@ -81,11 +81,10 @@ namespace Sif.Framework.Utils
                 environmentType2
             };
 
-            string xmlString;
-            SerialisationUtils.XmlSerialise<environmentType>(environmentTypes, new XmlRootAttribute("environments"), out xmlString);
+            string xmlString = SerialiserFactory.GetXmlSerialiser<Collection<environmentType>>(new XmlRootAttribute("environments")).Serialise((Collection<environmentType>)environmentTypes);
             System.Console.WriteLine(xmlString);
 
-            environmentTypes = SerialisationUtils.XmlDeserialise<environmentType>(xmlString, new XmlRootAttribute("environments"));
+            environmentTypes = SerialiserFactory.GetXmlSerialiser<Collection<environmentType>>(new XmlRootAttribute("environments")).Deserialise(xmlString);
             System.Console.WriteLine("Number deserialised is " + environmentTypes.Count);
         }
 

@@ -17,6 +17,7 @@
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service.Mapper;
+using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
@@ -56,10 +57,8 @@ namespace Sif.Framework.Consumer
             string applicationKey = ConfigurationManager.AppSettings["consumer.environment.template.applicationKey"];
             string authenticationMethod = ConfigurationManager.AppSettings["consumer.environment.template.authenticationMethod"];
             string consumerName = ConfigurationManager.AppSettings["consumer.environment.template.consumerName"];
-            string supportedDataModel = ConfigurationManager.AppSettings["consumer.environment.template.supportedDataModel"];
-            string supportedDataModelVersion = ConfigurationManager.AppSettings["consumer.environment.template.supportedDataModelVersion"];
+            string dataModelNamespace = ConfigurationManager.AppSettings["consumer.environment.template.DataModelNamespace"];
             string supportedInfrastructureVersion = ConfigurationManager.AppSettings["consumer.environment.template.supportedInfrastructureVersion"];
-            string type = ConfigurationManager.AppSettings["consumer.environment.template.type"];
 
             Environment environmentTemplate;
 
@@ -97,33 +96,14 @@ namespace Sif.Framework.Consumer
                 environmentTemplate.ConsumerName = consumerName;
             }
 
-            if (String.IsNullOrWhiteSpace(environmentTemplate.ApplicationInfo.SupportedDataModel) && supportedDataModel != null)
+            if (String.IsNullOrWhiteSpace(environmentTemplate.ApplicationInfo.DataModelNamespace) && dataModelNamespace != null)
             {
-                environmentTemplate.ApplicationInfo.SupportedDataModel = supportedDataModel;
-            }
-
-            if (String.IsNullOrWhiteSpace(environmentTemplate.ApplicationInfo.SupportedDataModelVersion) && supportedDataModelVersion != null)
-            {
-                environmentTemplate.ApplicationInfo.SupportedDataModelVersion = supportedDataModelVersion;
+                environmentTemplate.ApplicationInfo.DataModelNamespace = dataModelNamespace;
             }
 
             if (String.IsNullOrWhiteSpace(environmentTemplate.ApplicationInfo.SupportedInfrastructureVersion) && supportedInfrastructureVersion != null)
             {
                 environmentTemplate.ApplicationInfo.SupportedInfrastructureVersion = supportedInfrastructureVersion;
-            }
-
-            if (type != null)
-            {
-
-                if (EnvironmentType.BROKERED.Equals(type))
-                {
-                    environmentTemplate.Type = EnvironmentType.BROKERED;
-                }
-                else if (EnvironmentType.BROKERED.Equals(type))
-                {
-                    environmentTemplate.Type = EnvironmentType.DIRECT;
-                }
-
             }
 
             return environmentTemplate;
@@ -179,20 +159,19 @@ namespace Sif.Framework.Consumer
                 string sharedSecret = ConfigurationManager.AppSettings["consumer.environment.sharedSecret"];
 
                 string initialToken = AuthenticationUtils.GenerateBasicAuthorisationToken(environmentTemplate.ApplicationInfo.ApplicationKey, sharedSecret);
-                string body;
                 environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environmentTemplate);
-                SerialisationUtils.XmlSerialise<environmentType>(environmentTypeToSerialise, out body);
+                string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
                 string xml = HttpUtils.PostRequest(environmentUrl, initialToken, body);
                 Console.WriteLine("Environment XML from POST request");
                 Console.WriteLine(xml);
 
-                environmentType environmentTypeToDeserialise = SerialisationUtils.XmlDeserialise<environmentType>(xml);
+                environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xml);
                 consumerEnvironment = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
-                Console.WriteLine("Environment URL is " + consumerEnvironment.InfrastructureServices["environment"].Value + "/" + consumerEnvironment.Id);
+                Console.WriteLine("Environment URL is " + consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value + "/" + consumerEnvironment.Id);
                 authorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(consumerEnvironment.SessionToken, sharedSecret);
 
                 TypeUrl = (new T()).GetType().Name;
-                serviceUrl = consumerEnvironment.InfrastructureServices["requestsConnector"].Value + "/" + TypeUrl + "s";
+                serviceUrl = consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value + "/" + TypeUrl + "s";
                 Console.WriteLine("requestsConnector service URL is " + serviceUrl);
 
                 registered = true;
@@ -215,7 +194,7 @@ namespace Sif.Framework.Consumer
 
                     if (deleteOnUnregister)
                     {
-                        string xml = HttpUtils.DeleteRequest(consumerEnvironment.InfrastructureServices["environment"].Value + "/" + consumerEnvironment.Id, authorisationToken);
+                        string xml = HttpUtils.DeleteRequest(consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value + "/" + consumerEnvironment.Id, authorisationToken);
                         Console.WriteLine("Environment XML from DELETE request");
                         Console.WriteLine(xml);
                     }
@@ -240,8 +219,7 @@ namespace Sif.Framework.Consumer
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string body;
-            SerialisationUtils.XmlSerialise<T>(obj, out body);
+            string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
             string xml = HttpUtils.PostRequest(serviceUrl + "/" + TypeUrl, authorisationToken, body);
             Console.WriteLine("XML from POST request");
             Console.WriteLine(xml);
@@ -260,8 +238,7 @@ namespace Sif.Framework.Consumer
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string body;
-            SerialisationUtils.XmlSerialise<T>(objs, (XmlRootAttribute)null, out body);
+            string body = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeUrl + "s")).Serialise((List<T>)objs);
             string xml = HttpUtils.PostRequest(serviceUrl, authorisationToken, body);
             Console.WriteLine("XML from POST request");
             Console.WriteLine(xml);
@@ -283,7 +260,7 @@ namespace Sif.Framework.Consumer
             string xml = HttpUtils.GetRequest(serviceUrl + "/" + id, authorisationToken);
             Console.WriteLine("XML from GET request");
             Console.WriteLine(xml);
-            return SerialisationUtils.XmlDeserialise<T>(xml);
+            return SerialiserFactory.GetXmlSerialiser<T>().Deserialise(xml);
         }
 
         /// <summary>
@@ -301,7 +278,7 @@ namespace Sif.Framework.Consumer
             string xml = HttpUtils.GetRequest(serviceUrl, authorisationToken);
             Console.WriteLine("XML from GET request");
             Console.WriteLine(xml);
-            return SerialisationUtils.XmlDeserialise<T>(xml, (XmlRootAttribute)null);
+            return SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeUrl + "s")).Deserialise(xml);
         }
 
         /// <summary>
@@ -316,8 +293,7 @@ namespace Sif.Framework.Consumer
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string body;
-            SerialisationUtils.XmlSerialise<T>(obj, out body);
+            string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
             string xml = HttpUtils.PutRequest(serviceUrl + "/" + obj.Id, authorisationToken, body);
             Console.WriteLine("XML from PUT request");
             Console.WriteLine(xml);
@@ -335,8 +311,7 @@ namespace Sif.Framework.Consumer
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string body;
-            SerialisationUtils.XmlSerialise<T>(objs, (XmlRootAttribute)null, out body);
+            string body = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeUrl + "s")).Serialise((List<T>)objs);
             string xml = HttpUtils.PutRequest(serviceUrl, authorisationToken, body);
             Console.WriteLine("XML from PUT request");
             Console.WriteLine(xml);

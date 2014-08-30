@@ -48,20 +48,22 @@ namespace Sif.Framework.Demo.Setup.Utils
         /// <summary>
         /// Generate the database schema, apply it to the database and save the DDL used into a file.
         /// </summary>
-        public void CreateDatabaseTables()
+        /// <param name="schemaOutputFileName"></param>
+        public void CreateDatabaseTables(string schemaOutputFileName = null)
         {
             SchemaExport schemaExport = new SchemaExport(configuration);
-            schemaExport.SetOutputFile("Create database schema.ddl");
+            schemaExport.SetOutputFile(string.IsNullOrWhiteSpace(schemaOutputFileName) ? "Create database schema.ddl" : schemaOutputFileName);
             schemaExport.Create(true, true);
         }
 
         /// <summary>
         /// Drop the database schema, apply it to the database and save the DDL used into a file.
         /// </summary>
-        public void DropDatabaseTables()
+        /// <param name="schemaOutputFileName"></param>
+        public void DropDatabaseTables(string schemaOutputFileName = null)
         {
             SchemaExport schemaExport = new SchemaExport(configuration);
-            schemaExport.SetOutputFile("Drop database schema.ddl");
+            schemaExport.SetOutputFile(string.IsNullOrWhiteSpace(schemaOutputFileName) ? "Drop database schema.ddl" : schemaOutputFileName);
             schemaExport.Drop(true, true);
         }
 

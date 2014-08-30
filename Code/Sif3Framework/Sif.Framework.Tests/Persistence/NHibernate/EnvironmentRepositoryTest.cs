@@ -58,8 +58,7 @@ namespace Sif.Framework.Persistence.NHibernate
             Assert.AreEqual(saved.ConsumerName, retrieved.ConsumerName);
             Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
             Assert.AreEqual(saved.ApplicationInfo.SupportedInfrastructureVersion, retrieved.ApplicationInfo.SupportedInfrastructureVersion);
-            Assert.AreEqual(saved.ApplicationInfo.SupportedDataModel, retrieved.ApplicationInfo.SupportedDataModel);
-            Assert.AreEqual(saved.ApplicationInfo.SupportedDataModelVersion, retrieved.ApplicationInfo.SupportedDataModelVersion);
+            Assert.AreEqual(saved.ApplicationInfo.DataModelNamespace, retrieved.ApplicationInfo.DataModelNamespace);
         }
 
         [TestMethod]

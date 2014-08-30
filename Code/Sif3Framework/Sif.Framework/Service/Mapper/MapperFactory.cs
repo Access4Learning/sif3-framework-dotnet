@@ -18,13 +18,30 @@ using AutoMapper;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Sif.Framework.Service.Mapper
 {
 
     public static class MapperFactory
     {
+
+        class InfrastructureServicesConverter : ITypeConverter<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>
+        {
+
+            public IDictionary<InfrastructureServiceNames, InfrastructureService> Convert(ResolutionContext context)
+            {
+                ICollection<InfrastructureService> values = AutoMapper.Mapper.Map<infrastructureServiceType[], ICollection<InfrastructureService>>((infrastructureServiceType[])context.SourceValue);
+                IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
+
+                foreach (InfrastructureService infrastructureService in values)
+                {
+                    infrastructureServices.Add(infrastructureService.Name, infrastructureService);
+                }
+
+                return infrastructureServices;
+            }
+
+        }
 
         class PropertiesConverter : ITypeConverter<propertyType[], IDictionary<string, Property>>
         {
@@ -62,13 +79,13 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
-        class RightsConverter : ITypeConverter<rightType[], IDictionary<RightType, Right>>
+        class RightsConverter : ITypeConverter<rightType[], IDictionary<string, Right>>
         {
 
-            public IDictionary<RightType, Right> Convert(ResolutionContext context)
+            public IDictionary<string, Right> Convert(ResolutionContext context)
             {
                 ICollection<Right> values = AutoMapper.Mapper.Map<rightType[], ICollection<Right>>((rightType[])context.SourceValue);
-                IDictionary<RightType, Right> rights = new Dictionary<RightType, Right>();
+                IDictionary<string, Right> rights = new Dictionary<string, Right>();
 
                 foreach (Right right in values)
                 {
@@ -80,52 +97,25 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
-        class ZonePropertiesFlattenResolver : ValueResolver<Zone, propertiesType>
-        {
-
-            protected override propertiesType ResolveCore(Zone source)
-            {
-                propertiesType propertiesType = null;
-
-                if (source != null && source.Properties != null && source.Properties.Count > 0)
-                {
-                    Property property = source.Properties.Values.ElementAt(0);
-                    propertiesType = new propertiesType();
-                    propertiesType.property = AutoMapper.Mapper.Map<propertyType>(property);
-                }
-
-                return propertiesType;
-            }
-
-        }
-
-        class ZonePropertiesUnflattenResolver : ValueResolver<zoneType, IDictionary<string, Property>>
-        {
-
-            protected override IDictionary<string, Property> ResolveCore(zoneType source)
-            {
-                IDictionary<string, Property> properties = null;
-
-                if (source != null && source.properties != null && source.properties.property != null && string.IsNullOrWhiteSpace(source.properties.property.name))
-                {
-                    Property property = AutoMapper.Mapper.Map<Property>(source.properties.property);
-                    properties = new Dictionary<string, Property> { { property.Name, property } };
-                }
-
-                return properties;
-            }
-
-        }
-
         static MapperFactory()
         {
             AutoMapper.Mapper.CreateMap<ApplicationInfo, applicationInfoType>();
             AutoMapper.Mapper.CreateMap<applicationInfoType, ApplicationInfo>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+            AutoMapper.Mapper.CreateMap<InfrastructureService, infrastructureServiceType>()
+                .ForMember(dest => dest.nameSpecified, opt => opt.UseValue<bool>(true))
+                .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
+            AutoMapper.Mapper.CreateMap<infrastructureServiceType, InfrastructureService>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
+            AutoMapper.Mapper.CreateMap<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>()
+                .ConvertUsing<InfrastructureServicesConverter>();
+
             AutoMapper.Mapper.CreateMap<Environment, environmentType>()
                 .ForMember(dest => dest.infrastructureServices, opt => opt.MapFrom(src => src.InfrastructureServices.Values))
-                .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values));
+                .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values))
+                .ForMember(dest => dest.typeSpecified, opt => opt.UseValue<bool>(true));
             AutoMapper.Mapper.CreateMap<environmentType, Environment>();
 
             AutoMapper.Mapper.CreateMap<ProductIdentity, productIdentityType>();
@@ -149,7 +139,7 @@ namespace Sif.Framework.Service.Mapper
             AutoMapper.Mapper.CreateMap<Right, rightType>();
             AutoMapper.Mapper.CreateMap<rightType, Right>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
-            AutoMapper.Mapper.CreateMap<rightType[], IDictionary<RightType, Right>>()
+            AutoMapper.Mapper.CreateMap<rightType[], IDictionary<string, Right>>()
                 .ConvertUsing<RightsConverter>();
 
             AutoMapper.Mapper.CreateMap<Model.Infrastructure.Service, serviceType>()
@@ -158,9 +148,9 @@ namespace Sif.Framework.Service.Mapper
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             AutoMapper.Mapper.CreateMap<Zone, zoneType>()
-                .ForMember(dest => dest.properties, opt => opt.ResolveUsing<ZonePropertiesFlattenResolver>());
+                .ForMember(dest => dest.properties, opt => opt.MapFrom(src => src.Properties.Values));
             AutoMapper.Mapper.CreateMap<zoneType, Zone>()
-                .ForMember(dest => dest.Properties, opt => opt.ResolveUsing<ZonePropertiesUnflattenResolver>());
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             AutoMapper.Mapper.AssertConfigurationIsValid();
         }

@@ -4,6 +4,7 @@
 	-->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sif="http://www.sifassociation.org/au/datamodel/1.3" targetNamespace="http://www.sifassociation.org/au/datamodel/1.3" elementFormDefault="qualified">
 	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd"/>
+	<!--Version 1.3/3.0__v01 22nd Ocotober 2013-->
 	<!--Infrastructure Common Elements-->
 	<!--SIF_ExtendedElements-->
 	<xs:complexType name="SIF_ExtendedElementsType">
@@ -3969,6 +3970,11 @@
 					<xs:documentation>Phone number for the room</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+      <xs:element name="RoomType" type="xs:token" nillable="true" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Type of room.</xs:documentation>
+        </xs:annotation>
+      </xs:element>      
 			<xs:element name="SIF_Metadata" type="sif:SIF_MetadataType" nillable="true" minOccurs="0"/>
 			<xs:element name="SIF_ExtendedElements" type="sif:SIF_ExtendedElementsType" nillable="true" minOccurs="0">
 				<xs:unique name="SIF_ExtendedElementsKey19">
@@ -5931,7 +5937,7 @@
 	<xs:complexType name="TimeTableSubjectType">
 		<xs:annotation>
 			<xs:documentation>
-        This purpose of this object is to define and communicate the subject or distinct piece of curriculum that needs to be scheduled by the time table generator.  This is a new object proposed to meet SIF-AU needs.  Reviews of the existing specifications identified two relevant objects – SchoolCourseInfo, defined in SIF US 2.2 specification and SchoolGroup, defined within the SIF UK 1.1 specification.  These objects appear to have some similar context but seem overly complex considering that Australian requirements, which are limited to the Student Administration System or Curriculum Delivery System providing base information to the Time Tabling application about what curriculum offerings are being proposed.
+        This purpose of this object is to define and communicate the subject or distinct piece of curriculum that needs to be scheduled by the time table generator.  This is a new object proposed to meet SIF-AU needs.  Reviews of the existing specifications identified two relevant objects - SchoolCourseInfo, defined in SIF US 2.2 specification and SchoolGroup, defined within the SIF UK 1.1 specification.  These objects appear to have some similar context but seem overly complex considering that Australian requirements, which are limited to the Student Administration System or Curriculum Delivery System providing base information to the Time Tabling application about what curriculum offerings are being proposed.
 
         When this data is sent in a Request/Response only those subjects that are relevant to be scheduled (or active), should be sent to the TimeTabling application.
       </xs:documentation>
@@ -6931,7 +6937,7 @@
 	<xs:complexType name="StudentSDTNType">
 		<xs:annotation>
 			<xs:documentation>
-        This object has been developed to cater for the SDTN – Student Data Transfer Note.  http://www.mceecdya.edu.au/verve/_resources/ISDTN_Form_3_Transfer_Note_Oct_06.pdf
+        This object has been developed to cater for the SDTN - Student Data Transfer Note.  http://www.mceecdya.edu.au/verve/_resources/ISDTN_Form_3_Transfer_Note_Oct_06.pdf
         The elements in this object have been developed to support the LIMF recommendations and allow two or more jurisdictions to exchange this data. http://www.aictec.edu.au/aictec/go/home/about/pid/289
       </xs:documentation>
 		</xs:annotation>
@@ -8188,7 +8194,7 @@
 	<!--SectionInfo-->
 	<xs:complexType name="SectionInfoType">
 		<xs:annotation>
-			<xs:documentation>This object provides information about the section—</xs:documentation>
+			<xs:documentation>This object provides information about the section</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="SchoolCourseInfoRefId" type="sif:IdRefType" minOccurs="0">
@@ -31640,7 +31646,102 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="AUCodeSetsACStrandType">
+  <xs:complexType name="ScheduledActivityType">
+    <xs:sequence>
+      <xs:element name="SchoolInfoRefId" type="sif:IdRefType" />
+      <xs:element name="TimeTableCellRefId" minOccurs="0" nillable="true" type="sif:IdRefType" />
+      <xs:element name="DayId" minOccurs="0" nillable="true" type="sif:LocalIdType" />
+      <xs:element name="PeriodId" minOccurs="0" nillable="true" type="sif:LocalIdType" />
+      <xs:element name="TimeTableRefId" minOccurs="0" nillable="true" type="sif:IdRefType" />
+      <xs:element name="ActivityDate" type="xs:date" />
+      <xs:element name="StartTime" type="xs:time" />
+      <xs:element name="FinishTime" type="xs:time" />
+      <xs:element name="CellType" minOccurs="0" nillable="true" type="xs:normalizedString" />
+      <xs:element name="TimeTableSubjectRefId" minOccurs="0" nillable="true" type="sif:IdRefType" />
+      <xs:element name="TeacherList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="TeacherCover" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="StaffPersonalRefId" type="sif:IdRefType" />
+                  <xs:element name="StaffLocalId" minOccurs="0" nillable="true" type="sif:LocalIdType" />
+                  <xs:element name="StartTime" minOccurs="0" nillable="true" type="xs:time" />
+                  <xs:element name="FinishTime" minOccurs="0" nillable="true" type="xs:time" />
+                  <xs:element name="Credit" minOccurs="0" nillable="true" type="xs:normalizedString" />
+                  <xs:element name="Supervision" minOccurs="0" nillable="true" type="xs:normalizedString" />
+                  <xs:element name="Weighting" minOccurs="0" nillable="true" type="xs:decimal" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RoomList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RoomInfoRefId" maxOccurs="unbounded" type="sif:IdRefType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddressList" minOccurs="0" nillable="true" type="sif:AddressListType">
+        <xs:key name="AddressListKey6">
+          <xs:selector xpath="./sif:Address" />
+          <xs:field xpath="@Type" />
+          <xs:field xpath="@Role" />
+        </xs:key>
+      </xs:element>
+      <xs:element name="Location" minOccurs="0" nillable="true" type="xs:normalizedString" />
+      <xs:element name="ActivityType" minOccurs="0" nillable="true" type="xs:normalizedString" />
+      <xs:element name="ActivityName" minOccurs="0" nillable="true" type="xs:normalizedString" />
+      <xs:element name="ActivityComment" minOccurs="0" nillable="true" type="xs:normalizedString" />
+      <xs:element name="StudentList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="StudentPersonalRefId" maxOccurs="unbounded" type="sif:IdRefType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TeachingGroupList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="TeachingGroupRefId" maxOccurs="unbounded" type="sif:IdRefType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="YearLevels" minOccurs="0" nillable="true" type="sif:YearLevelsType" />
+      <xs:element name="Override" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="sif:AUCodeSetsYesOrNoCategoryType">
+              <xs:attribute name="DateOfOverride" use="optional" type="xs:date" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:key name="SIF_ExtendedElementsKey67">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:key>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType" />
+  </xs:complexType>
+  <xs:element name="ScheduledActivity" type="sif:ScheduledActivityType">
+    <xs:key name="ScheduledActivityKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:key>
+  </xs:element>
+  <xs:complexType name="ScheduledActivityCollectionType">
+    <xs:sequence>
+      <xs:element name="ScheduledActivity" type="sif:ScheduledActivityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ScheduledActivities" type="sif:ScheduledActivityCollectionType"/>
+  <xs:simpleType name="AUCodeSetsACStrandType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="A">
 				<xs:annotation>
@@ -33318,8 +33419,8 @@
 					<xs:annotation>
 						<xs:documentation>SIF format for a 1.3/3.0 GUID.</xs:documentation>
 					</xs:annotation>
+					<xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"/>
 					<!---<xs:pattern value="[0-9A-F]{32}"/>-->
-					<xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"></xs:pattern>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:restriction>

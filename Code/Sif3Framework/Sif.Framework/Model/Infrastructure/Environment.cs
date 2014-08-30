@@ -63,7 +63,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// of each InfrastructureService Property value subelement defines the URL location of that Infrastructure
         /// Service.
         /// </summary>
-        public virtual IDictionary<string, Property> InfrastructureServices { get; set; }
+        public virtual IDictionary<InfrastructureServiceNames, InfrastructureService> InfrastructureServices { get; set; }
 
         public virtual string InstanceId { get; set; }
 

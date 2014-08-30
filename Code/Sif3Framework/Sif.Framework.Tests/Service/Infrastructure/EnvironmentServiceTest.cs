@@ -48,8 +48,7 @@ namespace Sif.Framework.Service.Infrastructure
             Assert.AreEqual(saved.ApplicationInfo.ApplicationProduct.ProductName, retrieved.applicationInfo.applicationProduct.productName);
             Assert.AreEqual(saved.ApplicationInfo.ApplicationProduct.ProductVersion, retrieved.applicationInfo.applicationProduct.productVersion);
             Assert.AreEqual(saved.ApplicationInfo.ApplicationProduct.VendorName, retrieved.applicationInfo.applicationProduct.vendorName);
-            Assert.AreEqual(saved.ApplicationInfo.SupportedDataModel, retrieved.applicationInfo.supportedDataModel);
-            Assert.AreEqual(saved.ApplicationInfo.SupportedDataModelVersion, retrieved.applicationInfo.supportedDataModelVersion);
+            Assert.AreEqual(saved.ApplicationInfo.DataModelNamespace, retrieved.applicationInfo.dataModelNamespace);
             Assert.AreEqual(saved.ApplicationInfo.SupportedInfrastructureVersion, retrieved.applicationInfo.supportedInfrastructureVersion);
             Assert.AreEqual(saved.ApplicationInfo.Transport, retrieved.applicationInfo.transport);
             Assert.AreEqual(saved.AuthenticationMethod, retrieved.authenticationMethod);

@@ -33,13 +33,13 @@ namespace Sif.Framework.Demo.Setup
             try
             {
                 DatabaseManager frameworkDatabaseManager = new DatabaseManager("SifFramework.cfg.xml");
-                frameworkDatabaseManager.CreateDatabaseTables();
+                frameworkDatabaseManager.CreateDatabaseTables("SifFramework schema.ddl");
                 ApplicationRegister applicationRegister = DataFactory.CreateApplicationRegister();
                 ApplicationRegisterRepository applicationRegisterRepository = new ApplicationRegisterRepository();
                 applicationRegisterRepository.Save(applicationRegister);
 
                 DatabaseManager demoDatabaseManager = new DatabaseManager("Demo.cfg.xml");
-                demoDatabaseManager.CreateDatabaseTables();
+                demoDatabaseManager.CreateDatabaseTables("Demo schema.ddl");
                 ICollection<StudentPersonal> students = DataFactory.CreateStudents(100);
                 StudentPersonalRepository studentPersonalRepository = new StudentPersonalRepository();
                 studentPersonalRepository.Save(students);

@@ -27,7 +27,7 @@ namespace Sif.Framework.Model.Infrastructure
 
         public virtual string ApplicationKey { get; set; }
 
-        public virtual IDictionary<string, Property> InfrastructureServices { get; set; }
+        public virtual IDictionary<InfrastructureServiceNames, InfrastructureService> InfrastructureServices { get; set; }
 
         public virtual string InstanceId { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<environment xmlns="http://www.sifassociation.org/infrastructure/3.0">
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.0.1" type="DIRECT">
   <infrastructureServices>
     <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
     <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>

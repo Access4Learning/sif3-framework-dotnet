@@ -112,7 +112,7 @@ namespace Sif.Framework.Controller
         /// GET api/{controller}
         /// </summary>
         /// <returns>All objects.</returns>
-        public virtual ICollection<T> Get()
+        public virtual List<T> Get()
         {
 
             if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
@@ -120,11 +120,11 @@ namespace Sif.Framework.Controller
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
-            ICollection<T> items;
+            List<T> items;
 
             try
             {
-                items = service.Retrieve();
+                items = (List<T>)service.Retrieve();
             }
             catch (Exception)
             {

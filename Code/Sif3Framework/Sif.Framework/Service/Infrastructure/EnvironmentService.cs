@@ -29,16 +29,16 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
 
-        private IDictionary<string, Property> CopyInfrastructureServices(IDictionary<string, Property> sourceInfrastructureServices)
+        private IDictionary<InfrastructureServiceNames, InfrastructureService> CopyInfrastructureServices(IDictionary<InfrastructureServiceNames, InfrastructureService> sourceInfrastructureServices)
         {
-            IDictionary<string, Property> destinationInfrastructureServices = new Dictionary<string, Property>();
+            IDictionary<InfrastructureServiceNames, InfrastructureService> destinationInfrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
 
             if (sourceInfrastructureServices != null && sourceInfrastructureServices.Count > 0)
             {
 
-                foreach (Property sourceInfrastructureService in sourceInfrastructureServices.Values)
+                foreach (InfrastructureService sourceInfrastructureService in sourceInfrastructureServices.Values)
                 {
-                    Property destinationInfrastructureService = new Property { Name = sourceInfrastructureService.Name, Value = sourceInfrastructureService.Value };
+                    InfrastructureService destinationInfrastructureService = new InfrastructureService { Name = sourceInfrastructureService.Name, Value = sourceInfrastructureService.Value };
                     destinationInfrastructureServices.Add(destinationInfrastructureService.Name, destinationInfrastructureService);
                 }
 
@@ -47,9 +47,9 @@ namespace Sif.Framework.Service.Infrastructure
             return destinationInfrastructureServices;
         }
 
-        private IDictionary<RightType, Right> CopyRights(IDictionary<RightType, Right> sourceRights)
+        private IDictionary<string, Right> CopyRights(IDictionary<string, Right> sourceRights)
         {
-            IDictionary<RightType, Right> destinationRights = new Dictionary<RightType, Right>();
+            IDictionary<string, Right> destinationRights = new Dictionary<string, Right>();
 
             if (sourceRights != null && sourceRights.Count > 0)
             {
@@ -75,7 +75,7 @@ namespace Sif.Framework.Service.Infrastructure
                 foreach (Model.Infrastructure.Service sourceService in sourceServices)
                 {
                     Model.Infrastructure.Service destinationService = new Model.Infrastructure.Service { ContextId = sourceService.ContextId, Name = sourceService.Name, Type = sourceService.Type };
-                    IDictionary<RightType, Right> rights = CopyRights(sourceService.Rights);
+                    IDictionary<string, Right> rights = CopyRights(sourceService.Rights);
 
                     if (rights.Count > 0)
                     {
@@ -142,7 +142,7 @@ namespace Sif.Framework.Service.Infrastructure
                 throw new ArgumentException("A session token already exists for environment.", "item");
             }
 
-            IDictionary<string, Property> infrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
+            IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
             IDictionary<string, ProvisionedZone> provisionedZones = CopyProvisionedZones(environmentRegister.ProvisionedZones);
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
 

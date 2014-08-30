@@ -19,8 +19,8 @@ namespace Sif.Framework.Model.Infrastructure
 
     public enum EnvironmentType
     {
-        BROKERED,
-        DIRECT
+        DIRECT,
+        BROKERED
     }
 
 }

@@ -112,3 +112,11 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Created a new StudentPersonal demo Consumer.
 - Updated .gitignore so that "x64" directories are no longer ignored (caused problems with SQLite DLLs).
 - Re-ordered the projects listed in the VS Solutions to manage the default projects run when debugging.
+
+**Aug 30, 2014 - 0.12.0 Upgraded to SIF Infrastructure 3.0.1**
+
+- Upgraded the framework to use SIF Infrastructure 3.0.1.
+- Updated the data models to the latest version of the SIF AU 1.3 Data Model.
+- Re-designed the XML serialisation code to provide for better extensibility.
+- Fixed an issue whereby the root element of collections returned by Controllers started with "ArrayOf".
+- Made enhancements to the demo Setup.

@@ -39,8 +39,7 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductName, destination.applicationInfo.applicationProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductVersion, destination.applicationInfo.applicationProduct.productVersion);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.VendorName, destination.applicationInfo.applicationProduct.vendorName);
-            Assert.AreEqual(source.ApplicationInfo.SupportedDataModel, destination.applicationInfo.supportedDataModel);
-            Assert.AreEqual(source.ApplicationInfo.SupportedDataModelVersion, destination.applicationInfo.supportedDataModelVersion);
+            Assert.AreEqual(source.ApplicationInfo.DataModelNamespace, destination.applicationInfo.dataModelNamespace);
             Assert.AreEqual(source.ApplicationInfo.SupportedInfrastructureVersion, destination.applicationInfo.supportedInfrastructureVersion);
             Assert.AreEqual(source.ApplicationInfo.Transport, destination.applicationInfo.transport);
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
@@ -69,8 +68,7 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductName, destination.applicationInfo.applicationProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductVersion, destination.applicationInfo.applicationProduct.productVersion);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.VendorName, destination.applicationInfo.applicationProduct.vendorName);
-            Assert.AreEqual(source.ApplicationInfo.SupportedDataModel, destination.applicationInfo.supportedDataModel);
-            Assert.AreEqual(source.ApplicationInfo.SupportedDataModelVersion, destination.applicationInfo.supportedDataModelVersion);
+            Assert.AreEqual(source.ApplicationInfo.DataModelNamespace, destination.applicationInfo.dataModelNamespace);
             Assert.AreEqual(source.ApplicationInfo.SupportedInfrastructureVersion, destination.applicationInfo.supportedInfrastructureVersion);
             Assert.AreEqual(source.ApplicationInfo.Transport, destination.applicationInfo.transport);
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
@@ -80,9 +78,9 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.Id.ToString(), destination.id);
             int index = 0;
 
-            foreach (Property sourceProperty in source.InfrastructureServices.Values)
+            foreach (InfrastructureService sourceProperty in source.InfrastructureServices.Values)
             {
-                Assert.AreEqual(sourceProperty.Name, destination.infrastructureServices[index].name);
+                Assert.AreEqual(sourceProperty.Name.ToString(), destination.infrastructureServices[index].name.ToString());
                 Assert.AreEqual(sourceProperty.Value, destination.infrastructureServices[index].Value);
                 index++;
             }
@@ -98,13 +96,13 @@ namespace Sif.Framework.Service.Mapper
                 {
                     Assert.AreEqual(sourceService.ContextId, destination.provisionedZones[index].services[sourceIndex].contextId);
                     Assert.AreEqual(sourceService.Name, destination.provisionedZones[index].services[sourceIndex].name);
-                    Assert.AreEqual(sourceService.Type.ToString(), destination.provisionedZones[index].services[sourceIndex].type);
+                    Assert.AreEqual(sourceService.Type, destination.provisionedZones[index].services[sourceIndex].type);
                     int rightIndex = 0;
 
                     foreach (Right sourceRight in sourceService.Rights.Values)
                     {
-                        Assert.AreEqual(sourceRight.Type.ToString(), destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].type);
-                        Assert.AreEqual(sourceRight.Value.ToString(), destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].Value);
+                        Assert.AreEqual(sourceRight.Type, destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].type);
+                        Assert.AreEqual(sourceRight.Value, destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].Value);
                         rightIndex++;
                     }
 

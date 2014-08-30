@@ -35,17 +35,7 @@ namespace Sif.Framework.Model.Infrastructure
 
         public virtual ProductIdentity ApplicationProduct { get; set; }
 
-        /// <summary>
-        /// The namespace of the data payloads conveyed by this environment.  Returns may be of a diffrent minor 
-        /// version.  Utility payloads will be of the infrastructure namespace.
-        /// </summary>
-        public virtual string SupportedDataModel { get; set; }
-
-        /// <summary>
-        /// The namespace of the data or utility payloads conveyed by this environment.  Returns may be of a diffrent
-        /// minor version.
-        /// </summary>
-        public virtual string SupportedDataModelVersion { get; set; }
+        public virtual string DataModelNamespace { get; set; }
 
         /// <summary>
         /// The version of the SIF infrastructure which the Consumer supports.

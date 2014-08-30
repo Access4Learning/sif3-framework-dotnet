@@ -52,9 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -126,14 +126,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj">
       <Project>{202e8cb9-9aed-4034-908f-0b3bb04b171a}</Project>
       <Name>Sif.Framework</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

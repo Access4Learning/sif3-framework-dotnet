@@ -52,7 +52,7 @@
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0\Sif.Specification.Infrastructure.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -85,6 +85,8 @@
     <Compile Include="Model\Infrastructure\Environment.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentRegister.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentType.cs" />
+    <Compile Include="Model\Infrastructure\InfrastructureService.cs" />
+    <Compile Include="Model\Infrastructure\InfrastructureServiceNames.cs" />
     <Compile Include="Model\Infrastructure\ProductIdentity.cs" />
     <Compile Include="Model\Infrastructure\Property.cs" />
     <Compile Include="Model\Infrastructure\ProvisionedZone.cs" />
@@ -110,6 +112,8 @@
     <Compile Include="Service\Authentication\IApplicationRegisterService.cs" />
     <Compile Include="Service\GenericService.cs" />
     <Compile Include="Service\IGenericService.cs" />
+    <Compile Include="Service\Serialisation\ISerialiser.cs" />
+    <Compile Include="Service\Serialisation\XmlSerialiser.cs" />
     <Compile Include="Service\SifService.cs" />
     <Compile Include="Service\ISifService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
@@ -119,7 +123,7 @@
     <Compile Include="Service\Mapper\MapperFactory.cs" />
     <Compile Include="Utils\AuthenticationUtils.cs" />
     <Compile Include="Utils\HttpUtils.cs" />
-    <Compile Include="Utils\SerialisationUtils.cs" />
+    <Compile Include="Service\Serialisation\SerialiserFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml">
@@ -177,6 +181,9 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
