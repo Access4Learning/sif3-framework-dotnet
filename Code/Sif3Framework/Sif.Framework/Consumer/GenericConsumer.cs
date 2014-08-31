@@ -23,6 +23,7 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Xml;
 using System.Xml.Serialization;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -57,7 +58,7 @@ namespace Sif.Framework.Consumer
             string applicationKey = ConfigurationManager.AppSettings["consumer.environment.template.applicationKey"];
             string authenticationMethod = ConfigurationManager.AppSettings["consumer.environment.template.authenticationMethod"];
             string consumerName = ConfigurationManager.AppSettings["consumer.environment.template.consumerName"];
-            string dataModelNamespace = ConfigurationManager.AppSettings["consumer.environment.template.DataModelNamespace"];
+            string dataModelNamespace = ConfigurationManager.AppSettings["consumer.environment.template.dataModelNamespace"];
             string supportedInfrastructureVersion = ConfigurationManager.AppSettings["consumer.environment.template.supportedInfrastructureVersion"];
 
             Environment environmentTemplate;
@@ -112,6 +113,26 @@ namespace Sif.Framework.Consumer
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="environmentXml"></param>
+        /// <returns></returns>
+        private string TryParseEnvironmentUrl(string environmentXml)
+        {
+            XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
+            xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0.1");
+
+            XmlDocument environmentDoc = new XmlDocument();
+            environmentDoc.LoadXml(environmentXml);
+
+            string environmentUrl = environmentDoc.SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager).InnerText;
+            Console.WriteLine("Parsed environment Url is " + environmentUrl);
+
+            return environmentUrl;
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="applicationKey"></param>
         /// <param name="instanceId"></param>
         /// <param name="userToken"></param>
@@ -161,20 +182,34 @@ namespace Sif.Framework.Consumer
                 string initialToken = AuthenticationUtils.GenerateBasicAuthorisationToken(environmentTemplate.ApplicationInfo.ApplicationKey, sharedSecret);
                 environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environmentTemplate);
                 string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
-                string xml = HttpUtils.PostRequest(environmentUrl, initialToken, body);
+                string environmentXml = HttpUtils.PostRequest(environmentUrl, initialToken, body);
                 Console.WriteLine("Environment XML from POST request");
-                Console.WriteLine(xml);
+                Console.WriteLine(environmentXml);
 
-                environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xml);
-                consumerEnvironment = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
-                Console.WriteLine("Environment URL is " + consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value + "/" + consumerEnvironment.Id);
-                authorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(consumerEnvironment.SessionToken, sharedSecret);
+                try
+                {
+                    environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
+                    consumerEnvironment = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
+                    Console.WriteLine("Environment URL is " + consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value);
+                    authorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(consumerEnvironment.SessionToken, sharedSecret);
 
-                TypeUrl = (new T()).GetType().Name;
-                serviceUrl = consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value + "/" + TypeUrl + "s";
-                Console.WriteLine("requestsConnector service URL is " + serviceUrl);
+                    TypeUrl = (new T()).GetType().Name;
+                    serviceUrl = consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value + "/" + TypeUrl + "s";
+                    Console.WriteLine("requestsConnector service URL is " + serviceUrl);
 
-                registered = true;
+                    registered = true;
+                }
+                catch (Exception)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentXml)))
+                    {
+                        HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentXml), authorisationToken);
+                    }
+
+                    throw;
+                }
+
             }
 
         }
@@ -194,7 +229,7 @@ namespace Sif.Framework.Consumer
 
                     if (deleteOnUnregister)
                     {
-                        string xml = HttpUtils.DeleteRequest(consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value + "/" + consumerEnvironment.Id, authorisationToken);
+                        string xml = HttpUtils.DeleteRequest(consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value, authorisationToken);
                         Console.WriteLine("Environment XML from DELETE request");
                         Console.WriteLine(xml);
                     }

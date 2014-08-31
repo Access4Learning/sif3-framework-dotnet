@@ -43,7 +43,7 @@
     </Reference>
     <Reference Include="Sif.Framework, Version=0.12.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.12.0\Sif.Framework.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.13.0\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
@@ -71,6 +71,7 @@
     <None Include="packages.config" />
     <None Include="SifFramework.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

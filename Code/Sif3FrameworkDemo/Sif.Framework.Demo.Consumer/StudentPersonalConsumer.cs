@@ -61,52 +61,59 @@ namespace Sif.Framework.Demo.Consumer
             IStudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer("Sif3DemoApp");
             studentPersonalConsumer.Register();
 
-            // Retrieve all students.
-            ICollection<StudentPersonal> students = studentPersonalConsumer.Retrieve();
-
-            foreach (StudentPersonal student in students)
+            try
             {
-                Console.WriteLine("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
-            }
+                // Retrieve all students.
+                ICollection<StudentPersonal> students = studentPersonalConsumer.Retrieve();
 
-            // Retrieve a single student.
-            Guid studentId = students.ElementAt(0).Id;
-            StudentPersonal firstStudent = studentPersonalConsumer.Retrieve(studentId);
-            Console.WriteLine("Name of first student is " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
-
-            // Update that student and confirm.
-            firstStudent.PersonInfo.Name.GivenName = "Homer";
-            firstStudent.PersonInfo.Name.FamilyName = "Simpson";
-            studentPersonalConsumer.Update(firstStudent);
-            firstStudent = studentPersonalConsumer.Retrieve(studentId);
-            Console.WriteLine("Name of first student has been changed to " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
-
-            // Delete that student and confirm.
-            studentPersonalConsumer.Delete(studentId);
-            students = studentPersonalConsumer.Retrieve();
-            bool studentDeleted = true;
-
-            foreach (StudentPersonal student in students)
-            {
-
-                if (studentId == student.Id)
+                foreach (StudentPersonal student in students)
                 {
-                    studentDeleted = false;
-                    break;
+                    Console.WriteLine("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                }
+
+                // Retrieve a single student.
+                Guid studentId = students.ElementAt(0).Id;
+                StudentPersonal firstStudent = studentPersonalConsumer.Retrieve(studentId);
+                Console.WriteLine("Name of first student is " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
+
+                // Update that student and confirm.
+                firstStudent.PersonInfo.Name.GivenName = "Homer";
+                firstStudent.PersonInfo.Name.FamilyName = "Simpson";
+                studentPersonalConsumer.Update(firstStudent);
+                firstStudent = studentPersonalConsumer.Retrieve(studentId);
+                Console.WriteLine("Name of first student has been changed to " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
+
+                // Delete that student and confirm.
+                studentPersonalConsumer.Delete(studentId);
+                students = studentPersonalConsumer.Retrieve();
+                bool studentDeleted = true;
+
+                foreach (StudentPersonal student in students)
+                {
+
+                    if (studentId == student.Id)
+                    {
+                        studentDeleted = false;
+                        break;
+                    }
+
+                }
+
+                if (studentDeleted)
+                {
+                    Console.WriteLine("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                }
+                else
+                {
+                    Console.WriteLine("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                 }
 
             }
-
-            if (studentDeleted)
+            finally
             {
-                Console.WriteLine("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
-            }
-            else
-            {
-                Console.WriteLine("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                studentPersonalConsumer.Unregister();
             }
 
-            studentPersonalConsumer.Unregister();
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
         }

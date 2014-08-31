@@ -157,8 +157,21 @@ namespace Sif.Framework.Service.Infrastructure
             }
 
             repoItem.SessionToken = sessionToken;
+            Guid environmentId = repository.Save(repoItem);
 
-            return repository.Save(repoItem);
+            if (repoItem.InfrastructureServices.Count > 0)
+            {
+                InfrastructureService infrastructureService = repoItem.InfrastructureServices[InfrastructureServiceNames.environment];
+
+                if (infrastructureService != null)
+                {
+                    infrastructureService.Value = infrastructureService.Value + "/" + environmentId;
+                    repository.Save(repoItem);
+                }
+
+            }
+
+            return environmentId;
         }
 
         public virtual environmentType RetrieveBySessionToken(string sessionToken)

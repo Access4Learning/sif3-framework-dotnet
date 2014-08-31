@@ -120,3 +120,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Re-designed the XML serialisation code to provide for better extensibility.
 - Fixed an issue whereby the root element of collections returned by Controllers started with "ArrayOf".
 - Made enhancements to the demo Setup.
+
+**Aug 31, 2014 - 0.13.0 Fixed various issues**
+
+- Fixed an issue with clean-up if a Consumer fails to register with the Environment Provider.
+- Fixed an error in the returned Environment object on Consumer register.
+- Added exception handling to the demo Consumer to ensure proper clean-up after an error.
