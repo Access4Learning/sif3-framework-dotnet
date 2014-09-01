@@ -131,3 +131,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 - Updated the Developer's Guide from user feedback.
 - Updated the Demo Usage Guide to include instructions for implementing a Consumer.
+
+**Sep 01, 2014 - 0.13.2 Updated user documentation**
+
+- Updated the Demo Usage Guide to include instructions for running the demo over a LAN.
