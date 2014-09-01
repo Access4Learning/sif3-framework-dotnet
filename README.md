@@ -126,3 +126,8 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fixed an issue with clean-up if a Consumer fails to register with the Environment Provider.
 - Fixed an error in the returned Environment object on Consumer register.
 - Added exception handling to the demo Consumer to ensure proper clean-up after an error.
+
+**Sep 01, 2014 - 0.13.1 Updated user documentation**
+
+- Updated the Developer's Guide from user feedback.
+- Updated the Demo Usage Guide to include instructions for implementing a Consumer.
