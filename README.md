@@ -135,3 +135,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **Sep 01, 2014 - 0.13.2 Updated user documentation**
 
 - Updated the Demo Usage Guide to include instructions for running the demo over a LAN.
+
+**Sep 11, 2014 - 0.14.0 Created a reference implementation of the SBP**
+
+- Created a new Solution to contain a reference implementation of the SBP (only partially implemented).
+- Upgraded Web API to version 5.2.2 on all appropriate projects.
+- Added a SchoolInfo Consumer and Provider to the demo Solution.

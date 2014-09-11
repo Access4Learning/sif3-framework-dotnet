@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sif.Framework")]
-[assembly: AssemblyDescription("Core library of the SIF Framework.")]
+[assembly: AssemblyTitle("Sbp.Framework")]
+[assembly: AssemblyDescription("Core library of the SBP Framework.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
-[assembly: AssemblyProduct("Sif.Framework")]
+[assembly: AssemblyProduct("Sbp.Framework")]
 [assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6d5ef338-c199-4c43-ae36-e7ddc3d1dabc")]
+[assembly: Guid("18bee3fa-ee26-4072-bf53-d57805568f90")]
 
 // Version information for an assembly consists of the following four values:
 //

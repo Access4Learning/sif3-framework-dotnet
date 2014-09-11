@@ -18,6 +18,9 @@ namespace Sif.Framework.Demo.Provider
             ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(new XmlRootAttribute("StudentPersonals"));
             formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
 
+            ISerialiser<List<Sbp.Framework.Model.SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<Sbp.Framework.Model.SchoolInfo>>(new XmlRootAttribute("SchoolInfos"));
+            formatter.SetSerializer<List<Sbp.Framework.Model.SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+
             // Alternative 1.
             //formatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), new XmlRootAttribute("StudentPersonals")));
 

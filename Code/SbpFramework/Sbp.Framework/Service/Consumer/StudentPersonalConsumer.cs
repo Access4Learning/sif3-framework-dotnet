@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
+using Sbp.Framework.Model;
 using Sif.Framework.Consumer;
-using Sif.Framework.Demo.Consumer.Model;
-using System;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.Demo.Consumer
+namespace Sbp.Framework.Service.Consumer
 {
 
     /// <summary>
     /// 
     /// </summary>
-    class StudentPersonalConsumer : GenericConsumer<StudentPersonal, Guid>, IStudentPersonalConsumer
+    public class StudentPersonalConsumer : GenericConsumer<StudentPersonal, string>, IStudentPersonalConsumer
     {
 
         /// <summary>

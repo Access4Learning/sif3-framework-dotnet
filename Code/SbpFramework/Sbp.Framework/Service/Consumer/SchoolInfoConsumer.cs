@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
+using Sbp.Framework.Model;
 using Sif.Framework.Consumer;
-using Sif.Framework.Demo.Consumer.Model;
-using System;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.Demo.Consumer
+namespace Sbp.Framework.Service.Consumer
 {
 
     /// <summary>
     /// 
     /// </summary>
-    class StudentPersonalConsumer : GenericConsumer<StudentPersonal, Guid>, IStudentPersonalConsumer
+    public class SchoolInfoConsumer : GenericConsumer<SchoolInfo, string>, ISchoolInfoConsumer
     {
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace Sif.Framework.Demo.Consumer
         /// <param name="applicationKey"></param>
         /// <param name="instanceId"></param>
         /// <param name="userToken"></param>
-        public StudentPersonalConsumer(string applicationKey, string instanceId = null, string userToken = null)
+        public SchoolInfoConsumer(string applicationKey, string instanceId = null, string userToken = null)
             : base(applicationKey, instanceId, userToken)
         {
 
@@ -44,7 +43,7 @@ namespace Sif.Framework.Demo.Consumer
         /// 
         /// </summary>
         /// <param name="environment"></param>
-        public StudentPersonalConsumer(Environment environment)
+        public SchoolInfoConsumer(Environment environment)
             : base(environment)
         {
 
