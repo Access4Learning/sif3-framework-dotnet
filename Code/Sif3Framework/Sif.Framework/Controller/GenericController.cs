@@ -30,7 +30,7 @@ namespace Sif.Framework.Controller
     /// </summary>
     /// <typeparam name="T">Type of object managed by the Controller.</typeparam>
     /// <typeparam name="PK">Primary key type of the object.</typeparam>
-    public abstract class GenericController<T, PK> : BaseController where T : IPersistable<PK>
+    public abstract class GenericController<T, PK> : BaseController where T : IPersistable<PK>, new()
     {
         protected IGenericService<T, PK> service;
 
@@ -69,11 +69,21 @@ namespace Sif.Framework.Controller
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The DELETE request failed for a " + (new T()).GetType().Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
+        }
+
+        /// <summary>
+        /// DELETE api/{controller}
+        /// </summary>
+        /// <param name="ids">Collection of identifiers for the objects to delete.</param>
+        public virtual void Delete(IEnumerable<PK> ids)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -95,9 +105,10 @@ namespace Sif.Framework.Controller
             {
                 item = service.Retrieve(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The GET request failed for a " + (new T()).GetType().Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
             if (item == null)
@@ -126,9 +137,10 @@ namespace Sif.Framework.Controller
             {
                 items = (List<T>)service.Retrieve();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The GET request failed for " + (new T()).GetType().Name + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
             return items;
@@ -156,12 +168,23 @@ namespace Sif.Framework.Controller
                 string uri = Url.Link("DefaultApi", new { id = id });
                 responseMessage.Headers.Location = new Uri(uri);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest);
+                string errorMessage = "The POST request failed for " + (new T()).GetType().Name + " due to the following error:\n " + e.Message;
+                responseMessage = Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
             return responseMessage;
+        }
+
+        /// <summary>
+        /// POST api/{controller}
+        /// </summary>
+        /// <param name="items">Objects to create.</param>
+        /// <returns>HTTP response message indicating success or failure.</returns>
+        public virtual HttpResponseMessage Post(IEnumerable<T> items)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -200,11 +223,21 @@ namespace Sif.Framework.Controller
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The PUT request failed for a " + (new T()).GetType().Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
+        }
+
+        /// <summary>
+        /// PUT api/{controller}
+        /// </summary>
+        /// <param name="items">Objects to update.</param>
+        public virtual void Put(IEnumerable<T> items)
+        {
+            throw new NotImplementedException();
         }
 
     }

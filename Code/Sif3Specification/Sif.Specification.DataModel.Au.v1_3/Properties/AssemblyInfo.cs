@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sif.Specification.DataModel")]
+[assembly: AssemblyTitle("Sif.Specification.DataModel.Au")]
 [assembly: AssemblyDescription("SIF AU 1.3 Data Model library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
-[assembly: AssemblyProduct("Sif.Specification.DataModel")]
+[assembly: AssemblyProduct("Sif.Specification.DataModel.Au")]
 [assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Sif.Specification.Infrastructure.v3_0_1")]
-[assembly: AssemblyDescription("SIF 3.0 Infrastructure library.")]
+[assembly: AssemblyDescription("SIF 3.0.1 Infrastructure library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
 [assembly: AssemblyProduct("Sif.Specification.Infrastructure.v3_0_1")]

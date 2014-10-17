@@ -14,40 +14,62 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.Provider.Models;
-using Sif.Framework.Demo.Provider.Persistence;
 using Sif.Framework.Demo.Setup.Utils;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence.NHibernate;
-using System.Collections.Generic;
+using System;
+using System.Configuration;
 
 namespace Sif.Framework.Demo.Setup
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     class DatabaseCreator
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
 
             try
             {
-                DatabaseManager frameworkDatabaseManager = new DatabaseManager("SifFramework.cfg.xml");
-                frameworkDatabaseManager.CreateDatabaseTables("SifFramework schema.ddl");
-                ApplicationRegister applicationRegister = DataFactory.CreateApplicationRegister();
-                ApplicationRegisterRepository applicationRegisterRepository = new ApplicationRegisterRepository();
-                applicationRegisterRepository.Save(applicationRegister);
+                string prop = null;
 
-                DatabaseManager demoDatabaseManager = new DatabaseManager("Demo.cfg.xml");
-                demoDatabaseManager.CreateDatabaseTables("Demo schema.ddl");
-                ICollection<StudentPersonal> students = DataFactory.CreateStudents(100);
-                StudentPersonalRepository studentPersonalRepository = new StudentPersonalRepository();
-                studentPersonalRepository.Save(students);
+                if (args.Length == 1)
+                {
+                    prop = args[0];
+                }
+                else
+                {
+                    prop = ConfigurationManager.AppSettings["demo.locale"];
+                }
+
+                string locale = (prop != null && ("AU".Equals(prop.ToUpper()) || "US".Equals(prop.ToUpper())) ? prop.ToUpper() : null);
+
+                if (locale == null)
+                {
+                    Console.WriteLine("To execute, setup requires a parameter which specifies locale, i.e. AU or US.");
+                }
+                else
+                {
+                    Console.WriteLine("Configuring the demonstration for the " + locale + " locale.");
+                    DatabaseManager frameworkDatabaseManager = new DatabaseManager("SifFramework.cfg.xml");
+                    frameworkDatabaseManager.CreateDatabaseTables("SifFramework schema.ddl");
+                    ApplicationRegister applicationRegister = DataFactory.CreateApplicationRegister(locale);
+                    ApplicationRegisterRepository applicationRegisterRepository = new ApplicationRegisterRepository();
+                    applicationRegisterRepository.Save(applicationRegister);
+                }
+
             }
             finally
             {
-                System.Console.WriteLine("Press any key to continue ...");
-                System.Console.ReadKey();
+                Console.WriteLine("Press any key to continue ...");
+                Console.ReadKey();
             }
 
         }

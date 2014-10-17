@@ -141,3 +141,18 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Created a new Solution to contain a reference implementation of the SBP (only partially implemented).
 - Upgraded Web API to version 5.2.2 on all appropriate projects.
 - Added a SchoolInfo Consumer and Provider to the demo Solution.
+
+**Oct 17, 2014 - 0.15.0 Added demo projects for the US locale**
+
+- Upgraded NHibernate to version 4.0.1.4000 on all appropriate projects.
+- Upgraded SQLite to version 1.0.94.0 on all appropriate projects.
+- Added log4net to some projects.
+- Added debug statements in some projects using log4net.
+- Added error messages to the payload of GenericController response messages.
+- Changed the existing demo Consumer and Provider projects to be AU locale specific.
+- Made the AU Consumer and Provider projects simpler by removing the use of a database for retrieving sample student data from.
+- Added new demo Consumer and Provider projects for the US locale.
+- Updated the demo Setup project to cater for the AU and US locales.
+- Added data models generated from the SIF US 3.2 XSDs to the Sif3Specification Solution.
+- Updated the demo execution batch scripts to cater for the new demo projects.
+- Updated the SharedLibs libraries.

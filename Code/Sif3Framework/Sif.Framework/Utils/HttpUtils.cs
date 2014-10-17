@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-using System;
+using log4net;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Text;
 
 namespace Sif.Framework.Utils
@@ -27,6 +28,8 @@ namespace Sif.Framework.Utils
     /// </summary>
     static class HttpUtils
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         enum RequestMethod { DELETE, GET, POST, PUT }
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace Sif.Framework.Utils
 
                 if (response == null)
                 {
-                    Console.WriteLine("Response is null");
+                    if (log.IsDebugEnabled) log.Debug("Response is null");
                 }
                 else
                 {
@@ -104,7 +107,7 @@ namespace Sif.Framework.Utils
 
                     if (response == null)
                     {
-                        Console.WriteLine("Response is null");
+                        if (log.IsDebugEnabled) log.Debug("Response is null");
                     }
                     else
                     {

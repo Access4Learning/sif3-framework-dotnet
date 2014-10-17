@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework.Demo.Provider" namespace="Sif.Framework.Demo.Provider.Models">
-  <class name="PersonInfo" table="PERSON_INFO" lazy="false">
-    <id name="Id" column="PERSON_INFO_ID">
-      <generator class="native"/>
-    </id>
-    <many-to-one name="Name" column="NAME_ID" class="Sif.Framework.Demo.Provider.Models.Name" cascade="all" fetch="join" unique="true"/>
-  </class>
-</hibernate-mapping>

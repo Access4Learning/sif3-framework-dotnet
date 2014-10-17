@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Serialisation;
 using Sif.Specification.Infrastructure;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -27,40 +25,33 @@ namespace Sif.Framework.Demo.Setup.Utils
 {
 
     /// <summary>
-    /// This class is used to generate data for running the demos.
+    /// This class is used to generate data for running the demonstration projects.
     /// </summary>
     static class DataFactory
     {
-        private static environmentType environmentTypeRequest;
-        private static environmentType environmentTypeResponse;
-        private static System.Random random = new System.Random();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        static DataFactory()
-        {
-
-            using (FileStream xmlStream = File.OpenRead("Data files\\EnvironmentRequest.xml"))
-            {
-                environmentTypeRequest = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
-            }
-
-            using (FileStream xmlStream = File.OpenRead("Data files\\EnvironmentResponse.xml"))
-            {
-                environmentTypeResponse = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
-            }
-
-        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public static ApplicationRegister CreateApplicationRegister()
+        public static ApplicationRegister CreateApplicationRegister(string locale)
         {
+            environmentType environmentTypeRequest;
+            environmentType environmentTypeResponse;
+
+            using (FileStream xmlStream = File.OpenRead("Data files\\" + locale.ToUpper() + "\\EnvironmentRequest.xml"))
+            {
+                environmentTypeRequest = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
+            }
+
+            using (FileStream xmlStream = File.OpenRead("Data files\\" + locale.ToUpper() + "\\EnvironmentResponse.xml"))
+            {
+                environmentTypeResponse = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
+            }
+
             Environment environmentRequest = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeRequest);
-            EnvironmentRegister environmentRegister = CreateEnvironmentRegister();
+            Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeResponse);
+            EnvironmentRegister environmentRegister = CreateEnvironmentRegister(environmentRequest, environmentResponse);
             ApplicationRegister applicationRegister = new ApplicationRegister
             {
                 ApplicationKey = environmentRequest.ApplicationInfo.ApplicationKey,
@@ -75,10 +66,8 @@ namespace Sif.Framework.Demo.Setup.Utils
         /// 
         /// </summary>
         /// <returns></returns>
-        public static EnvironmentRegister CreateEnvironmentRegister()
+        private static EnvironmentRegister CreateEnvironmentRegister(Environment environmentRequest, Environment environmentResponse)
         {
-            Environment environmentRequest = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeRequest);
-            Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeResponse);
             EnvironmentRegister environmentRegister = new EnvironmentRegister
             {
                 ApplicationKey = environmentRequest.ApplicationInfo.ApplicationKey,
@@ -90,27 +79,6 @@ namespace Sif.Framework.Demo.Setup.Utils
             };
 
             return environmentRegister;
-        }
-
-        public static StudentPersonal CreateStudent()
-        {
-            Name name = new Name { Type = NameType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
-            PersonInfo personInfo = new PersonInfo { Name = name };
-            StudentPersonal studentPersonal = new StudentPersonal { LocalId = random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
-
-            return studentPersonal;
-        }
-
-        public static ICollection<StudentPersonal> CreateStudents(int count)
-        {
-            ICollection<StudentPersonal> students = new List<StudentPersonal>();
-
-            for (int i = 1; i <= count; i++)
-            {
-                students.Add(CreateStudent());
-            }
-
-            return students;
         }
 
     }

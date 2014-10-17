@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using log4net;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service.Mapper;
@@ -23,6 +24,7 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -37,6 +39,8 @@ namespace Sif.Framework.Consumer
     /// <typeparam name="PK"></typeparam>
     public class GenericConsumer<T, PK> : IGenericConsumer<T, PK> where T : IPersistable<PK>, new()
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private string authorisationToken;
         private Environment consumerEnvironment;
         private Environment environmentTemplate;
@@ -124,7 +128,7 @@ namespace Sif.Framework.Consumer
             environmentDoc.LoadXml(environmentXml);
 
             string environmentUrl = environmentDoc.SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager).InnerText;
-            Console.WriteLine("Parsed environment Url is " + environmentUrl);
+            if (log.IsDebugEnabled) log.Debug("Parsed environment URL is " + environmentUrl + ".");
 
             return environmentUrl;
 
@@ -183,19 +187,19 @@ namespace Sif.Framework.Consumer
                 environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environmentTemplate);
                 string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
                 string environmentXml = HttpUtils.PostRequest(environmentUrl, initialToken, body);
-                Console.WriteLine("Environment XML from POST request");
-                Console.WriteLine(environmentXml);
+                if (log.IsDebugEnabled) log.Debug("Environment XML from POST request ...");
+                if (log.IsDebugEnabled) log.Debug(environmentXml);
 
                 try
                 {
                     environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
                     consumerEnvironment = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
-                    Console.WriteLine("Environment URL is " + consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value);
+                    if (log.IsDebugEnabled) log.Debug("Environment URL is " + consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value + ".");
                     authorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(consumerEnvironment.SessionToken, sharedSecret);
 
                     TypeUrl = (new T()).GetType().Name;
                     serviceUrl = consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value + "/" + TypeUrl + "s";
-                    Console.WriteLine("requestsConnector service URL is " + serviceUrl);
+                    if (log.IsDebugEnabled) log.Debug("requestsConnector service URL is " + serviceUrl + ".");
 
                     registered = true;
                 }
@@ -230,8 +234,8 @@ namespace Sif.Framework.Consumer
                     if (deleteOnUnregister)
                     {
                         string xml = HttpUtils.DeleteRequest(consumerEnvironment.InfrastructureServices[InfrastructureServiceNames.environment].Value, authorisationToken);
-                        Console.WriteLine("Environment XML from DELETE request");
-                        Console.WriteLine(xml);
+                        if (log.IsDebugEnabled) log.Debug("Environment XML from DELETE request ...");
+                        if (log.IsDebugEnabled) log.Debug(xml);
                     }
 
                 }
@@ -256,8 +260,8 @@ namespace Sif.Framework.Consumer
 
             string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
             string xml = HttpUtils.PostRequest(serviceUrl + "/" + TypeUrl, authorisationToken, body);
-            Console.WriteLine("XML from POST request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
             return default(PK);
         }
 
@@ -275,8 +279,8 @@ namespace Sif.Framework.Consumer
 
             string body = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeUrl + "s")).Serialise((List<T>)objs);
             string xml = HttpUtils.PostRequest(serviceUrl, authorisationToken, body);
-            Console.WriteLine("XML from POST request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
         }
 
         /// <summary>
@@ -293,8 +297,8 @@ namespace Sif.Framework.Consumer
             }
 
             string xml = HttpUtils.GetRequest(serviceUrl + "/" + id, authorisationToken);
-            Console.WriteLine("XML from GET request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
             return SerialiserFactory.GetXmlSerialiser<T>().Deserialise(xml);
         }
 
@@ -311,8 +315,8 @@ namespace Sif.Framework.Consumer
             }
 
             string xml = HttpUtils.GetRequest(serviceUrl, authorisationToken);
-            Console.WriteLine("XML from GET request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
             return SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeUrl + "s")).Deserialise(xml);
         }
 
@@ -330,8 +334,8 @@ namespace Sif.Framework.Consumer
 
             string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
             string xml = HttpUtils.PutRequest(serviceUrl + "/" + obj.Id, authorisationToken, body);
-            Console.WriteLine("XML from PUT request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
         }
 
         /// <summary>
@@ -348,8 +352,8 @@ namespace Sif.Framework.Consumer
 
             string body = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeUrl + "s")).Serialise((List<T>)objs);
             string xml = HttpUtils.PutRequest(serviceUrl, authorisationToken, body);
-            Console.WriteLine("XML from PUT request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
         }
 
         /// <summary>
@@ -365,8 +369,8 @@ namespace Sif.Framework.Consumer
             }
 
             string xml = HttpUtils.DeleteRequest(serviceUrl + "/" + id, authorisationToken);
-            Console.WriteLine("XML from DELETE request");
-            Console.WriteLine(xml);
+            if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
         }
 
         /// <summary>

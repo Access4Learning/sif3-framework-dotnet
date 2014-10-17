@@ -1,0 +1,5 @@
+<xsd xmlns='http://microsoft.com/dotnet/tools/xsd/' output='output'>
+    <generateClasses language='CS' namespace='Sif.Specification.DataModel.Au'>
+        <schema>..\..\..\Data\XSD files\SIF AU 1.3 (Infrastructure 3.0.1)\SIF_Message.xsd</schema>
+    </generateClasses>
+</xsd>
