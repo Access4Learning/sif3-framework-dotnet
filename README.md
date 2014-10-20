@@ -156,3 +156,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Added data models generated from the SIF US 3.2 XSDs to the Sif3Specification Solution.
 - Updated the demo execution batch scripts to cater for the new demo projects.
 - Updated the SharedLibs libraries.
+
+**Oct 20, 2014 - 0.15.1 Added training exercise document**
+
+- Added the Training Exercises (US) document.
