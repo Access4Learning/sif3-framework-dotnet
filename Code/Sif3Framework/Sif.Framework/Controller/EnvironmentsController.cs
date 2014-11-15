@@ -34,6 +34,89 @@ namespace Sif.Framework.Controller
     /// </summary>
     public abstract class EnvironmentsController : SifController<environmentType, Environment>
     {
+        protected static readonly string defaultAuthenticationMethod = "Basic";
+        protected static readonly string defaultConsumerName = "Sif3FrameworkConsumer";
+        protected static readonly string defaultSupportedInfrastructureVersion = "3.0.1";
+
+        /// <summary>
+        /// Create an Environment, using default values where applicable.
+        /// </summary>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="authenticationMethod">Authentication method.</param>
+        /// <param name="consumerName">Consumer name.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="dataModelNamespace">Data model namespace.</param>
+        /// <param name="supportedInfrastructureVersion">Supported infrastructure version.</param>
+        /// <param name="transport">Transport.</param>
+        /// <param name="productName">Product name.</param>
+        /// <returns>An Environment.</returns>
+        private environmentType CreateDefaultEnvironmentType
+            (string applicationKey,
+             string authenticationMethod = null,
+             string consumerName = null,
+             string solutionId = null,
+             string dataModelNamespace = null,
+             string supportedInfrastructureVersion = null,
+             string transport = null,
+             string productName = null)
+        {
+            applicationInfoType applicationInfo = new applicationInfoType();
+            applicationInfo.applicationKey = applicationKey;
+
+            if (!String.IsNullOrWhiteSpace(dataModelNamespace))
+            {
+                applicationInfo.dataModelNamespace = dataModelNamespace;
+            }
+
+            if (String.IsNullOrWhiteSpace(supportedInfrastructureVersion))
+            {
+                applicationInfo.supportedInfrastructureVersion = defaultSupportedInfrastructureVersion;
+            }
+            else
+            {
+                applicationInfo.supportedInfrastructureVersion = supportedInfrastructureVersion;
+            }
+
+            if (!String.IsNullOrWhiteSpace(transport))
+            {
+                applicationInfo.transport = transport;
+            }
+
+            if (!String.IsNullOrWhiteSpace(productName))
+            {
+                productIdentityType productIdentity = new productIdentityType();
+                productIdentity.productName = productName;
+                applicationInfo.applicationProduct = productIdentity;
+            }
+
+            environmentType environmentType = new environmentType();
+            environmentType.applicationInfo = applicationInfo;
+
+            if (String.IsNullOrWhiteSpace(authenticationMethod))
+            {
+                environmentType.authenticationMethod = defaultAuthenticationMethod;
+            }
+            else
+            {
+                environmentType.authenticationMethod = authenticationMethod;
+            }
+
+            if (String.IsNullOrWhiteSpace(consumerName))
+            {
+                environmentType.consumerName = defaultConsumerName;
+            }
+            else
+            {
+                environmentType.consumerName = consumerName;
+            }
+
+            if (!String.IsNullOrWhiteSpace(solutionId))
+            {
+                environmentType.solutionId = solutionId;
+            }
+
+            return environmentType;
+        }
 
         /// <summary>
         /// Create an instance.
@@ -72,13 +155,26 @@ namespace Sif.Framework.Controller
         /// <returns>HTTP response message indicating success or failure.</returns>
         [HttpPost]
         [Route("api/environments/environment")]
-        public virtual HttpResponseMessage Create(environmentType item)
+        public virtual HttpResponseMessage Create
+            (environmentType item,
+             string authenticationMethod = null,
+             string consumerName = null,
+             string solutionId = null,
+             string dataModelNamespace = null,
+             string supportedInfrastructureVersion = null,
+             string transport = null,
+             string productName = null)
         {
             string initialToken;
 
             if (!VerifyInitialAuthorisationHeader(Request.Headers.Authorization, out initialToken))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
+
+            if (item == null)
+            {
+                item = CreateDefaultEnvironmentType(initialToken, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
             }
 
             HttpResponseMessage responseMessage = null;
@@ -91,9 +187,10 @@ namespace Sif.Framework.Controller
                 //string uri = Url.Link("DefaultApi", new { id = id });
                 //responseMessage.Headers.Location = new Uri(uri);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest);
+                string errorMessage = "The POST request failed for Environment due to the following error:\n " + e.Message;
+                responseMessage = Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
             return responseMessage;

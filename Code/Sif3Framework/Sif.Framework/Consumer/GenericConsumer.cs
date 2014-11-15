@@ -140,7 +140,8 @@ namespace Sif.Framework.Consumer
         /// <param name="applicationKey"></param>
         /// <param name="instanceId"></param>
         /// <param name="userToken"></param>
-        public GenericConsumer(string applicationKey, string instanceId = null, string userToken = null)
+        /// <param name="solutionId"></param>
+        public GenericConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
         {
             Environment environment = new Environment();
 
@@ -158,6 +159,11 @@ namespace Sif.Framework.Consumer
             if (!String.IsNullOrWhiteSpace(userToken))
             {
                 environment.UserToken = userToken;
+            }
+
+            if (!String.IsNullOrWhiteSpace(solutionId))
+            {
+                environment.SolutionId = solutionId;
             }
 
             environmentTemplate = BuildEnvironmentTemplate(environment);

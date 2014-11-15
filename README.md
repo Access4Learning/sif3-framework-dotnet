@@ -160,3 +160,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **Oct 20, 2014 - 0.15.1 Added training exercise document**
 
 - Added the Training Exercises (US) document.
+
+**Nov 15, 2014 - 0.16.0 Handle payload-free POST requests for Environment**
+
+- Implement the ability to handle payload-free POST requests for the EnvironmentsController (Simple SIF).
+- Upgrade the GenericConsumer to take a solutionId.
+- Improved logging of error messages.
+- Added the Training Exercises (AU) document.

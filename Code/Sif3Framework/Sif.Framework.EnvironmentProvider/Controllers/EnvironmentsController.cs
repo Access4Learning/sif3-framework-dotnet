@@ -31,9 +31,17 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         // POST api/{controller}
         [HttpPost]
         [Route("api/environments/environment")]
-        public override HttpResponseMessage Create(environmentType item)
+        public override HttpResponseMessage Create
+            (environmentType item,
+             string authenticationMethod = null,
+             string consumerName = null,
+             string solutionId = null,
+             string dataModelNamespace = null,
+             string supportedInfrastructureVersion = null,
+             string transport = null,
+             string productName = null)
         {
-            return base.Create(item);
+            return base.Create(item, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
         }
 
     }
