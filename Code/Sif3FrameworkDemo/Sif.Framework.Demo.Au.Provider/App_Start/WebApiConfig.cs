@@ -15,6 +15,12 @@ namespace Sif.Framework.Demo.Au.Provider
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "UriPathExtensionApi",
+                routeTemplate: "api/{controller}.{ext}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }

@@ -167,3 +167,8 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Upgrade the GenericConsumer to take a solutionId.
 - Improved logging of error messages.
 - Added the Training Exercises (AU) document.
+
+**Dec 22, 2014 - 0.16.1 Added documentation for URL postfix extensions**
+
+- Added documentation to explain how to specify MIME Types using URL postfix extensions (Simple SIF).
+- Enabled URL postfix extensions for MIME Types in the demo AU Provider.
