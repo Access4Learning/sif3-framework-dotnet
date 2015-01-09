@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -152,6 +154,13 @@ namespace Sif.Framework.Controller
         /// POST api/environments/environment
         /// </summary>
         /// <param name="item">Object to create.</param>
+        /// <param name="authenticationMethod">Authentication method.</param>
+        /// <param name="consumerName">Consumer name.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="dataModelNamespace">Data model namespace.</param>
+        /// <param name="supportedInfrastructureVersion">Supported infrastructure version.</param>
+        /// <param name="transport">Transport.</param>
+        /// <param name="productName">Product name.</param>
         /// <returns>HTTP response message indicating success or failure.</returns>
         [HttpPost]
         [Route("api/environments/environment")]
@@ -165,32 +174,35 @@ namespace Sif.Framework.Controller
              string transport = null,
              string productName = null)
         {
+            HttpResponseMessage responseMessage = null;
             string initialToken;
 
             if (!VerifyInitialAuthorisationHeader(Request.Headers.Authorization, out initialToken))
             {
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                string errorMessage = "The POST request failed for Environment creation due to invalid authentication credentials.";
+                responseMessage = HttpUtils.CreateErrorResponse(Request, HttpStatusCode.Unauthorized, errorMessage);
             }
-
-            if (item == null)
+            else
             {
-                item = CreateDefaultEnvironmentType(initialToken, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
-            }
 
-            HttpResponseMessage responseMessage = null;
+                if (item == null)
+                {
+                    item = CreateDefaultEnvironmentType(initialToken, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
+                }
 
-            try
-            {
-                Guid id = service.Create(item);
-                environmentType newItem = service.Retrieve(id);
-                responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
-                //string uri = Url.Link("DefaultApi", new { id = id });
-                //responseMessage.Headers.Location = new Uri(uri);
-            }
-            catch (Exception e)
-            {
-                string errorMessage = "The POST request failed for Environment due to the following error:\n " + e.Message;
-                responseMessage = Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
+                try
+                {
+                    Guid id = service.Create(item);
+                    environmentType newItem = service.Retrieve(id);
+                    responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
+                    //string uri = Url.Link("DefaultApi", new { id = id });
+                    //responseMessage.Headers.Location = new Uri(uri);
+                }
+                catch (AlreadyExistsException e)
+                {
+                    responseMessage = HttpUtils.CreateErrorResponse(Request, HttpStatusCode.Conflict, e);
+                }
+
             }
 
             return responseMessage;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,10 @@
  */
 
 using log4net;
+using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 
@@ -170,6 +172,31 @@ namespace Sif.Framework.Utils
         public static string PutRequest(string url, string authorisationToken, string body)
         {
             return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body);
+        }
+
+        /// <summary>
+        /// This method will additionally add the exception message to the reason phrase of the error response.
+        /// <see cref="System.Net.Http.HttpRequestMessageExtensions.CreateErrorResponse(System.Net.HttpStatusCode, System.Exception)"/>
+        /// </summary>
+        public static HttpResponseMessage CreateErrorResponse(HttpRequestMessage request, HttpStatusCode httpStatusCode, Exception exception)
+        {
+            string exceptionMessage = (exception.Message == null ? "" : exception.Message.Trim());
+            HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, exception);
+            // The ReasonPhrase may not contain new line characters.
+            response.ReasonPhrase = StringUtils.RemoveNewLines(exceptionMessage);
+            return response;
+        }
+
+        /// <summary>
+        /// This method will additionally add the message specified to the reason phrase of the error response.
+        /// <see cref="System.Net.Http.HttpRequestMessageExtensions.CreateErrorResponse(System.Net.HttpStatusCode, System.String)"/>
+        /// </summary>
+        public static HttpResponseMessage CreateErrorResponse(HttpRequestMessage request, HttpStatusCode httpStatusCode, string message)
+        {
+            HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, message);
+            // The ReasonPhrase may not contain new line characters.
+            response.ReasonPhrase = StringUtils.RemoveNewLines(message);
+            return response;
         }
 
     }

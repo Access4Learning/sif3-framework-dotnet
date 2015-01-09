@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 using log4net;
 using Sbp.Framework.Service.Consumer;
 using Sif.Framework.Demo.Au.DataModel;
+using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,7 @@ namespace Sif.Framework.Demo.Au.Consumer
         {
             IStudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer("Sif3DemoApp");
             studentPersonalConsumer.Register();
+            if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
@@ -110,6 +112,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             finally
             {
                 studentPersonalConsumer.Unregister();
+                if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
             }
 
         }
@@ -121,7 +124,16 @@ namespace Sif.Framework.Demo.Au.Consumer
         static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();
-            app.RunStudentPersonalConsumer();
+
+            try
+            {
+                app.RunStudentPersonalConsumer();
+            }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the StudentPersonal Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
+            
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
         }

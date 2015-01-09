@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
@@ -21,7 +22,6 @@ using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Infrastructure
@@ -133,7 +133,7 @@ namespace Sif.Framework.Service.Infrastructure
             {
                 string errorMessage = String.Format("Environment with application key of {0}, solution ID of {1}, instance ID of {2} and user token of {3} does NOT exist.",
                     item.applicationInfo.applicationKey, (item.solutionId == null ? "[null]" : item.solutionId), (item.instanceId == null ? "[null]" : item.instanceId), (item.userToken == null ? "[null]" : item.userToken));
-                throw new DataException(errorMessage);
+                throw new AlreadyExistsException(errorMessage);
             }
 
             string sessionToken = AuthenticationUtils.GenerateSessionToken(item.applicationInfo.applicationKey, item.instanceId, item.userToken, item.solutionId);
@@ -144,7 +144,7 @@ namespace Sif.Framework.Service.Infrastructure
             {
                 string errorMessage = String.Format("A session token already exists for environment with application key of {0}, solution ID of {1}, instance ID of {2} and user token of {3}.",
                     item.applicationInfo.applicationKey, (item.solutionId == null ? "[null]" : item.solutionId), (item.instanceId == null ? "[null]" : item.instanceId), (item.userToken == null ? "[null]" : item.userToken));
-                throw new DataException(errorMessage);
+                throw new AlreadyExistsException(errorMessage);
             }
 
             IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);

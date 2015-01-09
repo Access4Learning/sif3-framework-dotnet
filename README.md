@@ -172,3 +172,11 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 - Added documentation to explain how to specify MIME Types using URL postfix extensions (Simple SIF).
 - Enabled URL postfix extensions for MIME Types in the demo AU Provider.
+
+**Jan 09, 2015 - 0.17.0 Improved exception handling and logging**
+
+- Added exception classes to better manage exception handling and information.
+- Implemented global error handling guidelines for Web API 2 - handlers and loggers.
+- Added utility classes to help collate and extract error information from response messages.
+- Updated the ConsumerApp to display more meaningful error details.
+- Updated the EnvironmentsController to support better error messages.

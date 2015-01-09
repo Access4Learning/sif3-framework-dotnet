@@ -83,6 +83,7 @@
     <Compile Include="Controller\EnvironmentsController.cs" />
     <Compile Include="Controller\GenericController.cs" />
     <Compile Include="Controller\SifController.cs" />
+    <Compile Include="Model\Exceptions\BaseException.cs" />
     <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
     <Compile Include="Model\Infrastructure\ApplicationRegister.cs" />
     <Compile Include="Model\Infrastructure\Environment.cs" />
@@ -124,9 +125,14 @@
     <Compile Include="Service\Infrastructure\IEnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\IEnvironmentService.cs" />
     <Compile Include="Service\Mapper\MapperFactory.cs" />
+    <Compile Include="Model\Exceptions\AlreadyExistsException.cs" />
     <Compile Include="Utils\AuthenticationUtils.cs" />
+    <Compile Include="Utils\ExceptionUtils.cs" />
+    <Compile Include="Utils\GlobalUnexpectedExceptionHandler.cs" />
     <Compile Include="Utils\HttpUtils.cs" />
     <Compile Include="Service\Serialisation\SerialiserFactory.cs" />
+    <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\TraceExceptionLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml">
