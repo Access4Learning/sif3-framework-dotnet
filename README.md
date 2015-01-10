@@ -180,3 +180,8 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Added utility classes to help collate and extract error information from response messages.
 - Updated the ConsumerApp to display more meaningful error details.
 - Updated the EnvironmentsController to support better error messages.
+
+**Jan 10, 2015 - 0.17.1 Simplified demo project to make it more intuitive**
+
+- Based on feedback, deleted the SbpFramework Solution and instead incorporated its code into the Sif3FrameworkDemo Solution to reduce complexity and confusion.
+- Based on feedback, removed shared code (projects) from the Sif3FrameworkDemo Solution to better reflect implementations where Consumers and Providers are developed by different vendors.

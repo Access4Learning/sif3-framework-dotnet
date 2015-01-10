@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-using Sbp.Framework.Model;
-using Sif.Framework.Consumer;
-
-namespace Sbp.Framework.Service.Consumer
+namespace Sif.Framework.Demo.Au.Consumer.Models
 {
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IStudentPersonalConsumer : IGenericConsumer<StudentPersonal, string>
-    {
-    }
+    public enum NameType { LGL }
 
 }

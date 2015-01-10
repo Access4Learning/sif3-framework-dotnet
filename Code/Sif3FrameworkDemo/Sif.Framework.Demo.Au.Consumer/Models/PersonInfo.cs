@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-using Sbp.Framework.Model;
-using Sif.Framework.Consumer;
+using Sif.Framework.Model.Persistence;
+using System.Xml.Serialization;
 
-namespace Sbp.Framework.Service.Consumer
+namespace Sif.Framework.Demo.Au.Consumer.Models
 {
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ISchoolInfoConsumer : IGenericConsumer<SchoolInfo, string>
+    public partial class PersonInfo : IPersistable<long>
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [XmlIgnoreAttribute]
+        public virtual long Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual Name Name { get; set; }
+
     }
 
 }

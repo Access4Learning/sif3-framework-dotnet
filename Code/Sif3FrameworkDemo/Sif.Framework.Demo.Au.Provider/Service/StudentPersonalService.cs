@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.Au.DataModel;
-using Sif.Framework.Demo.Common.Utils;
+using Sif.Framework.Demo.Au.Provider.Models;
+using Sif.Framework.Demo.Au.Provider.Utils;
 using Sif.Framework.Service;
+using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
 
@@ -37,8 +38,8 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <returns></returns>
         private static StudentPersonal CreateStudent()
         {
-            Name name = new Name { Type = NameType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
-            PersonInfo personInfo = new PersonInfo { Name = name };
+            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
+            PersonInfoType personInfo = new PersonInfoType { Name = name };
             StudentPersonal studentPersonal = new StudentPersonal { Id = Guid.NewGuid(), LocalId = random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
 
             return studentPersonal;

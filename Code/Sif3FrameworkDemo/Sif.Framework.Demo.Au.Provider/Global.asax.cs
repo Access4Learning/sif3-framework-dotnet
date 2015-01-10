@@ -1,4 +1,4 @@
-﻿using Sif.Framework.Demo.Au.DataModel;
+﻿using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Service.Serialisation;
 using System.Collections.Generic;
 using System.Net.Http.Formatting;
@@ -22,8 +22,8 @@ namespace Sif.Framework.Demo.Au.Provider
             ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(new XmlRootAttribute("StudentPersonals"));
             formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
 
-            ISerialiser<List<Sbp.Framework.Model.SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<Sbp.Framework.Model.SchoolInfo>>(new XmlRootAttribute("SchoolInfos"));
-            formatter.SetSerializer<List<Sbp.Framework.Model.SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+            ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(new XmlRootAttribute("SchoolInfos"));
+            formatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
 
             // Alternative 1.
             //formatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), new XmlRootAttribute("StudentPersonals")));

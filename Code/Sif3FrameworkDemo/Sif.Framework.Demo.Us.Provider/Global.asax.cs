@@ -1,4 +1,4 @@
-﻿using Sif.Framework.Demo.Us.DataModel;
+﻿using Sif.Framework.Demo.Us.Provider.Models;
 using Sif.Framework.Service.Serialisation;
 using System.Collections.Generic;
 using System.Net.Http.Formatting;

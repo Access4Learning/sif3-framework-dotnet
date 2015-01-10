@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.Common.Utils;
-using Sif.Framework.Demo.Us.DataModel;
+using Sif.Framework.Demo.Us.Provider.Models;
+using Sif.Framework.Demo.Us.Provider.Utils;
 using Sif.Framework.Service;
 using Sif.Specification.DataModel.Us;
 using System;

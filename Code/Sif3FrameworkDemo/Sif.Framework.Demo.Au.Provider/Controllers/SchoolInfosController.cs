@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Controller;
+using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Service;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
@@ -22,7 +24,7 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
     /// <summary>
     /// 
     /// </summary>
-    public class SchoolInfosController : Sbp.Framework.Service.Provider.SchoolInfosController
+    public class SchoolInfosController : GenericController<SchoolInfo, string>
     {
 
         /// <summary>

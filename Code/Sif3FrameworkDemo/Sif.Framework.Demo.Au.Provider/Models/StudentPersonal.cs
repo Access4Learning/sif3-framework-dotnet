@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,32 +16,40 @@
 
 using Sif.Framework.Model.Persistence;
 using Sif.Specification.DataModel.Au;
+using System;
 using System.Xml.Serialization;
 
-namespace Sbp.Framework.Model
+namespace Sif.Framework.Demo.Au.Provider.Models
 {
 
     /// <summary>
     /// 
     /// </summary>
     [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.3")]
-    [XmlRootAttribute("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
-    public class SchoolInfo : SchoolInfoType, IPersistable<string>
+    [XmlRootAttribute("StudentPersonal", Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
+    public class StudentPersonal : StudentPersonalType, IPersistable<Guid>
     {
 
         /// <summary>
         /// 
         /// </summary>
-        public string Id
+        public Guid Id
         {
 
             get
             {
-                return RefId;
+                Guid id;
+
+                if (!Guid.TryParse(RefId, out id))
+                {
+                    id = Guid.Empty;
+                }
+
+                return id;
             }
             set
             {
-                RefId = value;
+                RefId = value.ToString();
             }
 
         }

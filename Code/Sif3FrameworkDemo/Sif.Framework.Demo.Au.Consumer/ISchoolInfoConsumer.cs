@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,17 @@
  * limitations under the License.
  */
 
-using Sbp.Framework.Model;
-using Sif.Framework.Controller;
-using Sif.Framework.Service;
+using Sif.Framework.Consumer;
+using Sif.Framework.Demo.Au.Consumer.Models;
 
-namespace Sbp.Framework.Service.Provider
+namespace Sif.Framework.Demo.Au.Consumer
 {
 
     /// <summary>
     /// 
     /// </summary>
-    public abstract class SchoolInfosController : GenericController<SchoolInfo, string>
+    public interface ISchoolInfoConsumer : IGenericConsumer<SchoolInfo, string>
     {
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="service"></param>
-        public SchoolInfosController(IGenericService<SchoolInfo, string> service)
-            : base(service)
-        {
-
-        }
-
     }
 
 }

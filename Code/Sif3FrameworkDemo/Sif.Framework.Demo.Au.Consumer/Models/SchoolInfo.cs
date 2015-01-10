@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,35 @@
  * limitations under the License.
  */
 
-using Sbp.Framework.Model;
-using Sif.Framework.Controller;
-using Sif.Framework.Service;
+using Sif.Framework.Model.Persistence;
+using Sif.Specification.DataModel.Au;
+using System.Xml.Serialization;
 
-namespace Sbp.Framework.Service.Provider
+namespace Sif.Framework.Demo.Au.Consumer.Models
 {
 
     /// <summary>
     /// 
     /// </summary>
-    public abstract class StudentPersonalsController : GenericController<StudentPersonal, string>
+    [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.3")]
+    [XmlRootAttribute("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
+    public class SchoolInfo : SchoolInfoType, IPersistable<string>
     {
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="service"></param>
-        public StudentPersonalsController(IGenericService<StudentPersonal, string> service)
-            : base(service)
+        public string Id
         {
+
+            get
+            {
+                return RefId;
+            }
+            set
+            {
+                RefId = value;
+            }
 
         }
 

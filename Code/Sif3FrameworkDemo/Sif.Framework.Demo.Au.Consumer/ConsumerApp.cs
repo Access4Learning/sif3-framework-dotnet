@@ -15,8 +15,7 @@
  */
 
 using log4net;
-using Sbp.Framework.Service.Consumer;
-using Sif.Framework.Demo.Au.DataModel;
+using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
@@ -43,7 +42,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                ICollection<Sbp.Framework.Model.SchoolInfo> schools = schoolInfoConsumer.Retrieve();
+                ICollection<SchoolInfo> schools = schoolInfoConsumer.Retrieve();
             }
             finally
             {

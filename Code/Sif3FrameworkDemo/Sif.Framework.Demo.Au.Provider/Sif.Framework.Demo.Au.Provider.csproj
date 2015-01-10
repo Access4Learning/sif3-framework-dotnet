@@ -59,10 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sbp.Framework, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.17.0\Sbp.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="Sif.Framework, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SharedLibs\Sif.Framework 0.17.0\Sif.Framework.dll</HintPath>
@@ -128,9 +124,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\SchoolInfo.cs" />
+    <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\SchoolInfoService.cs" />
     <Compile Include="Service\StudentPersonalService.cs" />
+    <Compile Include="Utils\RandomNameGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -143,17 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sif.Framework.Demo.Au.DataModel\Sif.Framework.Demo.Au.DataModel.csproj">
-      <Project>{ae40969a-0efe-4329-8355-ac3bf50f374c}</Project>
-      <Name>Sif.Framework.Demo.Au.DataModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sif.Framework.Demo.Common\Sif.Framework.Demo.Common.csproj">
-      <Project>{63e41e0b-6e09-4bd1-bf5f-3c07482c0779}</Project>
-      <Name>Sif.Framework.Demo.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

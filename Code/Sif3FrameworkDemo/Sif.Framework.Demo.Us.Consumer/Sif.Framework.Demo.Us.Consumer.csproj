@@ -51,7 +51,8 @@
     <Reference Include="Sif.Specification.DataModel.Us">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Us 3.2\Sif.Specification.DataModel.Us.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure">
+    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -66,6 +67,7 @@
     <Compile Include="IK12StudentConsumer.cs" />
     <Compile Include="K12StudentConsumer.cs" />
     <Compile Include="ConsumerApp.cs" />
+    <Compile Include="Models\K12Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,12 +77,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sif.Framework.Demo.Us.DataModel\Sif.Framework.Demo.Us.DataModel.csproj">
-      <Project>{a16e7e29-11b4-4fdd-aa87-fc2078d4fa5f}</Project>
-      <Name>Sif.Framework.Demo.Us.DataModel</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">

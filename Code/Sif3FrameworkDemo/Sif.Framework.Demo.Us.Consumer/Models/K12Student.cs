@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
  */
 
 using Sif.Framework.Model.Persistence;
-using Sif.Specification.DataModel.Au;
+using Sif.Specification.DataModel.Us;
 using System.Xml.Serialization;
 
-namespace Sbp.Framework.Model
+namespace Sif.Framework.Demo.Us.Consumer.Models
 {
 
     /// <summary>
     /// 
     /// </summary>
-    [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.3")]
-    [XmlRootAttribute("StudentPersonal", Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
-    public class StudentPersonal : StudentPersonalType, IPersistable<string>
+    [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/datamodel/na/3.2")]
+    [XmlRootAttribute("k12Student", Namespace = "http://www.sifassociation.org/datamodel/na/3.2", IsNullable = false)]
+    public class K12Student : k12StudentType, IPersistable<string>
     {
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace Sbp.Framework.Model
 
             get
             {
-                return RefId;
+                return refId;
             }
             set
             {
-                RefId = value;
+                refId = value;
             }
 
         }
