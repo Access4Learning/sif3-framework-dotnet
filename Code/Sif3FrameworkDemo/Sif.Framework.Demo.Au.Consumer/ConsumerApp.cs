@@ -106,7 +106,11 @@ namespace Sif.Framework.Demo.Au.Consumer
                 {
                     if (log.IsInfoEnabled) log.Info("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                 }
-
+            
+            }
+            catch (Exception)
+            {
+                throw;
             }
             finally
             {

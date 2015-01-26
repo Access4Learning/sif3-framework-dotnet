@@ -1,8 +1,10 @@
 ﻿using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Xml.Serialization;
 
 namespace Sif.Framework.Demo.Au.Provider
@@ -34,6 +36,12 @@ namespace Sif.Framework.Demo.Au.Provider
             //XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             //overrides.Add(typeof(List<StudentPersonal>), attr);
             //formatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), overrides));
+
+            // Configure global exception loggers for unexpected errors.
+            GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
+
+            // Configure a global exception handler for unexpected errors.
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
         }
     }
 }

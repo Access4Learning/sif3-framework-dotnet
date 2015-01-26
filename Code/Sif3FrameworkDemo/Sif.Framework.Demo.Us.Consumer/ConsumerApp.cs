@@ -16,6 +16,7 @@
 
 using log4net;
 using Sif.Framework.Demo.Us.Consumer.Models;
+using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace Sif.Framework.Demo.Us.Consumer
         {
             IK12StudentConsumer studentPersonalConsumer = new K12StudentConsumer("Sif3UsDemoApp");
             studentPersonalConsumer.Register();
+            if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
@@ -87,9 +89,14 @@ namespace Sif.Framework.Demo.Us.Consumer
                 }
 
             }
+            catch (Exception)
+            {
+                throw;
+            }
             finally
             {
                 studentPersonalConsumer.Unregister();
+                if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
             }
 
         }
@@ -101,7 +108,16 @@ namespace Sif.Framework.Demo.Us.Consumer
         static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();
-            app.RunK12StudentConsumer();
+
+            try
+            {
+                app.RunK12StudentConsumer();
+            }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the K12Student Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
+
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
         }

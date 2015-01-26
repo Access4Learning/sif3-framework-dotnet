@@ -1,8 +1,10 @@
 ﻿using Sif.Framework.Demo.Us.Provider.Models;
 using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Xml.Serialization;
 
 namespace Sif.Framework.Demo.Us.Provider
@@ -18,6 +20,12 @@ namespace Sif.Framework.Demo.Us.Provider
 
             ISerialiser<List<K12Student>> k12StudentsSerialiser = SerialiserFactory.GetXmlSerialiser<List<K12Student>>(new XmlRootAttribute("K12Students"));
             formatter.SetSerializer<List<K12Student>>((XmlSerializer)k12StudentsSerialiser);
+
+            // Configure global exception loggers for unexpected errors.
+            GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
+
+            // Configure a global exception handler for unexpected errors.
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
         }
     }
 }

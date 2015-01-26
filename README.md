@@ -185,3 +185,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 - Based on feedback, deleted the SbpFramework Solution and instead incorporated its code into the Sif3FrameworkDemo Solution to reduce complexity and confusion.
 - Based on feedback, removed shared code (projects) from the Sif3FrameworkDemo Solution to better reflect implementations where Consumers and Providers are developed by different vendors.
+
+**Jan 26, 2015 - 0.17.2 Fixed urgent issue with demo AU Consumer**
+
+- Fixed an issue introduced in version 0.17.0 whereby the demo AU Consumer referenced a non-existant file - SifFramework.brokered.config.
+- Updated the demo AU Consumer and Provider to better reflect exception handling and logging enhancements in the SifFramework library.
+- Updated the demo US Consumer and Provider to match the changes in the AU versions.
