@@ -1,7 +1,9 @@
 ﻿using Sif.Framework.Demo.Au.Provider.Models;
+using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
@@ -11,6 +13,16 @@ namespace Sif.Framework.Demo.Au.Provider
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private IRegistrationService registrationService;
+        private void Register()
+        {
+            registrationService = RegistrationManager.ProviderRegistrationService;
+            registrationService.Register();
+        }
+        private void Unregister()
+        {
+            registrationService.Unregister();
+        }
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -42,6 +54,14 @@ namespace Sif.Framework.Demo.Au.Provider
 
             // Configure a global exception handler for unexpected errors.
             GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
+
+            Trace.TraceInformation("********** Application_Start **********");
+            Register();
+        }
+        protected void Application_End(object sender, System.EventArgs e)
+        {
+            Trace.TraceInformation("********** Application_End **********");
+            Unregister();
         }
     }
 }

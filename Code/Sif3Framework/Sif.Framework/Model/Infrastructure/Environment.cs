@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,6 +87,47 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual EnvironmentType Type { get; set; }
 
         public virtual string UserToken { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Environment()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="applicationKey"></param>
+        /// <param name="instanceId"></param>
+        /// <param name="userToken"></param>
+        /// <param name="solutionId"></param>
+        public Environment(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+        {
+
+            if (!String.IsNullOrWhiteSpace(applicationKey))
+            {
+                ApplicationInfo = new ApplicationInfo();
+                ApplicationInfo.ApplicationKey = applicationKey;
+            }
+
+            if (!String.IsNullOrWhiteSpace(instanceId))
+            {
+                InstanceId = instanceId;
+            }
+
+            if (!String.IsNullOrWhiteSpace(userToken))
+            {
+                UserToken = userToken;
+            }
+
+            if (!String.IsNullOrWhiteSpace(solutionId))
+            {
+                SolutionId = solutionId;
+            }
+
+        }
 
     }
 

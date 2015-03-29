@@ -177,7 +177,7 @@ namespace Sif.Framework.Controller
             HttpResponseMessage responseMessage = null;
             string initialToken;
 
-            if (!VerifyInitialAuthorisationHeader(Request.Headers.Authorization, out initialToken))
+            if (!authService.VerifyInitialAuthenticationHeader(Request.Headers.Authorization, out initialToken))
             {
                 string errorMessage = "The POST request failed for Environment creation due to invalid authentication credentials.";
                 responseMessage = HttpUtils.CreateErrorResponse(Request, HttpStatusCode.Unauthorized, errorMessage);

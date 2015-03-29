@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,24 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Persistence.NHibernate;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.Service.Infrastructure
 {
 
-    interface IApplicationRegisterService : IGenericService<ApplicationRegister, long>
+    public class ApplicationRegisterService : GenericService<ApplicationRegister, long>, IApplicationRegisterService
     {
 
-        ApplicationRegister RetrieveByApplicationKey(string applicationKey);
+        public ApplicationRegisterService()
+            : base(new ApplicationRegisterRepository())
+        {
+
+        }
+
+        public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
+        {
+            return ((ApplicationRegisterRepository)repository).RetrieveByApplicationKey(applicationKey);
+        }
 
     }
 

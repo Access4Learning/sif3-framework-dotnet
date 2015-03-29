@@ -87,7 +87,10 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <returns></returns>
         public Guid Create(StudentPersonal obj)
         {
-            throw new NotImplementedException();
+            Guid id = Guid.NewGuid();
+            obj.Id = id;
+            studentsCache.Add(id, obj);
+            return id;
         }
 
         /// <summary>

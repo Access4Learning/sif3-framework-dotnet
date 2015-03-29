@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
+using Sif.Framework.Service.Authentication;
+using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -30,8 +33,9 @@ namespace Sif.Framework.Controller
     /// </summary>
     /// <typeparam name="T">Type of object managed by the Controller.</typeparam>
     /// <typeparam name="PK">Primary key type of the object.</typeparam>
-    public abstract class GenericController<T, PK> : BaseController where T : IPersistable<PK>, new()
+    public abstract class GenericController<T, PK> : ApiController where T : IPersistable<PK>
     {
+        protected IAuthenticationService authService; 
         protected IGenericService<T, PK> service;
 
         /// <summary>
@@ -41,6 +45,16 @@ namespace Sif.Framework.Controller
         public GenericController(IGenericService<T, PK> service)
         {
             this.service = service;
+
+            if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
+            {
+                authService = new DirectAuthenticationService();
+            }
+            else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
+            {
+                authService = new BrokeredAuthenticationService();
+            }
+
         }
 
         /// <summary>
@@ -50,7 +64,7 @@ namespace Sif.Framework.Controller
         public virtual void Delete(PK id)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -71,7 +85,7 @@ namespace Sif.Framework.Controller
             }
             catch (Exception e)
             {
-                string errorMessage = "The DELETE request failed for a " + (new T()).GetType().Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                string errorMessage = "The DELETE request failed for a " + typeof(T).Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
@@ -94,7 +108,7 @@ namespace Sif.Framework.Controller
         public virtual T Get(PK id)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -107,7 +121,7 @@ namespace Sif.Framework.Controller
             }
             catch (Exception e)
             {
-                string errorMessage = "The GET request failed for a " + (new T()).GetType().Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                string errorMessage = "The GET request failed for a " + typeof(T).Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
@@ -126,7 +140,7 @@ namespace Sif.Framework.Controller
         public virtual List<T> Get()
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -139,7 +153,7 @@ namespace Sif.Framework.Controller
             }
             catch (Exception e)
             {
-                string errorMessage = "The GET request failed for " + (new T()).GetType().Name + " due to the following error:\n " + e.Message;
+                string errorMessage = "The GET request failed for " + typeof(T).Name + " due to the following error:\n " + e.Message;
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
@@ -154,7 +168,7 @@ namespace Sif.Framework.Controller
         public virtual HttpResponseMessage Post(T item)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -164,13 +178,14 @@ namespace Sif.Framework.Controller
             try
             {
                 PK id = service.Create(item);
-                responseMessage = Request.CreateResponse<T>(HttpStatusCode.Created, item);
-                string uri = Url.Link("DefaultApi", new { id = id });
-                responseMessage.Headers.Location = new Uri(uri);
+                T newItem = service.Retrieve(id);
+                responseMessage = Request.CreateResponse<T>(HttpStatusCode.Created, newItem);
+                //string uri = Url.Link("DefaultApi", new { id = id });
+                //responseMessage.Headers.Location = new Uri(uri);
             }
             catch (Exception e)
             {
-                string errorMessage = "The POST request failed for " + (new T()).GetType().Name + " due to the following error:\n " + e.Message;
+                string errorMessage = "The POST request failed for " + typeof(T).Name + " due to the following error:\n " + e.Message;
                 responseMessage = Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
@@ -195,7 +210,7 @@ namespace Sif.Framework.Controller
         public virtual void Put(PK id, T item)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -225,7 +240,7 @@ namespace Sif.Framework.Controller
             }
             catch (Exception e)
             {
-                string errorMessage = "The PUT request failed for a " + (new T()).GetType().Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                string errorMessage = "The PUT request failed for a " + typeof(T).Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 

@@ -88,7 +88,10 @@ namespace Sif.Framework.Demo.Us.Provider.Service
         /// <returns></returns>
         public string Create(K12Student obj)
         {
-            throw new NotImplementedException();
+            string id = Guid.NewGuid().ToString();
+            obj.Id = id;
+            studentsCache.Add(id, obj);
+            return id;
         }
 
         /// <summary>

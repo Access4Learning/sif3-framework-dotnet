@@ -17,6 +17,8 @@
 using Sif.Framework.Controller;
 using Sif.Framework.Demo.Us.Provider.Models;
 using Sif.Framework.Demo.Us.Provider.Service;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace Sif.Framework.Demo.Us.Provider.Controllers
 {
@@ -34,6 +36,17 @@ namespace Sif.Framework.Demo.Us.Provider.Controllers
             : base(new K12StudentService())
         {
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        [Route("api/K12Students/K12Student")]
+        public virtual HttpResponseMessage Post(K12Student item)
+        {
+            return base.Post(item);
         }
 
     }

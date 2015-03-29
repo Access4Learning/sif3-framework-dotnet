@@ -75,6 +75,15 @@ namespace Sif.Framework.Demo.Au.Consumer
                 StudentPersonal firstStudent = studentPersonalConsumer.Retrieve(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
 
+                // Create and then retrieve a new student.
+                Name newStudentName = new Name() { FamilyName = "Wayne", GivenName = "Bruce", Type = NameType.LGL };
+                PersonInfo newStudentInfo = new PersonInfo() { Name = newStudentName };
+                StudentPersonal newStudent = new StudentPersonal() { LocalId = "555", PersonInfo = newStudentInfo };
+                Guid newStudentId = studentPersonalConsumer.Create(newStudent);
+                if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.PersonInfo.Name.GivenName + " " + newStudent.PersonInfo.Name.FamilyName);
+                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Retrieve(newStudentId);
+                if (log.IsInfoEnabled) log.Info("Retrieved new student " + retrievedNewStudent.PersonInfo.Name.GivenName + " " + retrievedNewStudent.PersonInfo.Name.FamilyName);
+
                 // Update that student and confirm.
                 firstStudent.PersonInfo.Name.GivenName = "Homer";
                 firstStudent.PersonInfo.Name.FamilyName = "Simpson";

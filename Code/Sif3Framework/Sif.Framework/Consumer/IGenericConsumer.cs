@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,23 +36,24 @@ namespace Sif.Framework.Consumer
         /// <summary>
         /// This method should be called on completion.
         /// </summary>
-        void Unregister();
+        /// <param name="deleteOnUnregister">True to remove session data on unregister; false to leave session data.</param>
+        void Unregister(bool? deleteOnUnregister = null);
 
         /// <summary>
-        /// 
+        /// POST /StudentPersonals/StudentPersonal
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         PK Create(T obj);
 
         /// <summary>
-        /// 
+        /// POST /StudentPersonals
         /// </summary>
         /// <param name="objs"></param>
         void Create(IEnumerable<T> objs);
 
         /// <summary>
-        /// 
+        /// DELETE /StudentPersonals/{id}
         /// </summary>
         /// <param name="id"></param>
         void Delete(PK id);
@@ -64,26 +65,26 @@ namespace Sif.Framework.Consumer
         void Delete(IEnumerable<T> objs);
 
         /// <summary>
-        /// 
+        /// GET /StudentPersonals/{id}
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         T Retrieve(PK id);
 
         /// <summary>
-        /// 
+        /// GET /StudentPersonals
         /// </summary>
         /// <returns></returns>
         ICollection<T> Retrieve();
 
         /// <summary>
-        /// 
+        /// PUT /StudentPersonals/{id}
         /// </summary>
         /// <param name="obj"></param>
         void Update(T obj);
 
         /// <summary>
-        /// 
+        /// PUT /StudentPersonals
         /// </summary>
         /// <param name="objs"></param>
         void Update(IEnumerable<T> objs);

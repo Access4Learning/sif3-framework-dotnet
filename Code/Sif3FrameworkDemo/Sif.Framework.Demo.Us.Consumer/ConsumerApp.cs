@@ -17,6 +17,7 @@
 using log4net;
 using Sif.Framework.Demo.Us.Consumer.Models;
 using Sif.Framework.Utils;
+using Sif.Specification.DataModel.Us;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,14 +38,14 @@ namespace Sif.Framework.Demo.Us.Consumer
         /// </summary>
         void RunK12StudentConsumer()
         {
-            IK12StudentConsumer studentPersonalConsumer = new K12StudentConsumer("Sif3UsDemoApp");
-            studentPersonalConsumer.Register();
+            IK12StudentConsumer studentConsumer = new K12StudentConsumer("Sif3UsDemoApp");
+            studentConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
                 // Retrieve all students.
-                ICollection<K12Student> students = studentPersonalConsumer.Retrieve();
+                ICollection<K12Student> students = studentConsumer.Retrieve();
 
                 foreach (K12Student student in students)
                 {
@@ -53,19 +54,29 @@ namespace Sif.Framework.Demo.Us.Consumer
 
                 // Retrieve a single student.
                 string studentId = students.ElementAt(0).Id;
-                K12Student firstStudent = studentPersonalConsumer.Retrieve(studentId);
+                K12Student firstStudent = studentConsumer.Retrieve(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName);
+
+                // Create and then retrieve a new student.
+                k12StudentTypeIdentityIdentification newStudentIdentifier = new k12StudentTypeIdentityIdentification() { studentId = "555" };
+                k12StudentTypeIdentityName newStudentName = new k12StudentTypeIdentityName() { lastName = "Wayne", firstName = "Bruce" };
+                k12StudentTypeIdentity newStudentIdentity = new k12StudentTypeIdentity() { identification = newStudentIdentifier, name = newStudentName };
+                K12Student newStudent = new K12Student() { identity = newStudentIdentity };
+                string newStudentId = studentConsumer.Create(newStudent);
+                if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.identity.name.firstName + " " + newStudent.identity.name.lastName);
+                K12Student retrievedNewStudent = studentConsumer.Retrieve(newStudentId);
+                if (log.IsInfoEnabled) log.Info("Retrieved new student " + retrievedNewStudent.identity.name.firstName + " " + retrievedNewStudent.identity.name.lastName);
 
                 // Update that student and confirm.
                 firstStudent.identity.name.firstName = "Homer";
                 firstStudent.identity.name.lastName = "Simpson";
-                studentPersonalConsumer.Update(firstStudent);
-                firstStudent = studentPersonalConsumer.Retrieve(studentId);
+                studentConsumer.Update(firstStudent);
+                firstStudent = studentConsumer.Retrieve(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of first student has been changed to " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName);
 
                 // Delete that student and confirm.
-                studentPersonalConsumer.Delete(studentId);
-                students = studentPersonalConsumer.Retrieve();
+                studentConsumer.Delete(studentId);
+                students = studentConsumer.Retrieve();
                 bool studentDeleted = true;
 
                 foreach (K12Student student in students)
@@ -95,7 +106,7 @@ namespace Sif.Framework.Demo.Us.Consumer
             }
             finally
             {
-                studentPersonalConsumer.Unregister();
+                studentConsumer.Unregister();
                 if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
             }
 

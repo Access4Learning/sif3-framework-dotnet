@@ -191,3 +191,11 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fixed an issue introduced in version 0.17.0 whereby the demo AU Consumer referenced a non-existant file - SifFramework.brokered.config.
 - Updated the demo AU Consumer and Provider to better reflect exception handling and logging enhancements in the SifFramework library.
 - Updated the demo US Consumer and Provider to match the changes in the AU versions.
+
+**Mar 29, 2015 - 0.18.0 Added ability to connect to a SIF Broker**
+
+- Updated the GenericConsumer to allow registration to a SIF Broker, as well as (direct) to an Environment Provider.
+- Updated the GenericController to allow creation of Service Providers that can connect to a SIF Broker, as well as run (directly) as an Environment/Service Provider.
+- Added functionality for Consumers and Providers to store the session token (received after service registration) locally so that state can be maintained between Consumer and Provider sessions.
+- Improved exception handling and logging in the SifFramework library.
+- Updated the demo Consumers and Providers to reflect these changes.

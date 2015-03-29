@@ -18,6 +18,8 @@ using Sif.Framework.Controller;
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Service;
 using System;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
@@ -35,6 +37,17 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
             : base(new StudentPersonalService())
         {
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        [Route("api/StudentPersonals/StudentPersonal")]
+        public virtual HttpResponseMessage Post(StudentPersonal item)
+        {
+            return base.Post(item);
         }
 
     }

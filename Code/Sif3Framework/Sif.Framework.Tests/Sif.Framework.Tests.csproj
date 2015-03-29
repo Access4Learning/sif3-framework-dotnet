@@ -75,6 +75,7 @@
     <Compile Include="Service\Mapper\MapperFactoryTest.cs" />
     <Compile Include="Utils\SerialisationUtilsTest.cs" />
     <Compile Include="Utils\AuthenticationUtilsTest.cs" />
+    <Compile Include="Utils\SettingsManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj">
@@ -103,6 +104,10 @@
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="SifFramework.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Choose>

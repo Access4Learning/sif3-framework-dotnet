@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
+using Sif.Framework.Service.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -30,10 +31,11 @@ namespace Sif.Framework.Controller
     /// </summary>
     /// <typeparam name="UI">Object type exposed at the presentation/API layer.</typeparam>
     /// <typeparam name="DB">Object type used in the business layer.</typeparam>
-    public abstract class SifController<UI, DB> : BaseController
+    public abstract class SifController<UI, DB> : ApiController
         where UI : new()
         where DB : IPersistable<Guid>, new()
     {
+        protected IAuthenticationService authService;
         protected ISifService<UI, DB> service;
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace Sif.Framework.Controller
         public SifController(ISifService<UI, DB> service)
         {
             this.service = service;
+            authService = new DirectAuthenticationService();
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace Sif.Framework.Controller
         public virtual void Delete(Guid id)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -71,9 +74,10 @@ namespace Sif.Framework.Controller
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The DELETE request failed for a " + typeof(UI).Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
         }
@@ -86,7 +90,7 @@ namespace Sif.Framework.Controller
         public virtual UI Get(Guid id)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -97,9 +101,10 @@ namespace Sif.Framework.Controller
             {
                 item = service.Retrieve(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The GET request failed for a " + typeof(UI).Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
             if (item == null)
@@ -117,7 +122,7 @@ namespace Sif.Framework.Controller
         public virtual ICollection<UI> Get()
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -128,9 +133,10 @@ namespace Sif.Framework.Controller
             {
                 items = service.Retrieve();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The GET request failed for " + typeof(UI).Name + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
             return items;
@@ -144,7 +150,7 @@ namespace Sif.Framework.Controller
         public virtual HttpResponseMessage Post(UI item)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -154,13 +160,15 @@ namespace Sif.Framework.Controller
             try
             {
                 Guid id = service.Create(item);
-                responseMessage = Request.CreateResponse<UI>(HttpStatusCode.Created, item);
-                string uri = Url.Link("DefaultApi", new { id = id });
-                responseMessage.Headers.Location = new Uri(uri);
+                UI newItem = service.Retrieve(id);
+                responseMessage = Request.CreateResponse<UI>(HttpStatusCode.Created, newItem);
+                //string uri = Url.Link("DefaultApi", new { id = id });
+                //responseMessage.Headers.Location = new Uri(uri);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest);
+                string errorMessage = "The POST request failed for " + typeof(UI).Name + " due to the following error:\n " + e.Message;
+                responseMessage = Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
             return responseMessage;
@@ -174,7 +182,7 @@ namespace Sif.Framework.Controller
         public virtual void Put(Guid id, UI item)
         {
 
-            if (!VerifyAuthorisationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -202,9 +210,10 @@ namespace Sif.Framework.Controller
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                string errorMessage = "The PUT request failed for a " + typeof(UI).Name + " with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
         }
