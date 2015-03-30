@@ -199,3 +199,8 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Added functionality for Consumers and Providers to store the session token (received after service registration) locally so that state can be maintained between Consumer and Provider sessions.
 - Improved exception handling and logging in the SifFramework library.
 - Updated the demo Consumers and Providers to reflect these changes.
+
+**Mar 30, 2015 - 0.18.1 Updated documentation to reflect recent changes**
+
+- Updated the US Provider project with configuration changes that should have been made in the last submission.
+- Updated all documentation to reflect recent changes. Documentation on SIF Broker integration is still incomplete.
