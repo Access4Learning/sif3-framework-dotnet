@@ -124,6 +124,23 @@ namespace Sif.Framework.Demo.Us.Provider.Service
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public K12Student Retrieve(string id)
+        {
+            K12Student student;
+
+            if (!studentsCache.TryGetValue(id, out student))
+            {
+                student = null;
+            }
+
+            return student;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public ICollection<K12Student> Retrieve()
         {
@@ -145,18 +162,33 @@ namespace Sif.Framework.Demo.Us.Provider.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public K12Student Retrieve(string id)
+        public ICollection<K12Student> Retrieve(int pageIndex, int pageSize)
         {
-            K12Student student;
+            List<K12Student> allStudents = new List<K12Student>();
+            allStudents.AddRange(studentsCache.Values);
+            List<K12Student> retrievedStudents = new List<K12Student>();
 
-            if (!studentsCache.TryGetValue(id, out student))
+            int index = pageIndex * pageSize;
+            int count = pageSize;
+
+            if (studentsCache.Values.Count < (index + count))
             {
-                student = null;
+                count = studentsCache.Values.Count - index;
+            }
+            else
+            {
+                count = pageSize;
             }
 
-            return student;
+            if (index <= studentsCache.Values.Count)
+            {
+                retrievedStudents = allStudents.GetRange(index, count);
+            }
+
+            return retrievedStudents;
         }
 
         /// <summary>

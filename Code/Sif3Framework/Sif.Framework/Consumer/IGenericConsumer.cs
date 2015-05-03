@@ -78,6 +78,12 @@ namespace Sif.Framework.Consumer
         ICollection<T> Retrieve();
 
         /// <summary>
+        /// GET /StudentPersonals
+        /// </summary>
+        /// <returns></returns>
+        ICollection<T> Retrieve(int navigationPage, int navigationPageSize);
+
+        /// <summary>
         /// PUT /StudentPersonals/{id}
         /// </summary>
         /// <param name="obj"></param>

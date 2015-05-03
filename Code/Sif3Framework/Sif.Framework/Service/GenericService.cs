@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,14 +60,19 @@ namespace Sif.Framework.Service
             return repository.Retrieve(id);
         }
 
+        public virtual ICollection<T> Retrieve()
+        {
+            return repository.Retrieve();
+        }
+
         public virtual ICollection<T> Retrieve(T obj)
         {
             return repository.Retrieve(obj);
         }
 
-        public virtual ICollection<T> Retrieve()
+        public virtual ICollection<T> Retrieve(int pageIndex, int pageSize)
         {
-            return repository.Retrieve();
+            return repository.Retrieve(pageIndex, pageSize);
         }
 
         public virtual void Update(T obj)

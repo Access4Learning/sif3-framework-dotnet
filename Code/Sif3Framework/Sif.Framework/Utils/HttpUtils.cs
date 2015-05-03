@@ -40,8 +40,10 @@ namespace Sif.Framework.Utils
         /// <param name="requestMethod"></param>
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
+        /// <param name="navigationPage"></param>
+        /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken)
+        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
@@ -49,6 +51,17 @@ namespace Sif.Framework.Utils
             request.KeepAlive = false;
             request.Accept = "application/xml";
             request.Headers.Add("Authorization", authorisationToken);
+
+            if (navigationPage.HasValue)
+            {
+                request.Headers.Add("navigationPage", navigationPage.Value.ToString());
+            }
+
+            if (navigationPageSize.HasValue)
+            {
+                request.Headers.Add("navigationPageSize", navigationPageSize.Value.ToString());
+            }
+
             return request;
         }
 
@@ -58,10 +71,12 @@ namespace Sif.Framework.Utils
         /// <param name="requestMethod"></param>
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
+        /// <param name="navigationPage"></param>
+        /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken)
+        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage, navigationPageSize);
 
             using (WebResponse response = request.GetResponse())
             {
@@ -144,10 +159,12 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
+        /// <param name="navigationPage"></param>
+        /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        public static string GetRequest(string url, string authorisationToken)
+        public static string GetRequest(string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
         {
-            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken);
+            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, navigationPage, navigationPageSize);
         }
 
         /// <summary>

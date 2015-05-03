@@ -147,7 +147,7 @@ namespace Sif.Framework.Consumer
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(System.Collections.Generic.ICollection<T>)">Retrieve</see>
+        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve()">Retrieve</see>
         /// </summary>
         public virtual ICollection<T> Retrieve()
         {
@@ -158,7 +158,51 @@ namespace Sif.Framework.Consumer
             }
 
             string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
-            string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken);
+            List<T> result = new List<T>();
+            int pageIndex = 0;
+            int pageResultCount = 0;
+
+            do
+            {
+                string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken, pageIndex++, SettingsManager.ConsumerSettings.NavigationPageSize);
+                if (log.IsDebugEnabled) log.Debug("XML from GET request (page " + (pageIndex - 1) + ") ...");
+                if (log.IsDebugEnabled) log.Debug(xml);
+
+                if (xml.Length > 0)
+                {
+                    ICollection<T> pageResult = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Deserialise(xml);
+
+                    if (pageResult == null || pageResult.Count == 0)
+                    {
+                        pageResultCount = 0;
+                    }
+                    else
+                    {
+                        pageResultCount = pageResult.Count;
+                        result.AddRange(pageResult);
+                    }
+
+                }
+
+            }
+            while (pageResultCount == SettingsManager.ConsumerSettings.NavigationPageSize);
+
+            return result;
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(System.Int32, System.Int32)">Retrieve</see>
+        /// </summary>
+        public virtual ICollection<T> Retrieve(int navigationPage, int navigationPageSize)
+        {
+
+            if (!registrationService.Registered)
+            {
+                throw new InvalidOperationException("Consumer has not registered.");
+            }
+
+            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
+            string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken, navigationPage, navigationPageSize);
             if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
             return SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Deserialise(xml);

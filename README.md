@@ -204,3 +204,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 - Updated the US Provider project with configuration changes that should have been made in the last submission.
 - Updated all documentation to reflect recent changes. Documentation on SIF Broker integration is still incomplete.
+
+**May 03, 2015 - 0.19.0 Implement paging of retrieved data**
+
+- Updated the service interface to facilitate paging of retrieved data.
+- Updated the GenericConsumer to make paged retrievals by default.
+- Updated the GenericController to handle (GET) requests for paged data.
+- Updated the demo Consumers and Providers to reflect these changes.

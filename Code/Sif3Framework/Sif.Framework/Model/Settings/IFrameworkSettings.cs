@@ -51,7 +51,7 @@ namespace Sif.Framework.Model.Settings
         bool DeleteOnUnregister { get; }
 
         /// <summary>
-        /// Environment type (BROKERED or DIRECT) if it exists; null otherwise.
+        /// Environment type (BROKERED or DIRECT) if it exists; DIRECT otherwise.
         /// </summary>
         EnvironmentType EnvironmentType { get; }
 
@@ -64,6 +64,11 @@ namespace Sif.Framework.Model.Settings
         /// Instance ID if it exists; null otherwise.
         /// </summary>
         string InstanceId { get; }
+
+        /// <summary>
+        /// Number of objects returned in a "page" of results if it exists; 100 otherwise.
+        /// </summary>
+        int NavigationPageSize { get; }
 
         /// <summary>
         /// Shared secret if it exists; null otherwise.

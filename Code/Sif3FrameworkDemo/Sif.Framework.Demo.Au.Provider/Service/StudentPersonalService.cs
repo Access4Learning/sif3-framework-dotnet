@@ -68,7 +68,7 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// </summary>
         static StudentPersonalService()
         {
-            studentsCache = CreateStudents(10);
+            studentsCache = CreateStudents(20);
         }
         
         /// <summary>
@@ -123,6 +123,23 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public StudentPersonal Retrieve(Guid id)
+        {
+            StudentPersonal student;
+
+            if (!studentsCache.TryGetValue(id, out student))
+            {
+                student = null;
+            }
+
+            return student;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public ICollection<StudentPersonal> Retrieve()
         {
@@ -144,18 +161,33 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public StudentPersonal Retrieve(Guid id)
+        public ICollection<StudentPersonal> Retrieve(int pageIndex, int pageSize)
         {
-            StudentPersonal student;
+            List<StudentPersonal> allStudents = new List<StudentPersonal>();
+            allStudents.AddRange(studentsCache.Values);
+            List<StudentPersonal> retrievedStudents = new List<StudentPersonal>();
 
-            if (!studentsCache.TryGetValue(id, out student))
+            int index = pageIndex * pageSize;
+            int count = pageSize;
+
+            if (studentsCache.Values.Count < (index + count))
             {
-                student = null;
+                count = studentsCache.Values.Count - index;
+            }
+            else
+            {
+                count = pageSize;
             }
 
-            return student;
+            if (index <= studentsCache.Values.Count)
+            {
+                retrievedStudents = allStudents.GetRange(index, count);
+            }
+
+            return retrievedStudents;
         }
 
         /// <summary>

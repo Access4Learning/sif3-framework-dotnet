@@ -77,6 +77,16 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public SchoolInfo Retrieve(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public ICollection<SchoolInfo> Retrieve()
         {
@@ -98,11 +108,14 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public SchoolInfo Retrieve(string id)
+        public ICollection<SchoolInfo> Retrieve(int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            SchoolInfo school = new SchoolInfo { SchoolName = "Applecross SHS" };
+            List<SchoolInfo> schools = new List<SchoolInfo> { school };
+            return schools;
         }
 
         /// <summary>

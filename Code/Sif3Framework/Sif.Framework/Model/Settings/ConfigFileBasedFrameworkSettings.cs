@@ -32,11 +32,12 @@ namespace Sif.Framework.Model.Settings
         /// Retrieve the setting (boolean) value associated with the key.
         /// </summary>
         /// <param name="key">Key (identifier) of the setting.</param>
-        /// <returns>Setting (boolean) value associated with the key.</returns>
-        private bool GetBooleanSetting(string key)
+        /// <param name="defaultValue">Value returned if key not found.</param>
+        /// <returns>Setting (boolean) value associated with the key if found; default value otherwise.</returns>
+        private bool GetBooleanSetting(string key, bool defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
-            bool value = false;
+            bool value = defaultValue;
 
             if (setting != null)
             {
@@ -48,6 +49,35 @@ namespace Sif.Framework.Model.Settings
                 catch (FormatException)
                 {
                     string message = String.Format("The valid values for the {0} setting are \"true\" or \"false\". The value \"{1}\" is not valid.", setting.Key, setting.Value);
+                    throw new ConfigurationErrorsException(message);
+                }
+
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Retrieve the setting (int) value associated with the key.
+        /// </summary>
+        /// <param name="key">Key (identifier) of the setting.</param>
+        /// <param name="defaultValue">Value returned if key not found.</param>
+        /// <returns>Setting (int) value associated with the key if found; default value otherwise.</returns>
+        private int GetIntegerSetting(string key, int defaultValue)
+        {
+            KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
+            int value = defaultValue;
+
+            if (setting != null)
+            {
+
+                try
+                {
+                    value = Int32.Parse(setting.Value);
+                }
+                catch (FormatException)
+                {
+                    string message = String.Format("The value \"{1}\" is not a valid integer for the {0} setting.", setting.Key, setting.Value);
                     throw new ConfigurationErrorsException(message);
                 }
 
@@ -164,7 +194,7 @@ namespace Sif.Framework.Model.Settings
 
             get
             {
-                return GetBooleanSetting(SettingsPrefix + ".environment.deleteOnUnregister");
+                return GetBooleanSetting(SettingsPrefix + ".environment.deleteOnUnregister", false);
             }
 
         }
@@ -226,6 +256,19 @@ namespace Sif.Framework.Model.Settings
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.instanceId");
+            }
+
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.NavigationPageSize"/>
+        /// </summary>
+        public int NavigationPageSize
+        {
+
+            get
+            {
+                return GetIntegerSetting(SettingsPrefix + ".paging.navigationPageSize", 100);
             }
 
         }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,12 @@ namespace Sif.Framework.Persistence
         T Retrieve(PK id);
 
         /// <summary>
+        /// Retrieve all objects.
+        /// </summary>
+        /// <returns>All objects.</returns>
+        ICollection<T> Retrieve();
+
+        /// <summary>
         /// Retrieve all objects based upon the example instance.
         /// </summary>
         /// <param name="obj">Example instance to match on.</param>
@@ -63,10 +69,12 @@ namespace Sif.Framework.Persistence
         ICollection<T> Retrieve(T obj);
 
         /// <summary>
-        /// Retrieve all objects.
+        /// Retrieve a range of objects.
         /// </summary>
+        /// <param name="pageIndex">The "page" index for the next set of objects to retrieve (starts at 0).</param>
+        /// <param name="pageSize">The number of objects to retrieve for the "page".</param>
         /// <returns>All objects.</returns>
-        ICollection<T> Retrieve();
+        ICollection<T> Retrieve(int pageIndex, int pageSize);
 
         /// <summary>
         /// Save the object.

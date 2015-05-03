@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,24 +23,75 @@ namespace Sif.Framework.Service
     public interface IGenericService<T, PK> where T : IPersistable<PK>
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         PK Create(T obj);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objs"></param>
         void Create(IEnumerable<T> objs);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
         void Delete(PK id);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         void Delete(T obj);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objs"></param>
         void Delete(IEnumerable<T> objs);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         T Retrieve(PK id);
 
-        ICollection<T> Retrieve(T obj);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         ICollection<T> Retrieve();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        ICollection<T> Retrieve(T obj);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        ICollection<T> Retrieve(int pageIndex, int pageSizel);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         void Update(T obj);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objs"></param>
         void Update(IEnumerable<T> objs);
 
     }

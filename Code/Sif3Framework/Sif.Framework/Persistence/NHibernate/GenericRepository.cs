@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace Sif.Framework.Persistence.NHibernate
 {
 
     /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}">IGenericRepository</see>
-    public class GenericRepository<T, PK> : IGenericRepository<T, PK> where T : IPersistable<PK>, new()
+    public class GenericRepository<T, PK> : IGenericRepository<T, PK> where T : class, IPersistable<PK>, new()
     {
         protected IBaseSessionFactory sessionFactory;
 
@@ -125,6 +125,17 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve()">Retrieve</see>
+        public virtual ICollection<T> Retrieve()
+        {
+
+            using (ISession session = sessionFactory.OpenSession())
+            {
+                return session.CreateCriteria(typeof(T)).List<T>();
+            }
+
+        }
+
         /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve(T)">Retrieve</see>
         public virtual ICollection<T> Retrieve(T obj)
         {
@@ -142,13 +153,13 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
-        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve()">Retrieve</see>
-        public virtual ICollection<T> Retrieve()
+        /// <see cref="Sif.Framework.Persistence.IGenericRepository{T,PK}.Retrieve(System.Int32, System.Int32)">Retrieve</see>
+        public virtual ICollection<T> Retrieve(int pageIndex, int pageSize)
         {
 
             using (ISession session = sessionFactory.OpenSession())
             {
-                return session.CreateCriteria(typeof(T)).List<T>();
+                return session.QueryOver<T>().Skip(pageIndex * pageSize).Take(pageSize).List<T>();
             }
 
         }
@@ -214,7 +225,7 @@ namespace Sif.Framework.Persistence.NHibernate
             }
 
         }
-
+        
     }
 
 }

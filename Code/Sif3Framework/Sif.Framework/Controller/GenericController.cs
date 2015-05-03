@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace Sif.Framework.Controller
     /// <typeparam name="PK">Primary key type of the object.</typeparam>
     public abstract class GenericController<T, PK> : ApiController where T : IPersistable<PK>
     {
-        protected IAuthenticationService authService; 
+        protected IAuthenticationService authService;
         protected IGenericService<T, PK> service;
 
         /// <summary>
@@ -145,11 +145,73 @@ namespace Sif.Framework.Controller
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
+            IEnumerable<String> navigationPageValues;
+            IEnumerable<String> navigationPageSizeValues;
+            bool navigationPageFound = Request.Headers.TryGetValues("navigationPage", out navigationPageValues);
+            bool navigationPageSizeFound = Request.Headers.TryGetValues("navigationPageSize", out navigationPageSizeValues);
+            int? navigationPage = null;
+            int? navigationPageSize = null;
+
+            if (navigationPageFound)
+            {
+
+                if ((new List<String>(navigationPageValues)).Count == 1)
+                {
+                    IEnumerator<String> enumerator = navigationPageValues.GetEnumerator();
+                    enumerator.MoveNext();
+                    navigationPage = Int32.Parse(enumerator.Current);
+                }
+                else
+                {
+                    string errorMessage = "The GET request failed for " + typeof(T).Name + " because multiple values were found for the navigationPage request header field.";
+                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+                }
+
+            }
+
+            if (navigationPageSizeFound)
+            {
+
+                if ((new List<String>(navigationPageSizeValues)).Count == 1)
+                {
+                    IEnumerator<String> enumerator = navigationPageSizeValues.GetEnumerator();
+                    enumerator.MoveNext();
+                    navigationPageSize = Int32.Parse(enumerator.Current);
+                }
+                else
+                {
+                    string errorMessage = "The GET request failed for " + typeof(T).Name + " because multiple values were found for the navigationPageSize request header field.";
+                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+                }
+
+            }
+
+            if (navigationPageFound && !navigationPageSizeFound)
+            {
+                string errorMessage = "The GET request failed for " + typeof(T).Name + " because the navigationPage request header field was found, but not the navigationPageSize.";
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+            }
+
+            if (!navigationPageFound && navigationPageSizeFound)
+            {
+                string errorMessage = "The GET request failed for " + typeof(T).Name + " because the navigationPageSize request header field was found, but not the navigationPage.";
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+            }
+
             List<T> items;
 
             try
             {
-                items = (List<T>)service.Retrieve();
+
+                if (navigationPageFound && navigationPageSizeFound)
+                {
+                    items = (List<T>)service.Retrieve((int)navigationPage, (int)navigationPageSize);
+                }
+                else
+                {
+                    items = (List<T>)service.Retrieve();
+                }
+
             }
             catch (Exception e)
             {
