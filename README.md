@@ -211,3 +211,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated the GenericConsumer to make paged retrievals by default.
 - Updated the GenericController to handle (GET) requests for paged data.
 - Updated the demo Consumers and Providers to reflect these changes.
+
+**May 11, 2015 - 0.19.1 Update version of the SIF AU 1.3 data model**
+
+- Updated the SIF AU 1.3 data model of the Sif3Specification Solution.
