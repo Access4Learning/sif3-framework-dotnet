@@ -43,7 +43,7 @@ namespace Sif.Framework.Utils
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
+        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
@@ -62,6 +62,11 @@ namespace Sif.Framework.Utils
                 request.Headers.Add("navigationPageSize", navigationPageSize.Value.ToString());
             }
 
+            if (!String.IsNullOrWhiteSpace(methodOverride))
+            {
+                request.Headers.Add("X-HTTP-Method-Override", methodOverride.Trim());
+            }
+
             return request;
         }
 
@@ -76,7 +81,7 @@ namespace Sif.Framework.Utils
         /// <returns></returns>
         private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage, navigationPageSize);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize);
 
             using (WebResponse response = request.GetResponse())
             {
@@ -109,9 +114,9 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        private static string RequestWithPayload(RequestMethod requestMethod, string url, string authorisationToken, string body)
+        private static string RequestWithPayload(RequestMethod requestMethod, string url, string authorisationToken, string body, string methodOverride = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, methodOverride: methodOverride);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -174,9 +179,9 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public static string PostRequest(string url, string authorisationToken, string body)
+        public static string PostRequest(string url, string authorisationToken, string body, string methodOverride = null)
         {
-            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body);
+            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, methodOverride);
         }
 
         /// <summary>

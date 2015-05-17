@@ -62,18 +62,16 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                // Retrieve all students.
-                ICollection<StudentPersonal> students = studentPersonalConsumer.Retrieve();
+                // Retrieve Bart Simpson.
+                Name name = new Name { FamilyName = "Simpson", GivenName = "Bart" };
+                PersonInfo personInfo = new PersonInfo { Name = name };
+                StudentPersonal studentPersonal = new StudentPersonal { PersonInfo = personInfo };
+                ICollection<StudentPersonal> filteredStudents = studentPersonalConsumer.Retrieve(studentPersonal);
 
-                foreach (StudentPersonal student in students)
+                foreach (StudentPersonal student in filteredStudents)
                 {
-                    if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    if (log.IsInfoEnabled) log.Info("Filtered student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                 }
-
-                // Retrieve a single student.
-                Guid studentId = students.ElementAt(0).Id;
-                StudentPersonal firstStudent = studentPersonalConsumer.Retrieve(studentId);
-                if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
 
                 // Create and then retrieve a new student.
                 Name newStudentName = new Name() { FamilyName = "Wayne", GivenName = "Bruce", Type = NameType.LGL };
@@ -84,12 +82,25 @@ namespace Sif.Framework.Demo.Au.Consumer
                 StudentPersonal retrievedNewStudent = studentPersonalConsumer.Retrieve(newStudentId);
                 if (log.IsInfoEnabled) log.Info("Retrieved new student " + retrievedNewStudent.PersonInfo.Name.GivenName + " " + retrievedNewStudent.PersonInfo.Name.FamilyName);
 
+                // Retrieve all students.
+                ICollection<StudentPersonal> students = studentPersonalConsumer.Retrieve();
+
+                foreach (StudentPersonal student in students)
+                {
+                    if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                }
+
+                // Retrieve a single student.
+                Guid studentId = students.ElementAt(1).Id;
+                StudentPersonal secondStudent = studentPersonalConsumer.Retrieve(studentId);
+                if (log.IsInfoEnabled) log.Info("Name of second student is " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+
                 // Update that student and confirm.
-                firstStudent.PersonInfo.Name.GivenName = "Homer";
-                firstStudent.PersonInfo.Name.FamilyName = "Simpson";
-                studentPersonalConsumer.Update(firstStudent);
-                firstStudent = studentPersonalConsumer.Retrieve(studentId);
-                if (log.IsInfoEnabled) log.Info("Name of first student has been changed to " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName);
+                secondStudent.PersonInfo.Name.GivenName = "Homer";
+                secondStudent.PersonInfo.Name.FamilyName = "Simpson";
+                studentPersonalConsumer.Update(secondStudent);
+                secondStudent = studentPersonalConsumer.Retrieve(studentId);
+                if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
 
                 // Delete that student and confirm.
                 studentPersonalConsumer.Delete(studentId);
@@ -109,11 +120,11 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 if (studentDeleted)
                 {
-                    if (log.IsInfoEnabled) log.Info("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                    if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
                 }
                 else
                 {
-                    if (log.IsInfoEnabled) log.Info("Student " + firstStudent.PersonInfo.Name.GivenName + " " + firstStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                    if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                 }
             
             }

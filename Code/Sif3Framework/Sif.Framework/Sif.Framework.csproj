@@ -122,6 +122,7 @@
     <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
+    <Compile Include="Utils\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
     <Compile Include="Utils\SessionsManager.cs" />
     <Compile Include="Utils\SettingsManager.cs" />

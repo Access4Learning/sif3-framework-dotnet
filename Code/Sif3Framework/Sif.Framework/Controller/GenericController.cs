@@ -137,7 +137,7 @@ namespace Sif.Framework.Controller
         /// GET api/{controller}
         /// </summary>
         /// <returns>All objects.</returns>
-        public virtual List<T> Get()
+        public virtual List<T> Get(T item)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -149,42 +149,6 @@ namespace Sif.Framework.Controller
             IEnumerable<String> navigationPageSizeValues;
             bool navigationPageFound = Request.Headers.TryGetValues("navigationPage", out navigationPageValues);
             bool navigationPageSizeFound = Request.Headers.TryGetValues("navigationPageSize", out navigationPageSizeValues);
-            int? navigationPage = null;
-            int? navigationPageSize = null;
-
-            if (navigationPageFound)
-            {
-
-                if ((new List<String>(navigationPageValues)).Count == 1)
-                {
-                    IEnumerator<String> enumerator = navigationPageValues.GetEnumerator();
-                    enumerator.MoveNext();
-                    navigationPage = Int32.Parse(enumerator.Current);
-                }
-                else
-                {
-                    string errorMessage = "The GET request failed for " + typeof(T).Name + " because multiple values were found for the navigationPage request header field.";
-                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
-                }
-
-            }
-
-            if (navigationPageSizeFound)
-            {
-
-                if ((new List<String>(navigationPageSizeValues)).Count == 1)
-                {
-                    IEnumerator<String> enumerator = navigationPageSizeValues.GetEnumerator();
-                    enumerator.MoveNext();
-                    navigationPageSize = Int32.Parse(enumerator.Current);
-                }
-                else
-                {
-                    string errorMessage = "The GET request failed for " + typeof(T).Name + " because multiple values were found for the navigationPageSize request header field.";
-                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
-                }
-
-            }
 
             if (navigationPageFound && !navigationPageSizeFound)
             {
@@ -198,6 +162,8 @@ namespace Sif.Framework.Controller
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
             }
 
+            bool methodOverrideFound = Request.Headers.Contains("X-HTTP-Method-Override");
+            bool payloadFound = (item != null);
             List<T> items;
 
             try
@@ -205,7 +171,38 @@ namespace Sif.Framework.Controller
 
                 if (navigationPageFound && navigationPageSizeFound)
                 {
+                    int? navigationPage = null;
+                    int? navigationPageSize = null;
+
+                    if ((new List<String>(navigationPageValues)).Count == 1)
+                    {
+                        IEnumerator<String> enumerator = navigationPageValues.GetEnumerator();
+                        enumerator.MoveNext();
+                        navigationPage = Int32.Parse(enumerator.Current);
+                    }
+                    else
+                    {
+                        string errorMessage = "The GET request failed for " + typeof(T).Name + " because multiple values were found for the navigationPage request header field.";
+                        throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+                    }
+
+                    if ((new List<String>(navigationPageSizeValues)).Count == 1)
+                    {
+                        IEnumerator<String> enumerator = navigationPageSizeValues.GetEnumerator();
+                        enumerator.MoveNext();
+                        navigationPageSize = Int32.Parse(enumerator.Current);
+                    }
+                    else
+                    {
+                        string errorMessage = "The GET request failed for " + typeof(T).Name + " because multiple values were found for the navigationPageSize request header field.";
+                        throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+                    }
+
                     items = (List<T>)service.Retrieve((int)navigationPage, (int)navigationPageSize);
+                }
+                else if (methodOverrideFound && payloadFound)
+                {
+                    items = (List<T>)service.Retrieve(item);
                 }
                 else
                 {

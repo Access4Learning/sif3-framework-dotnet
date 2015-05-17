@@ -78,6 +78,13 @@ namespace Sif.Framework.Consumer
         ICollection<T> Retrieve();
 
         /// <summary>
+        /// POST /StudentPersonals (X-HTTP-Method-Override: GET)
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        ICollection<T> Retrieve(T obj);
+
+        /// <summary>
         /// GET /StudentPersonals
         /// </summary>
         /// <returns></returns>

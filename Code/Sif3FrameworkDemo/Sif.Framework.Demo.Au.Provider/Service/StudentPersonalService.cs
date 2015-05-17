@@ -36,6 +36,19 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// 
         /// </summary>
         /// <returns></returns>
+        private static StudentPersonal CreateBartSimpson()
+        {
+            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
+            PersonInfoType personInfo = new PersonInfoType { Name = name };
+            StudentPersonal studentPersonal = new StudentPersonal { Id = Guid.NewGuid(), LocalId = "666", PersonInfo = personInfo };
+
+            return studentPersonal;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private static StudentPersonal CreateStudent()
         {
             NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
@@ -54,15 +67,22 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         {
             IDictionary<Guid, StudentPersonal> studentPersonalsCache = new Dictionary<Guid, StudentPersonal>();
 
-            for (int i = 1; i <= count; i++)
+            if (count > 0)
             {
-                StudentPersonal studentPersonal = CreateStudent();
-                studentPersonalsCache.Add(studentPersonal.Id, studentPersonal);
+                StudentPersonal bartSimpson = CreateBartSimpson();
+                studentPersonalsCache.Add(bartSimpson.Id, bartSimpson);
+
+                for (int i = 2; i <= count; i++)
+                {
+                    StudentPersonal studentPersonal = CreateStudent();
+                    studentPersonalsCache.Add(studentPersonal.Id, studentPersonal);
+                }
+
             }
 
             return studentPersonalsCache;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -70,7 +90,7 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         {
             studentsCache = CreateStudents(20);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -155,7 +175,19 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         /// <returns></returns>
         public ICollection<StudentPersonal> Retrieve(StudentPersonal obj)
         {
-            throw new NotImplementedException();
+            List<StudentPersonal> students = new List<StudentPersonal>();
+
+            foreach (StudentPersonal student in studentsCache.Values)
+            {
+
+                if (student.PersonInfo.Name.FamilyName.Equals(obj.PersonInfo.Name.FamilyName) && student.PersonInfo.Name.GivenName.Equals(obj.PersonInfo.Name.GivenName))
+                {
+                    students.Add(student);
+                }
+
+            }
+
+            return students;
         }
 
         /// <summary>

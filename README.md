@@ -215,3 +215,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **May 11, 2015 - 0.19.1 Update version of the SIF AU 1.3 data model**
 
 - Updated the SIF AU 1.3 data model of the Sif3Specification Solution.
+
+**May 17, 2015 - 0.20.0 Implement Query By Example**
+
+- Updated the GenericConsumer to add a new Retrieve method that accepts an "example" object.
+- Updated the Get method of the GenericController to handle a payload when a method override is requested.
+- Updated the demo AU Provider configuration to manage redirection when a method override is requested.
+- Updated the demo AU Consumer with an example call that uses the new Retrieve method.

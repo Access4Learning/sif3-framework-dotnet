@@ -191,6 +191,25 @@ namespace Sif.Framework.Consumer
         }
 
         /// <summary>
+        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(T)">Retrieve</see>
+        /// </summary>
+        public virtual ICollection<T> Retrieve(T obj)
+        {
+
+            if (!registrationService.Registered)
+            {
+                throw new InvalidOperationException("Consumer has not registered.");
+            }
+
+            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
+            string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
+            string xml = HttpUtils.PostRequest(url, registrationService.AuthorisationToken, body, "GET");
+            if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+            return SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Deserialise(xml);
+        }
+
+        /// <summary>
         /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(System.Int32, System.Int32)">Retrieve</see>
         /// </summary>
         public virtual ICollection<T> Retrieve(int navigationPage, int navigationPageSize)
