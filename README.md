@@ -222,3 +222,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated the Get method of the GenericController to handle a payload when a method override is requested.
 - Updated the demo AU Provider configuration to manage redirection when a method override is requested.
 - Updated the demo AU Consumer with an example call that uses the new Retrieve method.
+
+**July 17, 2015 - 0.20.1 Added beta version of the SIF AU 1.4 data model**
+
+- Added a beta version of the SIF AU 1.4 data model to the Sif3Specification Solution.
