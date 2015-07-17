@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Us.v3_2", "Sif.Specification.DataModel.Us.v3_2\Sif.Specification.DataModel.Us.v3_2.csproj", "{61008F27-15C5-4ED4-A358-E74D818CF571}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v1_4", "Sif.Specification.DataModel.Au.v1_4\Sif.Specification.DataModel.Au.v1_4.csproj", "{7920B78A-3AAD-4FCD-8794-4DC4D89C3B0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{61008F27-15C5-4ED4-A358-E74D818CF571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61008F27-15C5-4ED4-A358-E74D818CF571}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61008F27-15C5-4ED4-A358-E74D818CF571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7920B78A-3AAD-4FCD-8794-4DC4D89C3B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7920B78A-3AAD-4FCD-8794-4DC4D89C3B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7920B78A-3AAD-4FCD-8794-4DC4D89C3B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7920B78A-3AAD-4FCD-8794-4DC4D89C3B0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
