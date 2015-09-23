@@ -24,8 +24,8 @@ namespace Sif.Framework.Demo.Au.Consumer.Models
     /// <summary>
     /// 
     /// </summary>
-    [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.3")]
-    [XmlRootAttribute("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
+    [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.4")]
+    [XmlRootAttribute("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/1.4", IsNullable = false)]
     public class SchoolInfo : SchoolInfoType, IPersistable<string>
     {
 

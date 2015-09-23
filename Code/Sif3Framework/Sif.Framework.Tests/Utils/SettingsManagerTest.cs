@@ -36,7 +36,7 @@ namespace Sif.Framework.Utils
             Assert.AreEqual(settings.ApplicationKey, "Sif3DemoApp");
             Assert.AreEqual(settings.AuthenticationMethod, "Basic");
             Assert.AreEqual(settings.ConsumerName, "DemoConsumer");
-            Assert.AreEqual(settings.DataModelNamespace, "http://www.sifassociation.org/au/datamodel/1.3");
+            Assert.AreEqual(settings.DataModelNamespace, "http://www.sifassociation.org/au/datamodel/1.4");
             Assert.IsTrue(settings.DeleteOnUnregister);
             Assert.AreEqual(settings.EnvironmentUrl, "http://localhost:62921/api/environments/environment");
             Assert.IsNull(settings.InstanceId);

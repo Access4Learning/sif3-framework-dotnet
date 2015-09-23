@@ -24,7 +24,7 @@ namespace Sif.Framework.Demo.Au.Consumer.Models
     /// <summary>
     /// 
     /// </summary>
-    [XmlRootAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.3", IsNullable = false)]
+    [XmlRootAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.4", IsNullable = false)]
     public partial class StudentPersonal : IPersistable<Guid>
     {
 
