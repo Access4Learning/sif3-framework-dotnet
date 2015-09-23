@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2015 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,10 +81,12 @@ namespace Sif.Framework.Utils
                 environmentType2
             };
 
-            string xmlString = SerialiserFactory.GetXmlSerialiser<Collection<environmentType>>(new XmlRootAttribute("environments")).Serialise((Collection<environmentType>)environmentTypes);
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute("environments") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+
+            string xmlString = SerialiserFactory.GetXmlSerialiser<Collection<environmentType>>(xmlRootAttribute).Serialise((Collection<environmentType>)environmentTypes);
             System.Console.WriteLine(xmlString);
 
-            environmentTypes = SerialiserFactory.GetXmlSerialiser<Collection<environmentType>>(new XmlRootAttribute("environments")).Deserialise(xmlString);
+            environmentTypes = SerialiserFactory.GetXmlSerialiser<Collection<environmentType>>(xmlRootAttribute).Deserialise(xmlString);
             System.Console.WriteLine("Number deserialised is " + environmentTypes.Count);
         }
 

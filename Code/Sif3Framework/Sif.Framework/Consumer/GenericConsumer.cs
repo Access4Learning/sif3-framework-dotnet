@@ -39,6 +39,33 @@ namespace Sif.Framework.Consumer
         private RegistrationService registrationService;
 
         /// <summary>
+        /// An XML serialiser for a single object.
+        /// </summary>
+        private ISerialiser<T> ObjectSerialiser
+        {
+
+            get
+            {
+                return SerialiserFactory.GetXmlSerialiser<T>();
+            }
+
+        }
+
+        /// <summary>
+        /// An XML serialiser for a collection of objects.
+        /// </summary>
+        private ISerialiser<List<T>> ListSerialiser
+        {
+
+            get
+            {
+                XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+                return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute);
+            }
+
+        }
+
+        /// <summary>
         /// Name of the SIF data type that the Consumer is based on, e.g. SchoolInfo, StudentPersonal, etc.
         /// </summary>
         protected virtual string TypeName
@@ -103,11 +130,11 @@ namespace Sif.Framework.Consumer
             }
 
             string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s" + "/" + TypeName;
-            string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
+            string body = ObjectSerialiser.Serialise(obj);
             string xml = HttpUtils.PostRequest(url, registrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
-            return (SerialiserFactory.GetXmlSerialiser<T>().Deserialise(xml)).Id;
+            return (ObjectSerialiser.Deserialise(xml)).Id;
         }
 
         /// <summary>
@@ -122,7 +149,7 @@ namespace Sif.Framework.Consumer
             }
 
             string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
-            string body = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Serialise((List<T>)objs);
+            string body = ListSerialiser.Serialise((List<T>)objs);
             string xml = HttpUtils.PostRequest(url, registrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -143,7 +170,7 @@ namespace Sif.Framework.Consumer
             string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken);
             if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
-            return SerialiserFactory.GetXmlSerialiser<T>().Deserialise(xml);
+            return ObjectSerialiser.Deserialise(xml);
         }
 
         /// <summary>
@@ -170,7 +197,7 @@ namespace Sif.Framework.Consumer
 
                 if (xml.Length > 0)
                 {
-                    ICollection<T> pageResult = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Deserialise(xml);
+                    ICollection<T> pageResult = ListSerialiser.Deserialise(xml);
 
                     if (pageResult == null || pageResult.Count == 0)
                     {
@@ -202,11 +229,12 @@ namespace Sif.Framework.Consumer
             }
 
             string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
-            string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
+            string body = ObjectSerialiser.Serialise(obj);
             string xml = HttpUtils.PostRequest(url, registrationService.AuthorisationToken, body, "GET");
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
-            return SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Deserialise(xml);
+
+            return ListSerialiser.Deserialise(xml);
         }
 
         /// <summary>
@@ -224,7 +252,8 @@ namespace Sif.Framework.Consumer
             string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken, navigationPage, navigationPageSize);
             if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
-            return SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Deserialise(xml);
+
+            return ListSerialiser.Deserialise(xml);
         }
 
         /// <summary>
@@ -239,7 +268,7 @@ namespace Sif.Framework.Consumer
             }
 
             string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s" + "/" + obj.Id;
-            string body = SerialiserFactory.GetXmlSerialiser<T>().Serialise(obj);
+            string body = ObjectSerialiser.Serialise(obj);
             string xml = HttpUtils.PutRequest(url, registrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -257,7 +286,7 @@ namespace Sif.Framework.Consumer
             }
 
             string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
-            string body = SerialiserFactory.GetXmlSerialiser<List<T>>(new XmlRootAttribute(TypeName + "s")).Serialise((List<T>)objs);
+            string body = ListSerialiser.Serialise((List<T>)objs);
             string xml = HttpUtils.PutRequest(url, registrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(xml);

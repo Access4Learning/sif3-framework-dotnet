@@ -226,3 +226,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **July 17, 2015 - 0.20.1 Added beta version of the SIF AU 1.4 data model**
 
 - Added a beta version of the SIF AU 1.4 data model to the Sif3Specification Solution.
+
+**Sept 23, 2015 - 0.21.0 Updated SIF AU data model and added HITS Consumer**
+
+- Updated the SIF AU 1.3 and 1.4 data models of the Sif3Specification Solution.
+- Updated all unit tests and (AU) demo projects to reference the updated 1.4 data models.
+- Fixed an issue with a missing namespace on serialisation of data model collections.
+- Enhanced the demo AU Consumer to demonstrate connection with HITS.
