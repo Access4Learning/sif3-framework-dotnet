@@ -33,8 +33,9 @@ namespace Sif.Framework.Demo.Us.Consumer
         /// <param name="applicationKey"></param>
         /// <param name="instanceId"></param>
         /// <param name="userToken"></param>
-        public K12StudentConsumer(string applicationKey, string instanceId = null, string userToken = null)
-            : base(applicationKey, instanceId, userToken)
+        /// <param name="solutionId"></param>
+        public K12StudentConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+            : base(applicationKey, instanceId, userToken, solutionId)
         {
 
         }

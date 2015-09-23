@@ -33,7 +33,8 @@ namespace Sif.Framework.Demo.Us.Provider
             XmlMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
             formatter.UseXmlSerializer = true;
 
-            ISerialiser<List<K12Student>> k12StudentsSerialiser = SerialiserFactory.GetXmlSerialiser<List<K12Student>>(new XmlRootAttribute("K12Students"));
+            XmlRootAttribute k12StudentsXmlRootAttribute = new XmlRootAttribute("K12Students") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<K12Student>> k12StudentsSerialiser = SerialiserFactory.GetXmlSerialiser<List<K12Student>>(k12StudentsXmlRootAttribute);
             formatter.SetSerializer<List<K12Student>>((XmlSerializer)k12StudentsSerialiser);
 
             // Configure global exception loggers for unexpected errors.

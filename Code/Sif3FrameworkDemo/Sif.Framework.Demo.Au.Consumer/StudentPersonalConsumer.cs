@@ -34,8 +34,9 @@ namespace Sif.Framework.Demo.Au.Consumer
         /// <param name="applicationKey"></param>
         /// <param name="instanceId"></param>
         /// <param name="userToken"></param>
-        public StudentPersonalConsumer(string applicationKey, string instanceId = null, string userToken = null)
-            : base(applicationKey, instanceId, userToken)
+        /// <param name="solutionId"></param>
+        public StudentPersonalConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+            : base(applicationKey, instanceId, userToken, solutionId)
         {
 
         }

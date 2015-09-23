@@ -37,7 +37,7 @@ namespace Sif.Framework.Demo.Au.Consumer
         /// </summary>
         void RunSchoolInfoConsumer()
         {
-            ISchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer("Sif3DemoApp");
+            ISchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
             schoolInfoConsumer.Register();
 
             try
@@ -126,7 +126,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 {
                     if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                 }
-            
+
             }
             catch (Exception)
             {
@@ -150,13 +150,21 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                app.RunStudentPersonalConsumer();
+                if ("HITS".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
+                {
+                    app.RunSchoolInfoConsumer();
+                }
+                else if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
+                {
+                    app.RunStudentPersonalConsumer();
+                }
+
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the StudentPersonal Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (log.IsErrorEnabled) log.Error("Error running the " + SettingsManager.ConsumerSettings.ApplicationKey + "  Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
-            
+
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
         }
