@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Model.Query;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Consumer
@@ -83,6 +84,15 @@ namespace Sif.Framework.Consumer
         /// <param name="obj"></param>
         /// <returns></returns>
         ICollection<T> Retrieve(T obj);
+
+        /// <summary>
+        /// GET api/{object1}/{id1}/{controller}
+        /// GET api/{object1}/{id1}/{object2}/{id2}/{controller}
+        /// GET api/{object1}/{id1}/{object2}/{id2}/{object3}/{id3}/{controller}
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        ICollection<T> Retrieve(IEnumerable<EqualCondition> conditions);
 
         /// <summary>
         /// GET /StudentPersonals

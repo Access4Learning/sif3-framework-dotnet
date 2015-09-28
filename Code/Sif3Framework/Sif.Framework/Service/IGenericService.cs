@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Model.Query;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Service
@@ -81,6 +82,13 @@ namespace Sif.Framework.Service
         /// <param name="pageSize"></param>
         /// <returns></returns>
         ICollection<T> Retrieve(int pageIndex, int pageSizel);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        ICollection<T> Retrieve(IEnumerable<EqualCondition> conditions);
 
         /// <summary>
         /// 

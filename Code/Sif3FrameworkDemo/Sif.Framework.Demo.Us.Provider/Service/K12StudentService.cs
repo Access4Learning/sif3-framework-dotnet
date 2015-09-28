@@ -16,6 +16,7 @@
 
 using Sif.Framework.Demo.Us.Provider.Models;
 using Sif.Framework.Demo.Us.Provider.Utils;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Service;
 using Sif.Specification.DataModel.Us;
 using System;
@@ -189,6 +190,16 @@ namespace Sif.Framework.Demo.Us.Provider.Service
             }
 
             return retrievedStudents;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public virtual ICollection<K12Student> Retrieve(IEnumerable<EqualCondition> conditions)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

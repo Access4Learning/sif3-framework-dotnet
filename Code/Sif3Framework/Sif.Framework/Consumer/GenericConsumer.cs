@@ -16,12 +16,14 @@
 
 using log4net;
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Xml.Serialization;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -156,9 +158,11 @@ namespace Sif.Framework.Consumer
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(PK)">Retrieve</see>
+        /// 
         /// </summary>
-        public virtual T Retrieve(PK id)
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private ICollection<T> PagingRetrieve(string url)
         {
 
             if (!registrationService.Registered)
@@ -166,25 +170,6 @@ namespace Sif.Framework.Consumer
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s" + "/" + id;
-            string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken);
-            if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
-            return ObjectSerialiser.Deserialise(xml);
-        }
-
-        /// <summary>
-        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve()">Retrieve</see>
-        /// </summary>
-        public virtual ICollection<T> Retrieve()
-        {
-
-            if (!registrationService.Registered)
-            {
-                throw new InvalidOperationException("Consumer has not registered.");
-            }
-
-            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
             List<T> result = new List<T>();
             int pageIndex = 0;
             int pageResultCount = 0;
@@ -218,6 +203,34 @@ namespace Sif.Framework.Consumer
         }
 
         /// <summary>
+        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(PK)">Retrieve</see>
+        /// </summary>
+        public virtual T Retrieve(PK id)
+        {
+
+            if (!registrationService.Registered)
+            {
+                throw new InvalidOperationException("Consumer has not registered.");
+            }
+
+            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s" + "/" + id;
+            string xml = HttpUtils.GetRequest(url, registrationService.AuthorisationToken);
+            if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+            return ObjectSerialiser.Deserialise(xml);
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve()">Retrieve</see>
+        /// </summary>
+        public virtual ICollection<T> Retrieve()
+        {
+            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + "/" + TypeName + "s";
+
+            return PagingRetrieve(url);
+        }
+
+        /// <summary>
         /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(T)">Retrieve</see>
         /// </summary>
         public virtual ICollection<T> Retrieve(T obj)
@@ -235,6 +248,29 @@ namespace Sif.Framework.Consumer
             if (log.IsDebugEnabled) log.Debug(xml);
 
             return ListSerialiser.Deserialise(xml);
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Consumer.IGenericConsumer{T,PK}.Retrieve(System.Collections.Generic.IEnumerable<Sif.Framework.Model.Query.EqualCondition>)">Retrieve</see>
+        /// </summary>
+        public virtual ICollection<T> Retrieve(IEnumerable<EqualCondition> conditions)
+        {
+            StringBuilder servicePath = new StringBuilder();
+
+            if (conditions != null)
+            {
+
+                foreach (EqualCondition condition in conditions)
+                {
+                    servicePath.Append("/" + condition.Left + "/" + condition.Right);
+                }
+
+            }
+
+            string url = EnvironmentUtils.ParseServiceUrl(environmentTemplate) + servicePath + "/" + TypeName + "s";
+            if (log.IsDebugEnabled) log.Debug("Service Path URL is " + url);
+
+            return PagingRetrieve(url);
         }
 
         /// <summary>
