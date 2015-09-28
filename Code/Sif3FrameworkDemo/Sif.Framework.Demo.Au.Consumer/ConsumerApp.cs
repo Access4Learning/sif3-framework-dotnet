@@ -16,6 +16,7 @@
 
 using log4net;
 using Sif.Framework.Demo.Au.Consumer.Models;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,34 @@ namespace Sif.Framework.Demo.Au.Consumer
             finally
             {
                 schoolInfoConsumer.Unregister();
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void RunStaffPersonalConsumer()
+        {
+            IStaffPersonalConsumer staffPersonalConsumer = new StaffPersonalConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
+            staffPersonalConsumer.Register();
+
+            try
+            {
+                EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
+                IList<EqualCondition> conditions = new List<EqualCondition>();
+                conditions.Add(condition);
+                ICollection<StaffPersonal> staffPersonals = staffPersonalConsumer.Retrieve(conditions);
+
+                foreach (StaffPersonal staffPersonal in staffPersonals)
+                {
+                    if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
+                }
+
+            }
+            finally
+            {
+                staffPersonalConsumer.Unregister();
             }
 
         }
@@ -127,6 +156,17 @@ namespace Sif.Framework.Demo.Au.Consumer
                     if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                 }
 
+                // Retrieve students based on Teaching Group.
+                EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
+                IList<EqualCondition> conditions = new List<EqualCondition>();
+                conditions.Add(condition);
+                ICollection<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.Retrieve(conditions);
+
+                foreach (StudentPersonal student in teachingGroupStudents)
+                {
+                    if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                }
+
             }
             catch (Exception)
             {
@@ -153,6 +193,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 if ("HITS".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
                 {
                     app.RunSchoolInfoConsumer();
+                    app.RunStaffPersonalConsumer();
                 }
                 else if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
                 {

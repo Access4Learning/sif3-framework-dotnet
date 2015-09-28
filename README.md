@@ -233,3 +233,8 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated all unit tests and (AU) demo projects to reference the updated 1.4 data models.
 - Fixed an issue with a missing namespace on serialisation of data model collections.
 - Enhanced the demo AU Consumer to demonstrate connection with HITS.
+
+**Sept 28, 2015 - 0.22.0 Implement Service Paths**
+
+- Updated the Framework service layer, Consumers and Providers to handle Service Paths.
+- Updated (AU) demo projects to demonstrate Service Path usage.

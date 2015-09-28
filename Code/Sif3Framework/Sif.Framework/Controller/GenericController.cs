@@ -16,6 +16,7 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Utils;
@@ -217,6 +218,60 @@ namespace Sif.Framework.Controller
             }
 
             return items;
+        }
+
+        /// <summary>
+        /// GET api/{object1}/{id1}/{controller}
+        /// GET api/{object1}/{id1}/{object2}/{id2}/{controller}
+        /// GET api/{object1}/{id1}/{object2}/{id2}/{object3}/{id3}/{controller}
+        /// </summary>
+        /// <param name="object1"></param>
+        /// <param name="id1"></param>
+        /// <param name="object2"></param>
+        /// <param name="id2"></param>
+        /// <param name="object3"></param>
+        /// <param name="id3"></param>
+        /// <returns>Objects that meet the associated object and ID combinations.</returns>
+        public virtual List<T> Get(string object1, string id1, string object2 = null, string id2 = null, string object3 = null, string id3 = null)
+        {
+
+            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            {
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
+
+            List<T> item;
+
+            try
+            {
+                EqualCondition condition = new EqualCondition() { Left = object1, Right = id1 };
+                IList<EqualCondition> conditions = new List<EqualCondition>() { condition };
+
+                if (!string.IsNullOrWhiteSpace(object2))
+                {
+                    conditions.Add(new EqualCondition() { Left = object2, Right = id2 });
+
+                    if (!string.IsNullOrWhiteSpace(object3))
+                    {
+                        conditions.Add(new EqualCondition() { Left = object3, Right = id3 });
+                    }
+
+                }
+
+                item = (List<T>)service.Retrieve(conditions);
+            }
+            catch (Exception e)
+            {
+                string errorMessage = "The GET request (based on Service Path parameters) failed for a " + typeof(T).Name + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+            }
+
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return item;
         }
 
         /// <summary>

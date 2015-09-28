@@ -22,6 +22,21 @@ namespace Sif.Framework.Demo.Au.Provider
             );
 
             config.Routes.MapHttpRoute(
+                name: "ServicePathApi3",
+                routeTemplate: "api/{object1}/{id1}/{object2}/{id2}/{object3}/{id3}/{controller}"
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "ServicePathApi2",
+                routeTemplate: "api/{object1}/{id1}/{object2}/{id2}/{controller}"
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "ServicePathApi1",
+                routeTemplate: "api/{object1}/{id1}/{controller}"
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }

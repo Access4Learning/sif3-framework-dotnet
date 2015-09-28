@@ -16,6 +16,7 @@
 
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Utils;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Service;
 using Sif.Specification.DataModel.Au;
 using System;
@@ -220,6 +221,19 @@ namespace Sif.Framework.Demo.Au.Provider.Service
             }
 
             return retrievedStudents;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public virtual ICollection<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions)
+        {
+            List<StudentPersonal> students = new List<StudentPersonal>();
+            students.Add(CreateBartSimpson());
+
+            return students;
         }
 
         /// <summary>
