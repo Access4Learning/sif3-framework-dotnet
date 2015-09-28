@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Demo.Au.Provider.Models;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Service;
 using System;
 using System.Collections.Generic;
@@ -115,6 +116,19 @@ namespace Sif.Framework.Demo.Au.Provider.Service
         {
             SchoolInfo school = new SchoolInfo { SchoolName = "Applecross SHS" };
             List<SchoolInfo> schools = new List<SchoolInfo> { school };
+            return schools;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public virtual ICollection<SchoolInfo> Retrieve(IEnumerable<EqualCondition> conditions)
+        {
+            SchoolInfo school = new SchoolInfo { SchoolName = "Rossmoyne Conditional SHS" };
+            List<SchoolInfo> schools = new List<SchoolInfo> { school };
+
             return schools;
         }
 

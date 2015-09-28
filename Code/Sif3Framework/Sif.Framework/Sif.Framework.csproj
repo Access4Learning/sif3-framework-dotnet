@@ -101,6 +101,8 @@
     <Compile Include="Model\Infrastructure\Service.cs" />
     <Compile Include="Model\Infrastructure\ServiceType.cs" />
     <Compile Include="Model\Infrastructure\Zone.cs" />
+    <Compile Include="Model\Query\Condition.cs" />
+    <Compile Include="Model\Query\EqualCondition.cs" />
     <Compile Include="Model\Settings\ConfigFileBasedFrameworkSettings.cs" />
     <Compile Include="Model\Settings\ISessionsSection.cs" />
     <Compile Include="Model\Settings\ProviderSettings.cs" />

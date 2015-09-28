@@ -15,7 +15,9 @@
  */
 
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Model.Query;
 using Sif.Framework.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Service
@@ -73,6 +75,11 @@ namespace Sif.Framework.Service
         public virtual ICollection<T> Retrieve(int pageIndex, int pageSize)
         {
             return repository.Retrieve(pageIndex, pageSize);
+        }
+
+        public virtual ICollection<T> Retrieve(IEnumerable<EqualCondition> conditions)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual void Update(T obj)
