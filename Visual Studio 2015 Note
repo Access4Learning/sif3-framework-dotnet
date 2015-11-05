@@ -1,0 +1,19 @@
+
+If you try to open Sif3Framework.sln (as instructed in the Demo documentation)in Visual Studio 2015 
+(the project was create with VS 2013),you will get an error: 
+“This project is incompatible with the current version of Visual Studio”.
+
+To fix it, edit the file:
+
+Sif3Framework-dotNet/Code/Sif3Framework/Sif.Framework/Sif.Framework.csproj
+
+And change the ToolsVersion, ie,
+
+was:
+    <Project ToolsVersion="12.0" DefaultTargets="Build"
+     xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+should be:
+    <Project ToolsVersion="14.0" DefaultTargets="Build"
+     xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    
+After that, the project works correctly.
