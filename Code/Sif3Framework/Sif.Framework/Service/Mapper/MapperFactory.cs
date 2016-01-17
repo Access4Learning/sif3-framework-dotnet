@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 using AutoMapper;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Requests;
+using Sif.Framework.Model.Responses;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 
@@ -97,6 +99,23 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
+        class DeleteIdsConverter : ITypeConverter<deleteIdType[], ICollection<string>>
+        {
+
+            public ICollection<string> Convert(ResolutionContext context)
+            {
+                ICollection<string> deleteIds = new List<string>();
+
+                foreach (deleteIdType deleteId in (deleteIdType[])context.SourceValue)
+                {
+                    deleteIds.Add(deleteId.id);
+                }
+
+                return deleteIds;
+            }
+
+        }
+
         static MapperFactory()
         {
             AutoMapper.Mapper.CreateMap<ApplicationInfo, applicationInfoType>();
@@ -151,6 +170,39 @@ namespace Sif.Framework.Service.Mapper
                 .ForMember(dest => dest.properties, opt => opt.MapFrom(src => src.Properties.Values));
             AutoMapper.Mapper.CreateMap<zoneType, Zone>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            AutoMapper.Mapper.CreateMap<ResponseError, errorType>();
+            AutoMapper.Mapper.CreateMap<errorType, ResponseError>();
+
+            AutoMapper.Mapper.CreateMap<CreateStatus, createType>();
+            AutoMapper.Mapper.CreateMap<createType, CreateStatus>();
+
+            AutoMapper.Mapper.CreateMap<DeleteStatus, deleteStatus>();
+            AutoMapper.Mapper.CreateMap<deleteStatus, DeleteStatus>();
+
+            AutoMapper.Mapper.CreateMap<UpdateStatus, updateType>();
+            AutoMapper.Mapper.CreateMap<updateType, UpdateStatus>();
+
+            AutoMapper.Mapper.CreateMap<MultipleCreateResponse, createResponseType>()
+                .ForMember(dest => dest.creates, opt => opt.MapFrom(src => src.StatusRecords));
+            AutoMapper.Mapper.CreateMap<createResponseType, MultipleCreateResponse>()
+                .ForMember(dest => dest.StatusRecords, opt => opt.MapFrom(src => src.creates));
+
+            AutoMapper.Mapper.CreateMap<MultipleDeleteResponse, deleteResponseType>()
+                .ForMember(dest => dest.deletes, opt => opt.MapFrom(src => src.StatusRecords));
+            AutoMapper.Mapper.CreateMap<deleteResponseType, MultipleDeleteResponse>()
+                .ForMember(dest => dest.StatusRecords, opt => opt.MapFrom(src => src.deletes));
+
+            AutoMapper.Mapper.CreateMap<MultipleUpdateResponse, updateResponseType>()
+                .ForMember(dest => dest.updates, opt => opt.MapFrom(src => src.StatusRecords));
+            AutoMapper.Mapper.CreateMap<updateResponseType, MultipleUpdateResponse>()
+                .ForMember(dest => dest.StatusRecords, opt => opt.MapFrom(src => src.updates));
+
+            AutoMapper.Mapper.CreateMap<deleteIdType[], ICollection<string>>()
+                .ConvertUsing<DeleteIdsConverter>();
+
+            AutoMapper.Mapper.CreateMap<deleteRequestType, MultipleDeleteRequest>()
+                .ForMember(dest => dest.RefIds, opt => opt.MapFrom(src => src.deletes));
 
             AutoMapper.Mapper.AssertConfigurationIsValid();
         }

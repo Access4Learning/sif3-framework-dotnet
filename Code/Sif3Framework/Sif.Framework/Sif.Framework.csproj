@@ -77,14 +77,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consumer\GenericConsumer.cs" />
-    <Compile Include="Consumer\IGenericConsumer.cs" />
-    <Compile Include="Controller\EnvironmentsController.cs" />
-    <Compile Include="Controller\GenericController.cs" />
-    <Compile Include="Controller\SifController.cs" />
+    <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
+    <Compile Include="Consumers\BasicConsumer.cs" />
+    <Compile Include="Consumers\Consumer.cs" />
+    <Compile Include="Consumers\IConsumer.cs" />
+    <Compile Include="Controllers\EnvironmentsController.cs" />
+    <Compile Include="Controllers\SifController.cs" />
+    <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Model\DataModels\IDataModel.cs" />
+    <Compile Include="Model\DataModels\ISifRefId.cs" />
     <Compile Include="Model\Exceptions\AlreadyRegisteredException.cs" />
     <Compile Include="Model\Exceptions\BaseException.cs" />
+    <Compile Include="Model\Exceptions\ContentTooLargeException.cs" />
+    <Compile Include="Model\Exceptions\CreateException.cs" />
+    <Compile Include="Model\Exceptions\DeleteException.cs" />
     <Compile Include="Model\Exceptions\InvalidSessionException.cs" />
+    <Compile Include="Model\Exceptions\NotFoundException.cs" />
+    <Compile Include="Model\Exceptions\QueryException.cs" />
+    <Compile Include="Model\Exceptions\RejectedException.cs" />
+    <Compile Include="Model\Exceptions\UpdateException.cs" />
     <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
     <Compile Include="Model\Infrastructure\ApplicationRegister.cs" />
     <Compile Include="Model\Infrastructure\Environment.cs" />
@@ -103,9 +115,23 @@
     <Compile Include="Model\Infrastructure\Zone.cs" />
     <Compile Include="Model\Query\Condition.cs" />
     <Compile Include="Model\Query\EqualCondition.cs" />
+    <Compile Include="Model\Requests\MultipleDeleteRequest.cs" />
+    <Compile Include="Model\Responses\MultipleCreateResponse.cs" />
+    <Compile Include="Model\Responses\CreateStatus.cs" />
+    <Compile Include="Model\Responses\MultipleDeleteResponse.cs" />
+    <Compile Include="Model\Responses\DeleteStatus.cs" />
+    <Compile Include="Model\Responses\MultipleObjectResponse.cs" />
+    <Compile Include="Model\Responses\ResponseError.cs" />
+    <Compile Include="Model\Responses\ResponseStatus.cs" />
+    <Compile Include="Model\Responses\MultipleUpdateResponse.cs" />
+    <Compile Include="Model\Responses\UpdateStatus.cs" />
     <Compile Include="Model\Settings\ConfigFileBasedFrameworkSettings.cs" />
     <Compile Include="Model\Settings\ISessionsSection.cs" />
     <Compile Include="Model\Settings\ProviderSettings.cs" />
+    <Compile Include="Providers\IBasicProvider.cs" />
+    <Compile Include="Providers\IProvider.cs" />
+    <Compile Include="Providers\BasicProvider.cs" />
+    <Compile Include="Providers\Provider.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
@@ -116,6 +142,9 @@
     <Compile Include="Model\Settings\ProviderSection.cs" />
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
+    <Compile Include="Service\Providers\IBasicProviderService.cs" />
+    <Compile Include="Service\Providers\IProviderService.cs" />
+    <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Registration\IRegistrationService.cs" />
     <Compile Include="Service\Registration\NoRegistrationService.cs" />
     <Compile Include="Service\Registration\RegistrationService.cs" />
@@ -124,7 +153,7 @@
     <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
-    <Compile Include="Utils\MethodOverrideHandler.cs" />
+    <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
     <Compile Include="Utils\SessionsManager.cs" />
     <Compile Include="Utils\SettingsManager.cs" />
@@ -157,11 +186,13 @@
     <Compile Include="Model\Exceptions\AlreadyExistsException.cs" />
     <Compile Include="Utils\AuthenticationUtils.cs" />
     <Compile Include="Utils\ExceptionUtils.cs" />
-    <Compile Include="Utils\GlobalUnexpectedExceptionHandler.cs" />
+    <Compile Include="WebApi\GlobalUnexpectedExceptionHandler.cs" />
     <Compile Include="Utils\HttpUtils.cs" />
     <Compile Include="Service\Serialisation\SerialiserFactory.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\TraceExceptionLogger.cs" />
+    <Compile Include="WebApi\NotFoundErrorMessageResult.cs" />
+    <Compile Include="WebApi\ServiceProviderHttpControllerTypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml">
@@ -169,6 +200,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="SifFramework.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

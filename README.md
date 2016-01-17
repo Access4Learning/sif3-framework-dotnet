@@ -238,3 +238,11 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 - Updated the Framework service layer, Consumers and Providers to handle Service Paths.
 - Updated (AU) demo projects to demonstrate Service Path usage.
+
+**Jan 17, 2016 - 1.0.0 Implement multiple object operations**
+
+- Redesigned Consumer implementation to handle multiple object operations.
+- Redesigned Provider implementation to handle multiple object operations.
+- Updated AU and US demo projects to reflect mutliple object operations.
+- Updated documentation to reflect changes.
+- Fixed issue with mustUseAdvisory implementation.

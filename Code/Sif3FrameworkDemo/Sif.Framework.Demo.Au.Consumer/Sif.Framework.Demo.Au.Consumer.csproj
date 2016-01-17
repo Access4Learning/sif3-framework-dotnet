@@ -44,8 +44,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework">
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.22.0\Sif.Framework.dll</HintPath>
+    <Reference Include="Sif.Framework, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 1.0.0\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Au">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Au 1.4\Sif.Specification.DataModel.Au.dll</HintPath>
@@ -64,12 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsumerApp.cs" />
-    <Compile Include="ISchoolInfoConsumer.cs" />
-    <Compile Include="IStaffPersonalConsumer.cs" />
-    <Compile Include="IStudentPersonalConsumer.cs" />
-    <Compile Include="Models\Name.cs" />
-    <Compile Include="Models\NameType.cs" />
-    <Compile Include="Models\PersonInfo.cs" />
     <Compile Include="Models\SchoolInfo.cs" />
     <Compile Include="Models\StaffPersonal.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
@@ -77,6 +72,7 @@
     <Compile Include="SchoolInfoConsumer.cs" />
     <Compile Include="StaffPersonalConsumer.cs" />
     <Compile Include="StudentPersonalConsumer.cs" />
+    <Compile Include="Utils\RandomNameGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-using log4net;
+ using Sif.Framework.Extensions;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 
@@ -30,9 +34,19 @@ namespace Sif.Framework.Utils
     /// </summary>
     static class HttpUtils
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        enum RequestMethod { DELETE, GET, POST, PUT }
+        internal enum RequestMethod { DELETE, GET, POST, PUT }
+
+        enum RequestHeader
+        {
+            [Description("X-HTTP-Method-Override")]
+            methodOverride,
+            [Description("methodOverride")]
+            methodOverrideSif,
+            mustUseAdvisory,
+            navigationPage,
+            navigationPageSize
+        }
 
         /// <summary>
         /// 
@@ -67,6 +81,11 @@ namespace Sif.Framework.Utils
                 request.Headers.Add("X-HTTP-Method-Override", methodOverride.Trim());
             }
 
+            if (!String.IsNullOrWhiteSpace(methodOverride))
+            {
+                request.Headers.Add("methodOverride", methodOverride.Trim());
+            }
+
             return request;
         }
 
@@ -87,11 +106,7 @@ namespace Sif.Framework.Utils
             {
                 string responseString = null;
 
-                if (response == null)
-                {
-                    if (log.IsDebugEnabled) log.Debug("Response is null");
-                }
-                else
+                if (response != null)
                 {
 
                     using (StreamReader reader = new StreamReader(response.GetResponseStream()))
@@ -127,11 +142,7 @@ namespace Sif.Framework.Utils
                 {
                     string responseString = null;
 
-                    if (response == null)
-                    {
-                        if (log.IsDebugEnabled) log.Debug("Response is null");
-                    }
-                    else
+                    if (response != null)
                     {
 
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
@@ -178,6 +189,7 @@ namespace Sif.Framework.Utils
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
+        /// <param name="methodOverride"></param>
         /// <returns></returns>
         public static string PostRequest(string url, string authorisationToken, string body, string methodOverride = null)
         {
@@ -190,10 +202,11 @@ namespace Sif.Framework.Utils
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
+        /// <param name="methodOverride"></param>
         /// <returns></returns>
-        public static string PutRequest(string url, string authorisationToken, string body)
+        public static string PutRequest(string url, string authorisationToken, string body, string methodOverride = null)
         {
-            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body);
+            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, methodOverride);
         }
 
         /// <summary>
@@ -219,6 +232,215 @@ namespace Sif.Framework.Utils
             // The ReasonPhrase may not contain new line characters.
             response.ReasonPhrase = StringUtils.RemoveNewLines(message);
             return response;
+        }
+
+        /// <summary>
+        /// Retrieve the string value associated with the header of the passed name.
+        /// </summary>
+        /// <param name="headers">Request headers to check.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <exception cref="ArgumentNullException">Parameter headers is null.</exception>
+        /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
+        /// <returns>String value associated with the header if found; null otherwise.</returns>
+        internal static string GetHeaderValue(HttpHeaders headers, string headerName)
+        {
+
+            if (headers == null)
+            {
+                throw new ArgumentNullException("headers");
+            }
+
+            string value = null;
+            IEnumerable<String> headerValues;
+
+            if (headers.TryGetValues(headerName, out headerValues))
+            {
+                value = headerValues.SingleOrDefault();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Retrieve the boolean value associated with the header of the passed name.
+        /// </summary>
+        /// <param name="headers">Request headers to check.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <exception cref="ArgumentNullException">Parameter headers is null.</exception>
+        /// <exception cref="FormatException">Header value was not a boolean.</exception>
+        /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
+        /// <returns>Boolean value associated with the header if found; null otherwise.</returns>
+        internal static bool? GetBoolHeaderValue(HttpHeaders headers, string headerName)
+        {
+            string value = GetHeaderValue(headers, headerName);
+            bool? boolValue = null;
+
+            if (value != null)
+            {
+                boolValue = bool.Parse(value);
+            }
+
+            return boolValue;
+        }
+
+        /// <summary>
+        /// Retrieve the unsigned integere value associated with the header of the passed name.
+        /// </summary>
+        /// <param name="headers">Request headers to check.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <exception cref="ArgumentNullException">Parameter headers is null.</exception>
+        /// <exception cref="FormatException">Header value was not numeric.</exception>
+        /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
+        /// <exception cref="OverflowException">Header value is less than UInt32.MinValue (0) or greater than UInt32.MaxValue.</exception>
+        /// <returns>Unsigned integer value associated with the header if found; null otherwise.</returns>
+        internal static uint? GetUintHeaderValue(HttpHeaders headers, string headerName)
+        {
+            string value = GetHeaderValue(headers, headerName);
+            uint? uintValue = null;
+
+            if (value != null)
+            {
+                uintValue = uint.Parse(value);
+            }
+
+            return uintValue;
+        }
+
+        /// <summary>
+        /// Retrieve the value for the "must use advisory" header.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <exception cref="ArgumentNullException">Parameter is null.</exception>
+        /// <exception cref="FormatException">Header value was not a boolean.</exception>
+        /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
+        /// <returns>Must use advisory value if found; null otherwise.</returns>
+        internal static bool? GetMustUseAdvisory(HttpHeaders headers)
+        {
+            return GetBoolHeaderValue(headers, RequestHeader.mustUseAdvisory.ToDescription());
+        }
+
+        /// <summary>
+        /// Retrieve the value for the navigation page header.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <exception cref="ArgumentNullException">Parameter is null.</exception>
+        /// <exception cref="FormatException">Header value was not numeric.</exception>
+        /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
+        /// <exception cref="OverflowException">Header value is less than UInt32.MinValue (0) or greater than UInt32.MaxValue.</exception>
+        /// <returns>Navigation page value if found; null otherwise.</returns>
+        internal static uint? GetNavigationPage(HttpHeaders headers)
+        {
+            return GetUintHeaderValue(headers, RequestHeader.navigationPage.ToDescription());
+        }
+
+        /// <summary>
+        /// Retrieve the value for the navigation page size header.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <exception cref="ArgumentNullException">Parameter is null.</exception>
+        /// <exception cref="FormatException">Header value was not numeric.</exception>
+        /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
+        /// <exception cref="OverflowException">Header value is less than UInt32.MinValue (0) or greater than UInt32.MaxValue.</exception>
+        /// <returns>Navigation page size value if found; null otherwise.</returns>
+        internal static uint? GetNavigationPageSize(HttpHeaders headers)
+        {
+            return GetUintHeaderValue(headers, RequestHeader.navigationPageSize.ToDescription());
+        }
+
+        /// <summary>
+        /// Determine whether a method override has been specified.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <exception cref="ArgumentNullException">Parameter is null.</exception>
+        /// <returns>True if method override header found; false otherwise.</returns>
+        internal static bool HasMethodOverrideHeader(HttpHeaders headers)
+        {
+
+            if (headers == null)
+            {
+                throw new ArgumentNullException("headers");
+            }
+
+            bool hasMethodOverride = headers.Contains(RequestHeader.methodOverride.ToDescription());
+            bool hasMethodOverrideSif = headers.Contains(RequestHeader.methodOverrideSif.ToDescription());
+
+            return (hasMethodOverride || hasMethodOverrideSif);
+        }
+
+        /// <summary>
+        /// Determine whether paging parameters have been specified.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <exception cref="ArgumentNullException">Parameter is null.</exception>
+        /// <returns>True if paging parameters have been found; false otherwise.</returns>
+        internal static bool HasPagingHeaders(HttpHeaders headers)
+        {
+
+            if (headers == null)
+            {
+                throw new ArgumentNullException("headers");
+            }
+
+            return headers.Contains(RequestHeader.navigationPage.ToDescription()) || headers.Contains(RequestHeader.navigationPageSize.ToDescription());
+        }
+
+        /// <summary>
+        /// Check whether the parameters used for paging are valid.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <param name="errorMessage">Error description if validation failed.</param>
+        /// <exception cref="ArgumentNullException">Parameter headers is null.</exception>
+        /// <returns>True if paging parameters are valid; false otherwise.</returns>
+        internal static bool ValidatePagingParameters(HttpHeaders headers, out string errorMessage)
+        {
+            errorMessage = "";
+            uint? navigationPage = null;
+            uint? navigationPageSize = null;
+
+            try
+            {
+                navigationPage = GetNavigationPage(headers);
+            }
+            catch (FormatException)
+            {
+                errorMessage = RequestHeader.navigationPage.ToDescription() + " value is not numeric.";
+            }
+            catch (InvalidOperationException)
+            {
+                errorMessage = "Duplicate " + RequestHeader.navigationPage.ToDescription() + " headers were found.";
+            }
+            catch (OverflowException)
+            {
+                errorMessage = RequestHeader.navigationPage.ToDescription() + " value is less than Int32.MinValue or greater than Int32.MaxValue.";
+            }
+
+            try
+            {
+                navigationPageSize = GetNavigationPageSize(headers);
+            }
+            catch (FormatException)
+            {
+                errorMessage += (errorMessage == "" ? "" : " ") + RequestHeader.navigationPageSize.ToDescription() + " value is not numeric.";
+            }
+            catch (InvalidOperationException)
+            {
+                errorMessage += (errorMessage == "" ? "" : " ") + "Duplicate " + RequestHeader.navigationPageSize.ToDescription() + " headers were found.";
+            }
+            catch (OverflowException)
+            {
+                errorMessage += (errorMessage == "" ? "" : " ") + RequestHeader.navigationPageSize.ToDescription() + " value is less than Int32.MinValue or greater than Int32.MaxValue.";
+            }
+
+            if (navigationPage.HasValue && !navigationPageSize.HasValue)
+            {
+                errorMessage = RequestHeader.navigationPage.ToDescription() + " header was found, but not " + RequestHeader.navigationPageSize.ToDescription() + ".";
+            }
+            else if (!navigationPage.HasValue && navigationPageSize.HasValue)
+            {
+                errorMessage = RequestHeader.navigationPageSize.ToDescription() + " header was found, but not " + RequestHeader.navigationPage.ToDescription() + ".";
+            }
+
+            return string.IsNullOrWhiteSpace(errorMessage);
         }
 
     }

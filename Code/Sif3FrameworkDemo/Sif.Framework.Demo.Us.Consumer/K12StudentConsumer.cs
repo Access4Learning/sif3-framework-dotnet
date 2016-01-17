@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,40 +14,24 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Consumer;
+using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Us.Consumer.Models;
 using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.Demo.Us.Consumer
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
-    class K12StudentConsumer : GenericConsumer<K12Student, string>, IK12StudentConsumer
+    class K12StudentConsumer : BasicConsumer<K12Student>
     {
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="applicationKey"></param>
-        /// <param name="instanceId"></param>
-        /// <param name="userToken"></param>
-        /// <param name="solutionId"></param>
         public K12StudentConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
             : base(applicationKey, instanceId, userToken, solutionId)
         {
-
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="environment"></param>
         public K12StudentConsumer(Environment environment)
             : base(environment)
         {
-
         }
 
     }

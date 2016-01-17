@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,41 +14,24 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Consumer;
+using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
-using System;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
-    class StudentPersonalConsumer : GenericConsumer<StudentPersonal, Guid>, IStudentPersonalConsumer
+    class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
     {
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="applicationKey"></param>
-        /// <param name="instanceId"></param>
-        /// <param name="userToken"></param>
-        /// <param name="solutionId"></param>
         public StudentPersonalConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
             : base(applicationKey, instanceId, userToken, solutionId)
         {
-
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="environment"></param>
         public StudentPersonalConsumer(Environment environment)
             : base(environment)
         {
-
         }
 
     }

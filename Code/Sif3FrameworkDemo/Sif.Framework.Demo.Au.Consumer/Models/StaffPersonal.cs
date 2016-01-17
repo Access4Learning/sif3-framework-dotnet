@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,38 +14,17 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
+using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 
 namespace Sif.Framework.Demo.Au.Consumer.Models
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
-    [XmlTypeAttribute(Namespace = "http://www.sifassociation.org/au/datamodel/1.4")]
-    [XmlRootAttribute("StaffPersonal", Namespace = "http://www.sifassociation.org/au/datamodel/1.4", IsNullable = false)]
-    public class StaffPersonal : StaffPersonalType, IPersistable<string>
+    [XmlRoot("StaffPersonal", Namespace = "http://www.sifassociation.org/au/datamodel/1.4", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/1.4")]
+    public class StaffPersonal : StaffPersonalType, IDataModel
     {
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Id
-        {
-
-            get
-            {
-                return RefId;
-            }
-            set
-            {
-                RefId = value;
-            }
-
-        }
-
     }
 
 }

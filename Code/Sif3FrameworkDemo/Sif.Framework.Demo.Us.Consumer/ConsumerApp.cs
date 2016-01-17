@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,26 +26,20 @@ using System.Reflection;
 namespace Sif.Framework.Demo.Us.Consumer
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
     class ConsumerApp
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// 
-        /// </summary>
         void RunK12StudentConsumer()
         {
-            IK12StudentConsumer studentConsumer = new K12StudentConsumer("Sif3UsDemoApp");
+            K12StudentConsumer studentConsumer = new K12StudentConsumer("Sif3UsDemoApp");
             studentConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
                 // Retrieve all students.
-                ICollection<K12Student> students = studentConsumer.Retrieve();
+                ICollection<K12Student> students = studentConsumer.Query();
 
                 foreach (K12Student student in students)
                 {
@@ -53,8 +47,8 @@ namespace Sif.Framework.Demo.Us.Consumer
                 }
 
                 // Retrieve a single student.
-                string studentId = students.ElementAt(0).Id;
-                K12Student firstStudent = studentConsumer.Retrieve(studentId);
+                string studentId = students.ElementAt(0).RefId;
+                K12Student firstStudent = studentConsumer.Query(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName);
 
                 // Create and then retrieve a new student.
@@ -62,33 +56,20 @@ namespace Sif.Framework.Demo.Us.Consumer
                 k12StudentTypeIdentityName newStudentName = new k12StudentTypeIdentityName() { lastName = "Wayne", firstName = "Bruce" };
                 k12StudentTypeIdentity newStudentIdentity = new k12StudentTypeIdentity() { identification = newStudentIdentifier, name = newStudentName };
                 K12Student newStudent = new K12Student() { identity = newStudentIdentity };
-                string newStudentId = studentConsumer.Create(newStudent);
+                K12Student retrievedNewStudent = studentConsumer.Create(newStudent);
                 if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.identity.name.firstName + " " + newStudent.identity.name.lastName);
-                K12Student retrievedNewStudent = studentConsumer.Retrieve(newStudentId);
-                if (log.IsInfoEnabled) log.Info("Retrieved new student " + retrievedNewStudent.identity.name.firstName + " " + retrievedNewStudent.identity.name.lastName);
 
                 // Update that student and confirm.
                 firstStudent.identity.name.firstName = "Homer";
                 firstStudent.identity.name.lastName = "Simpson";
                 studentConsumer.Update(firstStudent);
-                firstStudent = studentConsumer.Retrieve(studentId);
+                firstStudent = studentConsumer.Query(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of first student has been changed to " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName);
 
                 // Delete that student and confirm.
                 studentConsumer.Delete(studentId);
-                students = studentConsumer.Retrieve();
-                bool studentDeleted = true;
-
-                foreach (K12Student student in students)
-                {
-
-                    if (studentId == student.Id)
-                    {
-                        studentDeleted = false;
-                        break;
-                    }
-
-                }
+                K12Student deletedStudent = studentConsumer.Query(studentId);
+                bool studentDeleted = (deletedStudent == null ? true : false);
 
                 if (studentDeleted)
                 {
@@ -112,10 +93,6 @@ namespace Sif.Framework.Demo.Us.Consumer
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
         static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();

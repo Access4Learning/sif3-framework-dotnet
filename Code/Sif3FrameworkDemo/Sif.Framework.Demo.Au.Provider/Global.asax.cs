@@ -2,6 +2,7 @@
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
+using Sif.Framework.WebApi;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Formatting;

@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,9 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework, Version=0.21.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 0.22.0\Sif.Framework.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 1.0.0\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Au">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Au 1.4\Sif.Specification.DataModel.Au.dll</HintPath>
@@ -115,20 +116,22 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\SchoolInfosController.cs" />
-    <Compile Include="Controllers\StudentPersonalsController.cs" />
+    <Compile Include="Controllers\SchoolInfosProvider.cs" />
+    <Compile Include="Controllers\StudentPersonalsProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\SchoolInfo.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\SchoolInfoService.cs" />
-    <Compile Include="Service\StudentPersonalService.cs" />
+    <Compile Include="Services\SchoolInfoService.cs" />
+    <Compile Include="Services\StudentPersonalService.cs" />
     <Compile Include="Utils\RandomNameGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

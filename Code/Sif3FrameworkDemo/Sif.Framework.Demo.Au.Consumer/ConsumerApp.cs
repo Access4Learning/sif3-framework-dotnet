@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,11 @@
 
 using log4net;
 using Sif.Framework.Demo.Au.Consumer.Models;
+using Sif.Framework.Demo.Au.Consumer.Utils;
 using Sif.Framework.Model.Query;
+using Sif.Framework.Model.Responses;
 using Sif.Framework.Utils;
+using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,24 +29,110 @@ using System.Reflection;
 namespace Sif.Framework.Demo.Au.Consumer
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
     class ConsumerApp
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static Random random = new Random();
 
-        /// <summary>
-        /// 
-        /// </summary>
+        private List<SchoolInfo> CreateSchools()
+        {
+            SchoolInfo applecrossHigh = new SchoolInfo { SchoolName = "Applecross SHS" };
+            SchoolInfo rossmoyneHigh = new SchoolInfo { SchoolName = "Rossmoyne SHS" };
+            List<SchoolInfo> schoolCollection = new List<SchoolInfo> { applecrossHigh, rossmoyneHigh };
+
+            return schoolCollection;
+        }
+
+        private static StudentPersonal CreateStudent()
+        {
+            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
+            PersonInfoType personInfo = new PersonInfoType { Name = name };
+            StudentPersonal studentPersonal = new StudentPersonal { LocalId = random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
+
+            return studentPersonal;
+        }
+
+        private static List<StudentPersonal> CreateStudents(int count)
+        {
+            List<StudentPersonal> studentPersonalsCache = new List<StudentPersonal>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                studentPersonalsCache.Add(CreateStudent());
+            }
+
+            return studentPersonalsCache;
+        }
+
         void RunSchoolInfoConsumer()
         {
-            ISchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
+            SchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
             schoolInfoConsumer.Register();
 
             try
             {
-                ICollection<SchoolInfo> schools = schoolInfoConsumer.Retrieve();
+                // Query all schools.
+                IEnumerable<SchoolInfo> allSchools = schoolInfoConsumer.Query();
+
+                foreach (SchoolInfo school in allSchools)
+                {
+                    if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " has a RefId of " + school.RefId + ".");
+                }
+
+                if (log.IsInfoEnabled) log.Info("School count is " + allSchools.Count());
+
+                // Create multiple schools.
+                MultipleCreateResponse createResponse = schoolInfoConsumer.Create(CreateSchools());
+
+                foreach (CreateStatus status in createResponse.StatusRecords)
+                {
+                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
+                    if (log.IsInfoEnabled) log.Info("New school " + school.SchoolName + " has a RefId of " + school.RefId + ".");
+                }
+
+                // Update multiple schools.
+                List<SchoolInfo> schoolsToUpdate = new List<SchoolInfo>();
+
+                foreach (CreateStatus status in createResponse.StatusRecords)
+                {
+                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
+                    school.SchoolName += "x";
+                    schoolsToUpdate.Add(school);
+                }
+
+                MultipleUpdateResponse updateResponse = schoolInfoConsumer.Update(schoolsToUpdate);
+
+                foreach (UpdateStatus status in updateResponse.StatusRecords)
+                {
+                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
+                    if (log.IsInfoEnabled) log.Info("Updated school " + school.SchoolName + " has a RefId of " + school.RefId + ".");
+                }
+
+                // Delete multiple schools.
+                ICollection<string> schoolsToDelete = new List<string>();
+
+                foreach (CreateStatus status in createResponse.StatusRecords)
+                {
+                    schoolsToDelete.Add(status.Id);
+                }
+
+                MultipleDeleteResponse deleteResponse = schoolInfoConsumer.Delete(schoolsToDelete);
+
+                foreach (DeleteStatus status in deleteResponse.StatusRecords)
+                {
+                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
+
+                    if (school == null)
+                    {
+                        if (log.IsInfoEnabled) log.Info("School with RefId of " + status.Id + " has been deleted.");
+                    }
+                    else
+                    {
+                        if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " with RefId of " + school.RefId + " FAILED deletion.");
+                    }
+
+                }
+
             }
             finally
             {
@@ -52,12 +141,9 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         void RunStaffPersonalConsumer()
         {
-            IStaffPersonalConsumer staffPersonalConsumer = new StaffPersonalConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
+            StaffPersonalConsumer staffPersonalConsumer = new StaffPersonalConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
             staffPersonalConsumer.Register();
 
             try
@@ -65,13 +151,14 @@ namespace Sif.Framework.Demo.Au.Consumer
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
                 IList<EqualCondition> conditions = new List<EqualCondition>();
                 conditions.Add(condition);
-                ICollection<StaffPersonal> staffPersonals = staffPersonalConsumer.Retrieve(conditions);
+                IEnumerable<StaffPersonal> staffPersonals = staffPersonalConsumer.QueryByServicePath(conditions);
 
                 foreach (StaffPersonal staffPersonal in staffPersonals)
                 {
                     if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
                 }
 
+                if (log.IsInfoEnabled) log.Info("Staff count is " + staffPersonals.Count());
             }
             finally
             {
@@ -80,22 +167,19 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         void RunStudentPersonalConsumer()
         {
-            IStudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer("Sif3DemoApp");
+            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer("Sif3DemoApp");
             studentPersonalConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
                 // Retrieve Bart Simpson.
-                Name name = new Name { FamilyName = "Simpson", GivenName = "Bart" };
-                PersonInfo personInfo = new PersonInfo { Name = name };
+                NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
+                PersonInfoType personInfo = new PersonInfoType { Name = name };
                 StudentPersonal studentPersonal = new StudentPersonal { PersonInfo = personInfo };
-                ICollection<StudentPersonal> filteredStudents = studentPersonalConsumer.Retrieve(studentPersonal);
+                IEnumerable<StudentPersonal> filteredStudents = studentPersonalConsumer.QueryByExample(studentPersonal);
 
                 foreach (StudentPersonal student in filteredStudents)
                 {
@@ -103,16 +187,53 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
                 // Create and then retrieve a new student.
-                Name newStudentName = new Name() { FamilyName = "Wayne", GivenName = "Bruce", Type = NameType.LGL };
-                PersonInfo newStudentInfo = new PersonInfo() { Name = newStudentName };
-                StudentPersonal newStudent = new StudentPersonal() { LocalId = "555", PersonInfo = newStudentInfo };
-                Guid newStudentId = studentPersonalConsumer.Create(newStudent);
+                NameOfRecordType newStudentName = new NameOfRecordType { FamilyName = "Wayne", GivenName = "Bruce", Type = NameOfRecordTypeType.LGL };
+                PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
+                StudentPersonal newStudent = new StudentPersonal { LocalId = "555", PersonInfo = newStudentInfo };
+                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent);
                 if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.PersonInfo.Name.GivenName + " " + newStudent.PersonInfo.Name.FamilyName);
-                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Retrieve(newStudentId);
-                if (log.IsInfoEnabled) log.Info("Retrieved new student " + retrievedNewStudent.PersonInfo.Name.GivenName + " " + retrievedNewStudent.PersonInfo.Name.FamilyName);
+
+                // Create multiple new students.
+                List<StudentPersonal> newStudents = CreateStudents(5);
+                MultipleCreateResponse multipleCreateResponse = studentPersonalConsumer.Create(newStudents);
+                int count = 0;
+
+                foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                {
+                    if (log.IsInfoEnabled) log.Info("Create status code is " + status.StatusCode);
+                    newStudents[count++].RefId = status.Id;
+                }
+
+                // Update multiple students.
+                foreach (StudentPersonal student in newStudents)
+                {
+                    student.PersonInfo.Name.GivenName += "o";
+                }
+
+                MultipleUpdateResponse multipleUpdateResponse = studentPersonalConsumer.Update(newStudents);
+
+                foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
+                {
+                    if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
+                }
+
+                // Delete multiple students.
+                ICollection<string> refIds = new List<string>();
+
+                foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                {
+                    refIds.Add(status.Id);
+                }
+
+                MultipleDeleteResponse multipleDeleteResponse = studentPersonalConsumer.Delete(refIds);
+
+                foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
+                {
+                    if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
+                }
 
                 // Retrieve all students.
-                ICollection<StudentPersonal> students = studentPersonalConsumer.Retrieve();
+                IEnumerable<StudentPersonal> students = studentPersonalConsumer.Query();
 
                 foreach (StudentPersonal student in students)
                 {
@@ -120,32 +241,21 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
                 // Retrieve a single student.
-                Guid studentId = students.ElementAt(1).Id;
-                StudentPersonal secondStudent = studentPersonalConsumer.Retrieve(studentId);
+                string studentId = students.ElementAt(1).RefId;
+                StudentPersonal secondStudent = studentPersonalConsumer.Query(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of second student is " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
 
                 // Update that student and confirm.
                 secondStudent.PersonInfo.Name.GivenName = "Homer";
                 secondStudent.PersonInfo.Name.FamilyName = "Simpson";
                 studentPersonalConsumer.Update(secondStudent);
-                secondStudent = studentPersonalConsumer.Retrieve(studentId);
+                secondStudent = studentPersonalConsumer.Query(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
 
                 // Delete that student and confirm.
                 studentPersonalConsumer.Delete(studentId);
-                students = studentPersonalConsumer.Retrieve();
-                bool studentDeleted = true;
-
-                foreach (StudentPersonal student in students)
-                {
-
-                    if (studentId == student.Id)
-                    {
-                        studentDeleted = false;
-                        break;
-                    }
-
-                }
+                StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
+                bool studentDeleted = (deletedStudent == null ? true : false);
 
                 if (studentDeleted)
                 {
@@ -160,7 +270,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
                 IList<EqualCondition> conditions = new List<EqualCondition>();
                 conditions.Add(condition);
-                ICollection<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.Retrieve(conditions);
+                IEnumerable<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.QueryByServicePath(conditions);
 
                 foreach (StudentPersonal student in teachingGroupStudents)
                 {
@@ -180,10 +290,6 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
         static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();

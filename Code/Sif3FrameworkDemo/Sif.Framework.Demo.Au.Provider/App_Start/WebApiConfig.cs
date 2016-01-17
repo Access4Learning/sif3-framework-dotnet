@@ -1,8 +1,7 @@
-﻿using Sif.Framework.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Sif.Framework.WebApi;
+using System.Reflection;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 
 namespace Sif.Framework.Demo.Au.Provider
 {
@@ -43,6 +42,11 @@ namespace Sif.Framework.Demo.Au.Provider
             );
 
             config.MessageHandlers.Add(new MethodOverrideHandler());
+
+            config.Services.Replace(typeof(IHttpControllerTypeResolver), new ServiceProviderHttpControllerTypeResolver());
+
+            FieldInfo suffix = typeof(DefaultHttpControllerSelector).GetField("ControllerSuffix", BindingFlags.Static | BindingFlags.Public);
+            if (suffix != null) suffix.SetValue(null, "Provider");
         }
     }
 }
