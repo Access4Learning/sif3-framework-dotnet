@@ -18,6 +18,7 @@ using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Utils;
+using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -47,9 +48,9 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple)">Post</see>
+        /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
-        public override IHttpActionResult Post(List<T> objs)
+        public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -58,6 +59,11 @@ namespace Sif.Framework.Providers
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+
+            if ((zone != null && zone.Length != 1) || (context != null && context.Length != 1))
+            {
+                return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
+            }
 
             IHttpActionResult result;
             ICollection<createType> createStatuses = new List<createType>();
@@ -80,7 +86,7 @@ namespace Sif.Framework.Providers
 
                             if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                             {
-                                status.id = service.Create(obj, mustUseAdvisory).RefId;
+                                status.id = service.Create(obj, mustUseAdvisory, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                             else
@@ -100,7 +106,7 @@ namespace Sif.Framework.Providers
                             }
                             else
                             {
-                                status.id = service.Create(obj).RefId;
+                                status.id = service.Create(obj, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
 
@@ -149,9 +155,9 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple)">Put</see>
+        /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
-        public override IHttpActionResult Put(List<T> objs)
+        public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -160,6 +166,11 @@ namespace Sif.Framework.Providers
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+
+            if ((zone != null && zone.Length != 1) || (context != null && context.Length != 1))
+            {
+                return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
+            }
 
             IHttpActionResult result;
             ICollection<updateType> updateStatuses = new List<updateType>();
@@ -174,7 +185,7 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        service.Update(obj);
+                        service.Update(obj, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)

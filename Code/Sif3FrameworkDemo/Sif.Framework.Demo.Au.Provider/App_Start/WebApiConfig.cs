@@ -1,7 +1,10 @@
 ﻿using Sif.Framework.WebApi;
+using Sif.Framework.WebApi.ControllerSelectors;
+using Sif.Framework.WebApi.RouteConstraints;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
+using System.Web.Http.Routing;
 
 namespace Sif.Framework.Demo.Au.Provider
 {
@@ -11,8 +14,12 @@ namespace Sif.Framework.Demo.Au.Provider
         {
             // Web API configuration and services
 
+            // Register the SegmentPrefixConstraint for matching an exact segment prefix.
+            DefaultInlineConstraintResolver constraintResolver = new DefaultInlineConstraintResolver();
+            constraintResolver.ConstraintMap.Add("SegmentPrefix", typeof(SegmentPrefixConstraint));
+
             // Web API routes
-            config.MapHttpAttributeRoutes();
+            config.MapHttpAttributeRoutes(constraintResolver);
 
             config.Routes.MapHttpRoute(
                 name: "UriPathExtensionApi",
@@ -47,6 +54,9 @@ namespace Sif.Framework.Demo.Au.Provider
 
             FieldInfo suffix = typeof(DefaultHttpControllerSelector).GetField("ControllerSuffix", BindingFlags.Static | BindingFlags.Public);
             if (suffix != null) suffix.SetValue(null, "Provider");
+
+            // Replace the default controller selector with a custom one which recognises matrix parameters.
+            config.Services.Replace(typeof(IHttpControllerSelector), new ServiceProviderHttpControllerSelector(config));
         }
     }
 }

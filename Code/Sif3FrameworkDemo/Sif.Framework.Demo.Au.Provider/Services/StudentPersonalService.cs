@@ -73,7 +73,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             studentsCache = CreateStudents(20);
         }
 
-        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null)
+        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -82,7 +82,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return obj;
         }
 
-        public StudentPersonal Retrieve(string refId)
+        public StudentPersonal Retrieve(string refId, string zone = null, string context = null)
         {
             StudentPersonal student;
 
@@ -94,41 +94,46 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return student;
         }
 
-        public List<StudentPersonal> Retrieve(uint? pageIndex = default(uint?), uint? pageSize = default(uint?))
+        public List<StudentPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
-            List<StudentPersonal> allStudents = new List<StudentPersonal>();
-            allStudents.AddRange(studentsCache.Values);
             List<StudentPersonal> retrievedStudents = new List<StudentPersonal>();
 
-            if (pageIndex.HasValue && pageSize.HasValue)
+            if ("Gov".Equals(zone) && "Curr".Equals(context))
             {
-                uint index = pageIndex.Value * pageSize.Value;
-                uint count = pageSize.Value;
+                List<StudentPersonal> allStudents = new List<StudentPersonal>();
+                allStudents.AddRange(studentsCache.Values);
 
-                if (studentsCache.Values.Count < (index + count))
+                if (pageIndex.HasValue && pageSize.HasValue)
                 {
-                    count = (uint)studentsCache.Values.Count - index;
+                    uint index = pageIndex.Value * pageSize.Value;
+                    uint count = pageSize.Value;
+
+                    if (studentsCache.Values.Count < (index + count))
+                    {
+                        count = (uint)studentsCache.Values.Count - index;
+                    }
+                    else
+                    {
+                        count = pageSize.Value;
+                    }
+
+                    if (index <= studentsCache.Values.Count)
+                    {
+                        retrievedStudents = allStudents.GetRange((int)index, (int)count);
+                    }
+
                 }
                 else
                 {
-                    count = pageSize.Value;
+                    retrievedStudents = allStudents;
                 }
 
-                if (index <= studentsCache.Values.Count)
-                {
-                    retrievedStudents = allStudents.GetRange((int)index, (int)count);
-                }
-
-            }
-            else
-            {
-                retrievedStudents = allStudents;
             }
 
             return retrievedStudents;
         }
 
-        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = default(uint?), uint? pageSize = default(uint?))
+        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             List<StudentPersonal> students = new List<StudentPersonal>();
 
@@ -145,7 +150,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return students;
         }
 
-        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = default(uint?), uint? pageSize = default(uint?))
+        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             List<StudentPersonal> students = new List<StudentPersonal>();
             students.Add(CreateBartSimpson());
@@ -153,7 +158,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return students;
         }
 
-        public void Update(StudentPersonal obj)
+        public void Update(StudentPersonal obj, string zone = null, string context = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))
@@ -164,7 +169,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         }
 
-        public void Delete(string refId)
+        public void Delete(string refId, string zone = null, string context = null)
         {
             studentsCache.Remove(refId);
         }

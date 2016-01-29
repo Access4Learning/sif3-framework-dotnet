@@ -26,17 +26,17 @@ namespace Sif.Framework.Demo.Au.Provider.Services
     public class SchoolInfoService : IBasicProviderService<SchoolInfo>
     {
 
-        public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null)
+        public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public SchoolInfo Retrieve(string refId)
+        public SchoolInfo Retrieve(string refId, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<SchoolInfo> Retrieve(uint? pageIndex = null, uint? pageSize = null)
+        public List<SchoolInfo> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             SchoolInfo school = new SchoolInfo { SchoolName = "Applecross SHS" };
             List<SchoolInfo> schools = new List<SchoolInfo> { school };
@@ -44,7 +44,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return schools;
         }
 
-        public List<SchoolInfo> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null)
+        public List<SchoolInfo> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             SchoolInfo school = new SchoolInfo { SchoolName = "Rossmoyne Conditional SHS" };
             List<SchoolInfo> schools = new List<SchoolInfo> { school };
@@ -52,17 +52,17 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return schools;
         }
 
-        public List<SchoolInfo> Retrieve(SchoolInfo obj, uint? pageIndex = null, uint? pageSize = null)
+        public List<SchoolInfo> Retrieve(SchoolInfo obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(SchoolInfo obj)
+        public void Update(SchoolInfo obj, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(string refId)
+        public void Delete(string refId, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }

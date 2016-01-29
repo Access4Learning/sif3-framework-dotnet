@@ -61,14 +61,18 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -153,6 +157,7 @@
     <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
+    <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
     <Compile Include="Utils\SessionsManager.cs" />
@@ -191,7 +196,12 @@
     <Compile Include="Service\Serialisation\SerialiserFactory.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\TraceExceptionLogger.cs" />
+    <Compile Include="WebApi\ModelBinders\MatrixParameterAttribute.cs" />
+    <Compile Include="WebApi\ModelBinders\MatrixParameterModelBinder.cs" />
+    <Compile Include="WebApi\ModelBinders\SegmentPrefixAttribute.cs" />
+    <Compile Include="WebApi\ModelBinders\SegmentPrefixModelBinder.cs" />
     <Compile Include="WebApi\NotFoundErrorMessageResult.cs" />
+    <Compile Include="WebApi\RouteConstraints\SegmentPrefixConstraint.cs" />
     <Compile Include="WebApi\ServiceProviderHttpControllerTypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>

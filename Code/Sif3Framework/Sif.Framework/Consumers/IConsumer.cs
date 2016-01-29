@@ -49,24 +49,30 @@ namespace Sif.Framework.Consumers
         /// <para>POST /StudentPersonals/StudentPersonal</para>
         /// </summary>
         /// <param name="obj">Object to create.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Created object.</returns>
-        TSingle Create(TSingle obj);
+        TSingle Create(TSingle obj, string zone = null, string context = null);
 
         /// <summary>
         /// Create multiple objects.
         /// <para>POST /StudentPersonals</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to create.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Response containing status of each object created.</returns>
-        MultipleCreateResponse Create(TMultiple obj);
+        MultipleCreateResponse Create(TMultiple obj, string zone = null, string context = null);
 
         /// <summary>
         /// Retrieve a single object.
         /// <para>GET /StudentPersonals/{id}</para>
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Retrieved object.</returns>
-        TSingle Query(TPrimaryKey refId);
+        TSingle Query(TPrimaryKey refId, string zone = null, string context = null);
 
         /// <summary>
         /// Retrieve all objects.
@@ -74,8 +80,10 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
-        TMultiple Query(uint? navigationPage = null, uint? navigationPageSize = null);
+        TMultiple Query(uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
 
         /// <summary>
         /// Retrieve multiple objects using Query by Example.
@@ -84,8 +92,10 @@ namespace Sif.Framework.Consumers
         /// <param name="obj">Example object.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
-        TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null);
+        TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -96,38 +106,48 @@ namespace Sif.Framework.Consumers
         /// <param name="conditions">Service Path conditions.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
-        TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null);
+        TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
 
         /// <summary>
         /// Update a single object.
         /// <para>PUT /StudentPersonals/{id}</para>
         /// </summary>
         /// <param name="obj">Object to update.</param>
-        void Update(TSingle obj);
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
+        void Update(TSingle obj, string zone = null, string context = null);
 
         /// <summary>
         /// Update multiple objects.
         /// <para>PUT /StudentPersonals</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to update.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Response containing status of each object updated.</returns>
-        MultipleUpdateResponse Update(TMultiple obj);
+        MultipleUpdateResponse Update(TMultiple obj, string zone = null, string context = null);
 
         /// <summary>
         /// Delete a single object.
         /// <para>DELETE /StudentPersonals/{id}</para>
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
-        void Delete(TPrimaryKey refId);
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
+        void Delete(TPrimaryKey refId, string zone = null, string context = null);
 
         /// <summary>
         /// Delete multiple objects.
         /// <para>PUT /StudentPersonals (methodOverride: DELETE)</para>
         /// </summary>
         /// <param name="refIds">SIF identifiers of the objects.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <returns>Response containing status of each object deleted.</returns>
-        MultipleDeleteResponse Delete(IEnumerable<TPrimaryKey> refIds);
+        MultipleDeleteResponse Delete(IEnumerable<TPrimaryKey> refIds, string zone = null, string context = null);
 
     }
 

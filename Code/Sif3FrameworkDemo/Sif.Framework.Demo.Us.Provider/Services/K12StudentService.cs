@@ -58,7 +58,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             studentsCache = CreateStudents(10);
         }
 
-        public K12Student Create(K12Student obj, bool? mustUseAdvisory = default(bool?))
+        public K12Student Create(K12Student obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -67,12 +67,12 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return obj;
         }
 
-        public void Delete(string refId)
+        public void Delete(string refId, string zone = null, string context = null)
         {
             studentsCache.Remove(refId);
         }
 
-        public K12Student Retrieve(string refId)
+        public K12Student Retrieve(string refId, string zone = null, string context = null)
         {
             K12Student student;
 
@@ -84,7 +84,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return student;
         }
 
-        public List<K12Student> Retrieve(uint? pageIndex = default(uint?), uint? pageSize = default(uint?))
+        public List<K12Student> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             List<K12Student> allStudents = new List<K12Student>();
             allStudents.AddRange(studentsCache.Values);
@@ -118,17 +118,17 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return retrievedStudents;
         }
 
-        public List<K12Student> Retrieve(K12Student obj, uint? pageIndex = default(uint?), uint? pageSize = default(uint?))
+        public List<K12Student> Retrieve(K12Student obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<K12Student> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = default(uint?), uint? pageSize = default(uint?))
+        public List<K12Student> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(K12Student obj)
+        public void Update(K12Student obj, string zone = null, string context = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))

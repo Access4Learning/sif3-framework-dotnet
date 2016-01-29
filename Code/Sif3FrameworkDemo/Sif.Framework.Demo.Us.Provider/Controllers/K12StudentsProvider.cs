@@ -17,6 +17,7 @@
 using Sif.Framework.Demo.Us.Provider.Models;
 using Sif.Framework.Demo.Us.Provider.Services;
 using Sif.Framework.Providers;
+using Sif.Framework.WebApi.ModelBinders;
 using System.Web.Http;
 
 namespace Sif.Framework.Demo.Us.Provider.Controllers
@@ -31,7 +32,7 @@ namespace Sif.Framework.Demo.Us.Provider.Controllers
         }
 
         [Route("~/api/K12Students/K12Student")]
-        public override IHttpActionResult Post(K12Student obj)
+        public override IHttpActionResult Post(K12Student obj, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             return base.Post(obj);
         }

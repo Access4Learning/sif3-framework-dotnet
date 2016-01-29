@@ -32,22 +32,26 @@ namespace Sif.Framework.Service.Providers
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to create.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <exception cref="Model.Exceptions.AlreadyExistsException">Object already exists.</exception>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.CreateException">Error creating object.</exception>
         /// <exception cref="Model.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
         /// <returns>Response containing status of each object created.</returns>
-        MultipleCreateResponse Create(TMultiple obj, bool? mustUseAdvisory = null);
+        MultipleCreateResponse Create(TMultiple obj, bool? mustUseAdvisory = null, string zone = null, string context = null);
 
         /// <summary>
         /// Update multiple objects.
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to update</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.NotFoundException">Object to update not found.</exception>
         /// <exception cref="Model.Exceptions.UpdateException">Error updating objects.</exception>
         /// <returns>Response containing status of each object updated.</returns>
-        MultipleUpdateResponse Update(TMultiple obj);
+        MultipleUpdateResponse Update(TMultiple obj, string zone = null, string context = null);
 
     }
 

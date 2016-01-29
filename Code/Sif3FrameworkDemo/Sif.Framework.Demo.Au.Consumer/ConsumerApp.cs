@@ -175,7 +175,8 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                // Retrieve Bart Simpson.
+                // Retrieve Bart Simpson using QBE.
+                if (log.IsInfoEnabled) log.Info("*** Retrieve Bart Simpson using QBE.");
                 NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
                 PersonInfoType personInfo = new PersonInfoType { Name = name };
                 StudentPersonal studentPersonal = new StudentPersonal { PersonInfo = personInfo };
@@ -186,7 +187,8 @@ namespace Sif.Framework.Demo.Au.Consumer
                     if (log.IsInfoEnabled) log.Info("Filtered student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                 }
 
-                // Create and then retrieve a new student.
+                // Create a new student.
+                if (log.IsInfoEnabled) log.Info("*** Create a new student.");
                 NameOfRecordType newStudentName = new NameOfRecordType { FamilyName = "Wayne", GivenName = "Bruce", Type = NameOfRecordTypeType.LGL };
                 PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
                 StudentPersonal newStudent = new StudentPersonal { LocalId = "555", PersonInfo = newStudentInfo };
@@ -194,6 +196,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.PersonInfo.Name.GivenName + " " + newStudent.PersonInfo.Name.FamilyName);
 
                 // Create multiple new students.
+                if (log.IsInfoEnabled) log.Info("*** Create multiple new students.");
                 List<StudentPersonal> newStudents = CreateStudents(5);
                 MultipleCreateResponse multipleCreateResponse = studentPersonalConsumer.Create(newStudents);
                 int count = 0;
@@ -205,6 +208,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
                 // Update multiple students.
+                if (log.IsInfoEnabled) log.Info("*** Update multiple students.");
                 foreach (StudentPersonal student in newStudents)
                 {
                     student.PersonInfo.Name.GivenName += "o";
@@ -218,6 +222,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
                 // Delete multiple students.
+                if (log.IsInfoEnabled) log.Info("*** Delete multiple students.");
                 ICollection<string> refIds = new List<string>();
 
                 foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
@@ -232,41 +237,51 @@ namespace Sif.Framework.Demo.Au.Consumer
                     if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
                 }
 
-                // Retrieve all students.
-                IEnumerable<StudentPersonal> students = studentPersonalConsumer.Query();
+                // Retrieve all students from zone "Gov" and context "Curr".
+                if (log.IsInfoEnabled) log.Info("*** Retrieve all students from zone \"Gov\" and context \"Curr\".");
+                IEnumerable<StudentPersonal> students = studentPersonalConsumer.Query(zone: "Gov", context: "Curr");
 
                 foreach (StudentPersonal student in students)
                 {
                     if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                 }
 
-                // Retrieve a single student.
-                string studentId = students.ElementAt(1).RefId;
-                StudentPersonal secondStudent = studentPersonalConsumer.Query(studentId);
-                if (log.IsInfoEnabled) log.Info("Name of second student is " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
-
-                // Update that student and confirm.
-                secondStudent.PersonInfo.Name.GivenName = "Homer";
-                secondStudent.PersonInfo.Name.FamilyName = "Simpson";
-                studentPersonalConsumer.Update(secondStudent);
-                secondStudent = studentPersonalConsumer.Query(studentId);
-                if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
-
-                // Delete that student and confirm.
-                studentPersonalConsumer.Delete(studentId);
-                StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
-                bool studentDeleted = (deletedStudent == null ? true : false);
-
-                if (studentDeleted)
+                if (students.Count() > 1)
                 {
-                    if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
-                }
-                else
-                {
-                    if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+
+                    // Retrieve a single student.
+                    if (log.IsInfoEnabled) log.Info("*** Retrieve a single student.");
+                    string studentId = students.ElementAt(1).RefId;
+                    StudentPersonal secondStudent = studentPersonalConsumer.Query(studentId);
+                    if (log.IsInfoEnabled) log.Info("Name of second student is " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+
+                    // Update that student and confirm.
+                    if (log.IsInfoEnabled) log.Info("*** Update that student and confirm.");
+                    secondStudent.PersonInfo.Name.GivenName = "Homer";
+                    secondStudent.PersonInfo.Name.FamilyName = "Simpson";
+                    studentPersonalConsumer.Update(secondStudent);
+                    secondStudent = studentPersonalConsumer.Query(studentId);
+                    if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+
+                    // Delete that student and confirm.
+                    if (log.IsInfoEnabled) log.Info("*** Delete that student and confirm.");
+                    studentPersonalConsumer.Delete(studentId);
+                    StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
+                    bool studentDeleted = (deletedStudent == null ? true : false);
+
+                    if (studentDeleted)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                    }
+                    else
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                    }
+
                 }
 
-                // Retrieve students based on Teaching Group.
+                // Retrieve students based on Teaching Group using Service Paths.
+                if (log.IsInfoEnabled) log.Info("*** Retrieve students based on Teaching Group using Service Paths.");
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
                 IList<EqualCondition> conditions = new List<EqualCondition>();
                 conditions.Add(condition);
