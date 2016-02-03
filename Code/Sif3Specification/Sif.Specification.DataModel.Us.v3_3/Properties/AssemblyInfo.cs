@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sif.Framework.Demo.Au.Provider")]
-[assembly: AssemblyDescription("Provider created to demonstrate SIF 3 Framework usage.")]
+[assembly: AssemblyTitle("Sif.Specification.DataModel.Us")]
+[assembly: AssemblyDescription("SIF US 3.3 Data Model library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
-[assembly: AssemblyProduct("Sif.Framework.Demo.Au.Provider")]
+[assembly: AssemblyProduct("Sif.Specification.DataModel.Us")]
 [assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8319b5dd-6093-4a8e-b2ad-d9723a4daac6")]
+[assembly: Guid("34320e96-bc78-4f30-9c7e-fe0f787b4872")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers 
+// You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.1.1.0")]
-[assembly: AssemblyFileVersion("1.1.1.0")]
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("3.3.0.0")]
+[assembly: AssemblyFileVersion("3.3.0.0")]

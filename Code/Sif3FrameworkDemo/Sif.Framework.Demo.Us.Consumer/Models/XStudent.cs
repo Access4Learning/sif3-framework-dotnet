@@ -18,12 +18,13 @@ using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Us;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Us.Provider.Models
+namespace Sif.Framework.Demo.Us.Consumer.Models
 {
 
-    [XmlRoot("k12Student", Namespace = "http://www.sifassociation.org/datamodel/na/3.2", IsNullable = false)]
-    [XmlType(Namespace = "http://www.sifassociation.org/datamodel/na/3.2")]
-    public class K12Student : k12StudentType, IDataModel
+    [XmlInclude(typeof(xSreType))]
+    [XmlRoot("xStudent", Namespace = "http://www.sifassociation.org/datamodel/na/3.3", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/datamodel/na/3.3")]
+    public class XStudent : xStudentType, IDataModel
     {
 
         public string RefId

@@ -254,3 +254,11 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated Consumers to pass Zone and Context with all requests using Matrix Parameters.
 - Updated Providers to handle receiving Zone and Context as Matrix Parameters.
 - Updated AU and US demo projects to reflect the use of Matrix Parameters.
+
+**Feb 3, 2016 - 1.1.0 Added Zone and Context using Matrix Parameters**
+
+- Upgraded Web API to version 5.2.3 on all appropriate projects.
+- Enhanced and configured the WebApi implementation to recognise Matrix Parameters.
+- Updated Consumers to pass Zone and Context with all requests using Matrix Parameters.
+- Updated Providers to handle receiving Zone and Context as Matrix Parameters.
+- Updated AU and US demo projects to reflect the use of Matrix Parameters.

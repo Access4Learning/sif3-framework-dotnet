@@ -62,7 +62,7 @@
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Us, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Us 3.2\Sif.Specification.DataModel.Us.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Us 3.3\Sif.Specification.DataModel.Us.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
@@ -117,13 +117,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\K12StudentsProvider.cs" />
+    <Compile Include="Controllers\XStudentsProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\K12Student.cs" />
+    <Compile Include="Models\XStudent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\K12StudentService.cs" />
+    <Compile Include="Services\XStudentService.cs" />
     <Compile Include="Utils\RandomNameGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

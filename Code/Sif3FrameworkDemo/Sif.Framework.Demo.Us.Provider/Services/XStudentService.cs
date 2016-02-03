@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,40 +25,38 @@ using System.Collections.Generic;
 namespace Sif.Framework.Demo.Us.Provider.Services
 {
 
-    public class K12StudentService : IBasicProviderService<K12Student>
+    public class XStudentService : IBasicProviderService<XStudent>
     {
-        private static IDictionary<string, K12Student> studentsCache = new Dictionary<string, K12Student>();
+        private static IDictionary<string, XStudent> studentsCache = new Dictionary<string, XStudent>();
         private static Random random = new Random();
 
-        private static K12Student CreateStudent()
+        private static XStudent CreateStudent()
         {
-            k12StudentTypeIdentityIdentification identification = new k12StudentTypeIdentityIdentification { studentId = random.Next(10000, 99999).ToString() };
-            k12StudentTypeIdentityName name = new k12StudentTypeIdentityName { firstName = RandomNameGenerator.GivenName, lastName = RandomNameGenerator.FamilyName };
-            k12StudentTypeIdentity identity = new k12StudentTypeIdentity { identification = identification, name = name };
-            K12Student k12Student = new K12Student { refId = Guid.NewGuid().ToString(), identity = identity };
+            xPersonNameType name = new xPersonNameType { familyName = RandomNameGenerator.GivenName, givenName = RandomNameGenerator.FamilyName };
+            XStudent student = new XStudent { refId = Guid.NewGuid().ToString(), localId = random.Next(10000, 99999).ToString(), name = name };
 
-            return k12Student;
+            return student;
         }
 
-        private static IDictionary<string, K12Student> CreateStudents(int count)
+        private static IDictionary<string, XStudent> CreateStudents(int count)
         {
-            IDictionary<string, K12Student> k12StudentsCache = new Dictionary<string, K12Student>();
+            IDictionary<string, XStudent> studentsCache = new Dictionary<string, XStudent>();
 
             for (int i = 1; i <= count; i++)
             {
-                K12Student k12Student = CreateStudent();
-                k12StudentsCache.Add(k12Student.refId, k12Student);
+                XStudent student = CreateStudent();
+                studentsCache.Add(student.refId, student);
             }
 
-            return k12StudentsCache;
+            return studentsCache;
         }
 
-        static K12StudentService()
+        static XStudentService()
         {
             studentsCache = CreateStudents(10);
         }
 
-        public K12Student Create(K12Student obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
+        public XStudent Create(XStudent obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -72,9 +70,9 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             studentsCache.Remove(refId);
         }
 
-        public K12Student Retrieve(string refId, string zone = null, string context = null)
+        public XStudent Retrieve(string refId, string zone = null, string context = null)
         {
-            K12Student student;
+            XStudent student;
 
             if (!studentsCache.TryGetValue(refId, out student))
             {
@@ -84,11 +82,11 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return student;
         }
 
-        public List<K12Student> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<XStudent> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
-            List<K12Student> allStudents = new List<K12Student>();
+            List<XStudent> allStudents = new List<XStudent>();
             allStudents.AddRange(studentsCache.Values);
-            List<K12Student> retrievedStudents = new List<K12Student>();
+            List<XStudent> retrievedStudents = new List<XStudent>();
 
             if (pageIndex.HasValue && pageSize.HasValue)
             {
@@ -118,17 +116,17 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return retrievedStudents;
         }
 
-        public List<K12Student> Retrieve(K12Student obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<XStudent> Retrieve(XStudent obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<K12Student> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<XStudent> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(K12Student obj, string zone = null, string context = null)
+        public void Update(XStudent obj, string zone = null, string context = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))

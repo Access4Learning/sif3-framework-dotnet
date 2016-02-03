@@ -30,54 +30,52 @@ namespace Sif.Framework.Demo.Us.Consumer
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        void RunK12StudentConsumer()
+        void RunStudentConsumer()
         {
-            K12StudentConsumer studentConsumer = new K12StudentConsumer("Sif3UsDemoApp");
+            XStudentConsumer studentConsumer = new XStudentConsumer("Sif3UsDemoApp");
             studentConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
                 // Retrieve all students.
-                ICollection<K12Student> students = studentConsumer.Query();
+                ICollection<XStudent> students = studentConsumer.Query();
 
-                foreach (K12Student student in students)
+                foreach (XStudent student in students)
                 {
-                    if (log.IsInfoEnabled) log.Info("Student name is " + student.identity.name.firstName + " " + student.identity.name.lastName);
+                    if (log.IsInfoEnabled) log.Info("Student name is " + student.name.givenName + " " + student.name.familyName);
                 }
 
                 // Retrieve a single student.
                 string studentId = students.ElementAt(0).RefId;
-                K12Student firstStudent = studentConsumer.Query(studentId);
-                if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName);
+                XStudent firstStudent = studentConsumer.Query(studentId);
+                if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.name.givenName + " " + firstStudent.name.familyName);
 
                 // Create and then retrieve a new student.
-                k12StudentTypeIdentityIdentification newStudentIdentifier = new k12StudentTypeIdentityIdentification() { studentId = "555" };
-                k12StudentTypeIdentityName newStudentName = new k12StudentTypeIdentityName() { lastName = "Wayne", firstName = "Bruce" };
-                k12StudentTypeIdentity newStudentIdentity = new k12StudentTypeIdentity() { identification = newStudentIdentifier, name = newStudentName };
-                K12Student newStudent = new K12Student() { identity = newStudentIdentity };
-                K12Student retrievedNewStudent = studentConsumer.Create(newStudent);
-                if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.identity.name.firstName + " " + newStudent.identity.name.lastName);
+                xPersonNameType newStudentName = new xPersonNameType() { familyName = "Wayne", givenName = "Bruce" };
+                XStudent newStudent = new XStudent() { localId = "555", name = newStudentName };
+                XStudent retrievedNewStudent = studentConsumer.Create(newStudent);
+                if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.name.givenName + " " + newStudent.name.familyName);
 
                 // Update that student and confirm.
-                firstStudent.identity.name.firstName = "Homer";
-                firstStudent.identity.name.lastName = "Simpson";
+                firstStudent.name.givenName = "Homer";
+                firstStudent.name.familyName = "Simpson";
                 studentConsumer.Update(firstStudent);
                 firstStudent = studentConsumer.Query(studentId);
-                if (log.IsInfoEnabled) log.Info("Name of first student has been changed to " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName);
+                if (log.IsInfoEnabled) log.Info("Name of first student has been changed to " + firstStudent.name.givenName + " " + firstStudent.name.familyName);
 
                 // Delete that student and confirm.
                 studentConsumer.Delete(studentId);
-                K12Student deletedStudent = studentConsumer.Query(studentId);
+                XStudent deletedStudent = studentConsumer.Query(studentId);
                 bool studentDeleted = (deletedStudent == null ? true : false);
 
                 if (studentDeleted)
                 {
-                    if (log.IsInfoEnabled) log.Info("Student " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName + " was successfully deleted.");
+                    if (log.IsInfoEnabled) log.Info("Student " + firstStudent.name.givenName + " " + firstStudent.name.familyName + " was successfully deleted.");
                 }
                 else
                 {
-                    if (log.IsInfoEnabled) log.Info("Student " + firstStudent.identity.name.firstName + " " + firstStudent.identity.name.lastName + " was NOT deleted.");
+                    if (log.IsInfoEnabled) log.Info("Student " + firstStudent.name.givenName + " " + firstStudent.name.familyName + " was NOT deleted.");
                 }
 
             }
@@ -99,11 +97,11 @@ namespace Sif.Framework.Demo.Us.Consumer
 
             try
             {
-                app.RunK12StudentConsumer();
+                app.RunStudentConsumer();
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the K12Student Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (log.IsErrorEnabled) log.Error("Error running the student Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
 
             Console.WriteLine("Press any key to continue ...");

@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.Us.Provider.Models;
-using Sif.Framework.Demo.Us.Provider.Services;
-using Sif.Framework.Providers;
-using Sif.Framework.WebApi.ModelBinders;
-using System.Web.Http;
+using Sif.Framework.Consumers;
+using Sif.Framework.Demo.Us.Consumer.Models;
+using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.Demo.Us.Provider.Controllers
+namespace Sif.Framework.Demo.Us.Consumer
 {
 
-    public class K12StudentsProvider : BasicProvider<K12Student>
+    class XStudentConsumer : BasicConsumer<XStudent>
     {
 
-        public K12StudentsProvider()
-            : base(new K12StudentService())
+        public XStudentConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+            : base(applicationKey, instanceId, userToken, solutionId)
         {
         }
 
-        [Route("~/api/K12Students/K12Student")]
-        public override IHttpActionResult Post(K12Student obj, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public XStudentConsumer(Environment environment)
+            : base(environment)
         {
-            return base.Post(obj);
         }
 
     }
