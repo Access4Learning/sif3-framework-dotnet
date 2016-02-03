@@ -255,10 +255,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated Providers to handle receiving Zone and Context as Matrix Parameters.
 - Updated AU and US demo projects to reflect the use of Matrix Parameters.
 
-**Feb 3, 2016 - 1.1.0 Added Zone and Context using Matrix Parameters**
+**Feb 03, 2016 - 1.1.1 Added SIF US 3.3 data model**
 
-- Upgraded Web API to version 5.2.3 on all appropriate projects.
-- Enhanced and configured the WebApi implementation to recognise Matrix Parameters.
-- Updated Consumers to pass Zone and Context with all requests using Matrix Parameters.
-- Updated Providers to handle receiving Zone and Context as Matrix Parameters.
-- Updated AU and US demo projects to reflect the use of Matrix Parameters.
+- Added the SIF US 3.3 data model to the Sif3Specification Solution.
+- Updated US demo projects to use SIF US 3.3 model objects.
+- Added a Service Path exercise to the AU and US training exercises.
+
