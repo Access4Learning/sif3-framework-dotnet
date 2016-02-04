@@ -116,9 +116,9 @@ namespace Sif.Framework.WebApi.ModelBinders
             // Expand in case that a catch-all constraint will deliver a segment with "/" in it.
             List<string> paramSegments = new List<string>();
 
-            foreach (string segment in values)
+            foreach (string value in values)
             {
-                paramSegments.AddRange(segment.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries));
+                paramSegments.AddRange(value.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries));
             }
 
             List<string> collectedAttributeValues = new List<string>();

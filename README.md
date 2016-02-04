@@ -261,3 +261,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated US demo projects to use SIF US 3.3 model objects.
 - Added a Service Path exercise to the AU and US training exercises.
 
+**Feb 04, 2016 - 1.1.2 Resolve issue with Visual Studio 2013**
+
+- Applied code change due to compiler error that occurs in VS`2013 but not VS 2015.
+
