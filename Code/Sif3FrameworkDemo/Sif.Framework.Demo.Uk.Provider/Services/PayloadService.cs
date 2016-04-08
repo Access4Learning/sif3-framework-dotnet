@@ -34,10 +34,11 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
         protected override void addPhases(Job job)
         {
-            IDictionary<string, Right> rights = Right.getRights(RightValue.REJECTED, RightValue.APPROVED, RightValue.REJECTED, RightValue.REJECTED, RightValue.APPROVED, RightValue.REJECTED, RightValue.APPROVED);
-            job.addPhase(new Phase("default", true, rights, PhaseStateType.NOTSTARTED, "A demonstration phase"));
-            job.addPhase(new Phase("xml", true, rights, PhaseStateType.NOTSTARTED, "A demonstration XML based phase"));
-            job.addPhase(new Phase("json", true, rights, PhaseStateType.NOTSTARTED, "A demonstration Json based phase"));
+            job.addPhase(new Phase("default", true, Right.getRights(create: RightValue.APPROVED, query: RightValue.APPROVED, update: RightValue.APPROVED), PhaseStateType.NOTSTARTED, "A demonstration phase"));
+
+            job.addPhase(new Phase("xml", true, Right.getRights(update: RightValue.APPROVED), PhaseStateType.NOTSTARTED, "A demonstration XML based phase"));
+
+            job.addPhase(new Phase("json", true, Right.getRights(update: RightValue.APPROVED), PhaseStateType.NOTSTARTED, "A demonstration Json based phase"));
         }
 
         protected override Boolean JobShutdown()
