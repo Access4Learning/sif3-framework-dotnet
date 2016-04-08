@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents the situation where an item cannot be found.
     /// </summary>
     [Serializable]
-    class NotFoundException : BaseException
+    public class NotFoundException : BaseException
     {
 
         /// <summary>

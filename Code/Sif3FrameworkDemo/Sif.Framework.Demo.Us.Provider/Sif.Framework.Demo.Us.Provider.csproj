@@ -56,16 +56,17 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Framework, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 1.1.0\Sif.Framework.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 1.2.0\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Us, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Us 3.3\Sif.Specification.DataModel.Us.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure">
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
+    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.94.0\lib\net45\System.Data.SQLite.dll</HintPath>
@@ -157,7 +158,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53180</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53180/</IISUrl>
+          <IISUrl>http://127.0.0.1:53180/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

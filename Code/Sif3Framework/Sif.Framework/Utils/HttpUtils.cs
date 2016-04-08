@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- using Sif.Framework.Extensions;
+using Sif.Framework.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +23,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
 
 namespace Sif.Framework.Utils
@@ -32,7 +31,7 @@ namespace Sif.Framework.Utils
     /// <summary>
     /// This is a utility class for HTTP operations.
     /// </summary>
-    static class HttpUtils
+    public static class HttpUtils
     {
 
         internal enum RequestMethod { DELETE, GET, POST, PUT }
@@ -57,7 +56,7 @@ namespace Sif.Framework.Utils
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null)
+        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
@@ -86,6 +85,16 @@ namespace Sif.Framework.Utils
                 request.Headers.Add("methodOverride", methodOverride.Trim());
             }
 
+            if (!String.IsNullOrWhiteSpace(acceptOverride))
+            {
+                request.Accept = acceptOverride.Trim();
+            }
+
+            if (!String.IsNullOrWhiteSpace(contentTypeOverride))
+            {
+                request.ContentType = contentTypeOverride.Trim();
+            }
+
             return request;
         }
 
@@ -98,12 +107,13 @@ namespace Sif.Framework.Utils
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
+        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
 
             using (WebResponse response = request.GetResponse())
             {
+
                 string responseString = null;
 
                 if (response != null)
@@ -129,9 +139,9 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        private static string RequestWithPayload(RequestMethod requestMethod, string url, string authorisationToken, string body, string methodOverride = null)
+        private static string RequestWithPayload(RequestMethod requestMethod, string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, methodOverride: methodOverride);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, methodOverride: methodOverride, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -165,9 +175,14 @@ namespace Sif.Framework.Utils
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
         /// <returns></returns>
-        public static string DeleteRequest(string url, string authorisationToken)
+        public static string DeleteRequest(string url, string authorisationToken, string contentTypeOverride = null, string acceptOverride = null)
         {
-            return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken);
+            return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+        }
+
+        public static string DeleteRequest(string url, string authorisationToken, string body, string contentTypeOverride = null, string acceptOverride = null)
+        {
+            return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body,  contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -178,9 +193,9 @@ namespace Sif.Framework.Utils
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
         /// <returns></returns>
-        public static string GetRequest(string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null)
+        public static string GetRequest(string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, navigationPage, navigationPageSize);
+            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -191,9 +206,9 @@ namespace Sif.Framework.Utils
         /// <param name="body"></param>
         /// <param name="methodOverride"></param>
         /// <returns></returns>
-        public static string PostRequest(string url, string authorisationToken, string body, string methodOverride = null)
+        public static string PostRequest(string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, methodOverride);
+            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, methodOverride, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -204,9 +219,9 @@ namespace Sif.Framework.Utils
         /// <param name="body"></param>
         /// <param name="methodOverride"></param>
         /// <returns></returns>
-        public static string PutRequest(string url, string authorisationToken, string body, string methodOverride = null)
+        public static string PutRequest(string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, methodOverride);
+            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, methodOverride, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -443,6 +458,44 @@ namespace Sif.Framework.Utils
             return string.IsNullOrWhiteSpace(errorMessage);
         }
 
+        /// <summary>
+        /// Build up a string of Matrix Parameters based upon the passed parameters.
+        /// </summary>
+        /// <param name="zone">Zone associated with a request.</param>
+        /// <param name="context">Zone context.</param>
+        /// <returns>String of Matrix Parameters.</returns>
+        public static string MatrixParameters(string zone = null, string context = null)
+        {
+            string matrixParameters = "";
+
+            if (!string.IsNullOrWhiteSpace(zone))
+            {
+                matrixParameters += ";zone=" + zone.Trim();
+            }
+
+            if (!string.IsNullOrWhiteSpace(context))
+            {
+                matrixParameters += ";context=" + context.Trim();
+            }
+
+            return matrixParameters;
+        }
+
+        public static string GetAccept(HttpRequestMessage Request)
+        {
+            string[] values = (from a in Request.Headers.Accept select a.MediaType).ToArray();
+            if(values == null || values.Length == 0)
+            {
+                return "plain/text";
+            }
+            return values[0];
+        }
+
+        public static string getContentType(HttpRequestMessage Request)
+        {
+            return Request.Content.Headers.ContentType.MediaType;
+        }
+        
     }
 
 }

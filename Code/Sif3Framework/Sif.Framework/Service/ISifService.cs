@@ -24,25 +24,25 @@ namespace Sif.Framework.Service
     public interface ISifService<UI, DB> where DB : IPersistable<Guid>
     {
 
-        Guid Create(UI item);
+        Guid Create(UI item, string zone = null, string context = null);
 
-        void Create(IEnumerable<UI> items);
+        void Create(IEnumerable<UI> items, string zone = null, string context = null);
 
-        void Delete(Guid id);
+        void Delete(Guid id, string zone = null, string context = null);
 
-        void Delete(UI item);
+        void Delete(UI item, string zone = null, string context = null);
 
-        void Delete(IEnumerable<UI> items);
+        void Delete(IEnumerable<UI> items, string zone = null, string context = null);
 
-        UI Retrieve(Guid id);
+        UI Retrieve(Guid id, string zone = null, string context = null);
 
-        ICollection<UI> Retrieve(UI item);
+        ICollection<UI> Retrieve(UI item, string zone = null, string context = null);
 
-        ICollection<UI> Retrieve();
+        ICollection<UI> Retrieve(string zone = null, string context = null);
 
-        void Update(UI item);
+        void Update(UI item, string zone = null, string context = null);
 
-        void Update(IEnumerable<UI> items);
+        void Update(IEnumerable<UI> items, string zone = null, string context = null);
 
     }
 

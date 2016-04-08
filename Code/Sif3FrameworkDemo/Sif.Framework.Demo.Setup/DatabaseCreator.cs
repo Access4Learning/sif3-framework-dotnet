@@ -49,11 +49,11 @@ namespace Sif.Framework.Demo.Setup
                     prop = ConfigurationManager.AppSettings["demo.locale"];
                 }
 
-                string locale = (prop != null && ("AU".Equals(prop.ToUpper()) || "US".Equals(prop.ToUpper())) ? prop.ToUpper() : null);
+                string locale = (prop != null && ("AU".Equals(prop.ToUpper()) || "UK".Equals(prop.ToUpper()) || "US".Equals(prop.ToUpper())) ? prop.ToUpper() : null);
 
                 if (locale == null)
                 {
-                    Console.WriteLine("To execute, setup requires a parameter which specifies locale, i.e. AU or US.");
+                    Console.WriteLine("To execute, setup requires a parameter which specifies locale, i.e. AU, UK or US.");
                 }
                 else
                 {

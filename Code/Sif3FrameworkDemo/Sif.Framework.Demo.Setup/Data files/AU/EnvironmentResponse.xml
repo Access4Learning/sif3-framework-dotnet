@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0"?>
-<environment xmlns="http://www.sifassociation.org/infrastructure/3.0.1" type="DIRECT">
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2" type="DIRECT">
   <infrastructureServices>
-    <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
-    <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>
-    <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
-    <infrastructureService name="queues">http://localhost:62921/api/queues</infrastructureService>
-    <infrastructureService name="subscriptions">http://localhost:62921/api/subscriptions</infrastructureService>
+    <infrastructureService name="environment">http://sif.framework.environmentprovider:62921/api/environments</infrastructureService>
+    <infrastructureService name="requestsConnector">http://sif.framework.environmentprovider:50617/api</infrastructureService>
+    <infrastructureService name="provisionRequests">http://sif.framework.environmentprovider:62921/api/provision</infrastructureService>
+    <infrastructureService name="queues">http://sif.framework.environmentprovider:62921/api/queues</infrastructureService>
+    <infrastructureService name="subscriptions">http://sif.framework.environmentprovider:62921/api/subscriptions</infrastructureService>
   </infrastructureServices>
   <provisionedZones>
     <provisionedZone id="Sif3DemoZone1">

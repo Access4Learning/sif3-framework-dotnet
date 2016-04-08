@@ -1,0 +1,93 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="AssessmentSessionType">
+    <xs:annotation>
+      <xs:documentation>A session is an event where an activity is performed by or on a learner set which contributes to the attainment of the objective. Occurs at a place and time (e.g., a test is taken, assignments are handed in, a test is marked).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SessionDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date on which the activity takes place or starts.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SessionEndDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date on which this assessment ends, if different from the start date set in SessionDate.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>A title or description for the activity, e.g Math Test.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolInfoRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The ID (GUID) of the school that the event takes place.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Activity" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>The activity which takes place.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Test" />
+            <xs:enumeration value="Homework" />
+            <xs:enumeration value="Exam" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Status" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>The current status of the session.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Planned" />
+            <xs:enumeration value="Complete" />
+            <xs:enumeration value="Published" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="StaffList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="WorkforcePersonalRefId" minOccurs="0" maxOccurs="unbounded" type="sif:IdRefType">
+              <xs:annotation>
+                <xs:documentation>The GUID that uniquely identifies a teacher or other staff member responsible for administering or assisting the learner with this assessment.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey6">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of this session.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AssessmentLearnerSetRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the set of people the session refers to.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="AssessmentSession" type="sif:AssessmentSessionType">
+    <xs:unique name="AssessmentSessionKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

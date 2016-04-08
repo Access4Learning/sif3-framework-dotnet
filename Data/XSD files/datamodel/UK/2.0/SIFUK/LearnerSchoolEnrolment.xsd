@@ -1,0 +1,168 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="LearnerSchoolEnrolmentType">
+    <xs:annotation>
+      <xs:documentation>
+        This object defines information related to a learner's enrolment within a
+        particular school or establishment.The current status on an enrolment is
+        based on EntryDate and ExitDate. Future enrolments are supported where
+        EntryDate is in the future. ExitDate may also be specified as a future
+        occurance.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="EntryDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date from when this enrolment is valid.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="NCYearGroupActual" minOccurs="0" type="sif:NCYearGroupType">
+        <xs:annotation>
+          <xs:documentation>The year group in which the learner is taught for the majority of their time, regardless of their chronological age.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ClassType" minOccurs="0" nillable="true" type="sif:UKClassTypeType">
+        <xs:annotation>
+          <xs:documentation>Indicates if the learner is in a nursery class. Must be set to 'O'  if age on August 31 is &gt;= 6.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExitDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The ending date of this enrolment. If the learner has exited before the end of the school year, ExitDate must have a value.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExitType" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Code" minOccurs="0" type="sif:UKLeavingReasonType">
+              <xs:annotation>
+                <xs:documentation>Code indicating the type of exit for this enrolment.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Destination" minOccurs="0" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Code" minOccurs="0" type="sif:UKLeavingDestinationType">
+                    <xs:annotation>
+                      <xs:documentation>Code indicating the destination type.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="LAId" minOccurs="0" nillable="true" type="sif:LAIdType">
+                    <xs:annotation>
+                      <xs:documentation>The LA number for destination school or college.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="EstablishmentId" minOccurs="0" nillable="true" type="sif:EstablishmentIdType">
+                    <xs:annotation>
+                      <xs:documentation>The DfES number for destination school or college.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="Name" minOccurs="0" nillable="true" type="xs:normalizedString">
+                    <xs:annotation>
+                      <xs:documentation>Name of institution/employer of learner's destination.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Sessions" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:unsignedInt">
+            <xs:annotation>
+              <xs:documentation>Number of learner sessions (half days) per week.  A maximum of 10 is possible per week.</xs:documentation>
+            </xs:annotation>
+            <xs:maxInclusive value="10" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="FTPTStatus" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>An indication of whether the learner is enroled only part time.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Boarder" minOccurs="0" nillable="true" type="sif:UKBoarderTypeType">
+        <xs:annotation>
+          <xs:documentation>Indicates whether the learner is a boarder at the school or not.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AlternativeTuition" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Category" minOccurs="0" type="sif:UKTuitionCategoryType">
+              <xs:annotation>
+                <xs:documentation>Reason for alternative tuition.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="StartDate" minOccurs="0" type="xs:date">
+              <xs:annotation>
+                <xs:documentation>Beginning date for alternative tuition.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EndDate" minOccurs="0" nillable="true" type="xs:date">
+              <xs:annotation>
+                <xs:documentation>End date for alternative tuition.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="TotalHours" minOccurs="0" nillable="true" type="xs:unsignedInt">
+              <xs:annotation>
+                <xs:documentation>The total number of hours provided for with the tuition.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="ProvisionType" minOccurs="0" type="sif:UKAlternativeTuitionProvisionTypeType">
+              <xs:annotation>
+                <xs:documentation>Alternative tuition provision type.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey20">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) that uniquely identifies a particular enrolment.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LearnerPersonalRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the learner to whom this information is linked.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SchoolInfoRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the school to which this enrolment applies.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="MembershipType" use="required" type="sif:UKLearnerEnrolmentStatusType">
+      <xs:annotation>
+        <xs:documentation>The type of this enrolment as it relates to the school identified by SchoolInfoRefId.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="LearnerSchoolEnrolment" type="sif:LearnerSchoolEnrolmentType">
+    <xs:unique name="LearnerSchoolEnrolmentKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

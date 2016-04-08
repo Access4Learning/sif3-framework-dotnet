@@ -1,0 +1,55 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="LearnerGroupEnrolmentType">
+    <xs:annotation>
+      <xs:documentation>
+      This object contains information about a learner's enrolment in a course (teaching group) or other (class, homeroom or registration) group.  Compare with US/Canada object: </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="sif:SchoolYear" minOccurs="0" />
+      <xs:element name="EntryDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date from when this enrolment is valid.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExitDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date on which the learner's enrolment ends or has ended.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey18">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) that uniquely identifies this LearnerGroupEnrolment entity.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LearnerPersonalRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the learner to whom the enrolment information applies.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SchoolGroupRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the group in which this learner is enroled.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="LearnerGroupEnrolment" type="sif:LearnerGroupEnrolmentType">
+    <xs:unique name="LearnerGroupEnrolmentKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

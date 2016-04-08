@@ -1,0 +1,108 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="LearnerAttendanceType">
+    <xs:annotation>
+      <xs:documentation>This object provides attendance information for a particular learner in a particular school for a particular period of time. The time can be specified as before, during, or after school and may be for any period of time, including lessons.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AttendanceDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date of the attendance period.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeIn" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>The time when the learner began the attendance period.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>The time the attendance period started. StartTime is required when this object represents a lesson</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FinishTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>The time the attendance period finished.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Session" minOccurs="0" nillable="true" type="sif:UKAttendanceSessionType">
+        <xs:annotation>
+          <xs:documentation>The session within which this attendance mark applies (e.g. AM/PM).  Session is required when StartTime is not specified and the object refers to a session attendance mark (i.e. AttendanceDomain is session).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SessionLabel" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>A label associated with the session to further describe the session, when applicable.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttendanceDomain" minOccurs="0" type="sif:UKAttendanceDomainType">
+        <xs:annotation>
+          <xs:documentation>The attendance type.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttendanceCode" minOccurs="0" type="sif:UKAttendanceCodeType">
+        <xs:annotation>
+          <xs:documentation>The attendance mark/code.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttendanceNote" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Additional comments. Required when record is specified as a correction.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RecordTimestamp" minOccurs="0" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The date/time when recorded. When more than one record exists using the same RefId, the record with the latest timestamp is assumed to be the most current. This is possible when a record is republished due to corrections.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="InputSource" minOccurs="0" type="sif:UKAttendanceSourceType">
+        <xs:annotation>
+          <xs:documentation>The source of the attendance record data.  Could be Workforce member, biometric device, or other.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkforcePersonalRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The ID (GUID) of the staff member responsible for recording this attendance information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolGroupRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The ID (GUID) of the group that this attendance applies to. Useful when the attendance period corresponds to a lesson time.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey11">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) assigned to uniquely identify this attendance record.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LearnerPersonalRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the learner for which this attendance mark is recorded.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SchoolInfoRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The school where the attendance mark was taken.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="LearnerAttendance" type="sif:LearnerAttendanceType">
+    <xs:unique name="LearnerAttendanceKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

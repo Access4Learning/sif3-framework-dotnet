@@ -1,0 +1,104 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="TermInfoType">
+    <xs:annotation>
+      <xs:documentation>
+      This object provides information about a term; i.e., a reportable period of time.  Compare with US/Canada object: </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="sif:SchoolYear" minOccurs="0" />
+      <xs:element name="StartDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Starting date of the term.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Ending date of the term.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Description" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Text-based description of the term.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TermCode" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Locally-defined code. Use 'AUT', 'SPR', or 'SUM' for a 3 term year. Otherwise specify the term number within the year.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TermsPerYear" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:unsignedInt">
+            <xs:annotation>
+              <xs:documentation>The number of terms in a given year (3-6).</xs:documentation>
+            </xs:annotation>
+            <xs:minInclusive value="3" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+            <xs:maxInclusive value="6" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="MarkingTerm" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Does this TermInfo represent a marking period?</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SchedulingTerm" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Does this TermInfo represent a scheduling term?</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AttendanceTerm" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Does this TermInfo represent an attendance term?</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey26">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) that uniquely identifies this TermInfo entity.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SchoolInfoRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) that identifies the school where the term is used.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="TermInfo" type="sif:TermInfoType">
+    <xs:unique name="TermInfoKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

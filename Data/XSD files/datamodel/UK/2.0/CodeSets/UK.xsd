@@ -1,0 +1,4433 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:simpleType name="UKUsualModeOfTravelType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="WLK">
+        <xs:annotation>
+          <xs:documentation>Walk</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CYC">
+        <xs:annotation>
+          <xs:documentation>Cycle</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CAR">
+        <xs:annotation>
+          <xs:documentation>Car/Van</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CRS">
+        <xs:annotation>
+          <xs:documentation>Car Share (with a child/children from a different household)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PSB">
+        <xs:annotation>
+          <xs:documentation>Public service bus</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DSB">
+        <xs:annotation>
+          <xs:documentation>Dedicated school bus</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BNK">
+        <xs:annotation>
+          <xs:documentation>Bus (type not known)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TXI">
+        <xs:annotation>
+          <xs:documentation>Taxi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TRN">
+        <xs:annotation>
+          <xs:documentation>Train</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LUL">
+        <xs:annotation>
+          <xs:documentation>London Underground</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MTL">
+        <xs:annotation>
+          <xs:documentation>Metro/Tram/Light Rail</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAssessmentMethodType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="DD">
+        <xs:annotation>
+          <xs:documentation>Disapplied</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NA">
+        <xs:annotation>
+          <xs:documentation>Not assessed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TA">
+        <xs:annotation>
+          <xs:documentation>Teacher Assessment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TT">
+        <xs:annotation>
+          <xs:documentation>Task / Test</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAssessmentResultQualifierType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="EG">
+        <xs:annotation>
+          <xs:documentation>Examination/Post-14 Qualification Grade</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EL">
+        <xs:annotation>
+          <xs:documentation>EAL Assessment Level (Pre NC Level 2)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FC">
+        <xs:annotation>
+          <xs:documentation>Foundation Stage Profile Count</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FD">
+        <xs:annotation>
+          <xs:documentation>Foundation Stage Profile Detail</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FS">
+        <xs:annotation>
+          <xs:documentation>Foundation Stage Profile Score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IA">
+        <xs:annotation>
+          <xs:documentation>International Baccalaureate Assessment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IG">
+        <xs:annotation>
+          <xs:documentation>International Baccalaureate Grade Point</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IR">
+        <xs:annotation>
+          <xs:documentation>International Baccalaureate Final Result</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IS">
+        <xs:annotation>
+          <xs:documentation>International Baccalaureate Aggregate Grade Points</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NA">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Age Standardised Score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ND">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Level (Decimalised)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NF">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Level with Fine Grading</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NL">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Level</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NM">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Task/Test Mark</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NP">
+        <xs:annotation>
+          <xs:documentation>SEN Assessment Level (P Scale)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NR">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Test Raw Score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NS">
+        <xs:annotation>
+          <xs:documentation>National Curriculum Summary (Aggregate) Mark</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AG">
+        <xs:annotation>
+          <xs:documentation>Age score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SA">
+        <xs:annotation>
+          <xs:documentation>Standard age score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LG">
+        <xs:annotation>
+          <xs:documentation>Letter grade / mark</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ML">
+        <xs:annotation>
+          <xs:documentation>Mastery level</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NC">
+        <xs:annotation>
+          <xs:documentation>Normal curve equivalent score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NM">
+        <xs:annotation>
+          <xs:documentation>Number score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NS">
+        <xs:annotation>
+          <xs:documentation>Normalised standard score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PF">
+        <xs:annotation>
+          <xs:documentation>Pass/fail</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PC">
+        <xs:annotation>
+          <xs:documentation>Percentile</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PR">
+        <xs:annotation>
+          <xs:documentation>Percentile rank</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RA">
+        <xs:annotation>
+          <xs:documentation>Ranking</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RS">
+        <xs:annotation>
+          <xs:documentation>Raw score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SC">
+        <xs:annotation>
+          <xs:documentation>Scale score</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CM">
+        <xs:annotation>
+          <xs:documentation>Comment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAssessmentResultStatusType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>Estimate</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="I">
+        <xs:annotation>
+          <xs:documentation>Interim</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>Provisional (subject to regarding/appeal</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R">
+        <xs:annotation>
+          <xs:documentation>Result</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="T">
+        <xs:annotation>
+          <xs:documentation>Target</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAssessmentStageType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="FSP">
+        <xs:annotation>
+          <xs:documentation>Foundation Stage Profile (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS0">
+        <xs:annotation>
+          <xs:documentation>Baseline Assessment (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS1">
+        <xs:annotation>
+          <xs:documentation>Key Stage 1 (End of) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="K1T">
+        <xs:annotation>
+          <xs:documentation>Key Stage 1 Trial (Historical) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="K2P">
+        <xs:annotation>
+          <xs:documentation>Key Stage 2 Progression Tests (Pilot) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="K3P">
+        <xs:annotation>
+          <xs:documentation>Key Stage 3 Progression Tests (Pilot) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS2">
+        <xs:annotation>
+          <xs:documentation>Key Stage 2 (End of) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS3">
+        <xs:annotation>
+          <xs:documentation>Key Stage 3 (End of) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS4">
+        <xs:annotation>
+          <xs:documentation>GCSE / GNVQ / Other Approved Awards (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS5">
+        <xs:annotation>
+          <xs:documentation>A Level/AS Level/Advanced GNVQ/Other Advanced Studies (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y03">
+        <xs:annotation>
+          <xs:documentation>Year 3 Optional Tests / Teacher Assessments (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y04">
+        <xs:annotation>
+          <xs:documentation>Year 4 Optional Tests / Teacher Assessments (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y4X">
+        <xs:annotation>
+          <xs:documentation>Year 4 Optional Tests (1997 Based) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y05">
+        <xs:annotation>
+          <xs:documentation>Year 5 Optional Tests / Teacher Assessments (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y07">
+        <xs:annotation>
+          <xs:documentation>Year 7 Optional Tests / Teacher Assessments (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y7P">
+        <xs:annotation>
+          <xs:documentation>Year 7 Progress Tests (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y08">
+        <xs:annotation>
+          <xs:documentation>Year 8 Optional Tests / Teacher Assessments (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EAL">
+        <xs:annotation>
+          <xs:documentation>English as an Additional Language Level of Acquisition (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SEN">
+        <xs:annotation>
+          <xs:documentation>P-Scale Assessment for SEN children (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W09">
+        <xs:annotation>
+          <xs:documentation>World Class Tests – Aged 9 (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W13">
+        <xs:annotation>
+          <xs:documentation>World Class Tests – Aged 13 (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P2">
+        <xs:annotation>
+          <xs:documentation>Primary 2 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P3">
+        <xs:annotation>
+          <xs:documentation>Primary 3 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P4">
+        <xs:annotation>
+          <xs:documentation>Primary 4 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P5">
+        <xs:annotation>
+          <xs:documentation>Primary 5 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P6">
+        <xs:annotation>
+          <xs:documentation>Primary 6 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P7">
+        <xs:annotation>
+          <xs:documentation>Primary 7 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S1">
+        <xs:annotation>
+          <xs:documentation>Secondary 1 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S2">
+        <xs:annotation>
+          <xs:documentation>Secondary 2 (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAssessmentSubjectType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="ARA">
+        <xs:annotation>
+          <xs:documentation>Arabic (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ART">
+        <xs:annotation>
+          <xs:documentation>Art and Design (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BEN">
+        <xs:annotation>
+          <xs:documentation>Bengali (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHI">
+        <xs:annotation>
+          <xs:documentation>Chinese (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CLL">
+        <xs:annotation>
+          <xs:documentation>Communication Language and Literacy (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CRE">
+        <xs:annotation>
+          <xs:documentation>Creative Development (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CYM">
+        <xs:annotation>
+          <xs:documentation>Welsh (locale: W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DAN">
+        <xs:annotation>
+          <xs:documentation>Danish (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DAT">
+        <xs:annotation>
+          <xs:documentation>Design and Technology (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DUT">
+        <xs:annotation>
+          <xs:documentation>Dutch (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENG">
+        <xs:annotation>
+          <xs:documentation>English (locale: E S W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FIN">
+        <xs:annotation>
+          <xs:documentation>Finnish (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FRE">
+        <xs:annotation>
+          <xs:documentation>French (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FSP">
+        <xs:annotation>
+          <xs:documentation>Foundation Stage Profile (Total) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GAE">
+        <xs:annotation>
+          <xs:documentation>Gaelic / Gaidhlg (locale: S)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GEO">
+        <xs:annotation>
+          <xs:documentation>Geography (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GER">
+        <xs:annotation>
+          <xs:documentation>German (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GRE">
+        <xs:annotation>
+          <xs:documentation>Modern Greek (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GUJ">
+        <xs:annotation>
+          <xs:documentation>Gujarati (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HEB">
+        <xs:annotation>
+          <xs:documentation>Modern Hebrew (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HIS">
+        <xs:annotation>
+          <xs:documentation>History (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ICT">
+        <xs:annotation>
+          <xs:documentation>Information and Communication Technology (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ITA">
+        <xs:annotation>
+          <xs:documentation>Italian (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="JAP">
+        <xs:annotation>
+          <xs:documentation>Japanese (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KUW">
+        <xs:annotation>
+          <xs:documentation>Knowledge and Understanding of World (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAT">
+        <xs:annotation>
+          <xs:documentation>Mathematics / Mathematical Development (locale: E S W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MFL">
+        <xs:annotation>
+          <xs:documentation>Modern Foreign Language (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MUS">
+        <xs:annotation>
+          <xs:documentation>Music (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PAN">
+        <xs:annotation>
+          <xs:documentation>Panjabi (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PED">
+        <xs:annotation>
+          <xs:documentation>Physical Education (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PHY">
+        <xs:annotation>
+          <xs:documentation>Physical Development (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="POR">
+        <xs:annotation>
+          <xs:documentation>Portuguese (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PSE">
+        <xs:annotation>
+          <xs:documentation>Personal Social and Emotional Development (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PSH">
+        <xs:annotation>
+          <xs:documentation>Personal Social and Health Education (PSHE) (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RUS">
+        <xs:annotation>
+          <xs:documentation>Russian (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SCI">
+        <xs:annotation>
+          <xs:documentation>Science (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SPA">
+        <xs:annotation>
+          <xs:documentation>Spanish (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SWE">
+        <xs:annotation>
+          <xs:documentation>Swedish (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TUR">
+        <xs:annotation>
+          <xs:documentation>Turkish (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="URD">
+        <xs:annotation>
+          <xs:documentation>Urdu (locale: E)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WEL">
+        <xs:annotation>
+          <xs:documentation>Welsh (locale: E W)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAttendanceSessionType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="AM">
+        <xs:annotation>
+          <xs:documentation>AM Session</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PM">
+        <xs:annotation>
+          <xs:documentation>PM Session</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NA">
+        <xs:annotation>
+          <xs:documentation>Not Applicable</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAttendanceSourceType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="BIO">
+        <xs:annotation>
+          <xs:documentation>Biometric device</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HU">
+        <xs:annotation>
+          <xs:documentation>Human other than workforce member</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WF">
+        <xs:annotation>
+          <xs:documentation>Workforce Member</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other non-human input source</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKLocaleType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>England</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Northern Ireland</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Scotland</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W">
+        <xs:annotation>
+          <xs:documentation>Wales/Cymru</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAbsenceCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="MAT">
+        <xs:annotation>
+          <xs:documentation>Maternity /Paternity leave</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other paid authorised absence, e.g. compassionate leave</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PUB">
+        <xs:annotation>
+          <xs:documentation>Paid absence for public duties</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SEC">
+        <xs:annotation>
+          <xs:documentation>Secondment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SIC">
+        <xs:annotation>
+          <xs:documentation>Sickness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TRN">
+        <xs:annotation>
+          <xs:documentation>Training</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UNA">
+        <xs:annotation>
+          <xs:documentation>Unauthorised absence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UNP">
+        <xs:annotation>
+          <xs:documentation>Unpaid, authorised absence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdditionalPaymentTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="LIN">
+        <xs:annotation>
+          <xs:documentation>Inner London Weighting (Support Staff)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LOT">
+        <xs:annotation>
+          <xs:documentation>Outer London Weighting (Support Staff)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LFR">
+        <xs:annotation>
+          <xs:documentation>London Fringe Weighting (Support Staff)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAL">
+        <xs:annotation>
+          <xs:documentation>Management Allowances</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TLR">
+        <xs:annotation>
+          <xs:documentation>Teaching and Learning Responsibility Payments</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RAR">
+        <xs:annotation>
+          <xs:documentation>Recruitment and Retention </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SEN">
+        <xs:annotation>
+          <xs:documentation>SEN Allowances</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACT">
+        <xs:annotation>
+          <xs:documentation>Acting</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RES">
+        <xs:annotation>
+          <xs:documentation>Residential duties</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INS">
+        <xs:annotation>
+          <xs:documentation>INSET</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OOS">
+        <xs:annotation>
+          <xs:documentation>Out of School Activities</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RCP">
+        <xs:annotation>
+          <xs:documentation>Recruitment Incentive (Pay)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RCC">
+        <xs:annotation>
+          <xs:documentation>Recruitment Incentive (One Off Payment)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RCA">
+        <xs:annotation>
+          <xs:documentation>Recruitment Incentive (Other)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WEL">
+        <xs:annotation>
+          <xs:documentation>Welcome Back</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GTC">
+        <xs:annotation>
+          <xs:documentation>GTC subscription </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UQT">
+        <xs:annotation>
+          <xs:documentation>Unqualified Teachers</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdmissionsAptitudeCodeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="PE">
+        <xs:annotation>
+          <xs:documentation>Physical Education or Sport</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PA">
+        <xs:annotation>
+          <xs:documentation>Performing Arts</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VA">
+        <xs:annotation>
+          <xs:documentation>Visual Arts</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ML">
+        <xs:annotation>
+          <xs:documentation>Modern Foreign Languages</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DT">
+        <xs:annotation>
+          <xs:documentation>Design Technology or IT</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdmissionsOfferStatusType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation>Offer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>No offer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W">
+        <xs:annotation>
+          <xs:documentation>Withdraw Previous Offer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>Discard (higher preference offered)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdmissionsNotifyMethodType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation>Online</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>Email</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="T">
+        <xs:annotation>
+          <xs:documentation>SMS/Text message</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L">
+        <xs:annotation>
+          <xs:documentation>Letter</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdmissionsPrebandCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1A">
+        <xs:annotation>
+          <xs:documentation>Band 1A (Highest)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1B">
+        <xs:annotation>
+          <xs:documentation>Band 1B</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2A">
+        <xs:annotation>
+          <xs:documentation>Band 2A</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2B">
+        <xs:annotation>
+          <xs:documentation>Band 2B</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Band 3 (Lowest)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="U">
+        <xs:annotation>
+          <xs:documentation>Band Unknown</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdmissionsReasonCodeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="DIST">
+        <xs:annotation>
+          <xs:documentation>Distance</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SIBL">
+        <xs:annotation>
+          <xs:documentation>Sibling</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MEDL">
+        <xs:annotation>
+          <xs:documentation>Medical</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RLGN">
+        <xs:annotation>
+          <xs:documentation>Religion</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CTCH">
+        <xs:annotation>
+          <xs:documentation>Catchment Area</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FEED">
+        <xs:annotation>
+          <xs:documentation>Feeder School</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TRAV">
+        <xs:annotation>
+          <xs:documentation>Travelling Time</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SSEX">
+        <xs:annotation>
+          <xs:documentation>Single Sex School</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COED">
+        <xs:annotation>
+          <xs:documentation>Coeducational School</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="APTD">
+        <xs:annotation>
+          <xs:documentation>Aptitude</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SOCL">
+        <xs:annotation>
+          <xs:documentation>Social Reasons</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTHR">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKADTFileStatusTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Prime">
+        <xs:annotation>
+          <xs:documentation>These files contain completely new data and should be considered the complete application for the student.  </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Change">
+        <xs:annotation>
+          <xs:documentation>A 'Change' value means that all data previously supplied (apart from the Application Reference) are to be deleted and only the data in the change file to be used for pupils in the file.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Withdrawal">
+        <xs:annotation>
+          <xs:documentation>These files advise the  LA or Own Admission Authority school that an application should be noted as withdrawn for a pupil who moves away from the LA during the admissions process.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Suspended">
+        <xs:annotation>
+          <xs:documentation>This is a precautionary status, as it is not known when it might be used.  These records should go to suspense, as it is not possible to know what to do with them if the condition cannot be determined.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Late">
+        <xs:annotation>
+          <xs:documentation>The records in this file type are considered as late by the Home LAs criteria.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAdviceAndAssessmentWalesType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="AA1">
+        <xs:annotation>
+          <xs:documentation>School based assessment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AA2">
+        <xs:annotation>
+          <xs:documentation>External advice/assessment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AA3">
+        <xs:annotation>
+          <xs:documentation>Specialised assessments</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AA4">
+        <xs:annotation>
+          <xs:documentation>Multu-agency assessments</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAlternativeTuitionProvisionTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="HSP">
+        <xs:annotation>
+          <xs:documentation>Hospital</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IND">
+        <xs:annotation>
+          <xs:documentation>Independent School</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NMS">
+        <xs:annotation>
+          <xs:documentation>Non-maintained Special School</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NOT">
+        <xs:annotation>
+          <xs:documentation>Not a School</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAssignmentPostType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="ADMC">
+        <xs:annotation>
+          <xs:documentation>Administrator / Clerk </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ADVT">
+        <xs:annotation>
+          <xs:documentation>Advisory teacher (unattached)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ARTD">
+        <xs:annotation>
+          <xs:documentation>Art and/or Design Technician</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ASHT">
+        <xs:annotation>
+          <xs:documentation>Assistant head</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ATTN">
+        <xs:annotation>
+          <xs:documentation>Attendance Officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BILN">
+        <xs:annotation>
+          <xs:documentation>Bilingual Support Assistant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BURS">
+        <xs:annotation>
+          <xs:documentation>Bursar</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BUSS">
+        <xs:annotation>
+          <xs:documentation>Business Manager</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CTKR">
+        <xs:annotation>
+          <xs:documentation>Caretaker</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TCHR">
+        <xs:annotation>
+          <xs:documentation>Classroom Teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CLNR">
+        <xs:annotation>
+          <xs:documentation>Cleaner</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CXPA">
+        <xs:annotation>
+          <xs:documentation>Connexions Personal Adviser</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COOK">
+        <xs:annotation>
+          <xs:documentation>Cook</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COVR">
+        <xs:annotation>
+          <xs:documentation>Cover Supervisor</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CART">
+        <xs:annotation>
+          <xs:documentation>Creative Arts Specialist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DATA">
+        <xs:annotation>
+          <xs:documentation>Data Manager / Analyst</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DPHT">
+        <xs:annotation>
+          <xs:documentation>Deputy head</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EDWO">
+        <xs:annotation>
+          <xs:documentation>Education Welfare Officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EPSY">
+        <xs:annotation>
+          <xs:documentation>Educational Psychologist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ESCT">
+        <xs:annotation>
+          <xs:documentation>Escort</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INVG">
+        <xs:annotation>
+          <xs:documentation>Exam Invigilator</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EXAM">
+        <xs:annotation>
+          <xs:documentation>Examinations Officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FINC">
+        <xs:annotation>
+          <xs:documentation>Finance Officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HDTR">
+        <xs:annotation>
+          <xs:documentation>Head teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HDYR">
+        <xs:annotation>
+          <xs:documentation>Head of Year</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HDPT">
+        <xs:annotation>
+          <xs:documentation>Head of Department</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HDHO">
+        <xs:annotation>
+          <xs:documentation>Head of House</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HLTA">
+        <xs:annotation>
+          <xs:documentation>Higher Level Teaching Assistant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HSLO">
+        <xs:annotation>
+          <xs:documentation>Home-School Liaison Officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ICTM">
+        <xs:annotation>
+          <xs:documentation>ICT Network Manager</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ICTT">
+        <xs:annotation>
+          <xs:documentation>ICT Technician</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INST">
+        <xs:annotation>
+          <xs:documentation>Instructor</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LANG">
+        <xs:annotation>
+          <xs:documentation>Language support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SPLY">
+        <xs:annotation>
+          <xs:documentation>LEA Supply Pool</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LRNM">
+        <xs:annotation>
+          <xs:documentation>Learning Manager</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LMEN">
+        <xs:annotation>
+          <xs:documentation>Learning Mentor</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LSEN">
+        <xs:annotation>
+          <xs:documentation>Learning Support Assistant (for SEN pupils)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LIBR">
+        <xs:annotation>
+          <xs:documentation>Librarian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LITR">
+        <xs:annotation>
+          <xs:documentation>Literacy Worker</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MIDA">
+        <xs:annotation>
+          <xs:documentation>Midday Assistant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MIDS">
+        <xs:annotation>
+          <xs:documentation>Midday Supervisor</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MINS">
+        <xs:annotation>
+          <xs:documentation>Minority ethnic support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MISC">
+        <xs:annotation>
+          <xs:documentation>Miscellaneous Teaching Service for the LEA</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MUSS">
+        <xs:annotation>
+          <xs:documentation>Music Specialist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MUSC">
+        <xs:annotation>
+          <xs:documentation>Music tuition (include peripatetic)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NURS">
+        <xs:annotation>
+          <xs:documentation>Nurse</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NNSE">
+        <xs:annotation>
+          <xs:documentation>Nursery Nurse </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OMAN">
+        <xs:annotation>
+          <xs:documentation>Office Manager</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CATR">
+        <xs:annotation>
+          <xs:documentation>Other Catering Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OICT">
+        <xs:annotation>
+          <xs:documentation>Other ICT Support Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PERI">
+        <xs:annotation>
+          <xs:documentation>Peripatetic Teacher (unattached)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PAHT">
+        <xs:annotation>
+          <xs:documentation>Personal Assistant to Headteacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PREM">
+        <xs:annotation>
+          <xs:documentation>Premises Manager</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RECP">
+        <xs:annotation>
+          <xs:documentation>Receptionist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RPRG">
+        <xs:annotation>
+          <xs:documentation>Reprographics Technician</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SSEC">
+        <xs:annotation>
+          <xs:documentation>School Secretary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="STCH">
+        <xs:annotation>
+          <xs:documentation>Science Technician</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SENC">
+        <xs:annotation>
+          <xs:documentation>SEN co-ordinator</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TNON">
+        <xs:annotation>
+          <xs:documentation>Teacher: engaged for non-school education</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TPRU">
+        <xs:annotation>
+          <xs:documentation>Teacher: engaged to teach in a Pupil Referral Unit</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TMIS">
+        <xs:annotation>
+          <xs:documentation>Teacher: engaged to teach in miscellaneous establishments</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TASS">
+        <xs:annotation>
+          <xs:documentation>Teaching Assistant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TTCH">
+        <xs:annotation>
+          <xs:documentation>Technology Technician</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="THER">
+        <xs:annotation>
+          <xs:documentation>Therapist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TRAV">
+        <xs:annotation>
+          <xs:documentation>Traveller support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VOLN">
+        <xs:annotation>
+          <xs:documentation>Volunteer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WELF">
+        <xs:annotation>
+          <xs:documentation>Welfare Assistant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ASTE">
+        <xs:annotation>
+          <xs:documentation>Advanced Skills Teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACAR">
+        <xs:annotation>
+          <xs:documentation>Assistant Caretaker</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACOO">
+        <xs:annotation>
+          <xs:documentation> Assistant Cook</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HCOO">
+        <xs:annotation>
+          <xs:documentation>Head Cook</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LASS">
+        <xs:annotation>
+          <xs:documentation>Lab Assistant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SOFF">
+        <xs:annotation>
+          <xs:documentation>Site Officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RESP">
+        <xs:annotation>
+          <xs:documentation>Post of Responsibility</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKIllnessCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="ALLE">
+        <xs:annotation>
+          <xs:documentation>Allergy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ALDR">
+        <xs:annotation>
+          <xs:documentation>Alcohol or Drug Related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ANXI">
+        <xs:annotation>
+          <xs:documentation>Anxiety or Depression</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BLOO">
+        <xs:annotation>
+          <xs:documentation>Blood Condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CANC">
+        <xs:annotation>
+          <xs:documentation>Cancer or Tumour</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHFS">
+        <xs:annotation>
+          <xs:documentation>Chronic Fatigue Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CIRC">
+        <xs:annotation>
+          <xs:documentation>Circulation Condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DENT">
+        <xs:annotation>
+          <xs:documentation>Dental</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DIAB">
+        <xs:annotation>
+          <xs:documentation>Diabetes</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DIGE">
+        <xs:annotation>
+          <xs:documentation>Digestive or nutrition condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EARC">
+        <xs:annotation>
+          <xs:documentation>Ear conditions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EPIL">
+        <xs:annotation>
+          <xs:documentation>Epilepsy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EYEC">
+        <xs:annotation>
+          <xs:documentation>Eye conditions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FOOD">
+        <xs:annotation>
+          <xs:documentation>Food borne illness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GAST">
+        <xs:annotation>
+          <xs:documentation>Gastrointestinal condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GEUR">
+        <xs:annotation>
+          <xs:documentation>Genital / Urinary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HEMI">
+        <xs:annotation>
+          <xs:documentation>Headache / Migrane</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HRTC">
+        <xs:annotation>
+          <xs:documentation>Heart condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HEAT">
+        <xs:annotation>
+          <xs:documentation>Heat or sun related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INFE">
+        <xs:annotation>
+          <xs:documentation>Infection</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INJB">
+        <xs:annotation>
+          <xs:documentation>Injury - back or neck</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INJH">
+        <xs:annotation>
+          <xs:documentation>Injury - head</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INJL">
+        <xs:annotation>
+          <xs:documentation>Injury - limb</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INJO">
+        <xs:annotation>
+          <xs:documentation>Injury - other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KIDN">
+        <xs:annotation>
+          <xs:documentation>Kidney condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LIVR">
+        <xs:annotation>
+          <xs:documentation>Liver condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MHEL">
+        <xs:annotation>
+          <xs:documentation>Mental health related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MBOL">
+        <xs:annotation>
+          <xs:documentation>Metabolic condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MUSK">
+        <xs:annotation>
+          <xs:documentation>Musculo-Skeletal Condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NEUR">
+        <xs:annotation>
+          <xs:documentation>Neurological condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NOTR">
+        <xs:annotation>
+          <xs:documentation>Nose or Throat condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NKNO">
+        <xs:annotation>
+          <xs:documentation>Not known</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NSPE">
+        <xs:annotation>
+          <xs:documentation>Not specified</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OPER">
+        <xs:annotation>
+          <xs:documentation>Operation or Post Operative</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PREG">
+        <xs:annotation>
+          <xs:documentation>Pregnancy Related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PSYC">
+        <xs:annotation>
+          <xs:documentation>Psychological Condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="REPR">
+        <xs:annotation>
+          <xs:documentation>Reproductive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RESP">
+        <xs:annotation>
+          <xs:documentation>Respiratory condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SKIN">
+        <xs:annotation>
+          <xs:documentation>Skin disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="STRS">
+        <xs:annotation>
+          <xs:documentation>Stress Related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="THYR">
+        <xs:annotation>
+          <xs:documentation>Thyroid condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TRAU">
+        <xs:annotation>
+          <xs:documentation>Trauma Related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VIRC">
+        <xs:annotation>
+          <xs:documentation>Virus - Common</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VIRE">
+        <xs:annotation>
+          <xs:documentation>Virus - Epidemic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAbsenceReasonType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="ACCI">
+        <xs:annotation>
+          <xs:documentation>Accident at Work</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COMP">
+        <xs:annotation>
+          <xs:documentation>Compassionate leave</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INDI">
+        <xs:annotation>
+          <xs:documentation>Industrial Injury</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAPA">
+        <xs:annotation>
+          <xs:documentation>Maternity / Paternity</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CARE">
+        <xs:annotation>
+          <xs:documentation>Nominated Carer leave</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OPAY">
+        <xs:annotation>
+          <xs:documentation>Other paid authorised absence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PAPD">
+        <xs:annotation>
+          <xs:documentation>Paid absence for public duties</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PHAS">
+        <xs:annotation>
+          <xs:documentation>Phased return to work</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SECO">
+        <xs:annotation>
+          <xs:documentation>Secondment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SICK">
+        <xs:annotation>
+          <xs:documentation>Sickness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="STRI">
+        <xs:annotation>
+          <xs:documentation>Strike action</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TRAI">
+        <xs:annotation>
+          <xs:documentation>Training</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UNAU">
+        <xs:annotation>
+          <xs:documentation>Unauthorised absence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UPAY">
+        <xs:annotation>
+          <xs:documentation>Unpaid authorised absence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAttendanceCodeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="/">
+        <xs:annotation>
+          <xs:documentation>Present (AM)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="\">
+        <xs:annotation>
+          <xs:documentation>Present (PM)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>Approved education activity as pupil being educated off site (not dual registration)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>Authorised absence as pupil is absent due to other authorised circumstances, including Public performances and employment (licensed under regulations), family bereavement, special occasions (in limited circumstances), absences when Traveller children are attending another school.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>Approved education activity as pupil is dual registered (i.e. attending another establishment)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>Authorised absence as pupil is excluded, with no alternative provision made</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to agreed extended family holiday</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="G">
+        <xs:annotation>
+          <xs:documentation>Unauthorised absence as pupil is on a family holiday, not agreed, or is taking days in excess of an agreed family holiday</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="H">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to agreed family holiday</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="I">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to Illness (NOT medical or dental etc. appointments)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="J">
+        <xs:annotation>
+          <xs:documentation>Approved education activity as pupil is attending interview</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="K">
+        <xs:annotation>
+          <xs:documentation>Unknown - used as a placeholder in lieu of valid data. Assumed to be authorised and present until otherwise proven or changed.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L">
+        <xs:annotation>
+          <xs:documentation>Late (before registers closed) marked as present</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to medical / dental appointments</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Unauthorised absence as pupil missed sessions for a reason that has not yet been provided</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation>Unauthorised absence as pupil missed sessions for an unauthorised absence not covered by any other code/description</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>Approved education activity as pupil is attending an approved sporting activity</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to religious observance</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to study leave</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="T">
+        <xs:annotation>
+          <xs:documentation>Authorised absence due to traveller absence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="U">
+        <xs:annotation>
+          <xs:documentation>Unauthorised absence as pupil arrived after registers closed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V">
+        <xs:annotation>
+          <xs:documentation>Approved education activity as pupil is away on an educational visit or trip</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W">
+        <xs:annotation>
+          <xs:documentation>Approved education activity as pupil is attending work experience</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="X">
+        <xs:annotation>
+          <xs:documentation>Non-compulsory school age absence - not counted in possible attendances</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y">
+        <xs:annotation>
+          <xs:documentation>Enforced closure - not counted in possible attendances</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Z">
+        <xs:annotation>
+          <xs:documentation>Pupil not yet on roll - not counted in possible attendances</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="#">
+        <xs:annotation>
+          <xs:documentation>School closed to pupils - not counted in possible attendances</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKAttendanceDomainType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Lesson">
+        <xs:annotation>
+          <xs:documentation>Domain is recorded for a lesson only</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Session">
+        <xs:annotation>
+          <xs:documentation>Domain is recorded for a session only</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Both">
+        <xs:annotation>
+          <xs:documentation>Domain applies to both lessons and sessions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKBasicSkillsSupportWalesType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="00">
+        <xs:annotation>
+          <xs:documentation>Does not require support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="01">
+        <xs:annotation>
+          <xs:documentation>Specialist literacy support only</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="02">
+        <xs:annotation>
+          <xs:documentation>Specialist numeracy support only</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="03">
+        <xs:annotation>
+          <xs:documentation>specialist literacy and numeracy support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="04">
+        <xs:annotation>
+          <xs:documentation>other literacy support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="05">
+        <xs:annotation>
+          <xs:documentation>other numeracy support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="06">
+        <xs:annotation>
+          <xs:documentation>other literacy and numeracy support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="07">
+        <xs:annotation>
+          <xs:documentation>Needs support but has not/will not receive support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="90">
+        <xs:annotation>
+          <xs:documentation>Basic Skills needs not assessed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKBirthDateVerificationLevelType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>Not Verified</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>One or more of the following Secondary certificates: Certificate of Baptism; Marriage Certificate; National Health Service Medical Card; Child's Certificate of Vaccination; Child's Health Record Card; A certificate of Service in HM Forces or other employment under the Crown or in the Mercantile Marine; A certificate of membership of a Trade Union Friendly Society or any cards or papers relating to membership of an Approved Society or Unemployment Insurance Apprenticeship indentures; Early certificate or testimonial from employer; Aliens registration card, certificate of naturalisation, Home Office travel document or a passport; Life insurance policy; Certificate of confirmation; School certificate or report; A birthday book or old family record; Family Bible containing a record of birth.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>One of the following:  Full certificate; Birth certificate short form; Certificate of registry showing given names and family name; GRO copy; Adoption Order issued by the High Court, County Court or Juvenile Court; Certificate of adoption issued by the GRO; Foreign birth certificate issued by registration authority of the foreign country.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKBoarderTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>Boarder, nights per week not specified</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="6">
+        <xs:annotation>
+          <xs:documentation>Boarder, six nights or less a week</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="7">
+        <xs:annotation>
+          <xs:documentation>Boarder, seven nights a week</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Not a boarder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKClassTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Nursery Class (England), Nursery Class (not a Special Class/Unit) (Wales)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation>Not a Nursery Class (England), Other Class (not a Special Class/Unit) (Wales)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Nursery Special Class/Unit (Wales)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKConnexionsAgreementType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Yes">
+        <xs:annotation>
+          <xs:documentation>Permission has been given by the parent or guardian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="No">
+        <xs:annotation>
+          <xs:documentation>Parent or guardian has refused permission</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UNS">
+        <xs:annotation>
+          <xs:documentation>Unsought - School has not yet sent out Fair Processing Notices (Data cannot be shared with Connexions)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SNR">
+        <xs:annotation>
+          <xs:documentation>Sought, No Reply - School has sent out Fair Processing Notices, but has received no reply from parent or guardian (Data can be shared with Connexions)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKCurriculumAndTeachingMethodsWalesType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="CT1">
+        <xs:annotation>
+          <xs:documentation>Some targeted differentiation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CT2">
+        <xs:annotation>
+          <xs:documentation>Significant and targeted differentiation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CT3">
+        <xs:annotation>
+          <xs:documentation>Some curriculum modifications</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CT4">
+        <xs:annotation>
+          <xs:documentation>Significant curriculum modifications</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKExclusionReasonType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="BU">
+        <xs:annotation>
+          <xs:documentation>Bullying</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DA">
+        <xs:annotation>
+          <xs:documentation>Drug and alcohol related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DB">
+        <xs:annotation>
+          <xs:documentation>Persistent disruptive behaviour</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DM">
+        <xs:annotation>
+          <xs:documentation>Damage to property</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DR">
+        <xs:annotation>
+          <xs:documentation>Defiance of rules/ discipline policy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PA">
+        <xs:annotation>
+          <xs:documentation>Physical assault against an adult</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PP">
+        <xs:annotation>
+          <xs:documentation>Physical assault against a pupil</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PW">
+        <xs:annotation>
+          <xs:documentation>Possession / use of weapon</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RA">
+        <xs:annotation>
+          <xs:documentation>Racial harrassment/abuse</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SM">
+        <xs:annotation>
+          <xs:documentation>Sexual misconduct/abuse</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TB">
+        <xs:annotation>
+          <xs:documentation>Threatening or dangerous behaviour</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TH">
+        <xs:annotation>
+          <xs:documentation>Theft</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VA">
+        <xs:annotation>
+          <xs:documentation>Verbal abuse/threatening behaviour against an adult</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VP">
+        <xs:annotation>
+          <xs:documentation>Verbal abuse/threatening behaviour against a pupil</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKFamilyStructureType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Single Parent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>2 Adults</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation>Foster Parents</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>In Residental Care</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="U">
+        <xs:annotation>
+          <xs:documentation>Unknown</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKGeneralSubjectType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="AAD">
+        <xs:annotation>
+          <xs:documentation>Applied Art and Design</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ABS">
+        <xs:annotation>
+          <xs:documentation>Applied Business Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACC">
+        <xs:annotation>
+          <xs:documentation>Accountancy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AHS">
+        <xs:annotation>
+          <xs:documentation>Combined Arts / Humanities / Social studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AIT">
+        <xs:annotation>
+          <xs:documentation>Applied ICT</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ARA">
+        <xs:annotation>
+          <xs:documentation>Arabic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ART">
+        <xs:annotation>
+          <xs:documentation>Art and Design / Art</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ASC">
+        <xs:annotation>
+          <xs:documentation>Applied Science</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BEN">
+        <xs:annotation>
+          <xs:documentation>Bengali</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BIO">
+        <xs:annotation>
+          <xs:documentation>Biology / Botany / Zoology / Ecology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CAB">
+        <xs:annotation>
+          <xs:documentation>Commercial and Business Studies/Education/Management</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CAR">
+        <xs:annotation>
+          <xs:documentation>Careers Education</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CBE">
+        <xs:annotation>
+          <xs:documentation>Construction and Built Environment / Building</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CDT">
+        <xs:annotation>
+          <xs:documentation>Craft, Design and Technology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHD">
+        <xs:annotation>
+          <xs:documentation>Child Development</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHI">
+        <xs:annotation>
+          <xs:documentation>Chinese</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHM">
+        <xs:annotation>
+          <xs:documentation>Chemistry</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CIT">
+        <xs:annotation>
+          <xs:documentation>Citizenship</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CLS">
+        <xs:annotation>
+          <xs:documentation>Classics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COM">
+        <xs:annotation>
+          <xs:documentation>Communication Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="COS">
+        <xs:annotation>
+          <xs:documentation>Community Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CSB">
+        <xs:annotation>
+          <xs:documentation>Combined/General Science - Biology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CSC">
+        <xs:annotation>
+          <xs:documentation>Combined/General Science - Chemistry</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CSP">
+        <xs:annotation>
+          <xs:documentation>Combined/General Science - Physics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CYM">
+        <xs:annotation>
+          <xs:documentation>Cymraeg/Welsh (as First Language)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DAN">
+        <xs:annotation>
+          <xs:documentation>Danish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DAT">
+        <xs:annotation>
+          <xs:documentation>Design and Technology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DNC">
+        <xs:annotation>
+          <xs:documentation>Dance</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DRA">
+        <xs:annotation>
+          <xs:documentation>Drama</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DTE">
+        <xs:annotation>
+          <xs:documentation>Design and Technology - Electronics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DTF">
+        <xs:annotation>
+          <xs:documentation>Design and Technology - Food Technology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DTG">
+        <xs:annotation>
+          <xs:documentation>Design and Technology - Graphics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DTR">
+        <xs:annotation>
+          <xs:documentation>Design and Technology - Resistant Materials</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DTS">
+        <xs:annotation>
+          <xs:documentation>Design and Technology - Systems and Control</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DTT">
+        <xs:annotation>
+          <xs:documentation>Design and Technology - Textiles</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DUT">
+        <xs:annotation>
+          <xs:documentation>Dutch</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ECO">
+        <xs:annotation>
+          <xs:documentation>Economics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EDU">
+        <xs:annotation>
+          <xs:documentation>Education</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENG">
+        <xs:annotation>
+          <xs:documentation>English</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENR">
+        <xs:annotation>
+          <xs:documentation>Engineering</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENV">
+        <xs:annotation>
+          <xs:documentation>Environmental Science/Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EUR">
+        <xs:annotation>
+          <xs:documentation>European Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FIN">
+        <xs:annotation>
+          <xs:documentation>Finnish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FRE">
+        <xs:annotation>
+          <xs:documentation>French</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GEN">
+        <xs:annotation>
+          <xs:documentation>General Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GEO">
+        <xs:annotation>
+          <xs:documentation>Geography</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GER">
+        <xs:annotation>
+          <xs:documentation>German</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GLG">
+        <xs:annotation>
+          <xs:documentation>Geology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GPL">
+        <xs:annotation>
+          <xs:documentation>Government and Politics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GRC">
+        <xs:annotation>
+          <xs:documentation>Greek (Classical)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GRE">
+        <xs:annotation>
+          <xs:documentation>Greek (Modern)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GUJ">
+        <xs:annotation>
+          <xs:documentation>Gujerati</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HAC">
+        <xs:annotation>
+          <xs:documentation>Hospitality and Catering</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HBB">
+        <xs:annotation>
+          <xs:documentation>Hebrew (Biblical)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HEB">
+        <xs:annotation>
+          <xs:documentation>Hebrew (Modern)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HIN">
+        <xs:annotation>
+          <xs:documentation>Hindi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HIS">
+        <xs:annotation>
+          <xs:documentation>History</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HSC">
+        <xs:annotation>
+          <xs:documentation>Health and Social Care</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HUM">
+        <xs:annotation>
+          <xs:documentation>Humanities</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ICT">
+        <xs:annotation>
+          <xs:documentation>Information and Communication Technology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IND">
+        <xs:annotation>
+          <xs:documentation>Industrial Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ITA">
+        <xs:annotation>
+          <xs:documentation>Italian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="JAP">
+        <xs:annotation>
+          <xs:documentation>Japanese</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KSK">
+        <xs:annotation>
+          <xs:documentation>Key Skills (Only if KeyStage = 4)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LAE">
+        <xs:annotation>
+          <xs:documentation>Land and Environment / Agriculture</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LAT">
+        <xs:annotation>
+          <xs:documentation>Latin</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LAW">
+        <xs:annotation>
+          <xs:documentation>Law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LIF">
+        <xs:annotation>
+          <xs:documentation>Life Skills</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LTT">
+        <xs:annotation>
+          <xs:documentation>Leisure, Travel and Tourism</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAT">
+        <xs:annotation>
+          <xs:documentation>Mathematics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MED">
+        <xs:annotation>
+          <xs:documentation>Media Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MFL">
+        <xs:annotation>
+          <xs:documentation>Modern Foreign Language</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MNF">
+        <xs:annotation>
+          <xs:documentation>Manufacturing</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MUS">
+        <xs:annotation>
+          <xs:documentation>Music</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OBC">
+        <xs:annotation>
+          <xs:documentation>Other Business / Commercial Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OCL">
+        <xs:annotation>
+          <xs:documentation>Other Classical Studies/Language</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OHU">
+        <xs:annotation>
+          <xs:documentation>Other Humanities</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OLA">
+        <xs:annotation>
+          <xs:documentation>Other Language Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OMA">
+        <xs:annotation>
+          <xs:documentation>Other Mathematical Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OPH">
+        <xs:annotation>
+          <xs:documentation>Other Physical Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OPR">
+        <xs:annotation>
+          <xs:documentation>Other Aesthetic / Practical Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OSC">
+        <xs:annotation>
+          <xs:documentation>Other Sciences</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OSS">
+        <xs:annotation>
+          <xs:documentation>Other Social Studies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTE">
+        <xs:annotation>
+          <xs:documentation>Other Technological Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other (not otherwise specified)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OVO">
+        <xs:annotation>
+          <xs:documentation>Other Vocational Subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PAN">
+        <xs:annotation>
+          <xs:documentation>Panjabi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PED">
+        <xs:annotation>
+          <xs:documentation>Physical Education / Sports</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PER">
+        <xs:annotation>
+          <xs:documentation>Performing Arts</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PHL">
+        <xs:annotation>
+          <xs:documentation>Philosophy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PHY">
+        <xs:annotation>
+          <xs:documentation>Physics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="POR">
+        <xs:annotation>
+          <xs:documentation>Portuguese</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PRI">
+        <xs:annotation>
+          <xs:documentation>Primary Curriculum</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PSH">
+        <xs:annotation>
+          <xs:documentation>Personal Social and Health Education (PSHE)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PSY">
+        <xs:annotation>
+          <xs:documentation>Psychology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="REL">
+        <xs:annotation>
+          <xs:documentation>Religious Education</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RUS">
+        <xs:annotation>
+          <xs:documentation>Russian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RWD">
+        <xs:annotation>
+          <xs:documentation>Retail, Warehousing and Distribution</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SCI">
+        <xs:annotation>
+          <xs:documentation>Science</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SEN">
+        <xs:annotation>
+          <xs:documentation>Special Educational Needs</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SOC">
+        <xs:annotation>
+          <xs:documentation>Sociology</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SPA">
+        <xs:annotation>
+          <xs:documentation>Spanish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SSS">
+        <xs:annotation>
+          <xs:documentation>Social Studies/Science</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="STA">
+        <xs:annotation>
+          <xs:documentation>Statistics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SWE">
+        <xs:annotation>
+          <xs:documentation>Swedish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TDG">
+        <xs:annotation>
+          <xs:documentation>Technical Drawing/Graphics</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TUR">
+        <xs:annotation>
+          <xs:documentation>Turkish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UFA">
+        <xs:annotation>
+          <xs:documentation>Under-5 Activities</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="URD">
+        <xs:annotation>
+          <xs:documentation>Urdu</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VNW">
+        <xs:annotation>
+          <xs:documentation>Any new GCSE in a vocational subject</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WEL">
+        <xs:annotation>
+          <xs:documentation>Welsh</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKGovernanceTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="CO">
+        <xs:annotation>
+          <xs:documentation>Community</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VA">
+        <xs:annotation>
+          <xs:documentation>Voluntary Aided</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VC">
+        <xs:annotation>
+          <xs:documentation>Voluntary Controlled</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FO">
+        <xs:annotation>
+          <xs:documentation>Foundation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IN">
+        <xs:annotation>
+          <xs:documentation>Independent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NM">
+        <xs:annotation>
+          <xs:documentation>Non-maintained (England only)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CT">
+        <xs:annotation>
+          <xs:documentation>City Technology College (England only)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CA">
+        <xs:annotation>
+          <xs:documentation>Academies (England only)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKGroupRoleType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="HDT">
+        <xs:annotation>
+          <xs:documentation>Head teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DHT">
+        <xs:annotation>
+          <xs:documentation>Deputy head</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AHT">
+        <xs:annotation>
+          <xs:documentation>Assistant head</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TCH">
+        <xs:annotation>
+          <xs:documentation>Classroom teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AST">
+        <xs:annotation>
+          <xs:documentation>Advanced Skills Teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EXL">
+        <xs:annotation>
+          <xs:documentation>Excellent Teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SUP">
+        <xs:annotation>
+          <xs:documentation>Support staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AVT">
+        <xs:annotation>
+          <xs:documentation>Advisory Teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EPS">
+        <xs:annotation>
+          <xs:documentation>Educational Psychologist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ADM">
+        <xs:annotation>
+          <xs:documentation>Administrator (Additional code for use in the Learning Platform)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GOV">
+        <xs:annotation>
+          <xs:documentation>Governor (Additional code for use in the Learning Platform)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACD">
+        <xs:annotation>
+          <xs:documentation>Academic (Additional code for use in the Learning Platform)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other (Additional code for use in the Learning Platform)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VOL">
+        <xs:annotation>
+          <xs:documentation>Volunteer (Additional code for use in the Learning Platform)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKGroupingAndSupportWalesType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="GS1">
+        <xs:annotation>
+          <xs:documentation>Occassional additional support in class</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GS2">
+        <xs:annotation>
+          <xs:documentation>Targeted and sustained additional support</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GS3">
+        <xs:annotation>
+          <xs:documentation>Small group class provision</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GS4">
+        <xs:annotation>
+          <xs:documentation>Mostly small group provision</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKInCareTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="FT">
+        <xs:annotation>
+          <xs:documentation>Fostered</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CH">
+        <xs:annotation>
+          <xs:documentation>Children's Home</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WP">
+        <xs:annotation>
+          <xs:documentation>With parents</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PA">
+        <xs:annotation>
+          <xs:documentation>Placed for adoption</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKLanguageStudyType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Taught as a first language</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Taught as a second language</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Taught other language</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="4">
+        <xs:annotation>
+          <xs:documentation>Not taught language at all</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="5">
+        <xs:annotation>
+          <xs:documentation>Disapplied from curriculum by SEN statement</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKLearnerEnrolmentStatusType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>Current (single registration at this school)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="G">
+        <xs:annotation>
+          <xs:documentation>Guest (pupil not registered at this school but attending some lessons or sessions)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M">
+        <xs:annotation>
+          <xs:documentation>Current Main (dual registration)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Current Subsidiary (dual registration)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>Previous</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="U">
+        <xs:annotation>
+          <xs:documentation>Unknown</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKLearnerIdentityType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="WAL">
+        <xs:annotation>
+          <xs:documentation>Welsh</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ENG">
+        <xs:annotation>
+          <xs:documentation>English</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SCO">
+        <xs:annotation>
+          <xs:documentation>Scottish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IRE">
+        <xs:annotation>
+          <xs:documentation>Irish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BRI">
+        <xs:annotation>
+          <xs:documentation>British</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="REF">
+        <xs:annotation>
+          <xs:documentation>Refused</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NOS">
+        <xs:annotation>
+          <xs:documentation>Not Supplied</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKLeavingDestinationType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="MP">
+        <xs:annotation>
+          <xs:documentation>Maintained primary school</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IP">
+        <xs:annotation>
+          <xs:documentation>Independent primary school</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS">
+        <xs:annotation>
+          <xs:documentation>Maintained secondary school</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IS">
+        <xs:annotation>
+          <xs:documentation>Independent secondary school</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SC">
+        <xs:annotation>
+          <xs:documentation>6th Form College</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FE">
+        <xs:annotation>
+          <xs:documentation>General FE, tertiary and specialist colleges </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HE">
+        <xs:annotation>
+          <xs:documentation>Higher education institutions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WL">
+        <xs:annotation>
+          <xs:documentation>Work based Learning</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EM">
+        <xs:annotation>
+          <xs:documentation>Employment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NK">
+        <xs:annotation>
+          <xs:documentation>Other/Not Known</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKLeavingReasonType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="DD">
+        <xs:annotation>
+          <xs:documentation>Deceased</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EO">
+        <xs:annotation>
+          <xs:documentation>Education other than at school/college</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EM">
+        <xs:annotation>
+          <xs:documentation>Emigration</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FE">
+        <xs:annotation>
+          <xs:documentation>Further Education (Leaver)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FM">
+        <xs:annotation>
+          <xs:documentation>First to Middle Phase Transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HE">
+        <xs:annotation>
+          <xs:documentation>Higher Education (Leaver)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NI">
+        <xs:annotation>
+          <xs:documentation>Nursery to Infant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IJ">
+        <xs:annotation>
+          <xs:documentation>Infant to Junior/Primary Phase Transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="JS">
+        <xs:annotation>
+          <xs:documentation>Junior/Primary to Secondary Phase Transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS">
+        <xs:annotation>
+          <xs:documentation>Middle to Secondary Phase Transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OS">
+        <xs:annotation>
+          <xs:documentation>Other School Sixth Form (Leaver)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other/Unknown</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PE">
+        <xs:annotation>
+          <xs:documentation>Permanent Exclusion</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ST">
+        <xs:annotation>
+          <xs:documentation>School Transfer (Mid-Year)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TR">
+        <xs:annotation>
+          <xs:documentation>Training (Leaver)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UN">
+        <xs:annotation>
+          <xs:documentation>Unemployment (Leaver)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WK">
+        <xs:annotation>
+          <xs:documentation>Employment (Leaver)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MD">
+        <xs:annotation>
+          <xs:documentation>Military deployment of parent(s)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKMaritalStatusType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Single</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M">
+        <xs:annotation>
+          <xs:documentation>Married</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>Divorced</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W">
+        <xs:annotation>
+          <xs:documentation>Widowed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Not disclosed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>Separated</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKNCYearGroupType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="N1">
+        <xs:annotation>
+          <xs:documentation>Nursery first year</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N2">
+        <xs:annotation>
+          <xs:documentation>Nursery second year</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R">
+        <xs:annotation>
+          <xs:documentation>Reception</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Year 1</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Year 2</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Year 3</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="4">
+        <xs:annotation>
+          <xs:documentation>Year 4</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="5">
+        <xs:annotation>
+          <xs:documentation>Year 5</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="6">
+        <xs:annotation>
+          <xs:documentation>Year 6</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="7">
+        <xs:annotation>
+          <xs:documentation>Year 7</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="8">
+        <xs:annotation>
+          <xs:documentation>Year 8</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="9">
+        <xs:annotation>
+          <xs:documentation>Year 9</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="10">
+        <xs:annotation>
+          <xs:documentation>Year 10</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="11">
+        <xs:annotation>
+          <xs:documentation>Year 11</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="12">
+        <xs:annotation>
+          <xs:documentation>Year 12</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="13">
+        <xs:annotation>
+          <xs:documentation>Year 13</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="14">
+        <xs:annotation>
+          <xs:documentation>Year 14</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M">
+        <xs:annotation>
+          <xs:documentation>Mixed Year Class - available for School Census Class Information</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="X">
+        <xs:annotation>
+          <xs:documentation>National Curriculum not followed  available only for Special Schools where pupils are not following a particular NC Year</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="U">
+        <xs:annotation>
+          <xs:documentation>Unknown</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKOperationalStatusType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Open</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Closed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Open, but proposed to close</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="4">
+        <xs:annotation>
+          <xs:documentation>Proposed to open</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="5">
+        <xs:annotation>
+          <xs:documentation>De-registered as EY Setting</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKPhaseTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="NY">
+        <xs:annotation>
+          <xs:documentation>Nursery</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PY">
+        <xs:annotation>
+          <xs:documentation>Primary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MP">
+        <xs:annotation>
+          <xs:documentation>Middle (Deemed Primary)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS">
+        <xs:annotation>
+          <xs:documentation>Middle (Deemed Secondary)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SY">
+        <xs:annotation>
+          <xs:documentation>Secondary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SP">
+        <xs:annotation>
+          <xs:documentation>Special</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EY">
+        <xs:annotation>
+          <xs:documentation>Early Years Setting</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PR">
+        <xs:annotation>
+          <xs:documentation>Pupil Referral Unit (PRU)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="XX">
+        <xs:annotation>
+          <xs:documentation>Multiple phases (not Middle, Special, or PRU)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NO">
+        <xs:annotation>
+          <xs:documentation>No Establishment (for children not on any establishment roll)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKPhoneTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation>Fax</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="H">
+        <xs:annotation>
+          <xs:documentation>Home</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>Alternate Home</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M">
+        <xs:annotation>
+          <xs:documentation>Mobile</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W">
+        <xs:annotation>
+          <xs:documentation>Work</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>Minicom (hearing impaired/disabled)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKRelationshipType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="ASWR">
+        <xs:annotation>
+          <xs:documentation>Agency representative</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CARE">
+        <xs:annotation>
+          <xs:documentation>Carer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHMR">
+        <xs:annotation>
+          <xs:documentation>Childminder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DEPD">
+        <xs:annotation>
+          <xs:documentation>Dependent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DOCT">
+        <xs:annotation>
+          <xs:documentation>Doctor</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EMPY">
+        <xs:annotation>
+          <xs:documentation>Employer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAAP">
+        <xs:annotation>
+          <xs:documentation>Adoptive parents</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAAS">
+        <xs:annotation>
+          <xs:documentation>Adopted son</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FABH">
+        <xs:annotation>
+          <xs:documentation>Brother, half</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FABI">
+        <xs:annotation>
+          <xs:documentation>Brother-in-law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FABN">
+        <xs:annotation>
+          <xs:documentation>Brother, natural/adoptive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FABS">
+        <xs:annotation>
+          <xs:documentation>Brother, step</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FADF">
+        <xs:annotation>
+          <xs:documentation>Foster daughter</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FADI">
+        <xs:annotation>
+          <xs:documentation>Daughter-in-law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FADR">
+        <xs:annotation>
+          <xs:documentation>Daughter</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAFF">
+        <xs:annotation>
+          <xs:documentation>Father, foster</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAFI">
+        <xs:annotation>
+          <xs:documentation>Father-in-law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAFN">
+        <xs:annotation>
+          <xs:documentation>Father, natural/adoptive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAFO">
+        <xs:annotation>
+          <xs:documentation>Father's significant other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAFS">
+        <xs:annotation>
+          <xs:documentation>Father, step</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAGA">
+        <xs:annotation>
+          <xs:documentation>Great aunt</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAGD">
+        <xs:annotation>
+          <xs:documentation>Granddaughter</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAGF">
+        <xs:annotation>
+          <xs:documentation>Grandfather</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAGM">
+        <xs:annotation>
+          <xs:documentation>Grandmother</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAGS">
+        <xs:annotation>
+          <xs:documentation>Grandson</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAGU">
+        <xs:annotation>
+          <xs:documentation>Great uncle</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FALP">
+        <xs:annotation>
+          <xs:documentation>Life partner</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAMF">
+        <xs:annotation>
+          <xs:documentation>Mother, foster</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAMH">
+        <xs:annotation>
+          <xs:documentation>Husband</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAMI">
+        <xs:annotation>
+          <xs:documentation>Mother-in-law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAMN">
+        <xs:annotation>
+          <xs:documentation>Mother, natural/adoptive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAMO">
+        <xs:annotation>
+          <xs:documentation>Mother's significant other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAMS">
+        <xs:annotation>
+          <xs:documentation>Mother, step</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FANC">
+        <xs:annotation>
+          <xs:documentation>Niece</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FANW">
+        <xs:annotation>
+          <xs:documentation>Nephew</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAOT">
+        <xs:annotation>
+          <xs:documentation>Family member</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAPF">
+        <xs:annotation>
+          <xs:documentation>Foster parent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FAPP">
+        <xs:annotation>
+          <xs:documentation>Life partner of parent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASF">
+        <xs:annotation>
+          <xs:documentation>Foster son</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASH">
+        <xs:annotation>
+          <xs:documentation>Sister, half</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASI">
+        <xs:annotation>
+          <xs:documentation>Sister-in-law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASN">
+        <xs:annotation>
+          <xs:documentation>Sister, natural/adoptive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASO">
+        <xs:annotation>
+          <xs:documentation>Son</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASP">
+        <xs:annotation>
+          <xs:documentation>Stepson</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASS">
+        <xs:annotation>
+          <xs:documentation>Sister, step</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FASW">
+        <xs:annotation>
+          <xs:documentation>Son-in-law</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FNCF">
+        <xs:annotation>
+          <xs:documentation>Fiance</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FNCM">
+        <xs:annotation>
+          <xs:documentation>Fianc</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FRND">
+        <xs:annotation>
+          <xs:documentation>Friend</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GUAR">
+        <xs:annotation>
+          <xs:documentation>Court appointed guardian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HTCR">
+        <xs:annotation>
+          <xs:documentation>Head Teacher</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NONE">
+        <xs:annotation>
+          <xs:documentation>None</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OREL">
+        <xs:annotation>
+          <xs:documentation>Other relative</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTHR">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PREH">
+        <xs:annotation>
+          <xs:documentation>Former husband</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PREW">
+        <xs:annotation>
+          <xs:documentation>Former wife</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PROB">
+        <xs:annotation>
+          <xs:documentation>Probation officer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PTNP">
+        <xs:annotation>
+          <xs:documentation>Partner of parent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PTNR">
+        <xs:annotation>
+          <xs:documentation>Partner</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RELA">
+        <xs:annotation>
+          <xs:documentation>Aunt</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RELC">
+        <xs:annotation>
+          <xs:documentation>Cousin</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RELG">
+        <xs:annotation>
+          <xs:documentation>Minister or priest</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RELU">
+        <xs:annotation>
+          <xs:documentation>Uncle</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SIGO">
+        <xs:annotation>
+          <xs:documentation>Significant other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SWKR">
+        <xs:annotation>
+          <xs:documentation>Social Worker</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TADV">
+        <xs:annotation>
+          <xs:documentation>Advisor</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WARD">
+        <xs:annotation>
+          <xs:documentation>Ward</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WIFE">
+        <xs:annotation>
+          <xs:documentation>Wife</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKReligiousAffiliationType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="BA">
+        <xs:annotation>
+          <xs:documentation>Baptist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BU">
+        <xs:annotation>
+          <xs:documentation>Buddhist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CE">
+        <xs:annotation>
+          <xs:documentation>Church of England</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CH">
+        <xs:annotation>
+          <xs:documentation>Christian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CO">
+        <xs:annotation>
+          <xs:documentation>Congregational</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EC">
+        <xs:annotation>
+          <xs:documentation>Christian (Ecumenical)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FR">
+        <xs:annotation>
+          <xs:documentation>Free Church</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GR">
+        <xs:annotation>
+          <xs:documentation>Greek Orthodox</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HI">
+        <xs:annotation>
+          <xs:documentation>Hindu</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="JE">
+        <xs:annotation>
+          <xs:documentation>Jewish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="JW">
+        <xs:annotation>
+          <xs:documentation>Jehovah's Witness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LU">
+        <xs:annotation>
+          <xs:documentation>Lutheran</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ME">
+        <xs:annotation>
+          <xs:documentation>Methodist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MO">
+        <xs:annotation>
+          <xs:documentation>Mormon</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MU">
+        <xs:annotation>
+          <xs:documentation>Muslim</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ND">
+        <xs:annotation>
+          <xs:documentation>Non-denominational/Secular</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NO">
+        <xs:annotation>
+          <xs:documentation>No religion</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other Religious Affiliation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="QU">
+        <xs:annotation>
+          <xs:documentation>Quaker</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RC">
+        <xs:annotation>
+          <xs:documentation>Roman Catholic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RF">
+        <xs:annotation>
+          <xs:documentation>Refused</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RU">
+        <xs:annotation>
+          <xs:documentation>Russian Orthodox</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SA">
+        <xs:annotation>
+          <xs:documentation>Salvation Army</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SD">
+        <xs:annotation>
+          <xs:documentation>Seventh Day Adventist</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SI">
+        <xs:annotation>
+          <xs:documentation>Sikh</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UR">
+        <xs:annotation>
+          <xs:documentation>United Reform Church</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKSchoolTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="01">
+        <xs:annotation>
+          <xs:documentation>First school, 5-8</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="02">
+        <xs:annotation>
+          <xs:documentation>First school, 5-9</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="03">
+        <xs:annotation>
+          <xs:documentation>First school, 5-10</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="04">
+        <xs:annotation>
+          <xs:documentation>First and Middle school, 5-12</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="05">
+        <xs:annotation>
+          <xs:documentation>Middle school, 8-12, deemed Primary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="06">
+        <xs:annotation>
+          <xs:documentation>Middle school, 9-13, deemed Primary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="07">
+        <xs:annotation>
+          <xs:documentation>Middle school, 9-13, deemed Secondary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="08">
+        <xs:annotation>
+          <xs:documentation>Middle school, 10-13, deemed Secondary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="09">
+        <xs:annotation>
+          <xs:documentation>Comprehensive Upper school, 12-15/16</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="10">
+        <xs:annotation>
+          <xs:documentation>Comprehensive Upper school, 12-18</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="11">
+        <xs:annotation>
+          <xs:documentation>Comprehensive Upper school, 13-16</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="12">
+        <xs:annotation>
+          <xs:documentation>Comprehensive Upper school, 13-18</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="16">
+        <xs:annotation>
+          <xs:documentation>Infant school, 5-7/8</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="17">
+        <xs:annotation>
+          <xs:documentation>Junior school, 7/8-11</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="18">
+        <xs:annotation>
+          <xs:documentation>Infant and Junior school, 5-11</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="21">
+        <xs:annotation>
+          <xs:documentation>Comprehensive all-through, 11-16</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="22">
+        <xs:annotation>
+          <xs:documentation>Comprehensive all-through, 11-18</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="25">
+        <xs:annotation>
+          <xs:documentation>Junior Comprehensive, 11-13, automatic transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="26">
+        <xs:annotation>
+          <xs:documentation>Junior Comprehensive, 11-14, automatic transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="27">
+        <xs:annotation>
+          <xs:documentation>Junior Comprehensive, 11-16, optional transfer at 13</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="28">
+        <xs:annotation>
+          <xs:documentation>Junior Comprehensive, 11-16, optional transfer at 14</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="29">
+        <xs:annotation>
+          <xs:documentation>Senior Comprehensive, 13-16, automatic transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="30">
+        <xs:annotation>
+          <xs:documentation>Senior Comprehensive, 13-18, optional transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="31">
+        <xs:annotation>
+          <xs:documentation>Senior Comprehensive, 13-18, automatic transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="32">
+        <xs:annotation>
+          <xs:documentation>Senior Comprehensive, 14-18, optional transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="33">
+        <xs:annotation>
+          <xs:documentation>Senior Comprehensive, 14-18, automatic transfer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="36">
+        <xs:annotation>
+          <xs:documentation>Non-Comprehensive Secondary - Modern</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="37">
+        <xs:annotation>
+          <xs:documentation>Non-Comprehensive Secondary - Grammar</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="38">
+        <xs:annotation>
+          <xs:documentation>Non-Comprehensive Secondary - Technical</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="39">
+        <xs:annotation>
+          <xs:documentation>Non-Comprehensive Secondary - Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="41">
+        <xs:annotation>
+          <xs:documentation>Middle school, 10-14, deemed Secondary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="42">
+        <xs:annotation>
+          <xs:documentation>First school, 5-7;</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="43">
+        <xs:annotation>
+          <xs:documentation>First school, 7-10;</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="44">
+        <xs:annotation>
+          <xs:documentation>Comprehensive Upper school, 14/15-18</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="45">
+        <xs:annotation>
+          <xs:documentation>Middle school, 9-12, deemed Primary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="46">
+        <xs:annotation>
+          <xs:documentation>Comprehensive, Middle and Upper, 10-16</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="47">
+        <xs:annotation>
+          <xs:documentation>City Technology College</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="48">
+        <xs:annotation>
+          <xs:documentation>Comprehensive Upper school, 11-16</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="49">
+        <xs:annotation>
+          <xs:documentation>Academies</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="50">
+        <xs:annotation>
+          <xs:documentation>Maintained Nursery</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="51">
+        <xs:annotation>
+          <xs:documentation>Direct Grant Nursery</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKSENProvisionType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>No Special Educational Need</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>School Action or Early Years Action</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>School Action Plus or Early Years Action Plus</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Statement</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKSENTypeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="SPLD">
+        <xs:annotation>
+          <xs:documentation>Specific Learning Difficulty</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MLD">
+        <xs:annotation>
+          <xs:documentation>Moderate Learning Difficulty</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SLD">
+        <xs:annotation>
+          <xs:documentation>Severe Learning Difficulty</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PMLD">
+        <xs:annotation>
+          <xs:documentation>Profound and Multiple Learning Difficulty</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BESD">
+        <xs:annotation>
+          <xs:documentation>Behaviour, Emotional and Social Difficulties</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SLCD">
+        <xs:annotation>
+          <xs:documentation>Speech, Language and Communication Difficulties (Wales)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SLCN">
+        <xs:annotation>
+          <xs:documentation>Speech, Language and Communication Needs (England)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HI">
+        <xs:annotation>
+          <xs:documentation>Hearing Impairment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VI">
+        <xs:annotation>
+          <xs:documentation>Visual Impairment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MSI">
+        <xs:annotation>
+          <xs:documentation>Multi-Sensory Impairment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PD">
+        <xs:annotation>
+          <xs:documentation>Physical Disability (England)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PMED">
+        <xs:annotation>
+          <xs:documentation>Physical and Medical Difficulties (Wales)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ASD">
+        <xs:annotation>
+          <xs:documentation>Autistic Spectrum Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTH">
+        <xs:annotation>
+          <xs:documentation>Other Difficulty/Disability (England)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DNA">
+        <xs:annotation>
+          <xs:documentation>Does not apply (Wales)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKSourceCodeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>Provided by the child (ie pupil)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>Provided by the parent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Ascribed by the current school</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="T">
+        <xs:annotation>
+          <xs:documentation>Ascribed by a previous school</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation>Other </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKSpecialisedResourcesWalesType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="SR1">
+        <xs:annotation>
+          <xs:documentation>Periodic access to standard equipment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SR2">
+        <xs:annotation>
+          <xs:documentation>Individual access to normally available equipment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SR3">
+        <xs:annotation>
+          <xs:documentation>Individual access to specialised equipment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SR4">
+        <xs:annotation>
+          <xs:documentation>Dedicated access to highly specialised equipment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKTravellerGypsyCodeType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="GH">
+        <xs:annotation>
+          <xs:documentation>Gypsy/Roma (Housed)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GT">
+        <xs:annotation>
+          <xs:documentation>Gypsy/Roma (Travelling)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Occupational Traveller</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TR">
+        <xs:annotation>
+          <xs:documentation>Traveller (Other)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NT">
+        <xs:annotation>
+          <xs:documentation>Not a Traveller</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKTuitionCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="IL">
+        <xs:annotation>
+          <xs:documentation>Alternative Tuition by LA because of Illness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PE">
+        <xs:annotation>
+          <xs:documentation>Alternative Tuition by LA because of Permanent Exclusion</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OR">
+        <xs:annotation>
+          <xs:documentation>Alternative Tuition by LA for Other Reason</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HP">
+        <xs:annotation>
+          <xs:documentation>Alternative Tuition at Home by Parents/Carers</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKTuitionHoursType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>5 hours or less</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>6-12 hours</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>13-19 hours</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>20 hours or more</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UKPupilExclusionReasonType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="PP">
+        <xs:annotation>
+          <xs:documentation>Physical assault against a pupil</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PA">
+        <xs:annotation>
+          <xs:documentation>Physical assault against an adult</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VP">
+        <xs:annotation>
+          <xs:documentation>Verbal abuse/threatening behaviour against a pupil</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VA">
+        <xs:annotation>
+          <xs:documentation>Verbal abuse/threatening behaviour against an adult</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BU">
+        <xs:annotation>
+          <xs:documentation>Bullying</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RA">
+        <xs:annotation>
+          <xs:documentation>Racist abuse</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SM">
+        <xs:annotation>
+          <xs:documentation>Sexual misconduct</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DA">
+        <xs:annotation>
+          <xs:documentation>Drug and alcohol related</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DM">
+        <xs:annotation>
+          <xs:documentation>Damage</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TH">
+        <xs:annotation>
+          <xs:documentation>Theft</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DB">
+        <xs:annotation>
+          <xs:documentation>Persistent disruptive behaviour</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OT">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

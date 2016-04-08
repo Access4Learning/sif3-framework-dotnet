@@ -17,6 +17,7 @@
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
+using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -134,7 +135,7 @@ namespace Sif.Framework.Controllers
         /// This operation is forbidden.
         /// </summary>
         /// <returns>HTTP status 403.</returns>
-        public override ICollection<environmentType> Get()
+        public override ICollection<environmentType> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
@@ -145,7 +146,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         /// <param name="item">Object to create.</param>
         /// <returns>HTTP status 403.</returns>
-        public override HttpResponseMessage Post(environmentType item)
+        public override HttpResponseMessage Post(environmentType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
@@ -214,7 +215,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         /// <param name="id">Identifier for the object to update.</param>
         /// <param name="item">Object to update.</param>
-        public override void Put(Guid id, environmentType item)
+        public override void Put(Guid id, environmentType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }

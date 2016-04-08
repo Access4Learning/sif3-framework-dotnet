@@ -1,0 +1,73 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="WorkforceAbsenceType">
+    <xs:annotation>
+      <xs:documentation>Details the absence of a Workforce person for a duration and reason.  If the reason is sickness then additional detail can be provided in line with typical HR requirements.  If the absence only relates to a specific assignment, e.g. an individual who is a kitchen assistant and midday supervisor takes the morning off only then this association can be made.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AbsenceStartDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date this absence started.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AbsenceStartTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>Time on AbsenceStartDate that this absence started, assumed midnight if not included.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AbsenceEndDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date this absence ended, if omitted it is assumed that the absence is ongoing.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AbsenceEndTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>Time on AbsenceEndDate that this absence ended, assumed midnight if not included.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AbsenceType" minOccurs="0" type="sif:UKAbsenceReasonType">
+        <xs:annotation>
+          <xs:documentation>Type of absence.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AbsenceIllness" minOccurs="0" nillable="true" type="sif:UKIllnessCategoryType">
+        <xs:annotation>
+          <xs:documentation>Specific illness if AbsenceType is Sickness.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkforceAssignmentRefId" minOccurs="0" nillable="true" type="sif:RefIdType">
+        <xs:annotation>
+          <xs:documentation>For use if this absence relates to a specific WorkforceAssignment.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey41">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the WorkforceAbsence object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="WorkforcePersonalRefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>RefId of WorkforcePersonal object this applies to.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="WorkforceAbsence" type="sif:WorkforceAbsenceType">
+    <xs:unique name="WorkforceAbsenceKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

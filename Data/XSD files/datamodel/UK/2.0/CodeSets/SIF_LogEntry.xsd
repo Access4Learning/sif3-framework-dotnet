@@ -1,0 +1,86 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:simpleType name="SIF_LogEntrySuccessCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Success</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SIF_LogEntryDataIssuesWithSuccessResultType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Data was changed to complete request successfully</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Data was added to complete request successfully</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SIF_LogEntryDataIssuesWithFailureResultType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Insufficient information in message</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Cannot process change due to business rule</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Related information unavailable</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SIF_LogEntryAgentErrorConditionType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>An exception has occurred in the agent (generic error)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SIF_LogEntryZISErrorConditionType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>An exception has occurred in the ZIS (generic error)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Message could not be delivered due to buffer size limitations</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Message could not be delivered due to minimum security requirements</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="4">
+        <xs:annotation>
+          <xs:documentation>Message could not be delivered due to destination agent not supporting SIF_Version</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="5">
+        <xs:annotation>
+          <xs:documentation>Message could not be delivered due to SIF_Response validation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

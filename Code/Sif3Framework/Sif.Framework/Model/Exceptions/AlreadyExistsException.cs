@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents the situation where an item already exists.
     /// </summary>
     [Serializable]
-    class AlreadyExistsException : BaseException
+    public class AlreadyExistsException : BaseException
     {
 
         /// <summary>

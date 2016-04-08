@@ -1,0 +1,69 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="AssessmentLearnerSetType">
+    <xs:annotation>
+      <xs:documentation>This object describes learners assigned to take an assessment or component grouping (can represent a markbook, exam entry, or an cohort objective).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="CreationDateTime" minOccurs="0" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Date/time assignment is created.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LocalId" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Value supplied by publishing vendor/supplier.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LearnerList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="LearnerPersonalRefId" minOccurs="0" maxOccurs="unbounded" type="sif:IdRefType">
+              <xs:annotation>
+                <xs:documentation>The ID (GUID) of a learner assigned to take an assessment.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SchoolGroupRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>Optional reference to the class group(s) to which this will be/are drawn.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WorkforcePersonalRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The ID (GUID) that uniquely identifies the teacher or staff member who created the learner set.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey5">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) that uniquely identifies an instance of this object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AssessmentResultComponentGroupRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The assessment result component group (test or assessment) associated with the set of listed learners.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="AssessmentLearnerSet" type="sif:AssessmentLearnerSetType">
+    <xs:unique name="AssessmentLearnerSetKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

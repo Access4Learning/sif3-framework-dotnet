@@ -1,0 +1,1797 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="TimeElementType">
+    <xs:annotation>
+      <xs:documentation>A common metadata element designed to contain time data, both self-defined and by type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Type" minOccurs="0" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>
+        This element is designed to contain the time period attached to an object.
+        Very long periods (school year, quarter, etc.) and very small periods (second, millisecond, etc.) can be defined.
+        This element provides a scoping description of the time metadata enclosed.
+      </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Code" minOccurs="0" type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+      This element provides a place for the application to send structured data (code values, unique identifier, timestamps).
+      This code value can, depending upon the use case agreement between agents, be used to qualify the data in the </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Name" minOccurs="0" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>
+      Contains a human-readable description of the value in </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value" minOccurs="0" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Contains the human-readable value.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartDateTime" minOccurs="0" nillable="true" type="xs:dateTime" />
+      <xs:element name="EndDateTime" minOccurs="0" nillable="true" type="xs:dateTime" />
+      <xs:element name="SpanGaps" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="SpanGap" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Type" minOccurs="0" type="xs:normalizedString" />
+                  <xs:element name="Code" minOccurs="0" type="xs:token" />
+                  <xs:element name="Name" minOccurs="0" type="xs:normalizedString" />
+                  <xs:element name="Value" minOccurs="0" type="xs:normalizedString" />
+                  <xs:element name="StartDateTime" minOccurs="0" nillable="true" type="xs:dateTime" />
+                  <xs:element name="EndDateTime" minOccurs="0" nillable="true" type="xs:dateTime" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="IsCurrent" minOccurs="0" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>
+      This element allows for the system to tag an object as being explicitly current.
+      Although the baseline assumption in SIF is that objects are always current (default value is typically </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="TimeElement" type="sif:TimeElementType" />
+
+  <xs:complexType name="LifeCycleType">
+    <xs:annotation>
+      <xs:documentation>
+        This common metadata element describes the life cycle of the object it represents, based on the IEEE LOM LifeCycle element [LOM].
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Created" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="DateTime" minOccurs="0" type="xs:dateTime" />
+            <xs:element name="Creators" minOccurs="0" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Creator" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Name" minOccurs="0" type="xs:normalizedString">
+                          <xs:annotation>
+                            <xs:documentation>
+      Human-readable name of the data's creator. If the object contains system-generated data,
+      the name should identify the creating service or application.
+    </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="ID" minOccurs="0" type="xs:normalizedString">
+                          <xs:annotation>
+                            <xs:documentation>Unique identifier of the creator.  An email address or URI could be used here.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ModificationHistory" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Modified" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="By" minOccurs="0" type="xs:normalizedString">
+                    <xs:annotation>
+                      <xs:documentation>Identifier of the system or person that modified the data.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="DateTime" minOccurs="0" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>The date/time the modification occurred.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="Description" minOccurs="0" nillable="true" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>Human readable description of the data modifications.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TimeElements" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="sif:TimeElement" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="LifeCycle" type="sif:LifeCycleType" />
+
+  <xs:complexType name="RightsElementType">
+    <xs:annotation>
+      <xs:documentation>
+				A common metadata element designed to carry any intellectual property or copyright information, based on the IEEE LOM Rights element [LOM].
+			</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Cost" minOccurs="0" nillable="true" type="xs:boolean" />
+      <xs:element name="FeesForUse" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="FeeForUse" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="UseType" minOccurs="0" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>
+			A description of the fee structure for this resource.
+			Some resources may be licensed differently depending upon their context.
+			For example, a content provider might charge one fee structure for resources used in the classroom and a separate fee for those
+			resources available to parents from home.
+		</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="MeteringType" minOccurs="0" type="xs:token" />
+                  <xs:element name="MeteringURL" minOccurs="0" nillable="true" type="xs:anyURI" />
+                  <xs:element name="PerUseCharge" minOccurs="0" nillable="true" type="sif:MonetaryAmountType" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CopyrightStatement" minOccurs="0" nillable="true" type="xs:string" />
+      <xs:element name="TermsOfUse" minOccurs="0" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="RightsElement" type="sif:RightsElementType" />
+
+  <xs:complexType name="EducationFilterType">
+    <xs:sequence>
+      <xs:element name="MediaTypes" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="MediaType" minOccurs="0" maxOccurs="unbounded" type="xs:token" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NCYearGroupList" minOccurs="0" nillable="true" type="sif:NCYearGroupListType">
+        <xs:annotation>
+          <xs:documentation>Applicable National Curriculum (NC) Year Group.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SubjectAreaList" minOccurs="0" nillable="true" type="sif:SubjectAreaListType">
+        <xs:annotation>
+          <xs:documentation>
+			This allows subject areas to be associated with an object or query.
+			Although there could be overlap with </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="InterestLevels" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="InterestLevel" minOccurs="0" maxOccurs="unbounded" type="sif:NCYearGroupType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="LearningStandardItems" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="LearningStandardItemRefId" minOccurs="0" maxOccurs="unbounded" type="sif:IdRefType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BloomsTaxonomyLevels" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="BloomsTaxonomyLevel" minOccurs="0" maxOccurs="unbounded">
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="Knowledge" />
+                  <xs:enumeration value="Comprehension" />
+                  <xs:enumeration value="Application" />
+                  <xs:enumeration value="Analysis" />
+                  <xs:enumeration value="Synthesis" />
+                  <xs:enumeration value="Evaluation" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MultipleIntelligences" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="MultipleIntelligence" minOccurs="0" maxOccurs="unbounded">
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="Linguistic" />
+                  <xs:enumeration value="Logical-Mathematical" />
+                  <xs:enumeration value="Spatial" />
+                  <xs:enumeration value="Musical" />
+                  <xs:enumeration value="Bodily-Kinesthetic" />
+                  <xs:enumeration value="Interpersonal" />
+                  <xs:enumeration value="Intrapersonal" />
+                  <xs:enumeration value="Naturalist" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InstructionalStrategies" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="InstructionalStrategy" minOccurs="0" maxOccurs="unbounded">
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="Lecture" />
+                  <xs:enumeration value="Online" />
+                  <xs:enumeration value="Discussion" />
+                  <xs:enumeration value="Cooperative Group" />
+                  <xs:enumeration value="Scenario" />
+                  <xs:enumeration value="Demonstration/Lab" />
+                  <xs:enumeration value="Self-study" />
+                  <xs:enumeration value="Problem-Based Learning" />
+                  <xs:enumeration value="Project" />
+                  <xs:enumeration value="Other" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Title" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The title of the content.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Summary" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>A summary of the content.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LearningObjectives" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="LearningObjective" minOccurs="0" maxOccurs="unbounded" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation />
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ResourceTypes" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ResourceType" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation />
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="Supplemental Resource" />
+                  <xs:enumeration value="Remedial Resource" />
+                  <xs:enumeration value="Core Instructional Resource" />
+                  <xs:enumeration value="Assessment" />
+                  <xs:enumeration value="Other" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="EducationFilter" type="sif:EducationFilterType" />
+
+  <xs:complexType name="ElectronicIdListType">
+    <xs:annotation>
+      <xs:documentation>A list of electronic identifiers associated with an entity.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="sif:ElectronicId" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ElectronicIdList" type="sif:ElectronicIdListType" />
+
+  <xs:complexType name="ElectronicIdType">
+    <xs:annotation>
+      <xs:documentation>
+        Common element used to specify entity identifiers that are read by electronic equipment. It is used in objects such
+        as LearnerPersonal, StaffPersonal, and LibraryPatronStatus.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:normalizedString">
+        <xs:attribute name="Type" use="required">
+          <xs:annotation>
+            <xs:documentation>Electronic ID type.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="Barcode" />
+              <xs:enumeration value="Magstripe" />
+              <xs:enumeration value="PIN" />
+              <xs:enumeration value="RFID" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name="ElectronicId" type="sif:ElectronicIdType" />
+
+  <xs:simpleType name="SchoolURLType">
+    <xs:restriction base="xs:anyURI">
+      <xs:annotation>
+        <xs:documentation>URL for a school.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="SchoolURL" type="sif:SchoolURLType" />
+
+  <xs:simpleType name="LocalIdType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:annotation>
+        <xs:documentation>
+        This is a common element used to define the locally assigned identifier associated with an entity. It is used in
+        LearnerPersonal, WorkforcePersonal, SchoolInfo, and other objects.
+      </xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="LocalId" type="sif:LocalIdType" />
+
+  <xs:simpleType name="SchoolYearType">
+    <xs:restriction base="xs:gYear">
+      <xs:annotation>
+        <xs:documentation>School year for which this information is applicable, expressed as the four-digit year in which the school year ends (e.g., "2004" for the 2003-04 school year).</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="SchoolYear" type="sif:SchoolYearType" />
+
+  <xs:simpleType name="LastNameType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:annotation>
+        <xs:documentation>A person's last name.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="LastName" type="sif:LastNameType" />
+
+  <xs:simpleType name="FirstNameType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:annotation>
+        <xs:documentation>A person's first name.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="FirstName" type="sif:FirstNameType" />
+
+  <xs:simpleType name="MiddleNameType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:annotation>
+        <xs:documentation>A person's middle name or initial.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="MiddleName" type="sif:MiddleNameType" />
+
+  <xs:complexType name="AddressType">
+    <xs:annotation>
+      <xs:documentation>
+      This element contains address data, some of which is defined by the BS7666
+      International Address and Geographic Location Specification. Other
+      elements are present for support of international addresses. Applications
+      storing address information in the traditional line format must translate this
+      information into the appropriate data elements below.
+    </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="LocalId" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The locally assigned identifier for this address in the publishing system.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date person began using this address.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date person stopped using this address.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PAON" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Description" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Dwelling name, or at least a general description of the location in lieu of having any other information. This is required when no other PAON information is provided.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="StartNumber" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Start (single) dwelling number.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="StartNumberSuffix" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Start (single) dwelling number suffix.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EndNumber" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>End dwelling number.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EndNumberSuffix" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>End dwelling number suffix.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SAON" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Description" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Sub-dwelling name, or other descriptive information in lieu of having any other information.  This is required when no other SAON data is provided.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="StartNumber" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Start (single) dwelling number.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="StartNumberSuffix" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Start (single) dwelling number suffix.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EndNumber" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>End dwelling number.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EndNumberSuffix" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>End dwelling number suffix.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Street" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The name of the street.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Locality" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The locality name refers to a neighbourhood, suburb, district, village, estate, settlement, or parish that may form part of a town, or stand in its own right within the context of an administrative area.  Where an industrial estate contains streets it is defined as a locality in its own right.  At least one of Locality, Town, or AdministrativeArea must be specified.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Town" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The city name refers to a city or town that is not an adminstrative area, a suburb of an administrative area that does not form part of another town or a London district. At least one of Locality, Town, or AdministrativeArea must be specified.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AdministrativeArea" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The administrative area is a geographic area that may be the highest level local administrative area, and may be a county or a unitary authority, an island or island group, or London. At least one of Locality, Town, or AdministrativeArea must be specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="County" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Where applicable, the name of the county.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PostTown" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Post Office usually assigns these based on Sorting Office.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PostCode" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>
+      The code allocated by the Post Office (within GBR) to identify a group of postal delivery points.
+      Valid Postcode formats are:</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Country" minOccurs="0" nillable="true" type="sif:CountryType">
+        <xs:annotation>
+          <xs:documentation>Country where physical address is located, if known.  Usually this is going to be 'GBR' but could be outside the UK.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UniquePropertyReferenceNumber" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:annotation>
+              <xs:documentation>The unique Property and Land Reference Number (UPRN) for this address. Numeric: 1 to 12 digits.</xs:documentation>
+            </xs:annotation>
+            <xs:minInclusive value="0" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+            <xs:maxInclusive value="999999999999" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="UniqueStreetReferenceNumber" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:annotation>
+              <xs:documentation>The unique Property Street Reference Number (USRN) for this address.  Numeric: 1 to 8 digits.</xs:documentation>
+            </xs:annotation>
+            <xs:minInclusive value="0" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+            <xs:maxInclusive value="99999999" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="LocationContext" minOccurs="0" nillable="true" type="sif:LocationContextType">
+        <xs:annotation>
+          <xs:documentation>The physical location of an address in terms of Census District, LA Electoral Ward, Parliamentary Constituency, and other defining location-centric characteristics.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GridLocation" minOccurs="0" nillable="true" type="sif:GridLocationType">
+        <xs:annotation>
+          <xs:documentation>The physical property location coordinates.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Type" use="required">
+      <xs:annotation>
+        <xs:documentation>Code that defines the address type.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="Current" />
+          <xs:enumeration value="Mailing" />
+          <xs:enumeration value="Transportation" />
+          <xs:enumeration value="Previous" />
+          <xs:enumeration value="Other" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="Address" type="sif:AddressType" />
+
+  <xs:complexType name="AddressListType">
+    <xs:annotation>
+      <xs:documentation>A list of Address elements.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Address" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="sif:AddressType">
+              <xs:attribute name="SIF_Action" use="optional">
+                <xs:annotation>
+                  <xs:documentation>In a Change event, this flag can be used to indicate an element has been deleted from the parent list container. At a minimum the key for the list must also be present.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="Delete" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AddressList" type="sif:AddressListType">
+    <xs:unique name="AddressListKey1">
+      <xs:selector xpath="./sif:Address" />
+      <xs:field xpath="@Type" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:complexType name="ContactListType">
+    <xs:annotation>
+      <xs:documentation>A list of contact persons associated with a school or LA.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Contact" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="PositionTitle" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>The contact person's position title within the school or LA.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Role" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>Role played by this contact in the school or LA.  Any descriptive text is allowed here.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="PublishInDirectory" minOccurs="0" nillable="true">
+              <xs:annotation>
+                <xs:documentation>Indicates whether or not this contact's information should be published in a directory of school or LA information.</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="Yes" />
+                  <xs:enumeration value="No" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="SIF_RefId" use="required" type="sif:IdRefType">
+            <xs:annotation>
+              <xs:documentation>The ID (GUID) of the person listed as a contact. Note that this is any person listed as a contact through either a ContactPersonal, WorkforcePersonal, or even a LearnerPersonal record.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="SIF_RefObject" use="required">
+            <xs:annotation>
+              <xs:documentation>The object type being referred to. </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:token">
+                <xs:enumeration value="WorkforcePersonal" />
+                <xs:enumeration value="ContactPersonal" />
+                <xs:enumeration value="LearnerPersonal" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ContactList" type="sif:ContactListType" />
+
+  <xs:simpleType name="CountryType">
+    <xs:restriction base="sif:TeachernetNationStatesAndCountriesType">
+      <xs:annotation>
+        <xs:documentation>The 3-character alphabetic country code defined by ISO 3166-1.  Given this code all other code and name information can be obtained directly from the standard.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Country" type="sif:CountryType" />
+
+  <xs:complexType name="DemographicsType">
+    <xs:annotation>
+      <xs:documentation>Demographic information about a learner, contact, workforce member, etc. This element occurs within objects such as LearnerPersonal, LearnerContact, etc.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="EthnicityList" minOccurs="0" nillable="true" type="sif:EthnicityListType">
+        <xs:annotation>
+          <xs:documentation>A list of the person's ethnicities by proportion.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Gender" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Person's gender.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="M">
+              <xs:annotation>
+                <xs:documentation>Male</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="F">
+              <xs:annotation>
+                <xs:documentation>Female</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="U">
+              <xs:annotation>
+                <xs:documentation>Unknown</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="W">
+              <xs:annotation>
+                <xs:documentation>Withheld</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="BirthDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The person's date of birth.  Required for learners.  Optional for others.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="BirthDateVerification" minOccurs="0" nillable="true" type="sif:UKBirthDateVerificationLevelType">
+        <xs:annotation>
+          <xs:documentation>Means by which the person's birth date was validated.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PlaceOfBirth" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The person's place of birth--like village, town, city etc.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CountyOfBirth" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The county in which the person was born.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CountryOfBirth" minOccurs="0" nillable="true" type="sif:CountryType">
+        <xs:annotation>
+          <xs:documentation>The individual's country of birth.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CountriesOfCitizenship" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CountryOfCitizenship" minOccurs="0" maxOccurs="unbounded" type="sif:CountryType">
+              <xs:annotation>
+                <xs:documentation>The country of legal nationality (i.e. the country which issued the individual's passport).</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CountriesOfResidency" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CountryOfResidency" minOccurs="0" maxOccurs="unbounded" type="sif:CountryType">
+              <xs:annotation>
+                <xs:documentation>A person's country of residence.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CountryArrivalDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date the person first arrived in the UK.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EnglishProficiency" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="EALSteps" minOccurs="0" nillable="true">
+              <xs:annotation>
+                <xs:documentation>Based on QCA Steps. (England)</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="S1">
+                    <xs:annotation>
+                      <xs:documentation>Step 1</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="S2">
+                    <xs:annotation>
+                      <xs:documentation>Step 2</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="1T">
+                    <xs:annotation>
+                      <xs:documentation>Level 1 Threshold</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="1S">
+                    <xs:annotation>
+                      <xs:documentation>Level 1 Secure</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="EALAcquisition" minOccurs="0" nillable="true">
+              <xs:annotation>
+                <xs:documentation>Based on a differing scale from QCA Steps. (Wales)</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="A">
+                    <xs:annotation>
+                      <xs:documentation>New to English</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="B">
+                    <xs:annotation>
+                      <xs:documentation>Early Acquisition</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="C">
+                    <xs:annotation>
+                      <xs:documentation>Developing Competence</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="D">
+                    <xs:annotation>
+                      <xs:documentation>Compentent</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="E">
+                    <xs:annotation>
+                      <xs:documentation>Fluent</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="0">
+                    <xs:annotation>
+                      <xs:documentation>Not applicable</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="LanguageList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Language" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Code" minOccurs="0" type="sif:TeachernetLanguagesType">
+                    <xs:annotation>
+                      <xs:documentation>This is the code that specifies the person's language.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="Fluent" minOccurs="0" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>Indicates that the person is fluent in this language.</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        <xs:enumeration value="Yes" />
+                        <xs:enumeration value="No" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="TypeList" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Type" minOccurs="0" maxOccurs="unbounded">
+                          <xs:annotation>
+                            <xs:documentation>A typification of the language. i.e. how is this language used?</xs:documentation>
+                          </xs:annotation>
+                          <xs:simpleType>
+                            <xs:restriction base="xs:token">
+                              <xs:enumeration value="C">
+                                <xs:annotation>
+                                  <xs:documentation>Correspondence Language</xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="F">
+                                <xs:annotation>
+                                  <xs:documentation>First Language</xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="M">
+                                <xs:annotation>
+                                  <xs:documentation>Multiple First Language</xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="H">
+                                <xs:annotation>
+                                  <xs:documentation>Home</xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="T">
+                                <xs:annotation>
+                                  <xs:documentation>Tuition</xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="S">
+                                <xs:annotation>
+                                  <xs:documentation>Second Language</xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Source" minOccurs="0" nillable="true" type="sif:UKSourceCodeType">
+                    <xs:annotation>
+                      <xs:documentation>Source of data on use of the specified language.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="Study" minOccurs="0" nillable="true" type="sif:UKLanguageStudyType">
+                    <xs:annotation>
+                      <xs:documentation>The level in which the learner is taught this language at school.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="StudyOther" minOccurs="0" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>Indicates whether the learner studies subjects in this language at school separate from studying the language itself.</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        <xs:enumeration value="Yes" />
+                        <xs:enumeration value="No" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MaritalStatus" minOccurs="0" nillable="true" type="sif:UKMaritalStatusType">
+        <xs:annotation>
+          <xs:documentation>The person's marital status.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="NonUKSystemImmigrant" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Indicates the learner has recently arrived from a non-English or other common UK language system. (Wales)</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Refugee" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Indicates the person's refugee/asylum seeker status as defined by the United Nations (Article 1 of the 1951 Refugee Convention).</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Religion" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AffiliationCode" minOccurs="0" type="sif:UKReligiousAffiliationType">
+              <xs:annotation>
+                <xs:documentation>Person's religious faith.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EducationStatus" minOccurs="0" nillable="true">
+              <xs:annotation>
+                <xs:documentation>Indicates whether the person is actively attending religious education classes.</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="A">
+                    <xs:annotation>
+                      <xs:documentation>Attends</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="W">
+                    <xs:annotation>
+                      <xs:documentation>Withdrawn</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="CollectiveWorshipStatus" minOccurs="0" nillable="true">
+              <xs:annotation>
+                <xs:documentation>Indicates whether the person is participating in religious collective worship.</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="A">
+                    <xs:annotation>
+                      <xs:documentation>Attends</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="W">
+                    <xs:annotation>
+                      <xs:documentation>Withdrawn</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="Source" minOccurs="0" nillable="true" type="sif:UKSourceCodeType">
+              <xs:annotation>
+                <xs:documentation>Source of person's religious affiliation code.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Traveller" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Code" minOccurs="0" type="sif:UKTravellerGypsyCodeType">
+              <xs:annotation>
+                <xs:documentation>Code to identify type of traveller/gypsy.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Source" minOccurs="0" type="sif:UKSourceCodeType">
+              <xs:annotation>
+                <xs:documentation>Source of individual's recorded traveller/gypsy code.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Demographics" type="sif:DemographicsType" />
+
+  <xs:complexType name="EmailType">
+    <xs:annotation>
+      <xs:documentation>This element represents an e-mail address of one of a number of types.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:normalizedString">
+        <xs:attribute name="Type" use="required">
+          <xs:annotation>
+            <xs:documentation>This attribute specifies the type of e-mail address.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="Business" />
+              <xs:enumeration value="Personal" />
+              <xs:enumeration value="School" />
+              <xs:enumeration value="Alternate1" />
+              <xs:enumeration value="Alternate2" />
+              <xs:enumeration value="Alternate3" />
+              <xs:enumeration value="Alternate4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name="Email" type="sif:EmailType" />
+
+  <xs:complexType name="EmailListType">
+    <xs:annotation>
+      <xs:documentation>A list of e-mail addresses associated with an individual.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Email" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="sif:EmailType">
+              <xs:attribute name="SIF_Action" use="optional">
+                <xs:annotation>
+                  <xs:documentation>In a Change event, this flag can be used to indicate an element has been deleted from the parent list container. At a minimum the key for the list must also be present.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="Delete" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="EmailList" type="sif:EmailListType">
+    <xs:unique name="EmailListKey1">
+      <xs:selector xpath="./sif:Email" />
+      <xs:field xpath="@Type" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:simpleType name="EstablishmentIdType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>The DfES assigned identifier for a school or other educational establishment.  The list of all known Establishment ID's is extensive and available online.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="EstablishmentId" type="sif:EstablishmentIdType" />
+
+  <xs:complexType name="EthnicityListType">
+    <xs:sequence>
+      <xs:element name="Ethnicity" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Code" minOccurs="0" type="sif:TeachernetEthnicityCodeType">
+              <xs:annotation>
+                <xs:documentation>The general ethnic category which reflects the individual's recognition of his or her community or with which the individual most identifies.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Source" minOccurs="0" type="sif:UKSourceCodeType">
+              <xs:annotation>
+                <xs:documentation>Source of inidividual's recorded ethnic code.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="EthnicityList" type="sif:EthnicityListType" />
+
+  <xs:complexType name="GridLocationType">
+    <xs:annotation>
+      <xs:documentation>This element contains a map location. The GridLocation element is utilised within other objects and elements.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PropertyEasting" minOccurs="0" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>Easting coordinate format.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PropertyNorthing" minOccurs="0" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+      Northing coordinate for mapping an address. Required when PropertyEasting
+      is also specified. This is best represented in a 7.1 format.
+    </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Latitude" minOccurs="0" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>Geographical coordinate.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Longitude" minOccurs="0" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>Geographical coordinate. Required when Latitude is also specified.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="GridLocation" type="sif:GridLocationType" />
+
+  <xs:simpleType name="LAIdType">
+    <xs:restriction base="sif:TeachernetLAIdType">
+      <xs:annotation>
+        <xs:documentation>The 3-digit number assigned to the LA by the DfES.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="LAId" type="sif:LAIdType" />
+
+  <xs:simpleType name="LANameType">
+    <xs:restriction base="sif:TeachernetLANameType">
+      <xs:annotation>
+        <xs:documentation>The official name of the LA.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="LAName" type="sif:LANameType" />
+
+  <xs:complexType name="LocationContextType">
+    <xs:annotation>
+      <xs:documentation>The physical location of an address in terms of Census District, LA Electoral Ward, Parliamentary Constituency, and other defining location-centric characteristics.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="CensusDistrict" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>National Population Census Enumeration District.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WardCode" minOccurs="0" type="sif:ONSWardCodeType">
+        <xs:annotation>
+          <xs:documentation>ONS Ward Code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="WardName" minOccurs="0" type="sif:ONSWardNameType">
+        <xs:annotation>
+          <xs:documentation>ONS Ward Name</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ConstituencyCode" minOccurs="0" nillable="true" type="sif:ONSParliamentaryConstituencyCodeType">
+        <xs:annotation>
+          <xs:documentation>ONS Parliamentary Constituency Code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ConstituencyName" minOccurs="0" nillable="true" type="sif:ONSParliamentaryConstituencyNameType">
+        <xs:annotation>
+          <xs:documentation>ONS Parliamentary Constituency Name</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Parish" minOccurs="0" nillable="true" type="sif:ONSParishCouncilNameType">
+        <xs:annotation>
+          <xs:documentation>ONS Parish Council Name</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChurchOfEnglandDiocese" minOccurs="0" nillable="true" type="sif:TeachernetChurchOfEnglandDioceseType">
+        <xs:annotation>
+          <xs:documentation>Church of England Diocese Code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChurchOfEnglandParish" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Church of England Parish Code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RomanCatholicDiocese" minOccurs="0" nillable="true" type="sif:TeachernetRomanCatholicDioceseType">
+        <xs:annotation>
+          <xs:documentation>Roman Catholic Diocese Code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RomanCatholicParish" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Roman Catholic Parish</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LSCouncilCode" minOccurs="0" nillable="true" type="sif:TeachernetLearningAndSkillsCouncilAreaCodeType">
+        <xs:annotation>
+          <xs:documentation>Learning and Skills Council area code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CatchmentArea" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>School catchment area description</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="LocationContext" type="sif:LocationContextType" />
+
+  <xs:complexType name="NameType">
+    <xs:annotation>
+      <xs:documentation>The Name element defines name information for a person and occurs within the PersonalInformation element.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Title" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>A title or prefix associated with the name.  If any of: Mr, Mrs, Ms, Miss, Rev, Fr, Dr, Prof, Hon, Sir, Lord, Lady - these must be as shown, otherwise free text.  Note that title is not applicable to learners.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FamilyName" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Full legal family name. That part of the person's name which is used to describe family, clan, tribal group, or marital association.  Note that this element is always required.  However, when associated with a contact it may not be possible to know the family name in which case you should add the available information to the FullName element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GivenName" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Full given name (forename) of the person.  Note that this element is always required.  However, when associated with a contact it may not be possible to know the given name in which case you should add the available information to the FullName element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MiddleNames" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>All other given or middle names, each separated with a single space character.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FamilyNameFirst" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>An indicator used to identify the naming conventions used by some predominantly non-European, ethnic or language groups and related to the display nature of a name.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="PreferredFamilyName" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The family name preferred most by the person (as written).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PreferredFamilyNameFirst" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>An indicator used to identify the naming conventions used by some predominantly non-European, ethnic or language groups and related to the display nature of a name.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="PreferredGivenName" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The given name preferred most by the person (as written).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Suffix" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Textual suffix like PHD, JP, BSc.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FullName" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>A free text field for the complete name for display purposes. If this is associated with a ContactPersonal record and the FamilyName and GivenName are not both specified, then this becomes mandatory.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Type" use="required">
+      <xs:annotation>
+        <xs:documentation>Code that specifies what type of name this is.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="B">
+            <xs:annotation>
+              <xs:documentation>Birth name</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="C">
+            <xs:annotation>
+              <xs:documentation>Current Legal name</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="A">
+            <xs:annotation>
+              <xs:documentation>Alias / Alternative</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="R">
+            <xs:annotation>
+              <xs:documentation>Name of Record</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="F">
+            <xs:annotation>
+              <xs:documentation>Former Name</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="M">
+            <xs:annotation>
+              <xs:documentation>Married Name</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="P">
+            <xs:annotation>
+              <xs:documentation>Professional Name</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="Name" type="sif:NameType" />
+
+  <xs:simpleType name="NCYearGroupType">
+    <xs:restriction base="sif:UKNCYearGroupType">
+      <xs:annotation>
+        <xs:documentation>Code representing a National Curriculum Year Group.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="NCYearGroup" type="sif:NCYearGroupType" />
+
+  <xs:complexType name="NCYearGroupListType">
+    <xs:annotation>
+      <xs:documentation>This is a common element used to specify a collection of supported National Curriculum Year Groups. It is used in SchoolInfo and assessment-related objects.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="sif:NCYearGroup" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="NCYearGroupList" type="sif:NCYearGroupListType" />
+
+  <xs:complexType name="PersonalInformationType">
+    <xs:annotation>
+      <xs:documentation>This element contains basic personal and demographic information related to a person.  This element is part of all "personal" objects, including LearnerPersonal, WorkforcePersonal, and ContactPersonal.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="sif:Name" minOccurs="0" />
+      <xs:element name="OtherNames" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="sif:Name" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Demographics" minOccurs="0" nillable="true" type="sif:DemographicsType">
+        <xs:annotation>
+          <xs:documentation>This element contains demographic data.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Email" minOccurs="0" nillable="true" type="sif:EmailType">
+        <xs:annotation>
+          <xs:documentation>The person's preferred e-mail address.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OtherEmailList" minOccurs="0" nillable="true" type="sif:EmailListType">
+        <xs:annotation>
+          <xs:documentation>The person's other e-mail address(es).</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="EmailListKey2">
+          <xs:selector xpath="./sif:Email" />
+          <xs:field xpath="@Type" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="Address" minOccurs="0" nillable="true" type="sif:AddressType">
+        <xs:annotation>
+          <xs:documentation>The person's current physical address.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OtherAddressList" minOccurs="0" nillable="true" type="sif:AddressListType">
+        <xs:annotation>
+          <xs:documentation>The person's other address(es).</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="AddressListKey2">
+          <xs:selector xpath="./sif:Address" />
+          <xs:field xpath="@Type" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="PhoneNumber" minOccurs="0" nillable="true" type="sif:PhoneNumberType">
+        <xs:annotation>
+          <xs:documentation>The person's preferred phone number.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OtherPhoneNumberList" minOccurs="0" nillable="true" type="sif:PhoneNumberListType">
+        <xs:annotation>
+          <xs:documentation>The person's other phone number(s).</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="PhoneNumberListKey1">
+          <xs:selector xpath="./sif:PhoneNumber" />
+          <xs:field xpath="@Type" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="ElectronicIdList" minOccurs="0" nillable="true" type="sif:ElectronicIdListType">
+        <xs:annotation>
+          <xs:documentation>Electronic identifier(s) associated with this person.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OtherIdList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OtherId" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>An "other" identifier associated with this person.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:normalizedString">
+                    <xs:attribute name="Type" use="required" type="xs:normalizedString">
+                      <xs:annotation>
+                        <xs:documentation>Text that describes the type of this other ID.</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="PersonalInformation" type="sif:PersonalInformationType" />
+
+  <xs:complexType name="PhoneNumberType">
+    <xs:annotation>
+      <xs:documentation>This element represents a phone number and occurs within objects such as LearnerPersonal, WorkforcePersonal, etc.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Number" minOccurs="0" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Phone number. Validation:  0-9 and a leading '+' (for international calls).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Extension" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Phone number extension.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ListedStatus" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Indicates whether or not the phone number is available to the public.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Listed" />
+            <xs:enumeration value="Unlisted" />
+            <xs:enumeration value="Unknown" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Type" use="required" type="sif:UKPhoneTypeType">
+      <xs:annotation>
+        <xs:documentation>Code that specifies the phone number type.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="PhoneNumber" type="sif:PhoneNumberType" />
+
+  <xs:complexType name="PhoneNumberListType">
+    <xs:annotation>
+      <xs:documentation>Lists phone numbers associated with an entity.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PhoneNumber" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="sif:PhoneNumberType">
+              <xs:attribute name="SIF_Action" use="optional">
+                <xs:annotation>
+                  <xs:documentation>In a Change event, this flag can be used to indicate an element has been deleted from the parent list container. At a minimum the key for the list must also be present.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="Delete" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="PhoneNumberList" type="sif:PhoneNumberListType">
+    <xs:unique name="PhoneNumberListKey2">
+      <xs:selector xpath="./sif:PhoneNumber" />
+      <xs:field xpath="@Type" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:simpleType name="SchoolURNType">
+    <xs:restriction base="sif:EstablishmentIdType">
+      <xs:annotation>
+        <xs:documentation>The alternate DfES assigned identifier for a school or other educational establishment.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="SchoolURN" type="sif:SchoolURNType" />
+
+  <xs:complexType name="SubjectAreaListType">
+    <xs:annotation>
+      <xs:documentation>A list of subject areas.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SubjectArea" minOccurs="0" maxOccurs="unbounded" type="sif:UKGeneralSubjectType">
+        <xs:annotation>
+          <xs:documentation>Subject matter.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SubjectAreaList" type="sif:SubjectAreaListType" />
+
+  <xs:complexType name="PeriodType">
+    <xs:annotation>
+      <xs:documentation />
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PeriodIndex" minOccurs="0" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Ordinal position of period within the day (1,2,3,etc)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ShortName" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>A short period label</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="5" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="LongName" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>A long period label</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="25" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="StartTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>Time the period starts</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>Time the period ends</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>What this period represents. Note that currently some programs represent registration, breaks and lunches as a "period" and some don't. This Type could differ from the lesson Type (see section C4) if this teacher is doing something in this period which differs from the majority of the school.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="T">
+              <xs:annotation>
+                <xs:documentation>teaching period</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="R">
+              <xs:annotation>
+                <xs:documentation>registration</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="B">
+              <xs:annotation>
+                <xs:documentation>break</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="L">
+              <xs:annotation>
+                <xs:documentation>lunch</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="O">
+              <xs:annotation>
+                <xs:documentation>outside school hours (eg: clubs)</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="N">
+              <xs:annotation>
+                <xs:documentation>other non-teaching</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="X">
+              <xs:annotation>
+                <xs:documentation>'unused' period (on a non-rectangular cycle)</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Period" type="sif:PeriodType" />
+
+  <xs:complexType name="SIF_ExtendedElementsType">
+    <xs:annotation>
+      <xs:documentation>Allows an agent to include data not yet defined within a SIF data object as name/value pairs.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIF_ExtendedElement" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>A name/value pair, the name being contained in the Name attribute, the value being the element content.</xs:documentation>
+          </xs:annotation>
+          <xs:complexContent>
+            <xs:extension base="sif:ExtendedContentType">
+              <xs:attribute name="Name" use="required" type="xs:normalizedString">
+                <xs:annotation>
+                  <xs:documentation>The name of the extended element. As it is possible that names for extended elements may collide from agent to agent, it is recommended that the names of extended elements be configurable in an agent, or that agents use URIs for the names of extended elements.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <!--<xs:attribute ref="xsi:type" use="optional" />-->
+              <xs:attribute name="SIF_Action" use="optional">
+                <xs:annotation>
+                  <xs:documentation>
+		In a Change event, this flag can be used to indicate an element has been deleted from the parent list container.  At a minimum the key for the list must also be present.
+	  </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="Delete" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SIF_ExtendedElements" type="sif:SIF_ExtendedElementsType">
+    <xs:unique name="SIF_ExtendedElementsKey1">
+      <xs:selector xpath="./sif:SIF_ExtendedElement" />
+      <xs:field xpath="@Name" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:complexType name="SIF_MetadataType">
+    <xs:annotation>
+      <xs:documentation>A commonly defined container for metadata elements defined within SIF.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TimeElements" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="sif:TimeElement" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="LifeCycle" minOccurs="0" nillable="true" type="sif:LifeCycleType" />
+      <xs:element name="RightsElements" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="sif:RightsElement" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="EducationFilter" minOccurs="0" nillable="true" type="sif:EducationFilterType" />
+      <xs:element name="ImpactLevelElevation" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ImpactLevel" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+        The Impact Level that the object has been raised to. 
+      </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="IL3">
+                    <xs:annotation>
+                      <xs:documentation>Restricted</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="IL4">
+                    <xs:annotation>
+                      <xs:documentation>Confidential</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="SIF_Metadata" type="sif:SIF_MetadataType" />
+
+</xs:schema>

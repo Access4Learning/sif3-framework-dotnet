@@ -187,6 +187,19 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.InfrastructureNamespace"/>
+        /// </summary>
+        public string InfrastructureNamespace
+        {
+
+            get
+            {
+                return "http://www.sifassociation.org/infrastructure/" + SupportedInfrastructureVersion;
+            }
+
+        }
+
+        /// <summary>
         /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.DeleteOnUnregister"/>
         /// </summary>
         public bool DeleteOnUnregister

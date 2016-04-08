@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This class represents the base class for customised exceptions.
     /// </summary>
     [Serializable]
-    class BaseException : Exception
+    public class BaseException : Exception
     {
         private string exceptionReference;
 

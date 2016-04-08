@@ -57,7 +57,7 @@ namespace Sif.Framework.Service.Infrastructure
 
                 foreach (Right sourceRight in sourceRights.Values)
                 {
-                    Right destinationRight = new Right { Type = sourceRight.Type, Value = sourceRight.Value };
+                    Right destinationRight = new Right() { Type = sourceRight.Type, Value = sourceRight.Value };
                     destinationRights.Add(destinationRight.Type, destinationRight);
                 }
 
@@ -123,7 +123,7 @@ namespace Sif.Framework.Service.Infrastructure
 
         }
 
-        public override Guid Create(environmentType item)
+        public override Guid Create(environmentType item, string zone = null, string context = null)
         {
             EnvironmentRegister environmentRegister =
                 (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers

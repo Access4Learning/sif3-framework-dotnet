@@ -32,61 +32,61 @@ namespace Sif.Framework.Service
             this.repository = repository;
         }
 
-        public virtual Guid Create(UI item)
+        public virtual Guid Create(UI item, string zone = null, string context = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             return repository.Save(repoItem);
         }
 
-        public virtual void Create(IEnumerable<UI> items)
+        public virtual void Create(IEnumerable<UI> items, string zone = null, string context = null)
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Save(repoItems);
         }
 
-        public virtual void Delete(Guid id)
+        public virtual void Delete(Guid id, string zone = null, string context = null)
         {
             repository.Delete(id);
         }
 
-        public virtual void Delete(UI item)
+        public virtual void Delete(UI item, string zone = null, string context = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             repository.Delete(repoItem);
         }
 
-        public virtual void Delete(IEnumerable<UI> items)
+        public virtual void Delete(IEnumerable<UI> items, string zone = null, string context = null)
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Delete(repoItems);
         }
 
-        public virtual UI Retrieve(Guid id)
+        public virtual UI Retrieve(Guid id, string zone = null, string context = null)
         {
             DB repoItem = repository.Retrieve(id);
             return MapperFactory.CreateInstance<DB, UI>(repoItem);
         }
 
-        public virtual ICollection<UI> Retrieve(UI item)
+        public virtual ICollection<UI> Retrieve(UI item, string zone = null, string context = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             ICollection<DB> repoItems = repository.Retrieve(repoItem);
             return MapperFactory.CreateInstances<DB, UI>(repoItems);
         }
 
-        public virtual ICollection<UI> Retrieve()
+        public virtual ICollection<UI> Retrieve(string zone = null, string context = null)
         {
             ICollection<DB> repoItems = repository.Retrieve();
             return MapperFactory.CreateInstances<DB, UI>(repoItems);
         }
 
-        public virtual void Update(UI item)
+        public virtual void Update(UI item, string zone = null, string context = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             repository.Save(repoItem);
         }
 
-        public virtual void Update(IEnumerable<UI> items)
+        public virtual void Update(IEnumerable<UI> items, string zone = null, string context = null)
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Save(repoItems);

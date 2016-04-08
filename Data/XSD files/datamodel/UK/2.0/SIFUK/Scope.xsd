@@ -1,0 +1,167 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="ScopeType">
+    <xs:annotation>
+      <xs:documentation>
+      Scope of this timetable, ie: a general description of what dates the timetable covers, etc
+    </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TTScopeName" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>A short label for reference in screen displays.</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="50" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SupplierName" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>The supplier of the software that created this message</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="50" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SupplierURL" minOccurs="0" nillable="true" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>A URL to a page on the supplier’s website that gives information about the transfer and/or contact details for the supplier.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Product" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>The product that created this message</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="40" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Version" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>The version of that Product</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="20" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SchoolInfoRefId" minOccurs="0" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The unique school ID, taken from the existing SchoolInfo object (requested from ZIS)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolName" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>The school name in plain text – to help a person to see immediately this is the correct school</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="60" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ScheduleCreationDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date schedule was created or last edited (omitted for "Basic data only" message)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduleName" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>Name given to schedule by timetabler. The TT-Software may contain more than one schedule, so this tells us which one is being sent.</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="20" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element ref="sif:SchoolYear" minOccurs="0" />
+      <xs:element name="StartDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>First day of the timetable</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Last day of the timetable</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Status" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+        The "Status" of the timetable transfer 'BT' and 'ET' are sent by TTSoftware when sending a timetable. The others are sent by the MIS after receiving a timetable. (See also "Reasons for Status" below).</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="BT">
+              <xs:annotation>
+                <xs:documentation>Beginning of transfer.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ET">
+              <xs:annotation>
+                <xs:documentation>End of transfer.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RP">
+              <xs:annotation>
+                <xs:documentation>Received but import pending.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SI">
+              <xs:annotation>
+                <xs:documentation>Successful import.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UI">
+              <xs:annotation>
+                <xs:documentation>Unsuccessful import.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="PhoneNumberList" minOccurs="0" nillable="true" type="sif:PhoneNumberListType">
+        <xs:annotation>
+          <xs:documentation>The supplier's phone number(s).</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="PhoneNumberListKey5">
+          <xs:selector xpath="./sif:PhoneNumber" />
+          <xs:field xpath="@Type" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey29">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>
+      Unique GUID for this Timetable transfer
+    </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="Scope" type="sif:ScopeType">
+    <xs:unique name="ScopeKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

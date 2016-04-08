@@ -46,6 +46,11 @@ namespace Sif.Framework.Model.Settings
         string DataModelNamespace { get; }
 
         /// <summary>
+        /// Data model namespace if it exists; null otherwise.
+        /// </summary>
+        string InfrastructureNamespace { get; }
+        
+        /// <summary>
         /// Delete on unregister flag if it exists; false otherwise.
         /// </summary>
         bool DeleteOnUnregister { get; }

@@ -1,0 +1,99 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="LessonType">
+    <xs:annotation>
+      <xs:documentation>A lesson on the timetable</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TTDayId" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:normalizedString">
+            <xs:annotation>
+              <xs:documentation>Day this lesson is scheduled</xs:documentation>
+            </xs:annotation>
+            <xs:maxLength value="5" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="PeriodIndex" minOccurs="0" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Index of period this lesson/meeting starts</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Lesson/meeting type The value here determines whether a TeachingGroupID or an NTCode is required</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="T">
+              <xs:annotation>
+                <xs:documentation>teaching</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="N">
+              <xs:annotation>
+                <xs:documentation>non-teaching</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Length" minOccurs="0" nillable="true" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Length of lesson in periods (1=single, 2=double, etc). Can omit if just a single.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TeachingGroupRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The Teaching Group being taught (may not be one if Type != "T") (see TeachingGroup)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="NTCodeRef" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>If there is no TeachingGroupRefID (see NTCode)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TeacherList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="TTTeacherRefId" minOccurs="0" maxOccurs="unbounded" type="sif:IdRefType">
+              <xs:annotation>
+                <xs:documentation>The teacher(s) teaching / supervising this lesson (see TTTeacher)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TTRoomRefId" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The room (or location) where this lesson is taking place (see TTRoom)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey38">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType" />
+    <xs:attribute name="CycleRefId" use="optional" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The RefId of the Cycle to which this Lesson belongs.  This is optional to preserve backwards compatibility but it is very strongly advised that it should be correctly populated and considered mandatory in this version of the specification.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="Lesson" type="sif:LessonType">
+    <xs:unique name="LessonKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

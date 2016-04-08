@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents an error from a delete request.
     /// </summary>
     [Serializable]
-    class DeleteException : BaseException
+    public class DeleteException : BaseException
     {
 
         /// <summary>

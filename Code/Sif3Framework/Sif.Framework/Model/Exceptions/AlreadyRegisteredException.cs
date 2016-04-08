@@ -25,7 +25,7 @@ namespace Sif.Framework.Model.Exceptions
     /// Environment Provider.
     /// </summary>
     [Serializable]
-    class AlreadyRegisteredException : BaseException
+    public class AlreadyRegisteredException : BaseException
     {
 
         /// <summary>

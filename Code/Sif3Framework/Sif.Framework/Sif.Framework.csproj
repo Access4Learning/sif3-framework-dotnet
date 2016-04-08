@@ -53,9 +53,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
+    <Reference Include="Sif.Specification.Infrastructure">
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -81,7 +80,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consumers\BasicJobConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
+    <Compile Include="Model\Infrastructure\State.cs" />
     <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />
     <Compile Include="Consumers\Consumer.cs" />
@@ -103,6 +105,8 @@
     <Compile Include="Model\Exceptions\UpdateException.cs" />
     <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
     <Compile Include="Model\Infrastructure\ApplicationRegister.cs" />
+    <Compile Include="Model\Infrastructure\Phase.cs" />
+    <Compile Include="Model\Infrastructure\Job.cs" />
     <Compile Include="Model\Infrastructure\Environment.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentRegister.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentType.cs" />
@@ -112,6 +116,8 @@
     <Compile Include="Model\Infrastructure\Property.cs" />
     <Compile Include="Model\Infrastructure\ProvisionedZone.cs" />
     <Compile Include="Model\Infrastructure\Right.cs" />
+    <Compile Include="Model\Infrastructure\JobStateType.cs" />
+    <Compile Include="Model\Infrastructure\PhaseStateType.cs" />
     <Compile Include="Model\Infrastructure\RightType.cs" />
     <Compile Include="Model\Infrastructure\RightValue.cs" />
     <Compile Include="Model\Infrastructure\Service.cs" />
@@ -146,6 +152,10 @@
     <Compile Include="Model\Settings\ProviderSection.cs" />
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
+    <Compile Include="Service\Functional\BasicFunctionalService.cs" />
+    <Compile Include="Service\Functional\BasicPhaseActions.cs" />
+    <Compile Include="Service\Functional\IPhaseActions.cs" />
+    <Compile Include="Service\Functional\IFunctionalService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
     <Compile Include="Service\IService.cs" />
@@ -261,12 +271,49 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <Version>@(Targets->'%(Version)')</Version>
+      <Major>$(Version.Split('.')[0])</Major>
+      <Minor>$(Version.Split('.')[1])</Minor>
+      <Revision>$(Version.Split('.')[2])</Revision>
+      <Build>$(Version.Split('.')[3])</Build>
+    </PropertyGroup>
+    <ItemGroup>
+      <Version Include="$(Version)" />
+      <Major Include="$(Major)" />
+      <Minor Include="$(Minor)" />
+      <Revision Include="$(Revision)" />
+      <Build Include="$(Build)" />
+      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision)\" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>if not exist "@(SifFrameworkOut)" mkdir "@(SifFrameworkOut)"
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "@(SifFrameworkOut)$(TargetFileName)" /Y /V</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

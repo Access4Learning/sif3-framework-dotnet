@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents an error from an update request.
     /// </summary>
     [Serializable]
-    class UpdateException : BaseException
+    public class UpdateException : BaseException
     {
 
         /// <summary>

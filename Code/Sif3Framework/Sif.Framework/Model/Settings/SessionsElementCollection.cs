@@ -58,7 +58,7 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         /// <param name="name">Index into the collection.</param>
         /// <returns>Session element at the specified index.</returns>
-        public SessionElement this[string name]
+        public new SessionElement this[string name]
         {
 
             get

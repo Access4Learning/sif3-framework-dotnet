@@ -1,0 +1,153 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="LearnerExclusionType">
+    <xs:annotation>
+      <xs:documentation>This object contains information related to a learner being excluded from one or more sessions of school.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Category" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Exclusion category.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="FIXD">
+              <xs:annotation>
+                <xs:documentation>Fixed</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PERM">
+              <xs:annotation>
+                <xs:documentation>Permanent</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LNCH">
+              <xs:annotation>
+                <xs:documentation>Lunchtime</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Reason" minOccurs="0" type="sif:UKExclusionReasonType">
+        <xs:annotation>
+          <xs:documentation>Reason for exclusion.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date exclusion takes effect irrespective of any review or appeal. Normally this will not be the same as Date of Leaving (exitDate) and it should be noted that the learner will remain on the schools's roll for a period after this start date.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartSession" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:unsignedInt">
+            <xs:annotation>
+              <xs:documentation>Session to begin exclusion, starting with 1 for the first session of the day. In most cases there are two sessions per day but this is not always the case.  Validation: Number between 1 and 10.</xs:documentation>
+            </xs:annotation>
+            <xs:minInclusive value="1" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+            <xs:maxInclusive value="10" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="EndDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date exclusion concludes.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualSessions" minOccurs="0" nillable="true" type="xs:unsignedInt">
+        <xs:annotation>
+          <xs:documentation>Total number of sessions for which the exclusion is in effect. For lunchtime exclusions, each lunchtime for which the exclusion applies is one session. For fixed term and permanent exclusions, this is one session during the school day. For exclusions that are followed by reinstatement the actual, not the planned number of sessions should be recorded. (Exclusion sessions are used only to calculate the total allowable in a term or academic year and are not the same as an attendance session.)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Appeal" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Is there an appeal against permanent exclusion?</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AppealDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date for appeal against permanent exclusion.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AppealResult" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>The result of the appeal against permanent exclusion.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="R">
+              <xs:annotation>
+                <xs:documentation>Reinstatement</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="E">
+              <xs:annotation>
+                <xs:documentation>Exclusion stands</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="O">
+              <xs:annotation>
+                <xs:documentation>Reinstatement would be appropriate but not in best interest of learner given other circumstances</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ReinstatementDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date learner was reinstated, if appropriate.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HeadTeacherNotificationDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date head teacher notified parents, school LA, and home LA (if different) of exclusion.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GovernorMeetingDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date of Governors' meeting with respect to exclusion.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HearingNoticeOfAppealDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date of exclusion hearing/expiration of notice of appeal.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey17">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of this exclusion.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LearnerPersonalRefId" use="required" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the excluded learner.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="LearnerExclusion" type="sif:LearnerExclusionType">
+    <xs:unique name="LearnerExclusionKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

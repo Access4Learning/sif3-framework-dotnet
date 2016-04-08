@@ -1,0 +1,160 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="IdentityType">
+    <xs:annotation>
+      <xs:documentation>
+        This object allows a system that stores network identities and/or passwords to share them with other applications through SIF. The provider of the Identity object may only support providing an identity or a password, or it may support both.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIF_RefId" minOccurs="0">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>
+        The SIF RefId of a LearnerPersonal, WorkforcePersonal, or ContactPersonal object.
+      </xs:documentation>
+          </xs:annotation>
+          <xs:simpleContent>
+            <xs:extension base="sif:IdRefTypeOrEmpty">
+              <xs:attribute name="SIF_RefObject" use="required">
+                <xs:annotation>
+                  <xs:documentation>
+        The type of SIF object that the SIF_RefId attribute identifies.
+      </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="LearnerPersonal" />
+                    <xs:enumeration value="WorkforcePersonal" />
+                    <xs:enumeration value="ContactPersonal" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MainRole" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+				Indicates whether or not the Person that this object refers to is the main role for this Identity.
+			</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AuthenticationSource" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+        The type of source system that produced this Identityobject.
+      </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="UKAccessShibboleth" />
+            <xs:enumeration value="MSActiveDirectory" />
+            <xs:enumeration value="NovellNDS" />
+            <xs:enumeration value="OpenDirectory" />
+            <xs:enumeration value="Other" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="IdentityAssertions" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="IdentityAssertion" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>The identification string for this user.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:normalizedString">
+                    <xs:attribute name="SchemaName" use="required" type="xs:normalizedString">
+                      <xs:annotation>
+                        <xs:documentation>The name of the field.</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="IdentityAssertionsKey1">
+          <xs:selector xpath="./sif:IdentityAssertion" />
+          <xs:field xpath="@SchemaName" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="PasswordList" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Password" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>A representation of the user's password using the given algorithm.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="sif:XSBase64BinaryOrEmpty">
+                    <xs:attribute name="Algorithm" use="required">
+                      <xs:annotation>
+                        <xs:documentation>The method used to encrypt the user's password. See the implementation details below.</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:token">
+                          <xs:enumeration value="MD5" />
+                          <xs:enumeration value="SHA1" />
+                          <xs:enumeration value="DES" />
+                          <xs:enumeration value="TripleDES" />
+                          <xs:enumeration value="RC2" />
+                          <xs:enumeration value="AES" />
+                          <xs:enumeration value="RSA" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="KeyName" use="required" type="xs:normalizedString">
+                      <xs:annotation>
+                        <xs:documentation>The name of the key to be used for decryption of the password. Left blank for hash algorithms (MD5 and SHA1).</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AuthenticationSourceGlobalUID" minOccurs="0" nillable="true" type="sif:IdRefType">
+        <xs:annotation>
+          <xs:documentation>The globally unique identifier that links together separate Identity objects which reference the same Person.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey12">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The SIF RefId that uniquely identifies this object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="Identity" type="sif:IdentityType">
+    <xs:unique name="IdentityKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

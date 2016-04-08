@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Controllers;
 using Sif.Framework.Extensions;
 using Sif.Framework.Providers;
 using System;
@@ -52,7 +53,8 @@ namespace Sif.Framework.WebApi
             return type.IsClass &&
                 type.IsVisible &&
                 !type.IsAbstract &&
-                type.IsAssignableToGenericType(typeof(IProvider<,,>)) &&
+                (type.IsAssignableToGenericType(typeof(IProvider<,,>)) ||
+                type.IsAssignableToGenericType(typeof(JobsController<>))) &&
                 typeof(IHttpController).IsAssignableFrom(type) &&
                 type.Name.EndsWith("Provider");
         }

@@ -4,7 +4,7 @@
     <id name="Id" column="RIGHT_ID">
       <generator class="native"/>
     </id>
-    <property name="Type" column="TYPE" length="16"/>
-    <property name="Value" column="VALUE" length="16"/>
+    <property name="Type" column="TYPE" />
+    <property name="Value" column="VALUE" />
   </class>
 </hibernate-mapping>

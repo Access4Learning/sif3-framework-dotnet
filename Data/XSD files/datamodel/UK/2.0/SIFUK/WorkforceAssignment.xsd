@@ -1,0 +1,79 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="WorkforceAssignmentType">
+    <xs:annotation>
+      <xs:documentation> A more detailed, temporal and referenced view of the posts a person holds compared to the WorkforcePersonal CurrentAssignmentList element.  Based around the US SIF 2.4 EmployeeAssignment object.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIF_RefId" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>
+        The SIF RefId of a SchoolInfo or LAInfo object.
+      </xs:documentation>
+          </xs:annotation>
+          <xs:simpleContent>
+            <xs:extension base="sif:IdRefTypeOrEmpty">
+              <xs:attribute name="SIF_RefObject" use="optional">
+                <xs:annotation>
+                  <xs:documentation>
+        The type of SIF object that the SIF_RefId attribute identifies.
+      </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="SchoolInfo" />
+                    <xs:enumeration value="LAInfo" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AssignmentStartDate" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date this assignment commenced.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AssignmentEndDate" minOccurs="0" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date this assignment ends.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Post" minOccurs="0" type="sif:UKAssignmentPostType">
+        <xs:annotation>
+          <xs:documentation>The post held under this particular assignment</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey43">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) of the WorkforceAssignment object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="WorkforcePersonalRefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>RefId of WorkforcePersonal object this applies to.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="WorkforceAssignment" type="sif:WorkforceAssignmentType">
+    <xs:unique name="WorkforceAssignmentKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

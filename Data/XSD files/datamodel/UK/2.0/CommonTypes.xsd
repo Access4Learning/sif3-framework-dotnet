@@ -1,0 +1,540 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:simpleType name="ONSParishCouncilNameType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the ONS Parish Council Name code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ONSWardCodeType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the ONS Ward Code code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ONSWardNameType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the Ward Name code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ONSParliamentaryConstituencyCodeType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the Parliamentary Constituency Code code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ONSParliamentaryConstituencyNameType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the Parliamentary Constituency Name code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TeachernetLAIdType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the Teachernet LAId code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TeachernetEthnicityCodeType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>This type represents the set of values for the Teachernet Ethnicity Code code set.  The set of values is not included in the SIF Specification but may be found externally in order to validate values of this type.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ReportPackageType">
+    <xs:complexContent>
+      <xs:extension base="sif:AbstractContentPackageType">
+        <xs:annotation>
+          <xs:documentation>
+      This package has exactly the same structure as </xs:documentation>
+        </xs:annotation>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AbstractContentPackageType">
+    <xs:annotation>
+      <xs:documentation>
+        An abstract type for derived content package types, elements and objects.  This structure may be used verbatim, optionally extending
+        with additional attributes, or may be redefined to include only a subset of child elements and/or to add validation to XML
+        contained in XMLData.  Only one instance of XMLData, TextData, BinaryData or
+        Reference can occur in a single instance.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="XMLData">
+          <xs:complexType>
+<xs:sequence>
+  <xs:any processContents="lax" xmlns:xs="http://www.w3.org/2001/XMLSchema"  minOccurs="0" maxOccurs="1"/>
+</xs:sequence>
+<xs:attribute name="Description" use="optional" type="xs:token"><xs:annotation><xs:documentation>
+          Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+          Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+        </xs:documentation></xs:annotation></xs:attribute></xs:complexType>
+        </xs:element>
+        <xs:element name="TextData">
+          <xs:annotation>
+            <xs:documentation>Contains arbitrary text, encoded in UTF-8.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="MIMEType" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+          Optional MIME type to specifically indicate the text type.  Otherwise text/plain can be assumed.
+        </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="FileName" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+          Optional file name to indicate the file from which the content originated, or to suggest a name to use when saving the content.
+        </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Description" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+          Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+          Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+        </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BinaryData">
+          <xs:annotation>
+            <xs:documentation>Contains the base64Binary encoding of binary or text data not encoded in UTF-8.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="sif:XSBase64BinaryOrEmpty">
+                <xs:attribute name="MIMEType" use="required" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+          MIME type to indicate the content type.
+        </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="FileName" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+          Optional file name to indicate the file from which the content originated, or to suggest a name to use when saving the content.
+        </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Description" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+          Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+          Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+        </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Reference">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="URL" minOccurs="0" type="xs:anyURI">
+                <xs:annotation>
+                  <xs:documentation>Location of external content.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="MIMEType" use="required" type="xs:token">
+              <xs:annotation>
+                <xs:documentation>
+          MIME type to indicate the content type to be expected when retrieving the external content.
+        </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Description" use="optional" type="xs:token">
+              <xs:annotation>
+                <xs:documentation>
+          Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+          Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+        </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The GUID that uniquely identifies an instance of the package.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="AbstractContentElementType">
+    <xs:annotation>
+      <xs:documentation>AbstractContentPackageType used as an element rather than an object, omitting RefId, SIF_Metadata and SIF_ExtendedElements.
+			  </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="XMLData">
+          <xs:complexType>
+<xs:sequence>
+  <xs:any processContents="lax" xmlns:xs="http://www.w3.org/2001/XMLSchema"  minOccurs="0" maxOccurs="1"/>
+</xs:sequence>
+<xs:attribute name="Description" use="optional" type="xs:token"><xs:annotation><xs:documentation>
+				  Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+				  Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+				</xs:documentation></xs:annotation></xs:attribute></xs:complexType>
+        </xs:element>
+        <xs:element name="TextData">
+          <xs:annotation>
+            <xs:documentation>Contains arbitrary text, encoded in UTF-8.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="MIMEType" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+				  Optional MIME type to specifically indicate the text type.  Otherwise text/plain can be assumed.
+				</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="FileName" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+				  Optional file name to indicate the file from which the content originated, or to suggest a name to use when saving the content.
+				</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Description" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+				  Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+				  Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+				</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BinaryData">
+          <xs:annotation>
+            <xs:documentation>Contains the base64Binary encoding of binary or text data not encoded in UTF-8.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="sif:XSBase64BinaryOrEmpty">
+                <xs:attribute name="MIMEType" use="required" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+				  MIME type to indicate the content type.
+				</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="FileName" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+				  Optional file name to indicate the file from which the content originated, or to suggest a name to use when saving the content.
+				</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Description" use="optional" type="xs:token">
+                  <xs:annotation>
+                    <xs:documentation>
+				  Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+				  Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+				</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Reference">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="URL" minOccurs="0" type="xs:anyURI">
+                <xs:annotation>
+                  <xs:documentation>Location of external content.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="MIMEType" use="required" type="xs:token">
+              <xs:annotation>
+                <xs:documentation>
+				  MIME type to indicate the content type to be expected when retrieving the external content.
+				</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Description" use="optional" type="xs:token">
+              <xs:annotation>
+                <xs:documentation>
+				  Contains an optional description of the content or a processing hint with regard to its structure (e.g. named standard, file layout or XSD).
+				  Contents may be mandated in instances of this type, or types that follow the AbstractContentPackageType pattern.
+				</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MonetaryAmountType">
+    <xs:annotation>
+      <xs:documentation>A monetary amount.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="sif:XSDecimalOrEmpty">
+        <xs:attribute name="Currency" use="optional" type="sif:ISO4217CurrencyNamesAndCodeElementsType">
+          <xs:annotation>
+            <xs:documentation>Currency code.  Where omitted, defaults to implementation-defined local currency, typically </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="ObjectNameType">
+    <xs:restriction>
+      <xs:simpleType>
+        <xs:restriction base="xs:NCName">
+          <xs:annotation>
+            <xs:documentation>An unenumerated SIF object name.</xs:documentation>
+          </xs:annotation>
+          <xs:maxLength value="64" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ServiceNameType">
+    <xs:restriction base="xs:NCName">
+      <xs:annotation>
+        <xs:documentation>An unenumerated SIF object name.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ObjectType">
+    <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded" namespace="##any" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ReportDataObjectType">
+    <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="URIOrBinaryType">
+    <xs:annotation>
+      <xs:documentation>Allows for a URL or a Base-64 encoding.</xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:anyURI" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:base64Binary" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="GUIDType">
+    <xs:restriction>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:annotation>
+            <xs:documentation>SIF format for a GUID.</xs:documentation>
+          </xs:annotation>
+          <xs:pattern value="[0-9A-F]{32}" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MsgIdType">
+    <xs:restriction base="sif:GUIDType">
+      <xs:annotation>
+        <xs:documentation>A message identifier.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RefIdType">
+    <xs:restriction base="sif:GUIDType">
+      <xs:annotation>
+        <xs:documentation>An object or element identifier.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="IdRefType">
+    <xs:restriction base="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>A reference to a RefId.</xs:documentation>
+      </xs:annotation>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="VersionType">
+    <xs:restriction>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:annotation>
+            <xs:documentation>A SIF version number.</xs:documentation>
+          </xs:annotation>
+          <xs:maxLength value="12" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          <xs:pattern value="[0-9]+[.][0-9]+(r[0-9]+)?" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="VersionWithWildcardsType">
+    <xs:restriction>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:annotation>
+            <xs:documentation>A SIF version number, with wildcards for matching multiple versions.</xs:documentation>
+          </xs:annotation>
+          <xs:maxLength value="12" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+          <xs:pattern value="\*|([0-9]+[.]\*)|([0-9]+[.][0-9]+r\*)|([0-9]+[.][0-9]+(r[0-9]+)?)" xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DefinedProtocolsType">
+    <xs:restriction base="xs:token">
+      <xs:annotation>
+        <xs:documentation>The transport protocols defined in SIF.</xs:documentation>
+      </xs:annotation>
+      <xs:enumeration value="HTTPS" />
+      <xs:enumeration value="HTTP" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ExtendedContentType">
+    <xs:complexContent mixed="true" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:restriction base="xs:anyType">
+        <xs:sequence>
+          <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SelectedContentType">
+    <xs:complexContent mixed="true" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:restriction base="xs:anyType">
+        <xs:sequence>
+          <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!--UKSENTypeTypeOrEmpty-->
+
+<xs:simpleType name="UKSENTypeTypeOrEmpty">
+  <xs:union>
+    <xs:simpleType>
+      <xs:restriction base="sif:UKSENTypeType" />
+    </xs:simpleType>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:length value="0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:union>
+</xs:simpleType>
+
+<!--XSDecimalOrEmpty-->
+
+<xs:simpleType name="XSDecimalOrEmpty">
+  <xs:union>
+    <xs:simpleType>
+      <xs:restriction base="xs:decimal" />
+    </xs:simpleType>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:length value="0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:union>
+</xs:simpleType>
+
+<!--IdRefTypeOrEmpty-->
+
+<xs:simpleType name="IdRefTypeOrEmpty">
+  <xs:union>
+    <xs:simpleType>
+      <xs:restriction base="sif:IdRefType" />
+    </xs:simpleType>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:length value="0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:union>
+</xs:simpleType>
+
+<!--XSBase64BinaryOrEmpty-->
+
+<xs:simpleType name="XSBase64BinaryOrEmpty">
+  <xs:union>
+    <xs:simpleType>
+      <xs:restriction base="xs:base64Binary" />
+    </xs:simpleType>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:length value="0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:union>
+</xs:simpleType>
+
+<!--URIOrBinaryTypeOrEmpty-->
+
+<xs:simpleType name="URIOrBinaryTypeOrEmpty">
+  <xs:union>
+    <xs:simpleType>
+      <xs:restriction base="sif:URIOrBinaryType" />
+    </xs:simpleType>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:length value="0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:union>
+</xs:simpleType>
+
+</xs:schema>

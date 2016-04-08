@@ -1,0 +1,265 @@
+<!--
+		SIF Data Model Implementation Specification (UK) 2.0 (November 2014) Infrastructure Version: 3.0.1
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.sifassociation.org/datamodel/uk/2.0" xmlns:sif="http://www.sifassociation.org/datamodel/uk/2.0" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="imports/xml/xml.xsd" />
+  <xs:complexType name="SchoolInfoType">
+    <xs:annotation>
+      <xs:documentation>This object contains basic information about a school or other educational establishment.  Compare with US/Canada object with the same name.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="LocalId" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>An ID assigned by the publishing agent for this school or establishment. This may be set to any value.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="sif:EstablishmentId" minOccurs="0" />
+      <xs:element ref="sif:LAId" minOccurs="0" />
+      <xs:element name="SchoolName" minOccurs="0" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>School's name as indicated on the Annual Schools Census.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolFullName" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>School's full name as stated in the Instrument of Government.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="URN" minOccurs="0" nillable="true" type="sif:SchoolURNType">
+        <xs:annotation>
+          <xs:documentation>School Unique Reference Number.  This number is an alternate to the Establishment Number.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolURL" minOccurs="0" nillable="true" type="sif:SchoolURLType">
+        <xs:annotation>
+          <xs:documentation>URL for the school.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolAddress" minOccurs="0" nillable="true" type="sif:AddressType">
+        <xs:annotation>
+          <xs:documentation>The school's published address.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AddressList" minOccurs="0" nillable="true" type="sif:AddressListType">
+        <xs:annotation>
+          <xs:documentation>Other addresses associated with the school.</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="AddressListKey4">
+          <xs:selector xpath="./sif:Address" />
+          <xs:field xpath="@Type" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="SchoolPhoneNumber" minOccurs="0" nillable="true" type="sif:PhoneNumberType">
+        <xs:annotation>
+          <xs:documentation>The main phone number for this school/establishment.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OtherPhoneNumberList" minOccurs="0" nillable="true" type="sif:PhoneNumberListType">
+        <xs:annotation>
+          <xs:documentation>A list of the school's phone numbers.</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="PhoneNumberListKey4">
+          <xs:selector xpath="./sif:PhoneNumber" />
+          <xs:field xpath="@Type" />
+        </xs:unique>
+      </xs:element>
+      <xs:element name="SchoolEmail" minOccurs="0" nillable="true" type="sif:EmailType">
+        <xs:annotation>
+          <xs:documentation>School's email address for general correspondence.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolContactList" minOccurs="0" nillable="true" type="sif:ContactListType">
+        <xs:annotation>
+          <xs:documentation>A list of contacts at the school.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="HeadTeacherInfo" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ContactName" minOccurs="0" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>The name of the head Teacher.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="ContactTitle" minOccurs="0" nillable="true" type="xs:normalizedString">
+              <xs:annotation>
+                <xs:documentation>The official title of the Head Teacher.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Phase" minOccurs="0" nillable="true" type="sif:UKPhaseTypeType">
+        <xs:annotation>
+          <xs:documentation>The high level code indicating the level of the educational institution.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolType" minOccurs="0" nillable="true" type="sif:UKSchoolTypeType">
+        <xs:annotation>
+          <xs:documentation>An indication of the level of the educational institution.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Governance" minOccurs="0" nillable="true" type="sif:UKGovernanceTypeType">
+        <xs:annotation>
+          <xs:documentation>Governance afforded to this school.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Intake" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Intake type.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="COMP">
+              <xs:annotation>
+                <xs:documentation>Comprehensive</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SEL1">
+              <xs:annotation>
+                <xs:documentation>Selective (Grammar)</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SEL2">
+              <xs:annotation>
+                <xs:documentation>Secondary Modern</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SEL3">
+              <xs:annotation>
+                <xs:documentation>Selective (Technical)</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SEL4">
+              <xs:annotation>
+                <xs:documentation>Religious School</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="NCYearGroupList" minOccurs="0" nillable="true" type="sif:NCYearGroupListType">
+        <xs:annotation>
+          <xs:documentation>Collection of National Curriculum Year Groups offered in this school or establishment.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="GenderOfEntry" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Gender of learners allowed for entry to school.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="C">
+              <xs:annotation>
+                <xs:documentation>Coeducational</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="F">
+              <xs:annotation>
+                <xs:documentation>Female only</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="M">
+              <xs:annotation>
+                <xs:documentation>Male only</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="GenderSixthForm" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Gender of learners allowed for entry to Sixth Form.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="C">
+              <xs:annotation>
+                <xs:documentation>Coeducational</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="F">
+              <xs:annotation>
+                <xs:documentation>Female only</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="M">
+              <xs:annotation>
+                <xs:documentation>Male only</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="blank = HighestNCYear less than 12" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Boarders" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Indicates whether the school supports boarders or not.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SessionsPerDay" minOccurs="0" type="xs:unsignedInt">
+        <xs:annotation>
+          <xs:documentation>The number of sessions in the usual school day (usually two).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Nursery" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Indicates whether the school maintains a nursery class or not. Must be NO if Phase is set to MP, MS or SY. Must be YES if Phase is set to NY or EY.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Special" minOccurs="0" nillable="true">
+        <xs:annotation>
+          <xs:documentation>Indicates whether the school has a special class/unit or not.  Must be Yes if Phase = SP.  Any details will be stored in the associated SchoolInfoDetail object.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="OperationalStatus" minOccurs="0" nillable="true" type="sif:UKOperationalStatusType">
+        <xs:annotation>
+          <xs:documentation>Operational condition of a school.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="sif:SIF_MetadataType" />
+      <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="sif:SIF_ExtendedElementsType">
+        <xs:unique name="SIF_ExtendedElementsKey25">
+          <xs:selector xpath="./sif:SIF_ExtendedElement" />
+          <xs:field xpath="@Name" />
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RefId" use="required" type="sif:RefIdType">
+      <xs:annotation>
+        <xs:documentation>The GUID that identifies this school.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LAInfoRefId" use="optional" type="sif:IdRefType">
+      <xs:annotation>
+        <xs:documentation>The ID (GUID) assigned to the LA of which this school is a member.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="SchoolInfo" type="sif:SchoolInfoType">
+    <xs:unique name="SchoolInfoKey1">
+      <xs:selector xpath="." />
+      <xs:field xpath="@RefId" />
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>
