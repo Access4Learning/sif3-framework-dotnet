@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-using System;
 using Sif.Framework.Consumers;
-using Sif.Framework.Model.Infrastructure;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Demo.Uk.Consumer.Consumers
@@ -24,7 +22,7 @@ namespace Sif.Framework.Demo.Uk.Consumer.Consumers
 
     class PayloadConsumer : BasicJobConsumer
     {
-        protected override string TypeName { get { return "Payload"; } }
+        public override string TypeName { get { return "Payload"; } }
 
         public PayloadConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
             : base(applicationKey, instanceId, userToken, solutionId)

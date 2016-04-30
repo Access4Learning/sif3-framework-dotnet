@@ -25,6 +25,8 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
     public class PayloadService : BasicFunctionalService
     {
+        public override string TypeName { get { return "Payload"; } }
+
         public PayloadService() : base()
         {
             phaseActions.Add("default", new DefaultActions());

@@ -43,7 +43,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Name of the Functional Service that the Consumer is based on
         /// </summary>
-        protected abstract string TypeName { get; }
+        public abstract string TypeName { get; }
 
         /// <summary>
         /// Create a Consumer instance based upon the Environment passed.
@@ -143,7 +143,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + TypeName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + TypeName + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
@@ -156,7 +156,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseMultiple(obj);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
@@ -173,7 +173,7 @@ namespace Sif.Framework.Consumers
 
             try
             {
-                string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + id + HttpUtils.MatrixParameters(zone, context);
+                string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + HttpUtils.MatrixParameters(zone, context);
                 string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
                 if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(xml);
@@ -206,7 +206,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string xml;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
@@ -225,7 +225,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
             // TODO: Update PostRequest to accept paging parameters.
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET");
@@ -254,7 +254,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + id + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + HttpUtils.MatrixParameters(zone, context);
             string xml = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken);
             if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -273,7 +273,7 @@ namespace Sif.Framework.Consumers
             }
 
             deleteRequestType request = new deleteRequestType { deletes = deleteIds.ToArray() };
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiserFactory.GetXmlSerialiser<deleteRequestType>().Serialise(request);
             string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, "DELETE");
             if (log.IsDebugEnabled) log.Debug("XML from PUT (DELETE) request ...");
@@ -293,7 +293,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from CREATE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -309,7 +309,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET", contentTypeOverride, acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from GET request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -325,7 +325,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from PUT request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -341,7 +341,7 @@ namespace Sif.Framework.Consumers
         {
             checkRegistered();
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/services/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from DELETE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);

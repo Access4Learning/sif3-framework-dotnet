@@ -33,6 +33,14 @@ namespace Sif.Framework.Service.Authentication
         bool VerifyAuthenticationHeader(AuthenticationHeaderValue header);
 
         /// <summary>
+        /// Verify the authentication header.
+        /// </summary>
+        /// <param name="header">Authentication header.</param>
+        /// <param name="sessionToken">Session token associated with the authentication header.</param>
+        /// <returns>True if the authentication header is valid; false otherwise.</returns>
+        bool VerifyAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken);
+
+        /// <summary>
         /// Verify the initial authentication header.
         /// </summary>
         /// <param name="header">Intial authentication header.</param>

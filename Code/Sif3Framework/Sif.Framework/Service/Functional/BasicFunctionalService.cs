@@ -31,6 +31,14 @@ namespace Sif.Framework.Service.Functional
 {
     public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService<jobType, Job> 
     {
+        /// <summary>
+        /// Name of the Functional Service that the Provider is based on
+        /// </summary>
+        public abstract string TypeName { get; }
+
+        /// <summary>
+        /// The disctionary of phases this service contains, with the actions each can perform
+        /// </summary>
         protected IDictionary<string, IPhaseActions> phaseActions;
 
         public BasicFunctionalService() : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))

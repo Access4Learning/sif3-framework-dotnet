@@ -45,6 +45,8 @@ namespace Sif.Framework.Demo.Uk.Provider
 
         protected void Application_Start()
         {
+            log4net.Config.XmlConfigurator.Configure();
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping("json", "application/json");

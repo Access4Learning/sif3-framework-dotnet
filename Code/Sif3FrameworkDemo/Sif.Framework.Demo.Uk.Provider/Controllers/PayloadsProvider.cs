@@ -10,14 +10,14 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Uk.Provider.Controllers
 {
-    [RoutePrefix("api/services/payloads")]
+    [RoutePrefix("api/Payloads")]
     public class PayloadsProvider : JobsController<PayloadService>
     {
         public PayloadsProvider() : base(new PayloadService()) {
         }
 
         [HttpPost]
-        [Route("payload")]
+        [Route("Payload")]
         public override HttpResponseMessage Post(jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             return base.Post(item, zone, context);

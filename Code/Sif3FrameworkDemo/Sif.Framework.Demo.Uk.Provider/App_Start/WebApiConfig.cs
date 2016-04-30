@@ -42,20 +42,22 @@ namespace Sif.Framework.Demo.Uk.Provider
                 routeTemplate: "api/{object1}/{id1}/{controller}"
             );
 
+            /*
             config.Routes.MapHttpRoute(
                 name: "FunctionalServicePathApi3",
-                routeTemplate: "api/services/{controller}/{id}/phase/{name}"
+                routeTemplate: "api/{controller}/{id}/phase/{name}"
             );
 
             config.Routes.MapHttpRoute(
                 name: "FunctionalServicePathApi2",
-                routeTemplate: "api/services/{controller}/{id}"
+                routeTemplate: "api/{controller}/{id}"
             );
 
             config.Routes.MapHttpRoute(
                 name: "FunctionalServicePathApi1",
-                routeTemplate: "api/services/{controller}"
+                routeTemplate: "api/{controller}"
             );
+            */
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

@@ -28,5 +28,5 @@ rem ============================================================================
 rem == Start Webapp
 rem ============================================================================
 
-START "%SITE%" /WAIT /B %IISEXPRESS_EXE% /config:"%~dp0%WEBAPP%" /site:%SITE%
+START "%SITE%" /WAIT /B %IISEXPRESS_EXE% /config:"%~dp0%WEBAPP%" /site:%SITE% /trace:error
 :end

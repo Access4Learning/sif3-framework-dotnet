@@ -163,7 +163,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50900</DevelopmentServerPort>
+          <DevelopmentServerPort>50617</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://127.0.0.1:50617/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

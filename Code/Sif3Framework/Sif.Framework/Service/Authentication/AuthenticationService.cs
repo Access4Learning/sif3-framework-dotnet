@@ -82,11 +82,19 @@ namespace Sif.Framework.Service.Authentication
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean)">VerifyAuthenticationHeader</see>
+        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean, System.String)">VerifyAuthenticationHeader</see>
         /// </summary>
         public virtual bool VerifyAuthenticationHeader(AuthenticationHeaderValue header)
         {
             string sessionToken;
+            return VerifyAuthenticationHeader(header, false, out sessionToken);
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean, System.String)">VerifyAuthenticationHeader</see>
+        /// </summary>
+        public virtual bool VerifyAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken)
+        {
             return VerifyAuthenticationHeader(header, false, out sessionToken);
         }
 

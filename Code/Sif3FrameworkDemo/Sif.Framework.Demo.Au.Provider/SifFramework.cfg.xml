@@ -40,7 +40,7 @@
     -->
 
     <!-- Properties that are not specific to a database type -->
-    <property name="show_sql">true</property>
+    <property name="show_sql">false</property>
     <!-- Mapping files -->
     <mapping assembly="Sif.Framework"/>
   </session-factory>
