@@ -300,19 +300,6 @@ namespace Sif.Framework.Demo.Uk.Consumer
                     if (log.IsInfoEnabled) log.Info("EXPECTED exception due to access rights: " + e.Message);
                 }
 
-                // Query phase "default".
-                if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting FAILED.");
-                job = payloadConsumer.Query(id);
-                state = job.Phases["default"].getCurrentState();
-                if (state.Type == PhaseStateType.FAILED)
-                {
-                    if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
-                }
-                else
-                {
-                    if (log.IsInfoEnabled) log.Info("Got UNEXPECTED result " + state.Type + ", last modified at " + state.LastModified);
-                }
-
                 // Execute UPDATE to phase "xml".
                 if (log.IsInfoEnabled) log.Info("*** Executing UPDATE to phase 'xml'.");
                 string xml = "";
