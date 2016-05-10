@@ -67,12 +67,12 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual DateTime? LastModified { get; set; }
 
         /// <summary>
-        /// 
+        /// Collection of phase objects
         /// </summary>
         public virtual IDictionary<string, Phase> Phases { get; set; }
 
         /// <summary>
-        /// 
+        /// Basic constructor that sets logical default values
         /// </summary>
         public Job()
         {
@@ -82,10 +82,8 @@ namespace Sif.Framework.Model.Infrastructure
         }
 
         /// <summary>
-        /// 
+        /// Job constructor with name and description defaults
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
         public Job(string name, string description = null) : this()
         {
             if (String.IsNullOrWhiteSpace(name) || name.Contains(" "))
@@ -100,6 +98,11 @@ namespace Sif.Framework.Model.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Changes the state of the job
+        /// </summary>
+        /// <param name="type">The type to change the current status to</param>
+        /// <param name="description">An optional description of the change</param>
         public virtual void changeState(JobStateType type, string description = null)
         {
             LastModified = DateTime.UtcNow;
@@ -107,11 +110,21 @@ namespace Sif.Framework.Model.Infrastructure
             State = type;
         }
 
+        /// <summary>
+        /// Adds a phase to the collection of phases
+        /// </summary>
+        /// <param name="phase">Phase to add</param>
         public virtual void addPhase(Phase phase)
         {
             Phases.Add(phase.Name, phase);
         }
 
+        /// <summary>
+        /// Sets the identified phase's state with optional description.
+        /// </summary>
+        /// <param name="phaseName">Name of phase to update</param>
+        /// <param name="state">The state to set</param>
+        /// <param name="stateDescription">Optional description</param>
         public virtual void updatePhaseState(string phaseName, PhaseStateType state, string stateDescription = null)
         {
             State s = Phases[phaseName].changeState(state, stateDescription);

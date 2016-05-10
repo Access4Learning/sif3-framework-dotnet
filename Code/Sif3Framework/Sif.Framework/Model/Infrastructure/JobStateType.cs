@@ -16,7 +16,9 @@
 
 namespace Sif.Framework.Model.Infrastructure
 {
-
+    /// <summary>
+    /// Enumeration of permitted job states defined in the SIF 3.2 specification
+    /// </summary>
     public enum JobStateType
     {
         NOTSTARTED,

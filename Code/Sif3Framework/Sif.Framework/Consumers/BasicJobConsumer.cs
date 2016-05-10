@@ -1,4 +1,20 @@
-﻿using log4net;
+﻿/*
+ * Crown Copyright © Department for Education (UK) 2016
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using log4net;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service.Mapper;
@@ -16,6 +32,9 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
+    /// <summary>
+    /// The base class for all Functional Service consumers
+    /// </summary>
     public abstract class BasicJobConsumer
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -139,6 +158,13 @@ namespace Sif.Framework.Consumers
             registrationService.Unregister(deleteOnUnregister);
         }
 
+        /// <summary>
+        /// Create a single Job with the defaults provided, and persist it to the data store
+        /// </summary>
+        /// <param name="obj">Job object with defaults to use when creating the Job</param>
+        /// <param name="zone">The zone in which to create the Job</param>
+        /// <param name="context">The context in which to create the Job</param>
+        /// <returns>The created Job object</returns>
         public virtual Job Create(Job obj, string zone = null, string context = null)
         {
             checkRegistered();
@@ -152,12 +178,19 @@ namespace Sif.Framework.Consumers
             return DeserialiseSingle(xml);
         }
 
-        public virtual MultipleCreateResponse Create(List<Job> obj, string zone = null, string context = null)
+        /// <summary>
+        /// Create a multiple Jobs with the defaults provided, and persist it to the data store
+        /// </summary>
+        /// <param name="objs">Job objects with defaults to use when creating the Jobs</param>
+        /// <param name="zone">The zone in which to create the Jobs</param>
+        /// <param name="context">The context in which to create the Jobs</param>
+        /// <returns>The created Job objects</returns>
+        public virtual MultipleCreateResponse Create(List<Job> objs, string zone = null, string context = null)
         {
             checkRegistered();
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseMultiple(obj);
+            string body = SerialiseMultiple(objs);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -167,6 +200,13 @@ namespace Sif.Framework.Consumers
             return createResponse;
         }
 
+        /// <summary>
+        /// Get a single Job by its RefId
+        /// </summary>
+        /// <param name="id">The RefId of the Job to fetch</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <returns>The Job object</returns>
         public virtual Job Query(Guid id, string zone = null, string context = null)
         {
             checkRegistered();
@@ -202,6 +242,14 @@ namespace Sif.Framework.Consumers
             return null;
         }
 
+        /// <summary>
+        /// Get a all Jobs
+        /// </summary>
+        /// <param name="navigationPage">The page to fetch</param>
+        /// <param name="navigationPageSize">The number of items to fetch per page</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <returns>A page of Job objects</returns>
         public virtual List<Job> Query(uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
             checkRegistered();
@@ -221,6 +269,15 @@ namespace Sif.Framework.Consumers
             return DeserialiseMultiple(xml);
         }
 
+        /// <summary>
+        /// Get a all Jobs that match the example provided.
+        /// </summary>
+        /// <param name="obj">The example object to match against</param>
+        /// <param name="navigationPage">The page to fetch</param>
+        /// <param name="navigationPageSize">The number of items to fetch per page</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <returns>A page of Job objects</returns>
         public virtual List<Job> QueryByExample(Job obj, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
             checkRegistered();
@@ -234,8 +291,14 @@ namespace Sif.Framework.Consumers
 
             return DeserialiseMultiple(xml);
         }
-        
-        
+
+
+        /// <summary>
+        /// Update single job object is not supported for Functional Services. Throws a HttpResponseException with Forbidden status code.
+        /// </summary>
+        /// <param name="obj">Job object to update</param>
+        /// <param name="zone">The zone in which to update the Job</param>
+        /// <param name="context">The context in which to update the Job</param>
         public virtual void Update(Job obj, string zone = null, string context = null)
         {
             checkRegistered();
@@ -243,13 +306,25 @@ namespace Sif.Framework.Consumers
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
-        public virtual MultipleUpdateResponse Update(List<Job> obj, string zone = null, string context = null)
+        /// <summary>
+        /// Update multiple job objects is not supported for Functional Services. Throws a HttpResponseException with Forbidden status code.
+        /// </summary>
+        /// <param name="objs">Job objects to update</param>
+        /// <param name="zone">The zone in which to update the Jobs</param>
+        /// <param name="context">The context in which to update the Jobs</param>
+        public virtual MultipleUpdateResponse Update(List<Job> objs, string zone = null, string context = null)
         {
             checkRegistered();
 
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
+        /// <summary>
+        /// Delete a Job object by its RefId
+        /// </summary>
+        /// <param name="id">The RefId of the Job to delete</param>
+        /// <param name="zone">The zone in which to delete the Job</param>
+        /// <param name="context">The context in which to delete the Job</param>
         public virtual void Delete(Guid id, string zone = null, string context = null)
         {
             checkRegistered();
@@ -259,7 +334,14 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
         }
-        
+
+        /// <summary>
+        /// Delete a series of Job objects by their RefIds
+        /// </summary>
+        /// <param name="ids">The RefIds of the Jobs to delete</param>
+        /// <param name="zone">The zone in which to delete the Jobs</param>
+        /// <param name="context">The context in which to delete the Jobs</param>
+        /// <returns>A response</returns>
         public virtual MultipleDeleteResponse Delete(IEnumerable<string> ids, string zone = null, string context = null)
         {
             checkRegistered();
@@ -284,11 +366,33 @@ namespace Sif.Framework.Consumers
             return updateResponse;
         }
 
+        /// <summary>
+        /// Send a create operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="job">The Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string CreateToPhase(Job job, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return CreateToPhase(job.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
+        /// <summary>
+        /// Send a create operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="id">The RefId of the Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             checkRegistered();
@@ -300,11 +404,33 @@ namespace Sif.Framework.Consumers
             return response;
         }
 
+        /// <summary>
+        /// Send a retrieve operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="job">The Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string RetrieveToPhase(Job job, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RetrieveToPhase(job.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
+        /// <summary>
+        /// Send a retrieve operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="id">The RefId of the Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             checkRegistered();
@@ -315,12 +441,34 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
         }
-        
+
+        /// <summary>
+        /// Send a update operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="job">The Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string UpdateToPhase(Job obj, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return UpdateToPhase(obj.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
+        /// <summary>
+        /// Send a update operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="id">The RefId of the Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string UpdateToPhase(Guid id, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             checkRegistered();
@@ -332,11 +480,33 @@ namespace Sif.Framework.Consumers
             return response;
         }
 
+        /// <summary>
+        /// Send a delete operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="job">The Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string DeleteToPhase(Job obj, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return DeleteToPhase(obj.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
+        /// <summary>
+        /// Send a delete operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="id">The RefId of the Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string DeleteToPhase(Guid id, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             checkRegistered();

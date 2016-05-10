@@ -43,10 +43,10 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             job.addPhase(new Phase("json", true, Right.getRights(update: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
         }
 
-        protected override Boolean JobShutdown()
+        protected override void JobShutdown(Job job)
         {
-            // Can be used to prevent job deletion
-            return true;
+            // Throw an exception to prevent job deletion
+            base.JobShutdown(job);
         }
     }
 }

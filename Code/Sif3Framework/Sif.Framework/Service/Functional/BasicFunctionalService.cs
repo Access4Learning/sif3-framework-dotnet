@@ -22,14 +22,10 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Exceptions;
 using Sif.Specification.Infrastructure;
 using Sif.Framework.Service.Mapper;
-using System.Web;
-using System.Net;
-using System.Web.Http;
-using System.Net.Http;
 
 namespace Sif.Framework.Service.Functional
 {
-    public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService<jobType, Job> 
+    public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService 
     {
         /// <summary>
         /// Name of the Functional Service that the Provider is based on
@@ -41,11 +37,17 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         protected IDictionary<string, IPhaseActions> phaseActions;
 
+        /// <summary>
+        /// Basic constructor
+        /// </summary>
         public BasicFunctionalService() : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
         {
             phaseActions = new Dictionary<string, IPhaseActions>();
         }
 
+        /// <summary>
+        /// Method that must be extended to add phases to a given job when it has been created.
+        /// </summary>
         protected abstract void addPhases(Job job);
         
         public override Guid Create(jobType item, string zone = null, string context = null)
@@ -169,7 +171,7 @@ namespace Sif.Framework.Service.Functional
             repository.Save(job);
             return result;
         }
-
+        
         public virtual string DeleteToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
@@ -195,18 +197,9 @@ namespace Sif.Framework.Service.Functional
         {
         }
 
-        /*
-        private Job getJob(Guid id)
-        {
-            Job job = repository.Retrieve(id);
-            if (job == null)
-            {
-                throw new ArgumentException("Unknown job id");
-            }
-            return job;
-        }
-        */
-
+        /// <summary>
+        /// Internal method to get a named phase from a job, throwing an appropriate exception if not found
+        /// </summary>
         private Phase getPhase(Job job, string phaseName)
         {
             Phase phase = job.Phases[phaseName];
@@ -217,6 +210,9 @@ namespace Sif.Framework.Service.Functional
             return phase;
         }
 
+        /// <summary>
+        /// Internal method to get the PhaseAction object for a named phase, throwing an appropriate exception if none are found.
+        /// </summary>
         private IPhaseActions getActions(string phaseName)
         {
             IPhaseActions actions = phaseActions[phaseName];

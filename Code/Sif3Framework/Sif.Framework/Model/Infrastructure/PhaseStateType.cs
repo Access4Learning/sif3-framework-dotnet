@@ -16,7 +16,9 @@
 
 namespace Sif.Framework.Model.Infrastructure
 {
-
+    /// <summary>
+    /// Enumeration of permitted phase states defined in the SIF 3.2 specification
+    /// </summary>
     public enum PhaseStateType
     {
         NOTAPPLICABLE,

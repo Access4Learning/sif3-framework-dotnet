@@ -32,6 +32,10 @@ using System.Web.Http;
 
 namespace Sif.Framework.Controllers
 {
+    /// <summary>
+    /// The base class for Functional Service Providers
+    /// </summary>
+    /// <typeparam name="FunctionalService"></typeparam>
     public abstract class JobsController<FunctionalService> : SifController<jobType, Job> where FunctionalService : BasicFunctionalService
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -52,8 +56,14 @@ namespace Sif.Framework.Controllers
             }
         }
 
-        BasicFunctionalService Service { get { return service as BasicFunctionalService; } }
+        /// <summary>
+        /// For internal use. An alternative to the service property, but casts the service as a BasicFunctionalService.
+        /// </summary>
+        protected BasicFunctionalService Service { get { return service as BasicFunctionalService; } }
 
+        /// <summary>
+        /// POST services/{TypeName}
+        /// </summary>
         public override HttpResponseMessage Post(jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
@@ -96,7 +106,7 @@ namespace Sif.Framework.Controllers
         }
 
         /// <summary>
-        /// GET api/services/{functionalservice}
+        /// GET services/{TypeName}
         /// </summary>
         /// <returns></returns>
         public override ICollection<jobType> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
@@ -106,9 +116,8 @@ namespace Sif.Framework.Controllers
         }
 
         /// <summary>
-        /// GET api/services/{functionalservice}/{id}
+        /// GET services/{TypeName}/{id}
         /// </summary>
-        /// <returns></returns>
         public override jobType Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
@@ -116,11 +125,9 @@ namespace Sif.Framework.Controllers
         }
 
         /// <summary>
-        /// PUT api/services/{functionalservice}
+        /// PUT services/{TypeName}
         /// This operation is forbidden.
         /// </summary>
-        /// <param name="id">Identifier for the object to update.</param>
-        /// <param name="item">Object to update.</param>
         /// <returns>HTTP status 403.</returns>
         public override void Put(Guid id, jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
@@ -129,15 +136,17 @@ namespace Sif.Framework.Controllers
         }
 
         /// <summary>
-        /// DELETE api/services/{functionalservice}
+        /// DELETE services/{TypeName}
         /// </summary>
-        /// <param name="id">Identifier of the functional service to delete.</param>
         public override void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.DELETE, RightValue.APPROVED));
             base.Delete(id, zone, context);
         }
 
+        /// <summary>
+        /// POST services/{TypeName}/phases/{PhaseName}
+        /// </summary>
         public virtual string Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
@@ -167,6 +176,9 @@ namespace Sif.Framework.Controllers
             }
         }
 
+        /// <summary>
+        /// GET services/{TypeName}/phases/{PhaseName}
+        /// </summary>
         public virtual string Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
@@ -196,6 +208,9 @@ namespace Sif.Framework.Controllers
             }
         }
 
+        /// <summary>
+        /// PUT services/{TypeName}/phases/{PhaseName}
+        /// </summary>
         public virtual string Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
@@ -224,6 +239,9 @@ namespace Sif.Framework.Controllers
             }
         }
 
+        /// <summary>
+        /// DELETE services/{TypeName}/phases/{PhaseName}
+        /// </summary>
         public virtual string Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.DELETE, RightValue.APPROVED));
@@ -253,6 +271,10 @@ namespace Sif.Framework.Controllers
             }
         }
 
+        /// <summary>
+        /// Internal method to check if the request is authorised in the given zone and context by checking the environment XML.
+        /// </summary>
+        /// <returns>The SessionToken if the request is authorised, otherwise an excpetion will be thrown.</returns>
         protected virtual string checkAuthorisation(string[] zone, string[] context)
         {
             string sessionToken = "";
@@ -276,6 +298,10 @@ namespace Sif.Framework.Controllers
             return sessionToken;
         }
 
+        /// <summary>
+        /// Internal method to check if a given right is supported by the ACL.
+        /// </summary>
+        /// <param name="right">The right to check</param>
         protected virtual void checkAuthorisation(string[] zone, string[] context, Right right)
         {
             string sessionToken = checkAuthorisation(zone, context);
@@ -283,6 +309,10 @@ namespace Sif.Framework.Controllers
             checkRights(getRights(getProvisionedZone(environment, zone)), right);
         }
 
+        /// <summary>
+        /// Internal method to decide which is the current zone this request is executing in so that the ACL can be fetched. This tries to identify the zone based on provided name and declared default in the environment XML. If no default is declared in the environment, and only one zone is declared it is assumed to be the default zone.
+        /// </summary>
+        /// <returns>The current zone from the environment XML</returns>
         private provisionedZoneType getProvisionedZone(environmentType environment, string[] zones)
         {
             string zone = null;
@@ -325,6 +355,11 @@ namespace Sif.Framework.Controllers
             throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
         }
 
+        /// <summary>
+        /// Internal method to retrieve the rights from a given zone.
+        /// </summary>
+        /// <param name="zone">The zone to retrieve the rights for</param>
+        /// <returns>An array of declared rights</returns>
         private rightType[] getRights(provisionedZoneType zone)
         {
             foreach (serviceType service in zone.services)
@@ -341,6 +376,11 @@ namespace Sif.Framework.Controllers
             throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
         }
 
+        /// <summary>
+        /// Internal method to check that a Right is supported by an array of rightType.
+        /// </summary>
+        /// <param name="rights">The rights to look in (haystack)</param>
+        /// <param name="right">The right to search for (the needle)</param>
         private void checkRights(rightType[] rights, Right right)
         {
             foreach (rightType r in rights)
@@ -356,6 +396,9 @@ namespace Sif.Framework.Controllers
             throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Forbidden, msg));
         }
 
+        /// <summary>
+        /// Internal method that throws an exception with the Method Not Allowed status code if the request has paging headers.
+        /// </summary>
         protected virtual void preventPagingHeaders()
         {
             if (HttpUtils.HasPagingHeaders(Request.Headers))

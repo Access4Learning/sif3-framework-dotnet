@@ -26,41 +26,50 @@ namespace Sif.Framework.Service.Functional
     public interface IPhaseActions
     {
         /// <summary>
-        /// 
+        /// Method to encapsulate a Create operation for a phase
         /// </summary>
-        /// <param name="job"></param>
-        /// <param name="phase"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
+        /// <param name="job">The Job on which the phase exists</param>
+        /// <param name="phase">The phase being interacted with</param>
+        /// <param name="body">The payload (string) being sent to the phase</param>
+        /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
+        /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
+        /// <returns>A (possibly null) string to be sent back to the consumer</returns>
         /// <exception cref="Sif.Framework.Model.Exceptions.CreateException" />
         string Create(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
 
         /// <summary>
-        /// 
+        /// Method to encapsulate a Retrieve operation for a phase
         /// </summary>
-        /// <param name="job"></param>
-        /// <param name="phase"></param>
-        /// <returns></returns>
+        /// <param name="job">The Job on which the phase exists</param>
+        /// <param name="phase">The phase being interacted with</param>
+        /// <param name="body">The payload (string) being sent to the phase</param>
+        /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
+        /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
+        /// <returns>A (possibly null) string to be sent back to the consumer</returns>
         /// <exception cref="Sif.Framework.Model.Exceptions.NotFoundException" />
         string Retrieve(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
 
         /// <summary>
-        /// 
+        /// Method to encapsulate a Update operation for a phase
         /// </summary>
-        /// <param name="job"></param>
-        /// <param name="phase"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
+        /// <param name="job">The Job on which the phase exists</param>
+        /// <param name="phase">The phase being interacted with</param>
+        /// <param name="body">The payload (string) being sent to the phase</param>
+        /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
+        /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
+        /// <returns>A (possibly null) string to be sent back to the consumer</returns>
         /// <exception cref="Sif.Framework.Model.Exceptions.UpdateException" />
         string Update(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
 
         /// <summary>
-        /// 
+        /// Method to encapsulate a Delete operation for a phase
         /// </summary>
-        /// <param name="job"></param>
-        /// <param name="phase"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
+        /// <param name="job">The Job on which the phase exists</param>
+        /// <param name="phase">The phase being interacted with</param>
+        /// <param name="body">The payload (string) being sent to the phase</param>
+        /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
+        /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
+        /// <returns>A (possibly null) string to be sent back to the consumer</returns>
         /// <exception cref="Sif.Framework.Model.Exceptions.DeleteException" />
         string Delete(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
     }
