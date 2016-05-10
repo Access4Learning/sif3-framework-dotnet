@@ -375,6 +375,7 @@
       <xs:enumeration value="environment"/>
       <xs:enumeration value="provisionRequests"/>
       <xs:enumeration value="requestsConnector"/>
+	  <xs:enumeration value="servicesConnector"/>
       <xs:enumeration value="eventsConnector"/>
       <xs:enumeration value="queues"/>
       <xs:enumeration value="subscriptions"/>

@@ -77,38 +77,55 @@ namespace Sif.Framework.Service.Functional
 
         public override void Delete(Guid id, string zone = null, string context = null)
         {
-            if (JobShutdown())
+            try
             {
-                base.Delete(id, zone, context);
+                JobShutdown(MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context)));
             }
+            catch (Exception e)
+            {
+                throw new DeleteException("Unable to delete job with ID " + id, e);
+            }
+            base.Delete(id, zone, context);
         }
 
         public override void Delete(jobType item, string zone = null, string context = null)
         {
-            if (JobShutdown())
+            try
             {
-                base.Delete(item, zone, context);
+                JobShutdown(MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context)));
+            } catch(Exception e)
+            {
+                throw new DeleteException("Unable to delete job with ID " + item.id, e);
             }
+            base.Delete(item, zone, context);
         }
 
         public override void Delete(IEnumerable<jobType> items, string zone = null, string context = null)
         {
-            if (JobShutdown())
+            foreach (jobType item in items)
             {
-                base.Delete(items, zone, context);
+                try
+                {
+                    JobShutdown(MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context)));
+                }
+                catch (Exception e)
+                {
+                    throw new DeleteException("Unable to delete job with ID " + item.id, e);
+                }
             }
+            base.Delete(items, zone, context);
         }
 
         public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = getJob(id);
+            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
             Right right = phase.Rights[RightType.CREATE.ToString()];
             if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
             {
                 string msg = "Insufficient rights for this operation";
-                job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                repository.Save(job);
+                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
+                //repository.Save(job);
                 throw new RejectedException(msg);
             }
             IPhaseActions action = getActions(phaseName);
@@ -119,14 +136,14 @@ namespace Sif.Framework.Service.Functional
 
         public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = getJob(id);
+            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
             Right right = phase.Rights[RightType.QUERY.ToString()];
             if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
             {
                 string msg = "Insufficient rights for this operation";
-                job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                repository.Save(job);
+                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
+                //repository.Save(job);
                 throw new RejectedException(msg);
             }
             IPhaseActions action = getActions(phaseName);
@@ -137,14 +154,14 @@ namespace Sif.Framework.Service.Functional
 
         public virtual string UpdateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = getJob(id);
+            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
             Right right = phase.Rights[RightType.UPDATE.ToString()];
             if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
             {
                 string msg = "Insufficient rights for this operation";
-                job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                repository.Save(job);
+                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
+                //repository.Save(job);
                 throw new RejectedException(msg);
             }
             IPhaseActions action = getActions(phaseName);
@@ -155,14 +172,14 @@ namespace Sif.Framework.Service.Functional
 
         public virtual string DeleteToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = getJob(id);
+            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
             Right right = phase.Rights[RightType.DELETE.ToString()];
             if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
             {
                 string msg = "Insufficient rights for this operation";
-                job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                repository.Save(job);
+                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
+                //repository.Save(job);
                 throw new RejectedException(msg);
             }
             IPhaseActions action = getActions(phaseName);
@@ -172,14 +189,13 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <summary>
-        /// Override this method to perform actions when a job of this type is deleted.
+        /// Override this method to perform actions when a job of this type is deleted. Should throw a exception if it cannot be deleted.
         /// </summary>
-        /// <returns>True if the job should be deleted, False otherwise.</returns>
-        protected virtual Boolean JobShutdown()
+        protected virtual void JobShutdown(Job job)
         {
-            return true;
         }
 
+        /*
         private Job getJob(Guid id)
         {
             Job job = repository.Retrieve(id);
@@ -189,6 +205,7 @@ namespace Sif.Framework.Service.Functional
             }
             return job;
         }
+        */
 
         private Phase getPhase(Job job, string phaseName)
         {

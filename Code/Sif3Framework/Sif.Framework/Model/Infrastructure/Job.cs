@@ -103,7 +103,7 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual void changeState(JobStateType type, string description = null)
         {
             LastModified = DateTime.UtcNow;
-            Description = description;
+            StateDescription = description;
             State = type;
         }
 

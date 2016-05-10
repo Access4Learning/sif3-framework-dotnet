@@ -373,7 +373,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
             {
                 if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
                 {
-                    //app.RunLearnerPersonalConsumer();
+                    app.RunLearnerPersonalConsumer();
                     app.RunPayloadConsumer();
                 }
 
