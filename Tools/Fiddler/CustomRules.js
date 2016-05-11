@@ -171,10 +171,16 @@ class Handlers
 			51424 - Sif.Framework.Demo.Uk.Provider
 		*/
 		if (m_focusSIF) {
+			/*
 			if (oSession.port!="62921" &&
 				oSession.port!="50617" &&
 				oSession.port!="53180" &&
-				oSession.port!="51424"){
+				oSession.port!="51424" &&
+				oSession.port!="8080"){
+				oSession["ui-hide"] = "true";
+			}
+			*/
+			if (!oSession.oRequest.headers.Exists("requestid")){
 				oSession["ui-hide"] = "true";
 			}
 			// Color POST, GET, PUT, DELETE (CRUD) requests
