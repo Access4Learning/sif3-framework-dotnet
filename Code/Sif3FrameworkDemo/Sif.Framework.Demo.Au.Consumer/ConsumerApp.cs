@@ -189,9 +189,22 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Create a new student.
                 if (log.IsInfoEnabled) log.Info("*** Create a new student.");
+                string[] text = new string[]
+                {
+                    @"
+                        <MedicalCondition>
+                            <ConditionID>Unique Medical Condition ID</ConditionID>
+                            <Condition>Condition</Condition>
+                            <Severity>Condition Severity</Severity>
+                            <Details>Condition Details</Details>
+                        </MedicalCondition>
+                    "
+                };
+                SIF_ExtendedElementsTypeSIF_ExtendedElement extendedElement = new SIF_ExtendedElementsTypeSIF_ExtendedElement { Name = "MedicalConditions", Text = text };
+                SIF_ExtendedElementsTypeSIF_ExtendedElement[] extendedElements = new SIF_ExtendedElementsTypeSIF_ExtendedElement[] { extendedElement };
                 NameOfRecordType newStudentName = new NameOfRecordType { FamilyName = "Wayne", GivenName = "Bruce", Type = NameOfRecordTypeType.LGL };
                 PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
-                StudentPersonal newStudent = new StudentPersonal { LocalId = "555", PersonInfo = newStudentInfo };
+                StudentPersonal newStudent = new StudentPersonal { LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
                 StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent);
                 if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.PersonInfo.Name.GivenName + " " + newStudent.PersonInfo.Name.FamilyName);
 
@@ -290,6 +303,22 @@ namespace Sif.Framework.Demo.Au.Consumer
                 foreach (StudentPersonal student in teachingGroupStudents)
                 {
                     if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+
+                    if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
+                    {
+
+                        foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
+                        {
+
+                            foreach (string content in element.Text)
+                            {
+                                if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
+                            }
+
+                        }
+
+                    }
+
                 }
 
             }
