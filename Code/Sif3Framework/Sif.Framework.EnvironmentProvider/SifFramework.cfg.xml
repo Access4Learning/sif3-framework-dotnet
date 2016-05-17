@@ -7,7 +7,7 @@
     <property name="connection.driver_class">NHibernate.Driver.SQLite20Driver</property>
     <property name="dialect">NHibernate.Dialect.SQLiteDialect</property>
     <property name="query.substitutions">true=1;false=0</property>
-
+    
     <!-- SQL Server LocalDB specific properties -->
     <!-- 
     <property name="connection.connection_string">Server=(localdb)\v11.0;Integrated Security=true;AttachDbFileName=C:\Users\capta_000\Documents\GitHub\Sif3Framework-dotNet\Data\Databases\LocalDB\SifFrameworkDatabase.mdf;</property>
@@ -17,7 +17,8 @@
     -->
 
     <!-- SQL Server specific properties -->
-    <!-- 
+    <!-- Local testing server for ZiNET developers: FREEBIE\SQLEXPRESS -->
+    <!--
     <property name="connection.connection_string">Server=(local);initial catalog=nhibernate;Integrated Security=SSPI</property>
     <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
     <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
