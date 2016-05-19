@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents the situation where a requested action or operation is rejected.
     /// </summary>
     [Serializable]
-    class RejectedException : BaseException
+    public class RejectedException : BaseException
     {
 
         /// <summary>

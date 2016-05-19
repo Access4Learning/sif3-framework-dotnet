@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents the situation where an item already exists.
     /// </summary>
     [Serializable]
-    class AlreadyExistsException : BaseException
+    public class AlreadyExistsException : BaseException
     {
 
         /// <summary>

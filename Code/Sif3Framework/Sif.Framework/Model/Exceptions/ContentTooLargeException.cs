@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents the situation where the message content is too large.
     /// </summary>
     [Serializable]
-    class ContentTooLargeException : BaseException
+    public class ContentTooLargeException : BaseException
     {
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents an error from a query request.
     /// </summary>
     [Serializable]
-    class QueryException : BaseException
+    public class QueryException : BaseException
     {
 
         /// <summary>

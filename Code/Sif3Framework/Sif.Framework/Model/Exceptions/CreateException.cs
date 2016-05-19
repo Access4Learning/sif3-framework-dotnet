@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents an error from a create request.
     /// </summary>
     [Serializable]
-    class CreateException : BaseException
+    public class CreateException : BaseException
     {
 
         /// <summary>

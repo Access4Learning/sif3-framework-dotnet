@@ -17,6 +17,7 @@
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
+using Sif.Framework.Service.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -45,7 +46,7 @@ namespace Sif.Framework.Controllers
         public SifController(ISifService<UI, DB> service)
         {
             this.service = service;
-            authService = new DirectAuthenticationService();
+            authService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
         }
 
         /// <summary>
