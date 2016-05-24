@@ -263,5 +263,14 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 **Feb 04, 2016 - 1.1.2 Resolve issue with Visual Studio 2013**
 
-- Applied code change due to compiler error that occurs in VS`2013 but not VS 2015.
+- Applied code change due to compiler error that occurs in VS 2013 but not VS 2015.
 
+**May 24, 2016 - 2.0.0 Resolve issue with default zone implementation**
+
+- Fix an issue regarding the definition of a default zone.
+- Generate SIF AU 3.4 data model and incorporate into demo AU projects.
+- Remove Visual Studio 2015 temporary files/directories from GitHub.
+- Enchance AU demo projects to incorporate extended elements to StudentPersonal.
+- Expose exception classes by making them public.
+- Remove redundant local database files.
+- Minor code updates.
