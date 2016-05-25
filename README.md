@@ -21,6 +21,14 @@ The framework includes a demo Solution that illustrates how to use it.
     NOTE: This current release is a Beta version that should only be used for inspection and prototyping. It is still
     a work in progress and not intended for commercial use as yet.
 
+### Contributing to this framework
+
+See the wiki associated with this repository for information on: 
+
+* contributing to this framework 
+* the Java coding style to be used and
+* the structure of the SIF 3 Framework repositories
+
 ###Download Instructions
 
 #####Option 1 - As a Zip.
