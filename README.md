@@ -23,7 +23,7 @@ The framework includes a demo Solution that illustrates how to use it.
 
 ### Contributing to this framework
 
-See the wiki associated with this repository for information on: 
+See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
 
 * contributing to this framework 
 * the Java coding style to be used and
