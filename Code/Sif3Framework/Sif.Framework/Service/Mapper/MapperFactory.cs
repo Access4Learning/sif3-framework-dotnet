@@ -198,9 +198,11 @@ namespace Sif.Framework.Service.Mapper
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             AutoMapper.Mapper.CreateMap<Zone, zoneType>()
+                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.SifId))
                 .ForMember(dest => dest.properties, opt => opt.MapFrom(src => src.Properties.Values));
             AutoMapper.Mapper.CreateMap<zoneType, Zone>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.SifId, opt => opt.MapFrom(src => src.id));
 
             AutoMapper.Mapper.CreateMap<State, stateType>()
                 .ForMember(dest => dest.createdSpecified, opt => opt.MapFrom(src => src.Created != null))

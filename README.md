@@ -21,6 +21,14 @@ The framework includes a demo Solution that illustrates how to use it.
     NOTE: This current release is a Beta version that should only be used for inspection and prototyping. It is still
     a work in progress and not intended for commercial use as yet.
 
+### Contributing to this framework
+
+See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
+
+* contributing to this framework 
+* the Java coding style to be used and
+* the structure of the SIF 3 Framework repositories
+
 ###Download Instructions
 
 #####Option 1 - As a Zip.
@@ -263,5 +271,14 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 **Feb 04, 2016 - 1.1.2 Resolve issue with Visual Studio 2013**
 
-- Applied code change due to compiler error that occurs in VS`2013 but not VS 2015.
+- Applied code change due to compiler error that occurs in VS 2013 but not VS 2015.
 
+**May 24, 2016 - 2.0.0 Resolve issue with default zone implementation**
+
+- Fix an issue regarding the definition of a default zone.
+- Generate SIF AU 3.4 data model and incorporate into demo AU projects.
+- Remove Visual Studio 2015 temporary files/directories from GitHub.
+- Enchance AU demo projects to incorporate extended elements to StudentPersonal.
+- Expose exception classes by making them public.
+- Remove redundant local database files.
+- Minor code updates.

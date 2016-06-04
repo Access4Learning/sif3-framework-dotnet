@@ -85,11 +85,11 @@
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Model\DataModels\ProviderClassInfo.cs" />
     <Compile Include="Model\Infrastructure\State.cs" />
+    <Compile Include="Controllers\EnvironmentsController.cs" />
     <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />
     <Compile Include="Consumers\Consumer.cs" />
     <Compile Include="Consumers\IConsumer.cs" />
-    <Compile Include="Controllers\EnvironmentsController.cs" />
     <Compile Include="Controllers\SifController.cs" />
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Model\DataModels\IDataModel.cs" />
@@ -140,6 +140,12 @@
     <Compile Include="Model\Settings\ConfigFileBasedFrameworkSettings.cs" />
     <Compile Include="Model\Settings\ISessionsSection.cs" />
     <Compile Include="Model\Settings\ProviderSettings.cs" />
+    <Compile Include="Persistence\NHibernate\ApplicationRegisterRepository.cs" />
+    <Compile Include="Persistence\NHibernate\EnvironmentProviderSessionFactory.cs" />
+    <Compile Include="Persistence\NHibernate\EnvironmentRegisterRepository.cs" />
+    <Compile Include="Persistence\NHibernate\EnvironmentRepository.cs" />
+    <Compile Include="Persistence\NHibernate\GenericRepository.cs" />
+    <Compile Include="Persistence\NHibernate\IBaseSessionFactory.cs" />
     <Compile Include="Providers\IBasicProvider.cs" />
     <Compile Include="Providers\IProvider.cs" />
     <Compile Include="Providers\BasicProvider.cs" />
@@ -162,6 +168,9 @@
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\ModelLink.cs" />
     <Compile Include="Service\Providers\BasicProviderService.cs" />
+    <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
+    <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
+    <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
     <Compile Include="Service\IDataModelService.cs" />
@@ -185,14 +194,7 @@
     <Compile Include="Persistence\IEnvironmentRepository.cs" />
     <Compile Include="Persistence\IGenericRepository.cs" />
     <Compile Include="Model\Persistence\IPersistable.cs" />
-    <Compile Include="Persistence\NHibernate\ApplicationRegisterRepository.cs" />
-    <Compile Include="Persistence\NHibernate\EnvironmentProviderSessionFactory.cs" />
-    <Compile Include="Persistence\NHibernate\EnvironmentRegisterRepository.cs" />
-    <Compile Include="Persistence\NHibernate\EnvironmentRepository.cs" />
-    <Compile Include="Persistence\NHibernate\GenericRepository.cs" />
-    <Compile Include="Persistence\NHibernate\IBaseSessionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
     <Compile Include="Service\Infrastructure\IApplicationRegisterService.cs" />
     <Compile Include="Service\GenericService.cs" />
     <Compile Include="Service\IGenericService.cs" />
@@ -200,8 +202,6 @@
     <Compile Include="Service\Serialisation\XmlSerialiser.cs" />
     <Compile Include="Service\SifService.cs" />
     <Compile Include="Service\ISifService.cs" />
-    <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
-    <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
     <Compile Include="Service\Infrastructure\IEnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\IEnvironmentService.cs" />
     <Compile Include="Service\Mapper\MapperFactory.cs" />
@@ -222,11 +222,6 @@
     <Compile Include="WebApi\ServiceProviderHttpControllerTypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="SifFramework.config">
       <SubType>Designer</SubType>
@@ -237,59 +232,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
+	<EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

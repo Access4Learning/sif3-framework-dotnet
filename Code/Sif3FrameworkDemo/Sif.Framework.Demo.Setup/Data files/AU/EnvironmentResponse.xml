@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0"?>
 <environment xmlns="http://www.sifassociation.org/infrastructure/3.2" type="DIRECT">
+  <defaultZone id="Sif3DemoZone1">
+    <description>SIF3 demo default zone</description>
+  </defaultZone>
   <infrastructureServices>
     <infrastructureService name="environment">http://sif.framework.environmentprovider:62921/api/environments</infrastructureService>
     <infrastructureService name="requestsConnector">http://sif.framework.environmentprovider:50617/api</infrastructureService>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,15 @@ namespace Sif.Framework.Service.Authentication
     /// </summary>
     class BrokeredAuthenticationService : AuthenticationService
     {
+        private IApplicationRegisterService applicationRegisterService;
+        private IEnvironmentService environmentService;
         private IFrameworkSettings settings;
         private ISessionService sessionService;
 
-        public BrokeredAuthenticationService()
+        public BrokeredAuthenticationService(IApplicationRegisterService applicationRegisterService, IEnvironmentService environmentService)
         {
+            this.applicationRegisterService = applicationRegisterService;
+            this.environmentService = environmentService;
             settings = SettingsManager.ProviderSettings;
             sessionService = SessionsManager.ProviderSessionService;
         }
@@ -45,7 +49,7 @@ namespace Sif.Framework.Service.Authentication
         /// </summary>
         protected override string InitialSharedSecret(string applicationKey)
         {
-            ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(applicationKey);
+            ApplicationRegister applicationRegister = applicationRegisterService.RetrieveByApplicationKey(applicationKey);
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
@@ -54,14 +58,14 @@ namespace Sif.Framework.Service.Authentication
         /// </summary>
         protected override string SharedSecret(string sessionToken)
         {
-            environmentType environment = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
+            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
 
             if (environment == null)
             {
                 throw new InvalidSessionException();
             }
 
-            ApplicationRegister applicationRegister = (new ApplicationRegisterService()).RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
+            ApplicationRegister applicationRegister = applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 

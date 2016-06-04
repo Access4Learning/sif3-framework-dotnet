@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,21 @@
  */
 
 using Sif.Framework.Model.Persistence;
-using System;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Model.Infrastructure
 {
 
-    public class Zone : IPersistable<Guid>
+    public class Zone : IPersistable<long>
     {
 
-        public virtual Guid Id { get; set; }
+        public virtual long Id { get; set; }
 
         public virtual string Description { get; set; }
 
         public virtual IDictionary<string, Property> Properties { get; set; }
+
+        public virtual string SifId { get; set; }
 
     }
 

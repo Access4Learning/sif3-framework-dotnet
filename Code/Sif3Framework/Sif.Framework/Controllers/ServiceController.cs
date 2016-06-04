@@ -55,11 +55,11 @@ namespace Sif.Framework.Controllers
         {
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                authService = new DirectAuthenticationService();
+                authService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
             else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                authService = new BrokeredAuthenticationService();
+                authService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
         }
 

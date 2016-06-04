@@ -8,6 +8,7 @@
     <property name="InstanceId" column="INSTANCE_ID" length="256"/>
     <property name="SolutionId" column="SOLUTION_ID" length="256"/>
     <property name="UserToken" column="USER_TOKEN" length="256"/>
+    <many-to-one name="DefaultZone" column="ZONE_ID" class="Sif.Framework.Model.Infrastructure.Zone" cascade="all" fetch="join"/>
     <map name="InfrastructureServices" table="ENVIRONMENT_REGISTER_INFRASTRUCTURE_SERVICES" cascade="all" lazy="false">
       <key column="ENVIRONMENT_REGISTER_ID"/>
       <index column="NAME" type="InfrastructureServiceNames"/>
