@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+using log4net;
+using Sif.Framework.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
 namespace Sif.Framework.Model.Settings
 {
 
@@ -22,29 +29,60 @@ namespace Sif.Framework.Model.Settings
     /// </summary>
     class ProviderSettings : ConfigFileBasedFrameworkSettings
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// <see cref="Sif.Framework.Model.Settings.ConfigFileBasedFrameworkSettings.SettingsPrefix"/>
         /// </summary>
-        protected override string SettingsPrefix
-        {
-
-            get
-            {
-                return "provider";
-            }
-
-        }
+        protected override string SettingsPrefix { get { return "provider"; } }
 
         /// <summary>
         /// <see cref="Sif.Framework.Model.Settings.ConfigFileBasedFrameworkSettings.ConfigFileBasedFrameworkSettings()"/>
         /// </summary>
-        public ProviderSettings()
-            : base()
+        public ProviderSettings() : base()
         {
-
         }
 
-    }
+        public Type[] Classes
+        {
+            get
+            {
+                string setting = GetStringSetting(SettingsPrefix + ".provider.classes", "any");
+                if(StringUtils.IsEmpty(setting))
+                {
+                    return new Type[0];
+                }
 
+                if (setting.ToLower().Equals("any")) {
+                    (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                     from type in assembly.GetTypes()
+                     where ProviderUtils.isController(type)
+                     select type).ToArray();
+                }
+
+                List<Type> providers = new List<Type>();
+                string[] classNames = setting.Split(',');
+                foreach(string className in classNames)
+                {
+                    Type provider = Type.GetType(className);
+                    if(provider == null)
+                    {
+                        log.Error("Could not find provider with assembly qualified name " + className);
+                    } else
+                    {
+                        providers.Add(provider);
+                    }
+                }
+                return providers.ToArray();
+            }
+        }
+
+        public int StartupDelay
+        {
+            get
+            {
+                return GetIntegerSetting(SettingsPrefix + ".startup.delay", 10);
+            }
+        }
+    }
 }

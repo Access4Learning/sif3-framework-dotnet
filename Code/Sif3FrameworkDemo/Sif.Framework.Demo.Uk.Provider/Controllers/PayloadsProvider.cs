@@ -10,6 +10,7 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Uk.Provider.Controllers
 {
+    /*
     [RoutePrefix("api/Payloads")]
     public class PayloadsProvider : JobsController<PayloadService>
     {
@@ -79,4 +80,5 @@ namespace Sif.Framework.Demo.Uk.Provider.Controllers
             return base.Delete(id, phaseName, zone, context);
         }
     }
+    */
 }

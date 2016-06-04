@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service
 {
 
-    public interface ISifService<UI, DB> where DB : IPersistable<Guid>
+    public interface ISifService<UI, DB> : IService where DB : IPersistable<Guid>
     {
 
         Guid Create(UI item, string zone = null, string context = null);

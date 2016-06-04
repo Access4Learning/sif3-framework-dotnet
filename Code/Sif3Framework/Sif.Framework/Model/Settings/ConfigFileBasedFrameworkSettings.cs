@@ -34,7 +34,7 @@ namespace Sif.Framework.Model.Settings
         /// <param name="key">Key (identifier) of the setting.</param>
         /// <param name="defaultValue">Value returned if key not found.</param>
         /// <returns>Setting (boolean) value associated with the key if found; default value otherwise.</returns>
-        private bool GetBooleanSetting(string key, bool defaultValue)
+        protected bool GetBooleanSetting(string key, bool defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
             bool value = defaultValue;
@@ -63,7 +63,7 @@ namespace Sif.Framework.Model.Settings
         /// <param name="key">Key (identifier) of the setting.</param>
         /// <param name="defaultValue">Value returned if key not found.</param>
         /// <returns>Setting (int) value associated with the key if found; default value otherwise.</returns>
-        private int GetIntegerSetting(string key, int defaultValue)
+        protected int GetIntegerSetting(string key, int defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
             int value = defaultValue;
@@ -90,18 +90,23 @@ namespace Sif.Framework.Model.Settings
         /// Retrieve the setting (string) value associated with the key.
         /// </summary>
         /// <param name="key">Key (identifier) of the setting.</param>
-        /// <returns>Setting (string) value associated with the key.</returns>
-        private string GetStringSetting(string key)
+        /// <param name="defaultValue">Value returned if key not found.</param>
+        /// <returns>Setting (string) value associated with the key if found; default value otherwise.</returns>
+        protected string GetStringSetting(string key, string defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
-            string value = null;
+            return setting != null ? setting.Value : defaultValue;
+        }
 
-            if (setting != null)
-            {
-                value = setting.Value;
-            }
-
-            return value;
+        /// <summary>
+        /// Retrieve the setting (string) value associated with the key.
+        /// </summary>
+        /// <param name="key">Key (identifier) of the setting.</param>
+        /// <returns>Setting (string) value associated with the key.</returns>
+        protected string GetStringSetting(string key)
+        {
+            KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
+            return setting != null ? setting.Value : null;
         }
 
         /// <summary>

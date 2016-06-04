@@ -33,6 +33,14 @@ namespace Sif.Framework.Utils
             return (content == null ? null : content.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " "));
         }
 
-    }
+        public static bool IsEmpty(string content)
+        {
+            return content == null || content.Equals("");
+        }
 
+        public static bool NotEmpty(string content)
+        {
+            return content != null && !content.Equals("");
+        }
+    }
 }

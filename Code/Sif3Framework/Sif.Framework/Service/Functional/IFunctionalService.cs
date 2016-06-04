@@ -16,6 +16,7 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Service.Providers;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;

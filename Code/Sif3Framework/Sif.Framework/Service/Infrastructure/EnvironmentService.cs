@@ -23,12 +23,22 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Model;
 
 namespace Sif.Framework.Service.Infrastructure
 {
 
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
+        public override ModelObjectInfo GetSingleObjectClassInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ModelObjectInfo GetMultiObjectClassInfo()
+        {
+            throw new NotImplementedException();
+        }
 
         private IDictionary<InfrastructureServiceNames, InfrastructureService> CopyInfrastructureServices(IDictionary<InfrastructureServiceNames, InfrastructureService> sourceInfrastructureServices)
         {
