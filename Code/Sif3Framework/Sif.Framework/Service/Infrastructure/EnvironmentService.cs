@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,17 +30,38 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
 
+        private Zone CopyDefaultZone(Zone sourceZone)
+        {
+            Zone destinationZone = null;
+
+            if (sourceZone != null)
+            {
+                destinationZone = new Zone { Description = sourceZone.Description, SifId = sourceZone.SifId };
+
+                if (sourceZone.Properties != null)
+                {
+                    destinationZone.Properties = CopyProperties(sourceZone.Properties);
+                }
+
+            }
+
+            return destinationZone;
+        }
+
         private IDictionary<InfrastructureServiceNames, InfrastructureService> CopyInfrastructureServices(IDictionary<InfrastructureServiceNames, InfrastructureService> sourceInfrastructureServices)
         {
-            IDictionary<InfrastructureServiceNames, InfrastructureService> destinationInfrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
+            IDictionary<InfrastructureServiceNames, InfrastructureService> destinationInfrastructureServices = null;
 
-            if (sourceInfrastructureServices != null && sourceInfrastructureServices.Count > 0)
+            if (sourceInfrastructureServices != null)
             {
+                destinationInfrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
 
-                foreach (InfrastructureService sourceInfrastructureService in sourceInfrastructureServices.Values)
+                foreach (InfrastructureServiceNames key in sourceInfrastructureServices.Keys)
                 {
+                    InfrastructureService sourceInfrastructureService;
+                    sourceInfrastructureServices.TryGetValue(key, out sourceInfrastructureService);
                     InfrastructureService destinationInfrastructureService = new InfrastructureService { Name = sourceInfrastructureService.Name, Value = sourceInfrastructureService.Value };
-                    destinationInfrastructureServices.Add(destinationInfrastructureService.Name, destinationInfrastructureService);
+                    destinationInfrastructureServices.Add(key, destinationInfrastructureService);
                 }
 
             }
@@ -48,17 +69,68 @@ namespace Sif.Framework.Service.Infrastructure
             return destinationInfrastructureServices;
         }
 
+        private IDictionary<string, Property> CopyProperties(IDictionary<string, Property> sourceProperties)
+        {
+            IDictionary<string, Property> destinationProperties = null;
+
+            if (sourceProperties != null)
+            {
+                destinationProperties = new Dictionary<string, Property>();
+
+                foreach (string key in sourceProperties.Keys)
+                {
+                    Property sourceProperty;
+                    sourceProperties.TryGetValue(key, out sourceProperty);
+                    Property destinationProperty = new Property { Name = sourceProperty.Name, Value = sourceProperty.Value };
+                    destinationProperties.Add(key, destinationProperty);
+                }
+
+            }
+
+            return destinationProperties;
+        }
+
+        private IDictionary<string, ProvisionedZone> CopyProvisionedZones(IDictionary<string, ProvisionedZone> sourceProvisionedZones)
+        {
+            IDictionary<string, ProvisionedZone> destinationProvisionedZones = null;
+
+            if (sourceProvisionedZones != null)
+            {
+                destinationProvisionedZones = new Dictionary<string, ProvisionedZone>();
+
+                foreach (string key in sourceProvisionedZones.Keys)
+                {
+                    ProvisionedZone sourceProvisionedZone;
+                    sourceProvisionedZones.TryGetValue(key, out sourceProvisionedZone);
+                    ProvisionedZone destinationProvisionedZone = new ProvisionedZone { SifId = sourceProvisionedZone.SifId };
+
+                    if (sourceProvisionedZone.Services != null)
+                    {
+                        destinationProvisionedZone.Services = CopyServices(sourceProvisionedZone.Services);
+                    }
+
+                    destinationProvisionedZones.Add(key, destinationProvisionedZone);
+                }
+
+            }
+
+            return destinationProvisionedZones;
+        }
+
         private IDictionary<string, Right> CopyRights(IDictionary<string, Right> sourceRights)
         {
-            IDictionary<string, Right> destinationRights = new Dictionary<string, Right>();
+            IDictionary<string, Right> destinationRights = null;
 
-            if (sourceRights != null && sourceRights.Count > 0)
+            if (sourceRights != null)
             {
+                destinationRights = new Dictionary<string, Right>();
 
-                foreach (Right sourceRight in sourceRights.Values)
+                foreach (string key in sourceRights.Keys)
                 {
-                    Right destinationRight = new Right() { Type = sourceRight.Type, Value = sourceRight.Value };
-                    destinationRights.Add(destinationRight.Type, destinationRight);
+                    Right sourceRight;
+                    sourceRights.TryGetValue(key, out sourceRight);
+                    Right destinationRight = new Right { Type = sourceRight.Type, Value = sourceRight.Value };
+                    destinationRights.Add(key, destinationRight);
                 }
 
             }
@@ -68,19 +140,19 @@ namespace Sif.Framework.Service.Infrastructure
 
         private ICollection<Model.Infrastructure.Service> CopyServices(ICollection<Model.Infrastructure.Service> sourceServices)
         {
-            ICollection<Model.Infrastructure.Service> destinationServices = new List<Model.Infrastructure.Service>();
+            ICollection<Model.Infrastructure.Service> destinationServices = null;
 
-            if (sourceServices != null && sourceServices.Count > 0)
+            if (sourceServices != null)
             {
+                destinationServices = new List<Model.Infrastructure.Service>();
 
                 foreach (Model.Infrastructure.Service sourceService in sourceServices)
                 {
                     Model.Infrastructure.Service destinationService = new Model.Infrastructure.Service { ContextId = sourceService.ContextId, Name = sourceService.Name, Type = sourceService.Type };
-                    IDictionary<string, Right> rights = CopyRights(sourceService.Rights);
 
-                    if (rights.Count > 0)
+                    if (sourceService.Rights != null)
                     {
-                        destinationService.Rights = rights;
+                        destinationService.Rights = CopyRights(sourceService.Rights);
                     }
 
                     destinationServices.Add(destinationService);
@@ -89,32 +161,6 @@ namespace Sif.Framework.Service.Infrastructure
             }
 
             return destinationServices;
-        }
-
-        private IDictionary<string, ProvisionedZone> CopyProvisionedZones(IDictionary<string, ProvisionedZone> sourceProvisionedZones)
-        {
-            IDictionary<string, ProvisionedZone> destinationProvisionedZones = new Dictionary<string, ProvisionedZone>();
-
-            if (sourceProvisionedZones != null && sourceProvisionedZones.Count > 0)
-            {
-
-                foreach (ProvisionedZone sourceProvisionedZone in sourceProvisionedZones.Values)
-                {
-
-                    ProvisionedZone destinationProvisionedZone = new ProvisionedZone { SifId = sourceProvisionedZone.SifId };
-                    ICollection<Model.Infrastructure.Service> services = CopyServices(sourceProvisionedZone.Services);
-
-                    if (services.Count > 0)
-                    {
-                        destinationProvisionedZone.Services = services;
-                    }
-
-                    destinationProvisionedZones.Add(destinationProvisionedZone.SifId, destinationProvisionedZone);
-                }
-
-            }
-
-            return destinationProvisionedZones;
         }
 
         public EnvironmentService()
@@ -150,6 +196,11 @@ namespace Sif.Framework.Service.Infrastructure
             IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
             IDictionary<string, ProvisionedZone> provisionedZones = CopyProvisionedZones(environmentRegister.ProvisionedZones);
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
+
+            if (environmentRegister.DefaultZone != null)
+            {
+                repoItem.DefaultZone = CopyDefaultZone(environmentRegister.DefaultZone);
+            }
 
             if (infrastructureServices.Count > 0)
             {

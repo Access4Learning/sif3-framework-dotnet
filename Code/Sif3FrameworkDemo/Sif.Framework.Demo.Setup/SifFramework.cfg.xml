@@ -10,16 +10,15 @@
 
     <!-- SQL Server LocalDB specific properties -->
     <!-- 
-    <property name="connection.connection_string">Server=(localdb)\v11.0;Integrated Security=true;AttachDbFileName=C:\Users\capta_000\Documents\GitHub\Sif3Framework-dotNet\Data\Databases\LocalDB\SifFrameworkDatabase.mdf;</property>
+    <property name="connection.connection_string">Server=(localdb)\v11.0;Integrated Security=true;AttachDbFileName=C:\Users\user\Documents\GitHub\Sif3Framework-dotNet\Data\Databases\LocalDB\SifFrameworkDatabase.mdf;</property>
     <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
     <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
     <property name="hbm2ddl.keywords">auto-quote</property>
     -->
 
     <!-- SQL Server specific properties -->
-    <!-- Local testing server for ZiNET developers: FREEBIE\SQLEXPRESS -->
     <!--
-    <property name="connection.connection_string">Server=(local);Initial Catalog=nhibernate;Integrated Security=SSPI</property>
+    <property name="connection.connection_string">Server=machine_name\SQLEXPRESS;Database=SifFrameworkDatabase;Trusted_Connection=True;</property>
     <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
     <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
     <property name="hbm2ddl.keywords">auto-quote</property>

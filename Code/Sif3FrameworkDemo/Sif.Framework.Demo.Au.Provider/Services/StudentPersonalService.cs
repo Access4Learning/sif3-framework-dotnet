@@ -32,9 +32,22 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         private static StudentPersonal CreateBartSimpson()
         {
+
+            string[] text = new string[]
+            {
+                @"<MedicalCondition>
+                    <ConditionID>Unique Medical Condition ID</ConditionID>
+                    <Condition>Condition</Condition>
+                    <Severity>Condition Severity</Severity>
+                    <Details>Condition Details</Details>
+                </MedicalCondition>"
+            };
+
+            SIF_ExtendedElementsTypeSIF_ExtendedElement extendedElement = new SIF_ExtendedElementsTypeSIF_ExtendedElement { Name = "MedicalConditions", Text = text };
+            SIF_ExtendedElementsTypeSIF_ExtendedElement[] extendedElements = new SIF_ExtendedElementsTypeSIF_ExtendedElement[] { extendedElement };
             NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
             PersonInfoType personInfo = new PersonInfoType { Name = name };
-            StudentPersonal studentPersonal = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo };
+            StudentPersonal studentPersonal = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo, SIF_ExtendedElements = extendedElements };
 
             return studentPersonal;
         }

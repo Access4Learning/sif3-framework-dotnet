@@ -71,6 +71,7 @@ namespace Sif.Framework.Demo.Setup.Utils
             EnvironmentRegister environmentRegister = new EnvironmentRegister
             {
                 ApplicationKey = environmentRequest.ApplicationInfo.ApplicationKey,
+                DefaultZone = environmentResponse.DefaultZone,
                 InfrastructureServices = environmentResponse.InfrastructureServices,
                 InstanceId = environmentRequest.InstanceId,
                 ProvisionedZones = environmentResponse.ProvisionedZones,
