@@ -14,18 +14,37 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
 using System;
 using System.Collections.Generic;
+using Sif.Framework.Model;
 
 namespace Sif.Framework.Service
 {
 
-    public class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
+    public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
     {
         protected IGenericRepository<DB, Guid> repository;
+
+        public virtual ServiceType getServiceType()
+        {
+            return ServiceType.UTILITY;
+        }
+
+        public abstract ModelObjectInfo GetSingleObjectClassInfo();
+
+        public abstract ModelObjectInfo GetMultiObjectClassInfo();
+
+        public virtual void Run()
+        {
+        }
+
+        public virtual void Finalise()
+        {
+        }
 
         public SifService(IGenericRepository<DB, Guid> repository)
         {
@@ -91,7 +110,5 @@ namespace Sif.Framework.Service
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Save(repoItems);
         }
-
     }
-
 }

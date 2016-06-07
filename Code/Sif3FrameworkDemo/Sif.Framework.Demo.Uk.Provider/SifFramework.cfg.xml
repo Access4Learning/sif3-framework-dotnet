@@ -3,10 +3,12 @@
   <session-factory>
 
     <!-- SQLite specific properties -->
+    <!--
     <property name="connection.connection_string">Data Source=|DataDirectory|\..\..\..\..\Data\Databases\SQLite\SifFrameworkDatabase.db;Version=3</property>
     <property name="connection.driver_class">NHibernate.Driver.SQLite20Driver</property>
     <property name="dialect">NHibernate.Dialect.SQLiteDialect</property>
     <property name="query.substitutions">true=1;false=0</property>
+    -->
 
     <!-- SQL Server LocalDB specific properties -->
     <!-- 
@@ -18,6 +20,10 @@
 
     <!-- SQL Server specific properties -->
     <!-- Local testing server for ZiNET developers: FREEBIE\SQLEXPRESS -->
+    <property name="connection.connection_string">Server=FREEBIE\SQLEXPRESS;initial catalog=nhibernate;Integrated Security=SSPI</property>
+    <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
+    <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
+    <property name="hbm2ddl.keywords">auto-quote</property>
     <!--
     <property name="connection.connection_string">Server=(local);initial catalog=nhibernate;Integrated Security=SSPI</property>
     <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>

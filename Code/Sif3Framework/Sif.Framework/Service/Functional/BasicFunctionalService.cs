@@ -23,11 +23,17 @@ using Sif.Framework.Model.Exceptions;
 using Sif.Specification.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
+using Sif.Framework.Model;
 
 namespace Sif.Framework.Service.Functional
 {
     public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService 
     {
+        public override ServiceType getServiceType()
+        {
+            return ServiceType.FUNCTIONAL;
+        }
+
         /// <summary>
         /// Name of the Functional Service that the Provider is based on
         /// </summary>
@@ -247,6 +253,14 @@ namespace Sif.Framework.Service.Functional
             {
                 throw new ArgumentException("Unsupported job name '" + job.Name + "'.");
             }
+		}
+
+        public override void Finalise()
+        {
+        }
+
+        public override void Run()
+        {
         }
     }
 }
