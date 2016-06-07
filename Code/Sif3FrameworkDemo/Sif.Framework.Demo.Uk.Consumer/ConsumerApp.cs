@@ -238,7 +238,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
             {
                 // Create a new payload job.
                 if (log.IsInfoEnabled) log.Info("*** Create a job.");
-                Job newJob = new Job("payload", "Testing");
+                Job newJob = new Job("Testing");
                 Job job = payloadConsumer.Create(newJob);
                 if (log.IsInfoEnabled) log.Info("Created new job " + job.Name + " (" + job.Id + ")");
 

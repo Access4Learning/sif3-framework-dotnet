@@ -22,6 +22,7 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Exceptions;
 using Sif.Specification.Infrastructure;
 using Sif.Framework.Service.Mapper;
+using Sif.Framework.Utils;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -53,6 +54,7 @@ namespace Sif.Framework.Service.Functional
         public override Guid Create(jobType item, string zone = null, string context = null)
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
+            checkJob(job);
             addPhases(job);
             return repository.Save(job);
         }
@@ -62,6 +64,7 @@ namespace Sif.Framework.Service.Functional
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
             foreach (Job job in jobs)
             {
+                checkJob(job);
                 addPhases(job);
             }
             repository.Save(jobs);
@@ -94,7 +97,9 @@ namespace Sif.Framework.Service.Functional
         {
             try
             {
-                JobShutdown(MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context)));
+                Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context));
+                checkJob(job);
+                JobShutdown(job);
             } catch(Exception e)
             {
                 throw new DeleteException("Unable to delete job with ID " + item.id, e);
@@ -108,7 +113,9 @@ namespace Sif.Framework.Service.Functional
             {
                 try
                 {
-                    JobShutdown(MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context)));
+                    Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context));
+                    checkJob(job);
+                    JobShutdown(job);
                 }
                 catch (Exception e)
                 {
@@ -202,6 +209,7 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         private Phase getPhase(Job job, string phaseName)
         {
+            checkJob(job);
             Phase phase = job.Phases[phaseName];
             if (phase == null)
             {
@@ -221,6 +229,24 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Unknown phase action");
             }
             return actions;
+        }
+
+        private void checkJob(Job job)
+        {
+            if (job == null)
+            {
+                throw new ArgumentException("Job cannot be null.");
+            }
+
+            if (StringUtils.IsEmpty(job.Name))
+            {
+                throw new ArgumentException("Unsupported operation, job name not supplied.");
+            }
+
+            if (!TypeName.Equals(job.Name))
+            {
+                throw new ArgumentException("Unsupported job name '" + job.Name + "'.");
+            }
         }
     }
 }

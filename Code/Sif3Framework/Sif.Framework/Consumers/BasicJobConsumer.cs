@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -168,6 +169,8 @@ namespace Sif.Framework.Consumers
         public virtual Job Create(Job obj, string zone = null, string context = null)
         {
             checkRegistered();
+            
+            configureJob(obj);
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + TypeName + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
@@ -188,6 +191,16 @@ namespace Sif.Framework.Consumers
         public virtual MultipleCreateResponse Create(List<Job> objs, string zone = null, string context = null)
         {
             checkRegistered();
+
+            if (objs == null || objs.Count == 0)
+            {
+                throw new ArgumentException("List of job objects cannot be null or empty");
+            }
+
+            foreach (Job obj in objs)
+            {
+                configureJob(obj);
+            }
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseMultiple(objs);
@@ -281,6 +294,8 @@ namespace Sif.Framework.Consumers
         public virtual List<Job> QueryByExample(Job obj, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
             checkRegistered();
+
+            configureJob(obj);
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
@@ -379,6 +394,8 @@ namespace Sif.Framework.Consumers
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string CreateToPhase(Job job, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
+            configureJob(job);
+
             return CreateToPhase(job.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
@@ -417,6 +434,8 @@ namespace Sif.Framework.Consumers
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string RetrieveToPhase(Job job, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
+            configureJob(job);
+
             return RetrieveToPhase(job.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
@@ -455,6 +474,8 @@ namespace Sif.Framework.Consumers
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string UpdateToPhase(Job obj, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
+            configureJob(obj);
+
             return UpdateToPhase(obj.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
@@ -493,6 +514,8 @@ namespace Sif.Framework.Consumers
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string DeleteToPhase(Job obj, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
+            configureJob(obj);
+
             return DeleteToPhase(obj.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
         }
 
@@ -516,6 +539,17 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug("String from DELETE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
+        }
+
+        private void configureJob(Job job)
+        {
+            if (job == null)
+            {
+                throw new ArgumentException("Job cannot be null.");
+            }
+
+            if (StringUtils.NotEmpty(job.Name) && log.IsDebugEnabled) log.Debug("Changing job name from '" + job.Name + "'to '" + TypeName + "'");
+            job.Name = TypeName;
         }
     }
 }

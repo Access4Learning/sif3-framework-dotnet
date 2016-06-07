@@ -82,16 +82,10 @@ namespace Sif.Framework.Model.Infrastructure
         }
 
         /// <summary>
-        /// Job constructor with name and description defaults
+        /// Job constructor with description
         /// </summary>
-        public Job(string name, string description = null) : this()
+        public Job(string description = null) : this()
         {
-            if (String.IsNullOrWhiteSpace(name) || name.Contains(" "))
-            {
-                throw new ArgumentNullException("name", "Job must have a name, which cannot contain any spaces");
-            }
-            Name = name;
-
             if (!String.IsNullOrWhiteSpace(description))
             {
                 Description = description;
