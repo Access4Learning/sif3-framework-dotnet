@@ -42,7 +42,6 @@ namespace Sif.Framework.Utils
         {
             return content != null && !content.Equals("");
         }
-
+		
     }
-
 }
