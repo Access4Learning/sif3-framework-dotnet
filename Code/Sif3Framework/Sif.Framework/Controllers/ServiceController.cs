@@ -19,6 +19,7 @@ using Sif.Framework.Model;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Providers;
+using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Functional;
 using Sif.Framework.Service.Infrastructure;
@@ -40,6 +41,7 @@ namespace Sif.Framework.Controllers
     /// <summary>
     /// Services Connector implementation
     /// </summary>
+
     [RoutePrefix("services")]
     public class ServiceController : ApiController
     {
@@ -230,6 +232,7 @@ namespace Sif.Framework.Controllers
         public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
+
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
@@ -362,6 +365,7 @@ namespace Sif.Framework.Controllers
         protected virtual IFunctionalService getService(string serviceName)
         {
             IService service = ProviderFactory.getInstance().GetProvider(serviceName);
+
             if (service != null && ProviderUtils.isFunctionalService(service.GetType()))
             {
                 return service as IFunctionalService;

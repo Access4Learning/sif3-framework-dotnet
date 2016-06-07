@@ -18,10 +18,6 @@ namespace Sif.Framework.Service.Providers
             return ServiceType.OBJECT;
         }
 
-        public abstract ModelObjectInfo GetSingleObjectClassInfo();
-
-        public abstract ModelObjectInfo GetMultiObjectClassInfo();
-
         public abstract void Run();
 
         public abstract void Finalise();

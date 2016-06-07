@@ -30,6 +30,7 @@ namespace Sif.Framework.Service.Infrastructure
 
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
+
         public override string getServiceName()
         {
             return "environment";

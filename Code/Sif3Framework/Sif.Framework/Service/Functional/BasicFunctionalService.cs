@@ -23,6 +23,7 @@ using Sif.Framework.Model.Exceptions;
 using Sif.Specification.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
+using Sif.Framework.Model;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -247,7 +248,7 @@ namespace Sif.Framework.Service.Functional
             {
                 throw new ArgumentException("Unsupported job name '" + job.Name + "'.");
             }
-        }
+		}
 
         public override void Finalise()
         {
