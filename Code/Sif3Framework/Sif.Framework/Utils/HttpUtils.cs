@@ -145,9 +145,11 @@ namespace Sif.Framework.Utils
 
             using (Stream requestStream = request.GetRequestStream())
             {
-                byte[] payload = UTF8Encoding.UTF8.GetBytes(body);
-                requestStream.Write(payload, 0, payload.Length);
-
+                if (body != null)
+                {
+                    byte[] payload = UTF8Encoding.UTF8.GetBytes(body);
+                    requestStream.Write(payload, 0, payload.Length);
+                }
                 using (WebResponse response = request.GetResponse())
                 {
                     string responseString = null;

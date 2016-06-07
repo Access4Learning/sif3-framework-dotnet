@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Web.Http;
 
 namespace Sif.Framework.Controllers
@@ -147,7 +148,7 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// POST services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual string Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
             preventPagingHeaders();
@@ -156,7 +157,7 @@ namespace Sif.Framework.Controllers
 
             try
             {
-                return Service.CreateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request));
+                return OKResult(Service.CreateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -179,7 +180,7 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// GET services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual string Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
             preventPagingHeaders();
@@ -188,7 +189,7 @@ namespace Sif.Framework.Controllers
 
             try
             {
-                return Service.RetrieveToPhase(id, phaseName, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request));
+                return OKResult(Service.RetrieveToPhase(id, phaseName, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -211,7 +212,7 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// PUT services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual string Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
 
@@ -219,7 +220,7 @@ namespace Sif.Framework.Controllers
 
             try
             {
-                return Service.UpdateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request));
+                return OKResult(Service.UpdateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -242,7 +243,7 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// DELETE services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual string Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(zone, context, new Right(RightType.DELETE, RightValue.APPROVED));
             preventPagingHeaders();
@@ -251,7 +252,7 @@ namespace Sif.Framework.Controllers
 
             try
             {
-                return Service.DeleteToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request));
+                return OKResult(Service.DeleteToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -405,6 +406,19 @@ namespace Sif.Framework.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.MethodNotAllowed);
             }
+        }
+
+        protected HttpResponseMessage OKResult(string result)
+        {
+            if(StringUtils.IsEmpty(result))
+            {
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+
+            string accept = HttpUtils.GetAccept(Request);
+            return new HttpResponseMessage(HttpStatusCode.OK) {
+                Content = new StringContent(result, Encoding.UTF8, accept)
+            };
         }
     }
 
