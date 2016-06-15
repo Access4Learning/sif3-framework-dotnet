@@ -53,28 +53,28 @@ namespace Sif.Framework.Demo.Uk.Provider.Controllers
 
         [HttpPost]
         [Route("{id}/phase/{phaseName}")]
-        public override string Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override HttpResponseMessage Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             return base.Post(id, phaseName, zone, context);
         }
 
         [HttpGet]
         [Route("{id}/phase/{phaseName}")]
-        public override string Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override HttpResponseMessage Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             return base.Get(id, phaseName, zone, context);
         }
 
         [HttpPut]
         [Route("{id}/phase/{phaseName}")]
-        public override string Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override HttpResponseMessage Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             return base.Put(id, phaseName, zone, context);
         }
 
         [HttpDelete]
         [Route("{id}/phase/{phaseName}")]
-        public override string Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override HttpResponseMessage Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             return base.Delete(id, phaseName, zone, context);
         }
