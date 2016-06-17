@@ -141,7 +141,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public override void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.DELETE, RightValue.APPROVED));
+            checkAuthorisation(zone, context);
             base.Delete(id, zone, context);
         }
 
@@ -150,7 +150,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
+            checkAuthorisation(zone, context);
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
@@ -182,7 +182,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
+            checkAuthorisation(zone, context);
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
@@ -214,7 +214,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
+            checkAuthorisation(zone, context);
 
             string body = Request.Content.ReadAsStringAsync().Result;
 
@@ -245,7 +245,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
+            checkAuthorisation(zone, context);
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
