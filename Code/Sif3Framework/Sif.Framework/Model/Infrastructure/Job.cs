@@ -16,6 +16,7 @@
 
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Persistence;
+using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -84,12 +85,14 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// Job constructor with description
         /// </summary>
-        public Job(string description = null) : this()
+        public Job(string name, string description = null) : this()
         {
-            if (!String.IsNullOrWhiteSpace(description))
+            if (StringUtils.IsEmpty(name))
             {
-                Description = description;
+                throw new ArgumentException("Job should be created with a name");
             }
+            Name = name;
+            Description = description;
         }
 
         /// <summary>

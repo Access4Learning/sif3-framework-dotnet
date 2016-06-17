@@ -154,6 +154,11 @@ namespace Sif.Framework.Utils
             return serviceUrl;
         }
 
+        public static ProvisionedZone GetTargetZone(Environment environment, string zone = null)
+        {
+            return StringUtils.NotEmpty(zone) ? environment.ProvisionedZones[zone] : environment.ProvisionedZones[environment.DefaultZone.SifId];
+        }
+
     }
 
 }

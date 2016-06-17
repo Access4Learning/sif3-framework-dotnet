@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+using System;
+
 namespace Sif.Framework.Utils
 {
 
@@ -35,12 +37,12 @@ namespace Sif.Framework.Utils
 
         public static bool IsEmpty(string content)
         {
-            return content == null || content.Equals("");
+            return String.IsNullOrWhiteSpace(content);
         }
 
         public static bool NotEmpty(string content)
         {
-            return content != null && !content.Equals("");
+            return !String.IsNullOrWhiteSpace(content);
         }
 
     }

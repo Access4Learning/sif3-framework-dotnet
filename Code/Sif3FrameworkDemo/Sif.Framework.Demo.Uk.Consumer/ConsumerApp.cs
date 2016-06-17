@@ -16,6 +16,7 @@
 
 using log4net;
 using Newtonsoft.Json;
+using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Uk.Consumer.Consumers;
 using Sif.Framework.Demo.Uk.Consumer.Models;
 using Sif.Framework.Demo.Uk.Consumer.Utils;
@@ -230,23 +231,20 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
         void RunPayloadConsumer()
         {
-            PayloadConsumer payloadConsumer = new PayloadConsumer("Sif3DemoApp");
-            payloadConsumer.Register();
+            JobConsumer consumer = new JobConsumer("Sif3DemoApp");
+            consumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
                 // Create a new payload job.
                 if (log.IsInfoEnabled) log.Info("*** Create a job.");
-                Job newJob = new Job("Testing");
-                Job job = payloadConsumer.Create(newJob);
+                Job job = consumer.Create(new Job("Payload", "Testing"));
                 if (log.IsInfoEnabled) log.Info("Created new job " + job.Name + " (" + job.Id + ")");
-
-                Guid id = job.Id;
-
+                
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting NOTSTARTED.");
-                job = payloadConsumer.Query(id);
+                job = consumer.Query(job);
                 State state = job.Phases["default"].getCurrentState();
                 if (state.Type == PhaseStateType.NOTSTARTED)
                 {
@@ -259,11 +257,11 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
                 // Execute CREATE to phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Executing CREATE to phase 'default'.");
-                payloadConsumer.CreateToPhase(id, "default", "Sending CREATE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
+                consumer.CreateToPhase(job, "default", "Sending CREATE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
 
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting INPROGRESS.");
-                job = payloadConsumer.Query(id);
+                job = consumer.Query(job);
                 state = job.Phases["default"].getCurrentState();
                 if (state.Type == PhaseStateType.INPROGRESS)
                 {
@@ -276,11 +274,11 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
                 // Execute UPDATE to phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Executing UPDATE to phase 'default'.");
-                payloadConsumer.UpdateToPhase(id, "default", "Sending UPDATE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
+                consumer.UpdateToPhase(job, "default", "Sending UPDATE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
 
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting COMPLETE.");
-                job = payloadConsumer.Query(id);
+                job = consumer.Query(job);
                 state = job.Phases["default"].getCurrentState();
                 if (state.Type == PhaseStateType.COMPLETED)
                 {
@@ -294,7 +292,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 // Execute DELETE to phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Executing DELETE to phase 'default'.");
                 try {
-                    payloadConsumer.DeleteToPhase(id, "default", "Sending DELETE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
+                    consumer.DeleteToPhase(job, "default", "Sending DELETE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
                 } catch(Exception e)
                 {
                     if (log.IsInfoEnabled) log.Info("EXPECTED exception due to access rights: " + e.Message);
@@ -310,7 +308,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 {
                     if (log.IsFatalEnabled) log.Info("***** Error serializing to xml: " + e.Message, e);
                 }
-                payloadConsumer.UpdateToPhase(id, "xml", xml, contentTypeOverride: "application/xml", acceptOverride: "text/plain");
+                consumer.UpdateToPhase(job, "xml", xml, contentTypeOverride: "application/xml", acceptOverride: "text/plain");
 
                 // Execute UPDATE to phase "json".
                 if (log.IsInfoEnabled) log.Info("*** Executing UPDATE to phase 'json'.");
@@ -323,31 +321,30 @@ namespace Sif.Framework.Demo.Uk.Consumer
                     if (log.IsFatalEnabled) log.Info("***** Error serializing to json: " + e.Message, e);
                 }
 
-                payloadConsumer.UpdateToPhase(id, "json", json, contentTypeOverride: "application/json", acceptOverride: "text/plain");
+                consumer.UpdateToPhase(job, "json", json, contentTypeOverride: "application/json", acceptOverride: "text/plain");
 
                 // Delete the job.
                 if (log.IsInfoEnabled) log.Info("*** Delete a job.");
-                payloadConsumer.Delete(id);
-                Job deletedJob = payloadConsumer.Query(id);
+                consumer.Delete(job);
+                Job deletedJob = consumer.Query(job);
                 bool jobDeleted = (deletedJob == null ? true : false);
 
                 if (jobDeleted)
                 {
-                    if (log.IsInfoEnabled) log.Info("Job " + id + " was successfully deleted.");
+                    if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was successfully deleted.");
                 }
                 else
                 {
-                    if (log.IsInfoEnabled) log.Info("Job " + id + " was NOT deleted.");
+                    if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was NOT deleted.");
                 }
             }
             catch (Exception e)
             {
-                //if (log.IsInfoEnabled) log.Fatal(e);
                 throw new Exception(this.GetType().FullName, e);
             }
             finally
             {
-                payloadConsumer.Unregister();
+                consumer.Unregister();
                 if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
             }
         }

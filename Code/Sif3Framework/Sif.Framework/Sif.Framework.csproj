@@ -80,7 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consumers\BasicJobConsumer.cs" />
+    <Compile Include="Consumers\JobConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Model\Infrastructure\State.cs" />
@@ -176,6 +176,7 @@
     <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
+    <Compile Include="Utils\ZoneUtils.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
@@ -240,7 +241,7 @@
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
-	<EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />
   </ItemGroup>

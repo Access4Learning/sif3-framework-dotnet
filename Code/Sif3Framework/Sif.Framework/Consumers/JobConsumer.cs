@@ -36,7 +36,7 @@ namespace Sif.Framework.Consumers
     /// <summary>
     /// The base class for all Functional Service consumers
     /// </summary>
-    public abstract class BasicJobConsumer
+    public class JobConsumer
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -45,12 +45,17 @@ namespace Sif.Framework.Consumers
 
 
         /// <summary>
-        /// Consumer environment.
+        /// Consumer environment template
         /// </summary>
         protected Environment EnvironmentTemplate
         {
             get { return environmentTemplate; }
         }
+
+        /// <summary>
+        /// Current consumer environment.
+        /// </summary>
+        protected Environment Environment { get; private set; }
 
         /// <summary>
         /// Service for Consumer registration.
@@ -61,15 +66,10 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Name of the Functional Service that the Consumer is based on
-        /// </summary>
-        public abstract string TypeName { get; }
-
-        /// <summary>
         /// Create a Consumer instance based upon the Environment passed.
         /// </summary>
         /// <param name="environment">Environment object.</param>
-        public BasicJobConsumer(Environment environment)
+        public JobConsumer(Environment environment)
         {
             environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
             registrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
@@ -82,7 +82,7 @@ namespace Sif.Framework.Consumers
         /// <param name="instanceId">Instance ID.</param>
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
-        public BasicJobConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null): this(new Environment(applicationKey, instanceId, userToken, solutionId))
+        public JobConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null): this(new Environment(applicationKey, instanceId, userToken, solutionId))
         {
         }
 
@@ -101,22 +101,22 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Serialise a single job entity.
         /// </summary>
-        /// <param name="obj">Payload of a single job.</param>
+        /// <param name="job">Payload of a single job.</param>
         /// <returns>XML string representation of the single job.</returns>
-        public virtual string SerialiseSingle(Job obj)
+        public virtual string SerialiseSingle(Job job)
         {
-            jobType data = MapperFactory.CreateInstance<Job, jobType>(obj);
+            jobType data = MapperFactory.CreateInstance<Job, jobType>(job);
             return SerialiserFactory.GetXmlSerialiser<jobType>().Serialise(data);
         }
 
         /// <summary>
         /// Serialise an entity of multiple jobs.
         /// </summary>
-        /// <param name="obj">Payload of multiple jobs.</param>
+        /// <param name="job">Payload of multiple jobs.</param>
         /// <returns>XML string representation of the multiple jobs.</returns>
-        public virtual string SerialiseMultiple(IEnumerable<Job> obj)
+        public virtual string SerialiseMultiple(IEnumerable<Job> job)
         {
-            List<jobType> data = MapperFactory.CreateInstances<Job, jobType>(obj).ToList();
+            List<jobType> data = MapperFactory.CreateInstances<Job, jobType>(job).ToList();
             return SerialiserFactory.GetXmlSerialiser<List<jobType>>().Serialise(data);
         }
 
@@ -147,7 +147,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         public void Register()
         {
-            registrationService.Register(ref environmentTemplate);
+            Environment = registrationService.Register(ref environmentTemplate);
         }
 
         /// <summary>
@@ -157,23 +157,24 @@ namespace Sif.Framework.Consumers
         public void Unregister(bool? deleteOnUnregister = null)
         {
             registrationService.Unregister(deleteOnUnregister);
+            Environment = null;
         }
 
         /// <summary>
         /// Create a single Job with the defaults provided, and persist it to the data store
         /// </summary>
-        /// <param name="obj">Job object with defaults to use when creating the Job</param>
+        /// <param name="job">Job object with defaults to use when creating the Job</param>
         /// <param name="zone">The zone in which to create the Job</param>
         /// <param name="context">The context in which to create the Job</param>
         /// <returns>The created Job object</returns>
-        public virtual Job Create(Job obj, string zone = null, string context = null)
+        public virtual Job Create(Job job, string zone = null, string context = null)
         {
             checkRegistered();
             
-            configureJob(obj);
+            checkJob(job, RightType.CREATE, zone);
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + TypeName + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseSingle(obj);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Name + HttpUtils.MatrixParameters(zone, context);
+            string body = SerialiseSingle(job);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -184,26 +185,18 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Create a multiple Jobs with the defaults provided, and persist it to the data store
         /// </summary>
-        /// <param name="objs">Job objects with defaults to use when creating the Jobs</param>
+        /// <param name="jobs">Job objects with defaults to use when creating the Jobs</param>
         /// <param name="zone">The zone in which to create the Jobs</param>
         /// <param name="context">The context in which to create the Jobs</param>
         /// <returns>The created Job objects</returns>
-        public virtual MultipleCreateResponse Create(List<Job> objs, string zone = null, string context = null)
+        public virtual MultipleCreateResponse Create(List<Job> jobs, string zone = null, string context = null)
         {
             checkRegistered();
 
-            if (objs == null || objs.Count == 0)
-            {
-                throw new ArgumentException("List of job objects cannot be null or empty");
-            }
+            string jobName = checkJobs(jobs, RightType.CREATE, zone);
 
-            foreach (Job obj in objs)
-            {
-                configureJob(obj);
-            }
-
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseMultiple(objs);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + jobName + "s" + HttpUtils.MatrixParameters(zone, context);
+            string body = SerialiseMultiple(jobs);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -220,13 +213,15 @@ namespace Sif.Framework.Consumers
         /// <param name="zone">The zone in which to operate</param>
         /// <param name="context">The context in which to operate</param>
         /// <returns>The Job object</returns>
-        public virtual Job Query(Guid id, string zone = null, string context = null)
+        public virtual Job Query(Job job, string zone = null, string context = null)
         {
             checkRegistered();
 
+            checkJob(job, RightType.QUERY, zone);
+
             try
             {
-                string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + HttpUtils.MatrixParameters(zone, context);
+                string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Id + HttpUtils.MatrixParameters(zone, context);
                 string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
                 if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(xml);
@@ -263,11 +258,13 @@ namespace Sif.Framework.Consumers
         /// <param name="zone">The zone in which to operate</param>
         /// <param name="context">The context in which to operate</param>
         /// <returns>A page of Job objects</returns>
-        public virtual List<Job> Query(uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
+        public virtual List<Job> Query(string serviceName, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            checkJob(new Job(serviceName), RightType.QUERY, zone, true);
+
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + serviceName + "s" + HttpUtils.MatrixParameters(zone, context);
             string xml;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
@@ -285,20 +282,20 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Get a all Jobs that match the example provided.
         /// </summary>
-        /// <param name="obj">The example object to match against</param>
+        /// <param name="job">The example object to match against</param>
         /// <param name="navigationPage">The page to fetch</param>
         /// <param name="navigationPageSize">The number of items to fetch per page</param>
         /// <param name="zone">The zone in which to operate</param>
         /// <param name="context">The context in which to operate</param>
         /// <returns>A page of Job objects</returns>
-        public virtual List<Job> QueryByExample(Job obj, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
+        public virtual List<Job> QueryByExample(Job job, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
             checkRegistered();
 
-            configureJob(obj);
+            checkJob(job, RightType.QUERY, zone);
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseSingle(obj);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + HttpUtils.MatrixParameters(zone, context);
+            string body = SerialiseSingle(job);
             // TODO: Update PostRequest to accept paging parameters.
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET");
             if (log.IsDebugEnabled) log.Debug("XML from POST (Query by Example) request ...");
@@ -311,12 +308,14 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Update single job object is not supported for Functional Services. Throws a HttpResponseException with Forbidden status code.
         /// </summary>
-        /// <param name="obj">Job object to update</param>
+        /// <param name="job">Job object to update</param>
         /// <param name="zone">The zone in which to update the Job</param>
         /// <param name="context">The context in which to update the Job</param>
-        public virtual void Update(Job obj, string zone = null, string context = null)
+        public virtual void Update(Job job, string zone = null, string context = null)
         {
             checkRegistered();
+
+            checkJob(job, RightType.UPDATE, zone);
 
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
@@ -324,12 +323,14 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Update multiple job objects is not supported for Functional Services. Throws a HttpResponseException with Forbidden status code.
         /// </summary>
-        /// <param name="objs">Job objects to update</param>
+        /// <param name="jobs">Job objects to update</param>
         /// <param name="zone">The zone in which to update the Jobs</param>
         /// <param name="context">The context in which to update the Jobs</param>
-        public virtual MultipleUpdateResponse Update(List<Job> objs, string zone = null, string context = null)
+        public virtual MultipleUpdateResponse Update(List<Job> jobs, string zone = null, string context = null)
         {
             checkRegistered();
+
+            checkJobs(jobs, RightType.UPDATE, zone);
 
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
@@ -340,11 +341,13 @@ namespace Sif.Framework.Consumers
         /// <param name="id">The RefId of the Job to delete</param>
         /// <param name="zone">The zone in which to delete the Job</param>
         /// <param name="context">The context in which to delete the Job</param>
-        public virtual void Delete(Guid id, string zone = null, string context = null)
+        public virtual void Delete(Job job, string zone = null, string context = null)
         {
             checkRegistered();
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + HttpUtils.MatrixParameters(zone, context);
+            checkJob(job, RightType.DELETE, zone);
+
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Id + HttpUtils.MatrixParameters(zone, context);
             string xml = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken);
             if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -357,20 +360,21 @@ namespace Sif.Framework.Consumers
         /// <param name="zone">The zone in which to delete the Jobs</param>
         /// <param name="context">The context in which to delete the Jobs</param>
         /// <returns>A response</returns>
-        public virtual MultipleDeleteResponse Delete(IEnumerable<string> ids, string zone = null, string context = null)
+        public virtual MultipleDeleteResponse Delete(List<Job> jobs, string zone = null, string context = null)
         {
             checkRegistered();
 
+            string jobName = checkJobs(jobs, RightType.DELETE, zone);
+
             List<deleteIdType> deleteIds = new List<deleteIdType>();
 
-            foreach (string id in ids)
+            foreach (Job job in jobs)
             {
-                deleteIdType deleteId = new deleteIdType { id = id.ToString() };
-                deleteIds.Add(deleteId);
+                deleteIds.Add(new deleteIdType { id = job.Id.ToString() });
             }
 
             deleteRequestType request = new deleteRequestType { deletes = deleteIds.ToArray() };
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + jobName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiserFactory.GetXmlSerialiser<deleteRequestType>().Serialise(request);
             string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, "DELETE");
             if (log.IsDebugEnabled) log.Debug("XML from PUT (DELETE) request ...");
@@ -394,27 +398,12 @@ namespace Sif.Framework.Consumers
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string CreateToPhase(Job job, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            configureJob(job);
-
-            return CreateToPhase(job.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
-        }
-
-        /// <summary>
-        /// Send a create operation to a specified phase on the specified job.
-        /// </summary>
-        /// <param name="id">The RefId of the Job on which to execute the phase</param>
-        /// <param name="phaseName">The name of the phase</param>
-        /// <param name="body">The payload to send to the phase</param>
-        /// <param name="zone">The zone in which to operate</param>
-        /// <param name="context">The context in which to operate</param>
-        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
-        /// <param name="acceptOverride">The expected mime type of the result</param>
-        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
-        {
             checkRegistered();
+
+            checkJob(job, zone);
+
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from CREATE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -434,27 +423,12 @@ namespace Sif.Framework.Consumers
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
         public virtual string RetrieveToPhase(Job job, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
-            configureJob(job);
-
-            return RetrieveToPhase(job.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
-        }
-
-        /// <summary>
-        /// Send a retrieve operation to a specified phase on the specified job.
-        /// </summary>
-        /// <param name="id">The RefId of the Job on which to execute the phase</param>
-        /// <param name="phaseName">The name of the phase</param>
-        /// <param name="body">The payload to send to the phase</param>
-        /// <param name="zone">The zone in which to operate</param>
-        /// <param name="context">The context in which to operate</param>
-        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
-        /// <param name="acceptOverride">The expected mime type of the result</param>
-        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
-        {
             checkRegistered();
+
+            checkJob(job, zone);
+
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET", contentTypeOverride, acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from GET request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -472,29 +446,14 @@ namespace Sif.Framework.Consumers
         /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
         /// <param name="acceptOverride">The expected mime type of the result</param>
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual string UpdateToPhase(Job obj, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
-        {
-            configureJob(obj);
-
-            return UpdateToPhase(obj.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
-        }
-
-        /// <summary>
-        /// Send a update operation to a specified phase on the specified job.
-        /// </summary>
-        /// <param name="id">The RefId of the Job on which to execute the phase</param>
-        /// <param name="phaseName">The name of the phase</param>
-        /// <param name="body">The payload to send to the phase</param>
-        /// <param name="zone">The zone in which to operate</param>
-        /// <param name="context">The context in which to operate</param>
-        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
-        /// <param name="acceptOverride">The expected mime type of the result</param>
-        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual string UpdateToPhase(Guid id, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
+        public virtual string UpdateToPhase(Job job, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             checkRegistered();
+
+            checkJob(job, zone);
+            
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from PUT request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -512,44 +471,80 @@ namespace Sif.Framework.Consumers
         /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
         /// <param name="acceptOverride">The expected mime type of the result</param>
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual string DeleteToPhase(Job obj, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
-        {
-            configureJob(obj);
-
-            return DeleteToPhase(obj.Id, phaseName, body, zone, context, contentTypeOverride, acceptOverride);
-        }
-
-        /// <summary>
-        /// Send a delete operation to a specified phase on the specified job.
-        /// </summary>
-        /// <param name="id">The RefId of the Job on which to execute the phase</param>
-        /// <param name="phaseName">The name of the phase</param>
-        /// <param name="body">The payload to send to the phase</param>
-        /// <param name="zone">The zone in which to operate</param>
-        /// <param name="context">The context in which to operate</param>
-        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
-        /// <param name="acceptOverride">The expected mime type of the result</param>
-        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual string DeleteToPhase(Guid id, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
+        public virtual string DeleteToPhase(Job job, string phaseName, string body, string zone = null, string context = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             checkRegistered();
+
+            checkJob(job, zone);
+            
             string response = null;
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + job.Name + "s" + "/" + job.Id + "/phase/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from DELETE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
         }
 
-        private void configureJob(Job job)
+        private Model.Infrastructure.Service checkJob(Job job, string zone = null)
         {
             if (job == null)
             {
                 throw new ArgumentException("Job cannot be null.");
             }
 
-            if (StringUtils.NotEmpty(job.Name) && log.IsDebugEnabled) log.Debug("Changing job name from '" + job.Name + "'to '" + TypeName + "'");
-            job.Name = TypeName;
+            if (StringUtils.IsEmpty(job.Name))
+            {
+                throw new ArgumentException("Job name must be specified.");
+            }
+            
+            Model.Infrastructure.Service service = ZoneUtils.GetService(EnvironmentUtils.GetTargetZone(Environment, zone), job.Name, ServiceType.FUNCTIONAL);
+
+            if (service == null)
+            {
+                throw new ArgumentException("A FUNCTIONAL service with the name " + job.Name + " cannot be found in the current environment");
+            }
+
+            return service;
+        }
+
+        private void checkJob(Job job, RightType right, string zone = null, Boolean ignoreId= false)
+        {
+            Model.Infrastructure.Service service = checkJob(job, zone);
+
+            if(!ignoreId && !right.Equals(RightType.CREATE) && job.Id == null)
+            {
+                throw new ArgumentException("Job must have an Id for any non-creation operation");
+            }
+            
+            if(service.Rights[right.ToString()].Value.Equals(RightValue.REJECTED.ToString()))
+            {
+                throw new ArgumentException("The attempted operation is not permitted in the ACL of the current environment");
+            }
+        }
+
+        private string checkJobs(IList<Job> jobs, RightType right, string zone = null)
+        {
+            if (jobs == null || jobs.Count == 0)
+            {
+                throw new ArgumentException("List of job objects cannot be null or empty");
+            }
+
+            string name = null;
+            foreach (Job job in jobs)
+            {
+                checkJob(job, right, zone);
+
+                if (StringUtils.IsEmpty(name))
+                {
+                    name = job.Name;
+                }
+
+                if (!name.Equals(job.Name))
+                {
+                    throw new ArgumentException("All job objects must have the same name");
+                }
+            }
+            return name;
         }
     }
 }
