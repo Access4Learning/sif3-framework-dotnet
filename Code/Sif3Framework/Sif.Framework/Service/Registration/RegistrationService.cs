@@ -53,6 +53,11 @@ namespace Sif.Framework.Service.Registration
         public bool Registered { get; private set; }
 
         /// <summary>
+        /// The current environment that this RegistrationService has registered with.
+        /// </summary>
+        public Environment CurrentEnvironment { get; private set; }
+
+        /// <summary>
         /// Parse the URL of the Environment infrastructure service from the XML.
         /// </summary>
         /// <param name="environmentXml">Serialised Environment object as XML.</param>
@@ -86,33 +91,65 @@ namespace Sif.Framework.Service.Registration
         /// <summary>
         /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register()">Register</see>
         /// </summary>
-        public void Register()
+        public Environment Register()
         {
             Environment environment = EnvironmentUtils.LoadFromSettings(SettingsManager.ProviderSettings);
-            Register(ref environment);
+            return Register(ref environment);
         }
 
         /// <summary>
         /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register(Sif.Framework.Model.Infrastructure.Environment)">Register</see>
         /// </summary>
-        public void Register(ref Environment environment)
+        public Environment Register(ref Environment environment)
         {
-
-            if (!Registered)
+            if (Registered)
             {
+                return CurrentEnvironment;
+            }
 
-                if (sessionService.HasSession(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId))
+            if (sessionService.HasSession(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId))
+            {
+                if (log.IsDebugEnabled) log.Debug("Session token already exists for this object service (Consumer/Provider).");
+
+                string storedSessionToken = sessionService.RetrieveSessionToken(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
+                AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(storedSessionToken, settings.SharedSecret);
+                string storedEnvironmentUrl = sessionService.RetrieveEnvironmentUrl(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
+                string environmentXml = HttpUtils.GetRequest(storedEnvironmentUrl, AuthorisationToken);
+
+                if (log.IsDebugEnabled) log.Debug("Environment XML from GET request ...");
+                if (log.IsDebugEnabled) log.Debug(environmentXml);
+
+                environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
+                Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
+
+                sessionToken = environmentResponse.SessionToken;
+                environmentUrl = environmentResponse.InfrastructureServices[InfrastructureServiceNames.environment].Value;
+
+                if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
+
+                if (!storedSessionToken.Equals(sessionToken) || !storedEnvironmentUrl.Equals(environmentUrl))
                 {
-                    if (log.IsDebugEnabled) log.Debug("Session token already exists for this object service (Consumer/Provider).");
+                    AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(sessionToken, settings.SharedSecret);
+                    sessionService.RemoveSession(storedSessionToken);
+                    sessionService.StoreSession(environmentResponse.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
+                }
 
-                    string storedSessionToken = sessionService.RetrieveSessionToken(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
-                    AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(storedSessionToken, settings.SharedSecret);
-                    string storedEnvironmentUrl = sessionService.RetrieveEnvironmentUrl(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
-                    string environmentXml = HttpUtils.GetRequest(storedEnvironmentUrl, AuthorisationToken);
+                environment = environmentResponse;
+            }
+            else
+            {
+                if (log.IsDebugEnabled) log.Debug("Session token does not exist for this object service (Consumer/Provider).");
 
-                    if (log.IsDebugEnabled) log.Debug("Environment XML from GET request ...");
-                    if (log.IsDebugEnabled) log.Debug(environmentXml);
+                string initialToken = AuthenticationUtils.GenerateBasicAuthorisationToken(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
+                environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
+                string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
+                string environmentXml = HttpUtils.PostRequest(settings.EnvironmentUrl, initialToken, body);
 
+                if (log.IsDebugEnabled) log.Debug("Environment XML from POST request ...");
+                if (log.IsDebugEnabled) log.Debug(environmentXml);
+
+                try
+                {
                     environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
                     Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
 
@@ -121,61 +158,30 @@ namespace Sif.Framework.Service.Registration
 
                     if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
 
-                    if (!storedSessionToken.Equals(sessionToken) || !storedEnvironmentUrl.Equals(environmentUrl))
-                    {
-                        AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(sessionToken, settings.SharedSecret);
-                        sessionService.RemoveSession(storedSessionToken);
-                        sessionService.StoreSession(environmentResponse.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
-                    }
-
+                    AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(sessionToken, settings.SharedSecret);
+                    sessionService.StoreSession(environment.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
                     environment = environmentResponse;
                 }
-                else
+                catch (Exception)
                 {
-                    if (log.IsDebugEnabled) log.Debug("Session token does not exist for this object service (Consumer/Provider).");
 
-                    string initialToken = AuthenticationUtils.GenerateBasicAuthorisationToken(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
-                    environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
-                    string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
-                    string environmentXml = HttpUtils.PostRequest(settings.EnvironmentUrl, initialToken, body);
-
-                    if (log.IsDebugEnabled) log.Debug("Environment XML from POST request ...");
-                    if (log.IsDebugEnabled) log.Debug(environmentXml);
-
-                    try
+                    if (environmentUrl != null)
                     {
-                        environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
-                        Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
-
-                        sessionToken = environmentResponse.SessionToken;
-                        environmentUrl = environmentResponse.InfrastructureServices[InfrastructureServiceNames.environment].Value;
-
-                        if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
-
-                        AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(sessionToken, settings.SharedSecret);
-                        sessionService.StoreSession(environment.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
-                        environment = environmentResponse;
+                        HttpUtils.DeleteRequest(environmentUrl, AuthorisationToken);
                     }
-                    catch (Exception)
+                    else if (!String.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentXml)))
                     {
-
-                        if (environmentUrl != null)
-                        {
-                            HttpUtils.DeleteRequest(environmentUrl, AuthorisationToken);
-                        }
-                        else if (!String.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentXml)))
-                        {
-                            HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentXml), AuthorisationToken);
-                        }
-
-                        throw;
+                        HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentXml), AuthorisationToken);
                     }
 
+                    throw;
                 }
 
-                Registered = true;
             }
 
+            CurrentEnvironment = environment;
+            Registered = true;
+            return CurrentEnvironment;
         }
 
         /// <summary>
