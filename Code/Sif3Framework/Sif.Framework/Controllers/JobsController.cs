@@ -132,7 +132,7 @@ namespace Sif.Framework.Controllers
         /// <returns>HTTP status 403.</returns>
         public override void Put(Guid id, jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context);
+            checkAuthorisation(zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
@@ -150,7 +150,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
+            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
@@ -182,7 +182,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
+            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
@@ -214,7 +214,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
+            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
 
             string body = Request.Content.ReadAsStringAsync().Result;
 
@@ -245,7 +245,7 @@ namespace Sif.Framework.Controllers
         /// </summary>
         public virtual HttpResponseMessage Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.DELETE, RightValue.APPROVED));
+            checkAuthorisation(zone, context, new Right(RightType.ADMIN, RightValue.APPROVED));
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
