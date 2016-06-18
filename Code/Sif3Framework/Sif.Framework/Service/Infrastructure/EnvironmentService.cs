@@ -30,6 +30,15 @@ namespace Sif.Framework.Service.Infrastructure
 
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
+        public override ModelObjectInfo GetSingleObjectClassInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ModelObjectInfo GetMultiObjectClassInfo()
+        {
+            throw new NotImplementedException();
+        }
 
         public override string getServiceName()
         {
