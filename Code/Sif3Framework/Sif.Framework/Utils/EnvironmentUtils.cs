@@ -18,6 +18,8 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using System;
 using System.Configuration;
+using System.Linq;
+using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Utils
@@ -156,7 +158,26 @@ namespace Sif.Framework.Utils
 
         public static ProvisionedZone GetTargetZone(Environment environment, string zone = null)
         {
-            return StringUtils.NotEmpty(zone) ? environment.ProvisionedZones[zone] : environment.ProvisionedZones[environment.DefaultZone.SifId];
+            // Return the requested zone
+            if (StringUtils.NotEmpty(zone))
+            {
+                return environment.ProvisionedZones[zone];
+            }
+
+            // No zone, so try getting the default zone
+            if (StringUtils.NotEmpty(environment.DefaultZone.SifId))
+            {
+                return environment.ProvisionedZones[environment.DefaultZone.SifId];
+            }
+
+            // No default zone defined
+            // Fallback: If there is exactly one zone defined then return that
+            if (environment.ProvisionedZones != null && environment.ProvisionedZones.Count == 1)
+            {
+                return environment.ProvisionedZones.Values.FirstOrDefault();
+            }
+
+            return null;
         }
 
     }

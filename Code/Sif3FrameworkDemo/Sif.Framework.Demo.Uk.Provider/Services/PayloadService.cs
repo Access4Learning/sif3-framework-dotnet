@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Demo.Uk.Provider.Actions;
+using Sif.Framework.Model;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Functional;
 using System;
@@ -25,13 +26,16 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
     public class PayloadService : BasicFunctionalService
     {
-        public override string TypeName { get { return "Payload"; } }
-
         public PayloadService() : base()
         {
             phaseActions.Add("default", new DefaultActions());
             phaseActions.Add("xml", new XmlActions());
             phaseActions.Add("json", new JsonActions());
+        }
+
+        public override string getServiceName()
+        {
+            return "Payload";
         }
 
         protected override void addPhases(Job job)
@@ -47,6 +51,14 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
         {
             // Throw an exception to prevent job deletion
             base.JobShutdown(job);
+        }
+
+        public override void Run()
+        {
+        }
+
+        public override void Finalise()
+        {
         }
     }
 }

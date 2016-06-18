@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Utils;
 using System.Net.Http.Headers;
 
@@ -105,6 +106,8 @@ namespace Sif.Framework.Service.Authentication
         {
             return VerifyAuthenticationHeader(header, true, out sessionToken);
         }
+
+        public abstract Environment GetEnvironmentBySessionToken(string sessionToken);
 
     }
 

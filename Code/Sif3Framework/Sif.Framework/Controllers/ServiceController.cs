@@ -15,14 +15,17 @@
  */
 
 using log4net;
+using Sif.Framework.Model;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Providers;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Functional;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -30,22 +33,23 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Web.Http;
+using Sif.Framework.Service;
 
 namespace Sif.Framework.Controllers
 {
     /// <summary>
-    /// The base class for Functional Service Providers
+    /// Services Connector implementation
     /// </summary>
-    /// <typeparam name="FunctionalService"></typeparam>
-    public abstract class JobsController<FunctionalService> : SifController<jobType, Job> where FunctionalService : BasicFunctionalService
+    [RoutePrefix("services")]
+    public class ServiceController : ApiController
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected IAuthenticationService authService;
 
         /// <summary>
         /// Create an instance.
         /// </summary>
-        public JobsController(FunctionalService s)
-            : base(s)
+        public ServiceController()
         {
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
@@ -58,22 +62,20 @@ namespace Sif.Framework.Controllers
         }
 
         /// <summary>
-        /// For internal use. An alternative to the service property, but casts the service as a BasicFunctionalService.
-        /// </summary>
-        protected BasicFunctionalService Service { get { return service as BasicFunctionalService; } }
-
-        /// <summary>
         /// POST services/{TypeName}
         /// </summary>
-        public override HttpResponseMessage Post(jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpPost]
+        [Route("{serviceName}")]
+        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromBody] jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
+            checkAuthorisation(serviceName, zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
 
             HttpResponseMessage result;
             try
             {
-                Guid id = Service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
-                jobType job = Service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+                IFunctionalService service = getService(serviceName);
+                Guid id = service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+                jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 
                 string uri = Url.Link("DefaultApi", new { controller = item.name, id = id });
                 result = Request.CreateResponse<jobType>(HttpStatusCode.Created, job);
@@ -106,23 +108,74 @@ namespace Sif.Framework.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("")]
+        public virtual ICollection<jobType> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        {
+            checkAuthorisation(null, zone, context);
+
+            throw new HttpResponseException(HttpStatusCode.BadRequest);
+        }
+
         /// <summary>
         /// GET services/{TypeName}
         /// </summary>
         /// <returns></returns>
-        public override ICollection<jobType> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpGet]
+        [Route("{serviceName}")]
+        public virtual ICollection<jobType> Get([FromUri] string serviceName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
-            return base.Get(zone, context);
+            checkAuthorisation(serviceName, zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
+
+            ICollection<jobType> items;
+
+            try
+            {
+                items = getService(serviceName).Retrieve(zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+            }
+            catch (Exception e)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The GET request failed for functional services due to the following error:\n " + e.Message));
+            }
+
+            if (items == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return items;
         }
 
         /// <summary>
         /// GET services/{TypeName}/{id}
         /// </summary>
-        public override jobType Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpGet]
+        [Route("{serviceName}/{id}")]
+        public virtual jobType Get([FromUri] string serviceName, [FromUri] Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
-            return base.Get(id, zone, context);
+            checkAuthorisation(serviceName, zone, context, new Right(RightType.QUERY, RightValue.APPROVED));
+
+            // Check that we support that provider
+            // if not then throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            jobType item;
+
+            try
+            {
+                item = getService(serviceName).Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+            }
+            catch (Exception e)
+            {
+                string errorMessage = "The GET request failed for a " + serviceName + " job with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+            }
+
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return item;
         }
 
         /// <summary>
@@ -130,34 +183,60 @@ namespace Sif.Framework.Controllers
         /// This operation is forbidden.
         /// </summary>
         /// <returns>HTTP status 403.</returns>
-        public override void Put(Guid id, jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpPut]
+        [Route("{serviceName}/{id}")]
+        public virtual void Put([FromUri] string serviceName, [FromUri] Guid id, [FromBody] jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
+            checkAuthorisation(serviceName, zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
         /// <summary>
         /// DELETE services/{TypeName}
         /// </summary>
-        public override void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpDelete]
+        [Route("{serviceName}/{id}")]
+        public virtual void Delete([FromUri] string serviceName, [FromUri] Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context);
-            base.Delete(id, zone, context);
+            checkAuthorisation(serviceName, zone, context, new Right(RightType.DELETE, RightValue.APPROVED));
+
+            try
+            {
+                IFunctionalService service = getService(serviceName);
+                jobType item = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+
+                if (item == null)
+                {
+                    throw new HttpResponseException(HttpStatusCode.NotFound);
+                }
+                else
+                {
+                    service.Delete(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+                }
+
+            }
+            catch (Exception e)
+            {
+                string errorMessage = "The DELETE request failed for a " + serviceName + " job with an ID of " + id + " due to the following error:\n " + e.Message;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage));
+            }
         }
 
         /// <summary>
         /// POST services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual HttpResponseMessage Post(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpPost]
+        [Route("{serviceName}/{id}/{phaseName}")]
+        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context);
+            checkAuthorisation(serviceName, zone, context);
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                return OKResult(Service.CreateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(getService(serviceName).CreateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -180,16 +259,19 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// GET services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual HttpResponseMessage Get(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpGet]
+        [Route("{serviceName}/{id}/{phaseName}")]
+        public virtual HttpResponseMessage Get([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context);
+            checkAuthorisation(serviceName, zone, context);
+
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                return OKResult(Service.RetrieveToPhase(id, phaseName, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(getService(serviceName).RetrieveToPhase(id, phaseName, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -212,15 +294,17 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// PUT services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual HttpResponseMessage Put(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpPut]
+        [Route("{serviceName}/{id}/{phaseName}")]
+        public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context);
+            checkAuthorisation(serviceName, zone, context);
 
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                return OKResult(Service.UpdateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(getService(serviceName).UpdateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -243,16 +327,19 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// DELETE services/{TypeName}/phases/{PhaseName}
         /// </summary>
-        public virtual HttpResponseMessage Delete(Guid id, string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [HttpDelete]
+        [Route("{serviceName}/{id}/{phaseName}")]
+        public virtual HttpResponseMessage Delete([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
-            checkAuthorisation(zone, context);
+            checkAuthorisation(serviceName, zone, context);
+
             preventPagingHeaders();
 
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                return OKResult(Service.DeleteToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(getService(serviceName).DeleteToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -272,11 +359,22 @@ namespace Sif.Framework.Controllers
             }
         }
 
+        protected virtual IFunctionalService getService(string serviceName)
+        {
+            IService service = ProviderFactory.getInstance().GetProvider(serviceName);
+            if (service != null && ProviderUtils.isFunctionalService(service.GetType()))
+            {
+                return service as IFunctionalService;
+            }
+
+            throw new InvalidOperationException("Cannot find a Functional Service to support messages to " + serviceName);
+        }
+
         /// <summary>
         /// Internal method to check if the request is authorised in the given zone and context by checking the environment XML.
         /// </summary>
         /// <returns>The SessionToken if the request is authorised, otherwise an excpetion will be thrown.</returns>
-        protected virtual string checkAuthorisation(string[] zone, string[] context)
+        protected virtual string checkAuthorisation(string serviceName, string[] zone, string[] context)
         {
             string sessionToken = "";
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization, out sessionToken))
@@ -303,76 +401,35 @@ namespace Sif.Framework.Controllers
         /// Internal method to check if a given right is supported by the ACL.
         /// </summary>
         /// <param name="right">The right to check</param>
-        protected virtual void checkAuthorisation(string[] zone, string[] context, Right right)
+        protected virtual void checkAuthorisation(string serviceName, string[] zone, string[] context, Right right)
         {
-            string sessionToken = checkAuthorisation(zone, context);
-            environmentType environment = (new EnvironmentService()).RetrieveBySessionToken(sessionToken);
-            checkRights(getRights(getProvisionedZone(environment, zone)), right);
+            string sessionToken = checkAuthorisation(serviceName, zone, context);
+            Environment environment = authService.GetEnvironmentBySessionToken(sessionToken);
+            checkRights(serviceName, getRights(serviceName, EnvironmentUtils.GetTargetZone(environment, zone == null ? null : zone[0])), right);
         }
 
         /// <summary>
         /// Internal method to decide which is the current zone this request is executing in so that the ACL can be fetched. This tries to identify the zone based on provided name and declared default in the environment XML. If no default is declared in the environment, and only one zone is declared it is assumed to be the default zone.
         /// </summary>
         /// <returns>The current zone from the environment XML</returns>
-        private provisionedZoneType getProvisionedZone(environmentType environment, string[] zones)
-        {
-            string zone = null;
-
-            if (zones == null)
-            {
-                // Null zone, assuming default
-                if (environment.defaultZone != null)
-                {
-                    zone = environment.defaultZone.id;
-                    log.Debug("Using defined default zone ID ");
-                }
-
-                log.Debug("Zone not passed nor specified in the environment");
-
-                // No default defined, so if there is exactly one zone defined we can just return that
-                if (environment.provisionedZones != null && environment.provisionedZones.Length == 1)
-                {
-                    log.Debug("Assuming use of only declared zone " + environment.provisionedZones[0].id);
-                    return environment.provisionedZones[0];
-                }
-            } else
-            {
-                zone = zones[0];
-            }
-
-            log.Debug("Looking for zone with ID " + zone);
-
-            foreach (provisionedZoneType pzone in environment.provisionedZones)
-            {
-                if (pzone.id.Equals(zone))
-                {
-                    log.Debug("Found the zone " + pzone.id);
-                    return pzone;
-                }
-            }
-
-            string msg = "Request failed as Zone is invalid.";
-            log.Debug(msg);
-            throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
-        }
 
         /// <summary>
         /// Internal method to retrieve the rights from a given zone.
         /// </summary>
         /// <param name="zone">The zone to retrieve the rights for</param>
         /// <returns>An array of declared rights</returns>
-        private rightType[] getRights(provisionedZoneType zone)
+        private IDictionary<string, Right> getRights(string serviceName, ProvisionedZone zone)
         {
-            foreach (serviceType service in zone.services)
+            foreach (Model.Infrastructure.Service service in zone.Services)
             {
-                log.Debug("Inspecting access rights for " + service.type + " service " + service.name);
-                if (service.type.Equals(ServiceType.FUNCTIONAL.ToString()) && service.name.Equals(Service.TypeName))
+                log.Debug("Inspecting access rights for " + service.Type + " service " + service.Name);
+                if (service.Type.Equals(ServiceType.FUNCTIONAL.ToString()) && service.Name.Equals(serviceName))
                 {
                     log.Debug("Found what we were looking for!");
-                    return service.rights;
+                    return service.Rights;
                 }
             }
-            string msg = "Request failed as no FUNCTIONAL service found with the name " + Service.TypeName + ".";
+            string msg = "No Functional Service called " + serviceName + " found.";
             log.Debug(msg);
             throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
         }
@@ -382,17 +439,14 @@ namespace Sif.Framework.Controllers
         /// </summary>
         /// <param name="rights">The rights to look in (haystack)</param>
         /// <param name="right">The right to search for (the needle)</param>
-        private void checkRights(rightType[] rights, Right right)
+        private void checkRights(string serviceName, IDictionary<string, Right> rights, Right right)
         {
-            foreach (rightType r in rights)
+            if (rights.ContainsKey(right.Type) && rights[right.Type].Value.Equals(right.Value))
             {
-                if (r.type.Equals(right.Type) && r.Value.Equals(right.Value))
-                {
-                    log.Debug(r.type + " has the expected value " + right.Value);
-                    return;
-                }
+                log.Debug(right.Type + " has the expected value " + right.Value);
+                return;
             }
-            string msg = "Request failed as FUNCTIONAL service " + Service.TypeName + " does not have sufficient access rights to perform an " + right.Type + " operation";
+            string msg = "Functional Service " + serviceName + " does not have sufficient access rights to perform an " + right.Type + " operation";
             log.Debug(msg);
             throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Forbidden, msg));
         }

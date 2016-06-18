@@ -16,6 +16,7 @@
 
 using Sif.Framework.Demo.Us.Provider.Models;
 using Sif.Framework.Demo.Us.Provider.Utils;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Us;
@@ -54,6 +55,24 @@ namespace Sif.Framework.Demo.Us.Provider.Services
         static XStudentService()
         {
             studentsCache = CreateStudents(10);
+        }
+
+        public ServiceType getServiceType()
+        {
+            return ServiceType.OBJECT;
+        }
+
+        public string getServiceName()
+        {
+            return "XStudent";
+        }
+
+        public void Run()
+        {
+        }
+
+        public void Finalise()
+        {
         }
 
         public XStudent Create(XStudent obj, bool? mustUseAdvisory = null, string zone = null, string context = null)

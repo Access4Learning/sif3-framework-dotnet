@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Infrastructure;
 using System.Net.Http.Headers;
 
 namespace Sif.Framework.Service.Authentication
@@ -47,6 +48,8 @@ namespace Sif.Framework.Service.Authentication
         /// <param name="sessionToken">Session token associated with the initial authentication header.</param>
         /// <returns>True if the initial authentication header is valid; false otherwise.</returns>
         bool VerifyInitialAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken);
+
+        Environment GetEnvironmentBySessionToken(string sessionToken);
 
     }
 

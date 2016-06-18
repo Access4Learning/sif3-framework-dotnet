@@ -44,7 +44,5 @@ namespace Sif.Framework.Utils
         {
             return !String.IsNullOrWhiteSpace(content);
         }
-
     }
-
 }

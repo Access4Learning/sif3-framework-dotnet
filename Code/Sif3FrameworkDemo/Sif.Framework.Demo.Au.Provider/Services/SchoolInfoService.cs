@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Demo.Au.Provider.Models;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using System;
@@ -25,6 +26,23 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
     public class SchoolInfoService : IBasicProviderService<SchoolInfo>
     {
+        public ServiceType getServiceType()
+        {
+            return ServiceType.OBJECT;
+        }
+
+        public string getServiceName()
+        {
+            return "SchoolInfo";
+        }
+
+        public void Run()
+        {
+        }
+
+        public void Finalise()
+        {
+        }
 
         public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {

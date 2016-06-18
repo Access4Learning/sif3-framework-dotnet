@@ -132,7 +132,6 @@
     <Compile Include="Actions\JsonActions.cs" />
     <Compile Include="Actions\DefaultActions.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\PayloadsProvider.cs" />
     <Compile Include="Controllers\LearnerPersonalsProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -18,6 +18,7 @@ using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
@@ -78,6 +79,12 @@ namespace Sif.Framework.Service.Authentication
             string sessionToken;
             bool verified = VerifyAuthenticationHeader(header, false, out sessionToken);
             return (verified && sessionToken.Equals(storedSessionToken));
+        }
+
+        public override Environment GetEnvironmentBySessionToken(string sessionToken)
+        {
+            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
+            return MapperFactory.CreateInstance<environmentType, Environment>(environment);
         }
 
     }

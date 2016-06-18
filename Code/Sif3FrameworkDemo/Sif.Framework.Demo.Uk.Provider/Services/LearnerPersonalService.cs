@@ -16,6 +16,8 @@
 
 using Sif.Framework.Demo.Uk.Provider.Models;
 using Sif.Framework.Demo.Uk.Provider.Utils;
+using Sif.Framework.Model;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Uk;
@@ -87,6 +89,24 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
         static LearnerPersonalService()
         {
             learnerCache = CreateLearner(20);
+        }
+
+        public ServiceType getServiceType()
+        {
+            return ServiceType.OBJECT;
+        }
+
+        public string getServiceName()
+        {
+            return "LearnerPersonal";
+        }
+
+        public void Run()
+        {
+        }
+
+        public void Finalise()
+        {
         }
 
         public LearnerPersonal Create(LearnerPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
@@ -189,7 +209,5 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
         {
             learnerCache.Remove(refId);
         }
-
     }
-
 }

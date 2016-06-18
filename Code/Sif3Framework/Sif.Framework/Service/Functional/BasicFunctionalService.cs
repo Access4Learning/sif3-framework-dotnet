@@ -28,10 +28,10 @@ namespace Sif.Framework.Service.Functional
 {
     public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService 
     {
-        /// <summary>
-        /// Name of the Functional Service that the Provider is based on
-        /// </summary>
-        public abstract string TypeName { get; }
+        public override ServiceType getServiceType()
+        {
+            return ServiceType.FUNCTIONAL;
+        }
 
         /// <summary>
         /// The disctionary of phases this service contains, with the actions each can perform
@@ -243,10 +243,18 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Unsupported operation, job name not supplied.");
             }
 
-            if (!TypeName.Equals(job.Name))
+            if (!getServiceName().Equals(job.Name))
             {
                 throw new ArgumentException("Unsupported job name '" + job.Name + "'.");
             }
+        }
+
+        public override void Finalise()
+        {
+        }
+
+        public override void Run()
+        {
         }
     }
 }

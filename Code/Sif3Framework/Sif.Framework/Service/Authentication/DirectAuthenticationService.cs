@@ -17,6 +17,7 @@
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Service.Mapper;
 using Sif.Specification.Infrastructure;
 
 namespace Sif.Framework.Service.Authentication
@@ -59,6 +60,12 @@ namespace Sif.Framework.Service.Authentication
 
             ApplicationRegister applicationRegister = applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
+        }
+
+        public override Environment GetEnvironmentBySessionToken(string sessionToken)
+        {
+            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
+            return MapperFactory.CreateInstance<environmentType, Environment>(environment);
         }
 
     }

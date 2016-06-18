@@ -82,7 +82,8 @@
   <ItemGroup>
     <Compile Include="Consumers\JobConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
-    <Compile Include="Controllers\JobsController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Model\DataModels\ProviderClassInfo.cs" />
     <Compile Include="Model\Infrastructure\State.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
     <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Model\Infrastructure\Service.cs" />
     <Compile Include="Model\Infrastructure\ServiceType.cs" />
     <Compile Include="Model\Infrastructure\Zone.cs" />
+    <Compile Include="Model\DataModels\ModelObjectInfo.cs" />
     <Compile Include="Model\Query\Condition.cs" />
     <Compile Include="Model\Query\EqualCondition.cs" />
     <Compile Include="Model\Requests\MultipleDeleteRequest.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Providers\IProvider.cs" />
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
+    <Compile Include="Providers\ProviderFactory.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
@@ -165,9 +168,11 @@
     <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
+    <Compile Include="Service\IService.cs" />
+    <Compile Include="Service\Providers\BasicProviderService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
-    <Compile Include="Service\IService.cs" />
+    <Compile Include="Service\IDataModelService.cs" />
     <Compile Include="Service\Registration\IRegistrationService.cs" />
     <Compile Include="Service\Registration\NoRegistrationService.cs" />
     <Compile Include="Service\Registration\RegistrationService.cs" />
@@ -177,6 +182,7 @@
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
     <Compile Include="Utils\ZoneUtils.cs" />
+    <Compile Include="Utils\ProviderUtils.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
