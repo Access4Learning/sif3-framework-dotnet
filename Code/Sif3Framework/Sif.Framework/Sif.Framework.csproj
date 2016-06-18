@@ -165,9 +165,6 @@
     <Compile Include="Service\Functional\BasicPhaseActions.cs" />
     <Compile Include="Service\Functional\IPhaseActions.cs" />
     <Compile Include="Service\Functional\IFunctionalService.cs" />
-    <Compile Include="Service\IService.cs" />
-    <Compile Include="Service\ModelLink.cs" />
-    <Compile Include="Service\Providers\BasicProviderService.cs" />
     <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />

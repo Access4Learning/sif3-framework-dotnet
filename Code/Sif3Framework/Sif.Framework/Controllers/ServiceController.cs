@@ -15,7 +15,6 @@
  */
 
 using log4net;
-using Sif.Framework.Model;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Providers;
@@ -34,7 +33,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Web.Http;
-using Sif.Framework.Service;
 
 namespace Sif.Framework.Controllers
 {

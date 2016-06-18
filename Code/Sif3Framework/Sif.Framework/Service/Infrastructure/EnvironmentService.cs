@@ -30,21 +30,6 @@ namespace Sif.Framework.Service.Infrastructure
 
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
-        public override ModelObjectInfo GetSingleObjectClassInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ModelObjectInfo GetMultiObjectClassInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string getServiceName()
-        {
-            return "environment";
-        }
-
         private Zone CopyDefaultZone(Zone sourceZone)
         {
             Zone destinationZone = null;
@@ -182,6 +167,11 @@ namespace Sif.Framework.Service.Infrastructure
             : base(new EnvironmentRepository())
         {
 
+        }
+
+        public override string getServiceName()
+        {
+            return "environment";
         }
 
         public override Guid Create(environmentType item, string zone = null, string context = null)
