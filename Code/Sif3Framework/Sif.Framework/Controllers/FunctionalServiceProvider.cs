@@ -41,7 +41,7 @@ namespace Sif.Framework.Controllers
     /// </summary>
 
     [RoutePrefix("services")]
-    public class ServiceController : ApiController
+    public class FunctionalServiceProvider : ApiController
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected IAuthenticationService authService;
@@ -49,7 +49,7 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        public ServiceController()
+        public FunctionalServiceProvider()
         {
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
@@ -65,10 +65,15 @@ namespace Sif.Framework.Controllers
         /// POST services/{TypeName}
         /// </summary>
         [HttpPost]
-        [Route("{serviceName}")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromBody] jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [Route("{serviceName}/{serviceNameSingular}")]
+        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] string serviceNameSingular, [FromBody] jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
+
+            if (!serviceName.Equals(serviceNameSingular + "s"))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unexpected URL composition, " + serviceName + " does not appear to be a plural of " + serviceNameSingular);
+            }
 
             HttpResponseMessage result;
             try
@@ -77,7 +82,7 @@ namespace Sif.Framework.Controllers
                 Guid id = service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 
-                string uri = Url.Link("DefaultApi", new { controller = item.name, id = id });
+                string uri = Url.Link("ServicesRoute", new { controller = item.name + "s", id = id });
                 result = Request.CreateResponse<jobType>(HttpStatusCode.Created, job);
                 result.Headers.Location = new Uri(uri);
             }
@@ -95,7 +100,7 @@ namespace Sif.Framework.Controllers
             }
             catch (RejectedException e)
             {
-                result = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Create request rejected for Job with ID of " + item.id + ".\n", e);
+                result = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Create request rejected for Job" + (item.id == null ? "" : " with advisory id " + item.id) + ".\n", e);
             }
             catch (QueryException e)
             {
@@ -226,7 +231,7 @@ namespace Sif.Framework.Controllers
         /// POST services/{TypeName}/phases/{PhaseName}
         /// </summary>
         [HttpPost]
-        [Route("{serviceName}/{id}/{phaseName}")]
+        [Route("{serviceName}/{id}/phases/{phaseName}")]
         public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -261,7 +266,7 @@ namespace Sif.Framework.Controllers
         /// GET services/{TypeName}/phases/{PhaseName}
         /// </summary>
         [HttpGet]
-        [Route("{serviceName}/{id}/{phaseName}")]
+        [Route("{serviceName}/{id}/phases/{phaseName}")]
         public virtual HttpResponseMessage Get([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -296,7 +301,7 @@ namespace Sif.Framework.Controllers
         /// PUT services/{TypeName}/phases/{PhaseName}
         /// </summary>
         [HttpPut]
-        [Route("{serviceName}/{id}/{phaseName}")]
+        [Route("{serviceName}/{id}/phases/{phaseName}")]
         public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -329,7 +334,7 @@ namespace Sif.Framework.Controllers
         /// DELETE services/{TypeName}/phases/{PhaseName}
         /// </summary>
         [HttpDelete]
-        [Route("{serviceName}/{id}/{phaseName}")]
+        [Route("{serviceName}/{id}/phases/{phaseName}")]
         public virtual HttpResponseMessage Delete([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -376,7 +381,7 @@ namespace Sif.Framework.Controllers
         /// Internal method to check if the request is authorised in the given zone and context by checking the environment XML.
         /// </summary>
         /// <returns>The SessionToken if the request is authorised, otherwise an excpetion will be thrown.</returns>
-        protected virtual string checkAuthorisation(string serviceName, string[] zone, string[] context)
+        protected virtual Environment checkAuthorisation(string serviceName, string[] zone, string[] context)
         {
             string sessionToken = "";
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization, out sessionToken))
@@ -392,11 +397,18 @@ namespace Sif.Framework.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request failed as Zone and/or Context are invalid."));
             }
 
+            Environment environment = authService.GetEnvironmentBySessionToken(sessionToken);
+
+            if (environment == null)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request failed as could not retrieve environment XML."));
+            }
+
             log.Debug("Zone: " + zone);
             log.Debug("context: " + context);
             log.Debug("Session: " + sessionToken);
 
-            return sessionToken;
+            return environment;
         }
 
         /// <summary>
@@ -405,8 +417,7 @@ namespace Sif.Framework.Controllers
         /// <param name="right">The right to check</param>
         protected virtual void checkAuthorisation(string serviceName, string[] zone, string[] context, Right right)
         {
-            string sessionToken = checkAuthorisation(serviceName, zone, context);
-            Environment environment = authService.GetEnvironmentBySessionToken(sessionToken);
+            Environment environment = checkAuthorisation(serviceName, zone, context);
             checkRights(serviceName, getRights(serviceName, EnvironmentUtils.GetTargetZone(environment, zone == null ? null : zone[0])), right);
         }
 
@@ -431,7 +442,7 @@ namespace Sif.Framework.Controllers
                     return service.Rights;
                 }
             }
-            string msg = "No Functional Service called " + serviceName + " found.";
+            string msg = "No Functional Service called " + serviceName + " found in Environment.";
             log.Debug(msg);
             throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
         }

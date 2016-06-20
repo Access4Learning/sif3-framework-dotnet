@@ -80,9 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consumers\JobConsumer.cs" />
+    <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
-    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ProviderClassInfo.cs" />
     <Compile Include="Model\Infrastructure\State.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
@@ -243,10 +243,14 @@
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />

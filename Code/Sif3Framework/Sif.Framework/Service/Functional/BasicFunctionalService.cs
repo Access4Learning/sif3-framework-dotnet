@@ -244,9 +244,9 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Unsupported operation, job name not supplied.");
             }
 
-            if (!getServiceName().Equals(job.Name))
+            if (!getServiceName().Equals(job.Name + "s"))
             {
-                throw new ArgumentException("Unsupported job name '" + job.Name + "'.");
+                throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + getServiceName().Substring(0, getServiceName().Length - 1) + ".");
             }
 		}
 

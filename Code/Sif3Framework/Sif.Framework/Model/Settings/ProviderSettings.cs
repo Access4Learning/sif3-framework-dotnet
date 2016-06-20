@@ -36,6 +36,8 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         protected override string SettingsPrefix { get { return "provider"; } }
 
+        protected Type[] classes = null;
+
         /// <summary>
         /// <see cref="Sif.Framework.Model.Settings.ConfigFileBasedFrameworkSettings.ConfigFileBasedFrameworkSettings()"/>
         /// </summary>
@@ -47,17 +49,27 @@ namespace Sif.Framework.Model.Settings
         {
             get
             {
+                if(classes != null)
+                {
+                    return classes;
+                }
+
                 string setting = GetStringSetting(SettingsPrefix + ".provider.classes", "any");
+
+                log.Debug("Attempting to load named providers: " + setting);
+
                 if(StringUtils.IsEmpty(setting))
                 {
-                    return new Type[0];
+                    classes = new Type[0];
+                    return classes;
                 }
 
                 if (setting.ToLower().Equals("any")) {
-                    (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                    classes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                      from type in assembly.GetTypes()
-                     where ProviderUtils.isController(type)
+                     where ProviderUtils.isFunctionalService(type)
                      select type).ToArray();
+                    return classes;
                 }
 
                 List<Type> providers = new List<Type>();
@@ -73,7 +85,8 @@ namespace Sif.Framework.Model.Settings
                         providers.Add(provider);
                     }
                 }
-                return providers.ToArray();
+                classes = providers.ToArray();
+                return classes;
             }
         }
 

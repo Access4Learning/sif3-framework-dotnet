@@ -118,16 +118,15 @@ namespace Sif.Framework.Providers
                 return null;
             }
             
-            ProviderClassInfo providerClassInfo = providerClasses[name];
-            if (providerClassInfo == null)
+            if (!providerClasses.Keys.Contains(name))
             {
                 log.Error("No known provider for " + name);
                 return null;
             }
-
+            
             try
             {
-                return providerClassInfo.GetClassInstance(null);
+                return providerClasses[name].GetClassInstance(null);
             }
             catch (Exception ex)
             {
@@ -148,6 +147,7 @@ namespace Sif.Framework.Providers
 
         private void InitialiseProviders(ProviderSettings settings)
         {
+            log.Debug("Initialising ProviderFactory");
             foreach (Type type in settings.Classes)
             {
                 log.Debug("Provider class to initialse: " + type.FullName);

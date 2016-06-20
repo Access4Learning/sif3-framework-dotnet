@@ -231,7 +231,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
         void RunPayloadConsumer()
         {
-            JobConsumer consumer = new JobConsumer("Sif3DemoApp");
+            FunctionalServiceConsumer consumer = new FunctionalServiceConsumer("Sif3DemoApp");
             consumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
@@ -357,7 +357,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
             {
                 if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
                 {
-                    app.RunLearnerPersonalConsumer();
+                    //app.RunLearnerPersonalConsumer();
                     app.RunPayloadConsumer();
                 }
 

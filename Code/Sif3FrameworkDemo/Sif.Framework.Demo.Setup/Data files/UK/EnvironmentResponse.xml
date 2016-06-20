@@ -25,7 +25,7 @@
             <right type="ADMIN">REJECTED</right>
           </rights>
         </service>
-        <service name="Payload" contextId="DEFAULT" type="FUNCTIONAL">
+        <service name="Payloads" contextId="DEFAULT" type="FUNCTIONAL">
           <rights>
             <right type="QUERY">APPROVED</right>
             <right type="CREATE">APPROVED</right>

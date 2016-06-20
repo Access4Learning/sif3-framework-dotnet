@@ -35,7 +35,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
         public override string getServiceName()
         {
-            return "Payload";
+            return "Payloads";
         }
 
         protected override void addPhases(Job job)
