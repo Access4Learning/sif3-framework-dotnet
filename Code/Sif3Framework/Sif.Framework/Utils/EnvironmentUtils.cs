@@ -141,19 +141,36 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="environment">Environment object to parse.</param>
         /// <returns>Service URL.</returns>
-        internal static string ParseServiceUrl(Environment environment)
+        internal static string ParseServiceUrl(Environment environment, ServiceType serviceType = ServiceType.OBJECT)
         {
             string serviceUrl = null;
 
-            if (environment != null &&
-                environment.InfrastructureServices != null &&
-                environment.InfrastructureServices[InfrastructureServiceNames.requestsConnector] != null &&
-                environment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value != null)
+            if (environment == null || environment.InfrastructureServices == null)
             {
-                serviceUrl = environment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value;
+                return null;
             }
 
-            return serviceUrl;
+            InfrastructureServiceNames name;
+            switch(serviceType)
+            {
+                case ServiceType.FUNCTIONAL:
+                    name = InfrastructureServiceNames.servicesConnector;
+                    break;
+                case ServiceType.OBJECT:
+                    name = InfrastructureServiceNames.requestsConnector;
+                    break;
+                default:
+                    name = InfrastructureServiceNames.requestsConnector;
+                    break;
+            }
+
+            if (environment.InfrastructureServices[name] == null ||
+                environment.InfrastructureServices[name].Value == null)
+            {
+                return null;
+            }
+            
+            return environment.InfrastructureServices[name].Value;
         }
 
         public static ProvisionedZone GetTargetZone(Environment environment, string zone = null)
