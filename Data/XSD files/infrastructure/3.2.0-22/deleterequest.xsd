@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.sifassociation.org/infrastructure/3.2"
+    targetNamespace="http://www.sifassociation.org/infrastructure/3.2"
+    elementFormDefault="qualified">
+    <xs:include schemaLocation="infrastructurecommontypes.xsd"/>
+
+    <xs:complexType name="deleteRequestType">
+      <xs:annotation>
+  			<xs:appinfo>
+  				<elementName>Alert</elementName>
+  				<events>no</events>
+  				<isSIFObject>no</isSIFObject>
+  				<cedsId/>
+  				<cedsURL/>
+  			</xs:appinfo>
+  			<xs:documentation>A “deleteRequest” element, which consists of multiple, “delete” object ids. Since REST conventions do not support payloads on HTTP DELETE messages, all multi-object Delete Requests are conveyed via an HTTP PUT message containing an additional HTTP Header Field value of methodOverride set to DELETE.</xs:documentation>
+  		</xs:annotation>
+        <xs:sequence>
+            <xs:element name="deletes" type="deleteIdCollection"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="deleteIdCollection">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="delete" type="deleteIdType"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="deleteIdType">
+        <xs:attribute name="id" type="xs:token" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

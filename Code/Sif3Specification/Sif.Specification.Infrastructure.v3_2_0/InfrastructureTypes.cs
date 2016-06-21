@@ -271,7 +271,9 @@ namespace Sif.Specification.Infrastructure {
         
         private System.DateTime timestampField;
         
-        private object itemField;
+        private string sourceField;
+        
+        private codeItemType[] codeItemsField;
         
         private string idField;
         
@@ -309,14 +311,25 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("codeItems", typeof(codeItemsType), Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        [System.Xml.Serialization.XmlElementAttribute("source", typeof(string), Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="anyURI")]
-        public object Item {
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="anyURI")]
+        public string source {
             get {
-                return this.itemField;
+                return this.sourceField;
             }
             set {
-                this.itemField = value;
+                this.sourceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("codeItem", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public codeItemType[] codeItems {
+            get {
+                return this.codeItemsField;
+            }
+            set {
+                this.codeItemsField = value;
             }
         }
         
@@ -328,28 +341,6 @@ namespace Sif.Specification.Infrastructure {
             }
             set {
                 this.idField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class codeItemsType {
-        
-        private codeItemType codeItemField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public codeItemType codeItem {
-            get {
-                return this.codeItemField;
-            }
-            set {
-                this.codeItemField = value;
             }
         }
     }
@@ -594,275 +585,6 @@ namespace Sif.Specification.Infrastructure {
         
         /// <remarks/>
         DELETE,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("createResponse", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class createResponseType {
-        
-        private createType[] createsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("create", IsNullable=false)]
-        public createType[] creates {
-            get {
-                return this.createsField;
-            }
-            set {
-                this.createsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class createType {
-        
-        private errorType errorField;
-        
-        private string idField;
-        
-        private string advisoryIdField;
-        
-        private string statusCodeField;
-        
-        /// <remarks/>
-        public errorType error {
-            get {
-                return this.errorField;
-            }
-            set {
-                this.errorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string advisoryId {
-            get {
-                return this.advisoryIdField;
-            }
-            set {
-                this.advisoryIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string statusCode {
-            get {
-                return this.statusCodeField;
-            }
-            set {
-                this.statusCodeField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("error", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class errorType {
-        
-        private uint codeField;
-        
-        private string scopeField;
-        
-        private string messageField;
-        
-        private string descriptionField;
-        
-        private string idField;
-        
-        /// <remarks/>
-        public uint code {
-            get {
-                return this.codeField;
-            }
-            set {
-                this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string scope {
-            get {
-                return this.scopeField;
-            }
-            set {
-                this.scopeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string message {
-            get {
-                return this.messageField;
-            }
-            set {
-                this.messageField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string description {
-            get {
-                return this.descriptionField;
-            }
-            set {
-                this.descriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("deleteRequest", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class deleteRequestType {
-        
-        private deleteIdType[] deletesField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("delete", IsNullable=false)]
-        public deleteIdType[] deletes {
-            get {
-                return this.deletesField;
-            }
-            set {
-                this.deletesField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class deleteIdType {
-        
-        private string idField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("deleteResponse", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class deleteResponseType {
-        
-        private deleteStatus[] deletesField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("delete", IsNullable=false)]
-        public deleteStatus[] deletes {
-            get {
-                return this.deletesField;
-            }
-            set {
-                this.deletesField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class deleteStatus {
-        
-        private errorType errorField;
-        
-        private string idField;
-        
-        private string statusCodeField;
-        
-        /// <remarks/>
-        public errorType error {
-            get {
-                return this.errorField;
-            }
-            set {
-                this.errorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string statusCode {
-            get {
-                return this.statusCodeField;
-            }
-            set {
-                this.statusCodeField = value;
-            }
-        }
     }
     
     /// <remarks/>
@@ -1331,9 +1053,6 @@ namespace Sif.Specification.Infrastructure {
         requestsConnector,
         
         /// <remarks/>
-        servicesConnector,
-        
-        /// <remarks/>
         eventsConnector,
         
         /// <remarks/>
@@ -1341,6 +1060,9 @@ namespace Sif.Specification.Infrastructure {
         
         /// <remarks/>
         subscriptions,
+        
+        /// <remarks/>
+        servicesConnector,
     }
     
     /// <remarks/>
@@ -1392,7 +1114,7 @@ namespace Sif.Specification.Infrastructure {
         
         private string contextIdField;
         
-        private string typeField;
+        private serviceTypeType typeField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("right", IsNullable=false)]
@@ -1428,8 +1150,8 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string type {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public serviceTypeType type {
             get {
                 return this.typeField;
             }
@@ -1447,13 +1169,13 @@ namespace Sif.Specification.Infrastructure {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
     public partial class rightType {
         
-        private string typeField;
+        private rightTypeType typeField;
         
-        private string valueField;
+        private rightValueType valueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string type {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public rightTypeType type {
             get {
                 return this.typeField;
             }
@@ -1463,8 +1185,8 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
-        public string Value {
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public rightValueType Value {
             get {
                 return this.valueField;
             }
@@ -1472,6 +1194,78 @@ namespace Sif.Specification.Infrastructure {
                 this.valueField = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public enum rightTypeType {
+        
+        /// <remarks/>
+        QUERY,
+        
+        /// <remarks/>
+        CREATE,
+        
+        /// <remarks/>
+        UPDATE,
+        
+        /// <remarks/>
+        DELETE,
+        
+        /// <remarks/>
+        PROVIDE,
+        
+        /// <remarks/>
+        SUBSCRIBE,
+        
+        /// <remarks/>
+        ADMIN,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public enum rightValueType {
+        
+        /// <remarks/>
+        APPROVED,
+        
+        /// <remarks/>
+        SUPPORTED,
+        
+        /// <remarks/>
+        UNSUPPORTED,
+        
+        /// <remarks/>
+        REJECTED,
+        
+        /// <remarks/>
+        REQUESTED,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public enum serviceTypeType {
+        
+        /// <remarks/>
+        UTILITY,
+        
+        /// <remarks/>
+        OBJECT,
+        
+        /// <remarks/>
+        FUNCTIONAL,
+        
+        /// <remarks/>
+        SERVICEPATH,
+        
+        /// <remarks/>
+        XQUERYTEMPLATE,
     }
     
     /// <remarks/>
@@ -1485,739 +1279,6 @@ namespace Sif.Specification.Infrastructure {
         
         /// <remarks/>
         BROKERED,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("environments", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class environmentCollectionType {
-        
-        private environmentType[] environmentField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("environment")]
-        public environmentType[] environment {
-            get {
-                return this.environmentField;
-            }
-            set {
-                this.environmentField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("job", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class jobType {
-        
-        private string nameField;
-        
-        private string descriptionField;
-        
-        private string stateField;
-        
-        private string stateDescriptionField;
-        
-        private System.DateTime createdField;
-        
-        private bool createdFieldSpecified;
-        
-        private System.DateTime lastModifiedField;
-        
-        private bool lastModifiedFieldSpecified;
-        
-        private phaseType[] phasesField;
-        
-        private string idField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string description {
-            get {
-                return this.descriptionField;
-            }
-            set {
-                this.descriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string state {
-            get {
-                return this.stateField;
-            }
-            set {
-                this.stateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stateDescription {
-            get {
-                return this.stateDescriptionField;
-            }
-            set {
-                this.stateDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public System.DateTime created {
-            get {
-                return this.createdField;
-            }
-            set {
-                this.createdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool createdSpecified {
-            get {
-                return this.createdFieldSpecified;
-            }
-            set {
-                this.createdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public System.DateTime lastModified {
-            get {
-                return this.lastModifiedField;
-            }
-            set {
-                this.lastModifiedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastModifiedSpecified {
-            get {
-                return this.lastModifiedFieldSpecified;
-            }
-            set {
-                this.lastModifiedFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("phase", IsNullable=false)]
-        public phaseType[] phases {
-            get {
-                return this.phasesField;
-            }
-            set {
-                this.phasesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class phaseType {
-        
-        private string nameField;
-        
-        private stateType[] statesField;
-        
-        private bool requiredField;
-        
-        private rightType[] rightsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("state", IsNullable=false)]
-        public stateType[] states {
-            get {
-                return this.statesField;
-            }
-            set {
-                this.statesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool required {
-            get {
-                return this.requiredField;
-            }
-            set {
-                this.requiredField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("right", IsNullable=false)]
-        public rightType[] rights {
-            get {
-                return this.rightsField;
-            }
-            set {
-                this.rightsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class stateType {
-        
-        private string typeField;
-        
-        private System.DateTime createdField;
-        
-        private bool createdFieldSpecified;
-        
-        private System.DateTime lastModifiedField;
-        
-        private bool lastModifiedFieldSpecified;
-        
-        private string descriptionField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string type {
-            get {
-                return this.typeField;
-            }
-            set {
-                this.typeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public System.DateTime created {
-            get {
-                return this.createdField;
-            }
-            set {
-                this.createdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool createdSpecified {
-            get {
-                return this.createdFieldSpecified;
-            }
-            set {
-                this.createdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public System.DateTime lastModified {
-            get {
-                return this.lastModifiedField;
-            }
-            set {
-                this.lastModifiedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastModifiedSpecified {
-            get {
-                return this.lastModifiedFieldSpecified;
-            }
-            set {
-                this.lastModifiedFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string description {
-            get {
-                return this.descriptionField;
-            }
-            set {
-                this.descriptionField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("jobs", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class jobCollectionType {
-        
-        private jobType[] jobField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("job")]
-        public jobType[] job {
-            get {
-                return this.jobField;
-            }
-            set {
-                this.jobField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("namespace", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class namespaceType {
-        
-        private string zoneField;
-        
-        private string uriField;
-        
-        private string urlField;
-        
-        private string idField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string zone {
-            get {
-                return this.zoneField;
-            }
-            set {
-                this.zoneField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
-        public string uri {
-            get {
-                return this.uriField;
-            }
-            set {
-                this.uriField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
-        public string url {
-            get {
-                return this.urlField;
-            }
-            set {
-                this.urlField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("provider", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class providerType {
-        
-        private string serviceTypeField;
-        
-        private string serviceNameField;
-        
-        private string contextIdField;
-        
-        private string zoneIdField;
-        
-        private string providerNameField;
-        
-        private querySupportType querySupportField;
-        
-        private string[] mimeTypesField;
-        
-        private protocolType endPointField;
-        
-        private string idField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string serviceType {
-            get {
-                return this.serviceTypeField;
-            }
-            set {
-                this.serviceTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string serviceName {
-            get {
-                return this.serviceNameField;
-            }
-            set {
-                this.serviceNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string contextId {
-            get {
-                return this.contextIdField;
-            }
-            set {
-                this.contextIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string zoneId {
-            get {
-                return this.zoneIdField;
-            }
-            set {
-                this.zoneIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string providerName {
-            get {
-                return this.providerNameField;
-            }
-            set {
-                this.providerNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public querySupportType querySupport {
-            get {
-                return this.querySupportField;
-            }
-            set {
-                this.querySupportField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("mediaType", DataType="token", IsNullable=false)]
-        public string[] mimeTypes {
-            get {
-                return this.mimeTypesField;
-            }
-            set {
-                this.mimeTypesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public protocolType endPoint {
-            get {
-                return this.endPointField;
-            }
-            set {
-                this.endPointField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class querySupportType {
-        
-        private bool dynamicQueryField;
-        
-        private bool pagedField;
-        
-        private uint maxPageSizeField;
-        
-        private bool maxPageSizeFieldSpecified;
-        
-        private bool totalCountField;
-        
-        private bool totalCountFieldSpecified;
-        
-        private productIdentityType applicationProductField;
-        
-        private productIdentityType adapterProductField;
-        
-        /// <remarks/>
-        public bool dynamicQuery {
-            get {
-                return this.dynamicQueryField;
-            }
-            set {
-                this.dynamicQueryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool paged {
-            get {
-                return this.pagedField;
-            }
-            set {
-                this.pagedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public uint maxPageSize {
-            get {
-                return this.maxPageSizeField;
-            }
-            set {
-                this.maxPageSizeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool maxPageSizeSpecified {
-            get {
-                return this.maxPageSizeFieldSpecified;
-            }
-            set {
-                this.maxPageSizeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool totalCount {
-            get {
-                return this.totalCountField;
-            }
-            set {
-                this.totalCountField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool totalCountSpecified {
-            get {
-                return this.totalCountFieldSpecified;
-            }
-            set {
-                this.totalCountFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public productIdentityType applicationProduct {
-            get {
-                return this.applicationProductField;
-            }
-            set {
-                this.applicationProductField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public productIdentityType adapterProduct {
-            get {
-                return this.adapterProductField;
-            }
-            set {
-                this.adapterProductField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class protocolType {
-        
-        private string locationField;
-        
-        private propertyType[][] propertiesField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
-        public string location {
-            get {
-                return this.locationField;
-            }
-            set {
-                this.locationField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("property", typeof(propertyType), IsNullable=false)]
-        public propertyType[][] properties {
-            get {
-                return this.propertiesField;
-            }
-            set {
-                this.propertiesField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("provisionRequest", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class provisionRequestType {
-        
-        private provisionedZoneType[] provisionedZonesField;
-        
-        private string idField;
-        
-        private provisionRequestTypeCompletionStatus completionStatusField;
-        
-        private bool completionStatusFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("provisionedZone", IsNullable=false)]
-        public provisionedZoneType[] provisionedZones {
-            get {
-                return this.provisionedZonesField;
-            }
-            set {
-                this.provisionedZonesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public provisionRequestTypeCompletionStatus completionStatus {
-            get {
-                return this.completionStatusField;
-            }
-            set {
-                this.completionStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool completionStatusSpecified {
-            get {
-                return this.completionStatusFieldSpecified;
-            }
-            set {
-                this.completionStatusFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public enum provisionRequestTypeCompletionStatus {
-        
-        /// <remarks/>
-        ACCEPTED,
-        
-        /// <remarks/>
-        MIXED,
-        
-        /// <remarks/>
-        REJECTED,
     }
     
     /// <remarks/>
@@ -2514,29 +1575,6 @@ namespace Sif.Specification.Infrastructure {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("queues", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class queueCollectionType {
-        
-        private queueType[] queueField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("queue")]
-        public queueType[] queue {
-            get {
-                return this.queueField;
-            }
-            set {
-                this.queueField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
     [System.Xml.Serialization.XmlRootAttribute("subscription", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
     public partial class subscriptionType {
         
@@ -2544,7 +1582,7 @@ namespace Sif.Specification.Infrastructure {
         
         private string contextIdField;
         
-        private string serviceTypeField;
+        private serviceTypeType serviceTypeField;
         
         private string serviceNameField;
         
@@ -2575,8 +1613,7 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
-        public string serviceType {
+        public serviceTypeType serviceType {
             get {
                 return this.serviceTypeField;
             }
@@ -2625,67 +1662,47 @@ namespace Sif.Specification.Infrastructure {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("subscriptions", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class subscriptionCollectionType {
+    [System.Xml.Serialization.XmlRootAttribute("namespace", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class namespaceType {
         
-        private subscriptionType[] subscriptionField;
+        private string zoneField;
         
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("subscription")]
-        public subscriptionType[] subscription {
-            get {
-                return this.subscriptionField;
-            }
-            set {
-                this.subscriptionField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    [System.Xml.Serialization.XmlRootAttribute("updateResponse", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
-    public partial class updateResponseType {
+        private string uriField;
         
-        private updateType[] updatesField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("update", IsNullable=false)]
-        public updateType[] updates {
-            get {
-                return this.updatesField;
-            }
-            set {
-                this.updatesField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public partial class updateType {
-        
-        private errorType errorField;
+        private string urlField;
         
         private string idField;
         
-        private string statusCodeField;
-        
         /// <remarks/>
-        public errorType error {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string zone {
             get {
-                return this.errorField;
+                return this.zoneField;
             }
             set {
-                this.errorField = value;
+                this.zoneField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        public string uri {
+            get {
+                return this.uriField;
+            }
+            set {
+                this.uriField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        public string url {
+            get {
+                return this.urlField;
+            }
+            set {
+                this.urlField = value;
             }
         }
         
@@ -2699,15 +1716,346 @@ namespace Sif.Specification.Infrastructure {
                 this.idField = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("provider", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class providerType {
+        
+        private serviceTypeType serviceTypeField;
+        
+        private string serviceNameField;
+        
+        private string contextIdField;
+        
+        private string zoneIdField;
+        
+        private string providerNameField;
+        
+        private querySupportType querySupportField;
+        
+        private string[] mimeTypesField;
+        
+        private protocolType endPointField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        public serviceTypeType serviceType {
+            get {
+                return this.serviceTypeField;
+            }
+            set {
+                this.serviceTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string serviceName {
+            get {
+                return this.serviceNameField;
+            }
+            set {
+                this.serviceNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string contextId {
+            get {
+                return this.contextIdField;
+            }
+            set {
+                this.contextIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string zoneId {
+            get {
+                return this.zoneIdField;
+            }
+            set {
+                this.zoneIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string providerName {
+            get {
+                return this.providerNameField;
+            }
+            set {
+                this.providerNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public querySupportType querySupport {
+            get {
+                return this.querySupportField;
+            }
+            set {
+                this.querySupportField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("mediaType", DataType="token", IsNullable=false)]
+        public string[] mimeTypes {
+            get {
+                return this.mimeTypesField;
+            }
+            set {
+                this.mimeTypesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public protocolType endPoint {
+            get {
+                return this.endPointField;
+            }
+            set {
+                this.endPointField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
-        public string statusCode {
+        public string id {
             get {
-                return this.statusCodeField;
+                return this.idField;
             }
             set {
-                this.statusCodeField = value;
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class querySupportType {
+        
+        private bool dynamicQueryField;
+        
+        private bool dynamicQueryFieldSpecified;
+        
+        private bool queryByExampleField;
+        
+        private bool queryByExampleFieldSpecified;
+        
+        private bool changesSinceMarkerField;
+        
+        private bool changesSinceMarkerFieldSpecified;
+        
+        private bool pagedField;
+        
+        private bool pagedFieldSpecified;
+        
+        private uint maxPageSizeField;
+        
+        private bool maxPageSizeFieldSpecified;
+        
+        private bool totalCountField;
+        
+        private bool totalCountFieldSpecified;
+        
+        private productIdentityType applicationProductField;
+        
+        private productIdentityType adapterProductField;
+        
+        /// <remarks/>
+        public bool dynamicQuery {
+            get {
+                return this.dynamicQueryField;
+            }
+            set {
+                this.dynamicQueryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dynamicQuerySpecified {
+            get {
+                return this.dynamicQueryFieldSpecified;
+            }
+            set {
+                this.dynamicQueryFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool queryByExample {
+            get {
+                return this.queryByExampleField;
+            }
+            set {
+                this.queryByExampleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool queryByExampleSpecified {
+            get {
+                return this.queryByExampleFieldSpecified;
+            }
+            set {
+                this.queryByExampleFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool changesSinceMarker {
+            get {
+                return this.changesSinceMarkerField;
+            }
+            set {
+                this.changesSinceMarkerField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool changesSinceMarkerSpecified {
+            get {
+                return this.changesSinceMarkerFieldSpecified;
+            }
+            set {
+                this.changesSinceMarkerFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool paged {
+            get {
+                return this.pagedField;
+            }
+            set {
+                this.pagedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pagedSpecified {
+            get {
+                return this.pagedFieldSpecified;
+            }
+            set {
+                this.pagedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public uint maxPageSize {
+            get {
+                return this.maxPageSizeField;
+            }
+            set {
+                this.maxPageSizeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool maxPageSizeSpecified {
+            get {
+                return this.maxPageSizeFieldSpecified;
+            }
+            set {
+                this.maxPageSizeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool totalCount {
+            get {
+                return this.totalCountField;
+            }
+            set {
+                this.totalCountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totalCountSpecified {
+            get {
+                return this.totalCountFieldSpecified;
+            }
+            set {
+                this.totalCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public productIdentityType applicationProduct {
+            get {
+                return this.applicationProductField;
+            }
+            set {
+                this.applicationProductField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public productIdentityType adapterProduct {
+            get {
+                return this.adapterProductField;
+            }
+            set {
+                this.adapterProductField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class protocolType {
+        
+        private string locationField;
+        
+        private propertyType[][] propertiesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        public string location {
+            get {
+                return this.locationField;
+            }
+            set {
+                this.locationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("property", typeof(propertyType), IsNullable=false)]
+        public propertyType[][] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
     }
@@ -2730,6 +2078,8 @@ namespace Sif.Specification.Infrastructure {
         private string descriptionField;
         
         private string scriptField;
+        
+        private parameterType[] parametersField;
         
         private string returnTypeField;
         
@@ -2788,6 +2138,17 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("parameter", IsNullable=false)]
+        public parameterType[] parameters {
+            get {
+                return this.parametersField;
+            }
+            set {
+                this.parametersField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI", IsNullable=true)]
         public string returnType {
             get {
@@ -2840,6 +2201,760 @@ namespace Sif.Specification.Infrastructure {
         
         /// <remarks/>
         DISALLOWED,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class parameterType {
+        
+        private string nameField;
+        
+        private string typeField;
+        
+        private string defaultField;
+        
+        private string descriptionField;
+        
+        private bool requiredField;
+        
+        private bool requiredFieldSpecified;
+        
+        private enumerationType[] enumerationsField;
+        
+        private rangeType rangeField;
+        
+        private uint minLengthField;
+        
+        private bool minLengthFieldSpecified;
+        
+        private uint maxLengthField;
+        
+        private bool maxLengthFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string @default {
+            get {
+                return this.defaultField;
+            }
+            set {
+                this.defaultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool required {
+            get {
+                return this.requiredField;
+            }
+            set {
+                this.requiredField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool requiredSpecified {
+            get {
+                return this.requiredFieldSpecified;
+            }
+            set {
+                this.requiredFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("enumeration", IsNullable=false)]
+        public enumerationType[] enumerations {
+            get {
+                return this.enumerationsField;
+            }
+            set {
+                this.enumerationsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public rangeType range {
+            get {
+                return this.rangeField;
+            }
+            set {
+                this.rangeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public uint minLength {
+            get {
+                return this.minLengthField;
+            }
+            set {
+                this.minLengthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool minLengthSpecified {
+            get {
+                return this.minLengthFieldSpecified;
+            }
+            set {
+                this.minLengthFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public uint maxLength {
+            get {
+                return this.maxLengthField;
+            }
+            set {
+                this.maxLengthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool maxLengthSpecified {
+            get {
+                return this.maxLengthFieldSpecified;
+            }
+            set {
+                this.maxLengthFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class enumerationType {
+        
+        private string valueField;
+        
+        private string codeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string code {
+            get {
+                return this.codeField;
+            }
+            set {
+                this.codeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class rangeType {
+        
+        private long startField;
+        
+        private long endField;
+        
+        /// <remarks/>
+        public long start {
+            get {
+                return this.startField;
+            }
+            set {
+                this.startField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public long end {
+            get {
+                return this.endField;
+            }
+            set {
+                this.endField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("job", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class jobType {
+        
+        private string nameField;
+        
+        private string descriptionField;
+        
+        private jobStateType stateField;
+        
+        private bool stateFieldSpecified;
+        
+        private string stateDescriptionField;
+        
+        private System.DateTime createdField;
+        
+        private bool createdFieldSpecified;
+        
+        private System.DateTime lastModifiedField;
+        
+        private bool lastModifiedFieldSpecified;
+        
+        private string timeoutField;
+        
+        private phaseType[] phasesField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public jobStateType state {
+            get {
+                return this.stateField;
+            }
+            set {
+                this.stateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool stateSpecified {
+            get {
+                return this.stateFieldSpecified;
+            }
+            set {
+                this.stateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stateDescription {
+            get {
+                return this.stateDescriptionField;
+            }
+            set {
+                this.stateDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.DateTime created {
+            get {
+                return this.createdField;
+            }
+            set {
+                this.createdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createdSpecified {
+            get {
+                return this.createdFieldSpecified;
+            }
+            set {
+                this.createdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.DateTime lastModified {
+            get {
+                return this.lastModifiedField;
+            }
+            set {
+                this.lastModifiedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastModifiedSpecified {
+            get {
+                return this.lastModifiedFieldSpecified;
+            }
+            set {
+                this.lastModifiedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="duration")]
+        public string timeout {
+            get {
+                return this.timeoutField;
+            }
+            set {
+                this.timeoutField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("phase", IsNullable=false)]
+        public phaseType[] phases {
+            get {
+                return this.phasesField;
+            }
+            set {
+                this.phasesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public enum jobStateType {
+        
+        /// <remarks/>
+        NOTSTARTED,
+        
+        /// <remarks/>
+        INPROGRESS,
+        
+        /// <remarks/>
+        COMPLETED,
+        
+        /// <remarks/>
+        FAILED,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class phaseType {
+        
+        private string nameField;
+        
+        private stateType[] statesField;
+        
+        private bool requiredField;
+        
+        private rightType[] rightsField;
+        
+        private rightType[] statesRightsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("state", IsNullable=false)]
+        public stateType[] states {
+            get {
+                return this.statesField;
+            }
+            set {
+                this.statesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool required {
+            get {
+                return this.requiredField;
+            }
+            set {
+                this.requiredField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("right", IsNullable=false)]
+        public rightType[] rights {
+            get {
+                return this.rightsField;
+            }
+            set {
+                this.rightsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("right", IsNullable=false)]
+        public rightType[] statesRights {
+            get {
+                return this.statesRightsField;
+            }
+            set {
+                this.statesRightsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("state", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class stateType {
+        
+        private phaseStateType typeField;
+        
+        private System.DateTime createdField;
+        
+        private bool createdFieldSpecified;
+        
+        private System.DateTime lastModifiedField;
+        
+        private bool lastModifiedFieldSpecified;
+        
+        private string descriptionField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        public phaseStateType type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.DateTime created {
+            get {
+                return this.createdField;
+            }
+            set {
+                this.createdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createdSpecified {
+            get {
+                return this.createdFieldSpecified;
+            }
+            set {
+                this.createdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.DateTime lastModified {
+            get {
+                return this.lastModifiedField;
+            }
+            set {
+                this.lastModifiedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastModifiedSpecified {
+            get {
+                return this.lastModifiedFieldSpecified;
+            }
+            set {
+                this.lastModifiedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public enum phaseStateType {
+        
+        /// <remarks/>
+        NOTAPPLICABLE,
+        
+        /// <remarks/>
+        NOTSTARTED,
+        
+        /// <remarks/>
+        PENDING,
+        
+        /// <remarks/>
+        SKIPPED,
+        
+        /// <remarks/>
+        INPROGRESS,
+        
+        /// <remarks/>
+        COMPLETED,
+        
+        /// <remarks/>
+        FAILED,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("environments", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class environmentCollectionType {
+        
+        private environmentType[] environmentField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("environment")]
+        public environmentType[] environment {
+            get {
+                return this.environmentField;
+            }
+            set {
+                this.environmentField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("provisionRequest", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class provisionRequestType {
+        
+        private provisionedZoneType[] provisionedZonesField;
+        
+        private string idField;
+        
+        private provisionRequestTypeCompletionStatus completionStatusField;
+        
+        private bool completionStatusFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("provisionedZone", IsNullable=false)]
+        public provisionedZoneType[] provisionedZones {
+            get {
+                return this.provisionedZonesField;
+            }
+            set {
+                this.provisionedZonesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public provisionRequestTypeCompletionStatus completionStatus {
+            get {
+                return this.completionStatusField;
+            }
+            set {
+                this.completionStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool completionStatusSpecified {
+            get {
+                return this.completionStatusFieldSpecified;
+            }
+            set {
+                this.completionStatusFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public enum provisionRequestTypeCompletionStatus {
+        
+        /// <remarks/>
+        ACCEPTED,
+        
+        /// <remarks/>
+        MIXED,
+        
+        /// <remarks/>
+        REJECTED,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("queues", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class queueCollectionType {
+        
+        private queueType[] queueField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("queue")]
+        public queueType[] queue {
+            get {
+                return this.queueField;
+            }
+            set {
+                this.queueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("subscriptions", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class subscriptionCollectionType {
+        
+        private subscriptionType[] subscriptionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("subscription")]
+        public subscriptionType[] subscription {
+            get {
+                return this.subscriptionField;
+            }
+            set {
+                this.subscriptionField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -2976,6 +3091,391 @@ namespace Sif.Specification.Infrastructure {
             }
             set {
                 this.zoneField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("deleteRequest", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class deleteRequestType {
+        
+        private deleteIdType[] deletesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("delete", IsNullable=false)]
+        public deleteIdType[] deletes {
+            get {
+                return this.deletesField;
+            }
+            set {
+                this.deletesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class deleteIdType {
+        
+        private string idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("createResponse", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class createResponseType {
+        
+        private createType[] createsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("create", IsNullable=false)]
+        public createType[] creates {
+            get {
+                return this.createsField;
+            }
+            set {
+                this.createsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class createType {
+        
+        private errorType errorField;
+        
+        private string idField;
+        
+        private string advisoryIdField;
+        
+        private string statusCodeField;
+        
+        /// <remarks/>
+        public errorType error {
+            get {
+                return this.errorField;
+            }
+            set {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string advisoryId {
+            get {
+                return this.advisoryIdField;
+            }
+            set {
+                this.advisoryIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string statusCode {
+            get {
+                return this.statusCodeField;
+            }
+            set {
+                this.statusCodeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("error", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class errorType {
+        
+        private uint codeField;
+        
+        private string scopeField;
+        
+        private string messageField;
+        
+        private string descriptionField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        public uint code {
+            get {
+                return this.codeField;
+            }
+            set {
+                this.codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string scope {
+            get {
+                return this.scopeField;
+            }
+            set {
+                this.scopeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("updateResponse", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class updateResponseType {
+        
+        private updateType[] updatesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("update", IsNullable=false)]
+        public updateType[] updates {
+            get {
+                return this.updatesField;
+            }
+            set {
+                this.updatesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class updateType {
+        
+        private errorType errorField;
+        
+        private string idField;
+        
+        private string statusCodeField;
+        
+        /// <remarks/>
+        public errorType error {
+            get {
+                return this.errorField;
+            }
+            set {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string statusCode {
+            get {
+                return this.statusCodeField;
+            }
+            set {
+                this.statusCodeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("deleteResponse", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class deleteResponseType {
+        
+        private deleteStatus[] deletesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("delete", IsNullable=false)]
+        public deleteStatus[] deletes {
+            get {
+                return this.deletesField;
+            }
+            set {
+                this.deletesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    public partial class deleteStatus {
+        
+        private errorType errorField;
+        
+        private string idField;
+        
+        private string statusCodeField;
+        
+        /// <remarks/>
+        public errorType error {
+            get {
+                return this.errorField;
+            }
+            set {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string statusCode {
+            get {
+                return this.statusCodeField;
+            }
+            set {
+                this.statusCodeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("jobs", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class jobCollectionType {
+        
+        private jobType[] jobField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("job")]
+        public jobType[] job {
+            get {
+                return this.jobField;
+            }
+            set {
+                this.jobField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
+    [System.Xml.Serialization.XmlRootAttribute("states", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
+    public partial class stateCollectionType {
+        
+        private stateType[] stateField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("state")]
+        public stateType[] state {
+            get {
+                return this.stateField;
+            }
+            set {
+                this.stateField = value;
             }
         }
     }

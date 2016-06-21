@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.sifassociation.org/infrastructure/3.2"
+  targetNamespace="http://www.sifassociation.org/infrastructure/3.2" elementFormDefault="qualified">
+  <xs:include schemaLocation="infrastructurecommontypes.xsd"/>
+  <xs:element name="job" type="jobType"> </xs:element>
+  <xs:complexType name="jobType">
+    <xs:annotation>
+      <xs:appinfo>
+        <elementName>Job</elementName>
+        <events>yes</events>
+        <isSIFObject>yes</isSIFObject>
+        <cedsId/>
+        <cedsURL/>
+      </xs:appinfo>
+      <xs:documentation>All functional services must use this object design to track state. While Events may be published back to the objects creator, they must not be published to the Consumer when the event was generated based on its request (since results were included in the response). Each functional service should define the expectations of how management of the job is managed for both the Consumer and Provider. For instance, certain optional fields may need to be included in-order-to successfully cause a job to be created.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:token" minOccurs="1">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Name</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The name of the job, e.g. "grading" or "sre".</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="description" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Description</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>A description of the job, e.g. "Bowers Elementary School Final Marks"</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="state" type="jobStateType" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>State</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The current enumerable state of the job.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="stateDescription" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>State Description</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>A descriptive message elaborating on the current state, e.g. if the current state is "FAILED" the stateDescription may be "Timeout occured".</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="created" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Created</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The datetime this job was created.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="lastModified" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Last Modified</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The datetime this job was last modified.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="timeout" type="xs:duration">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Timeout</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The ammount of time after creation before this job is automatically deleted.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="phases" type="phaseCollectionType" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Phases</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The phases that make up this job.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="uuidType"/>
+  </xs:complexType>
+
+  <xs:complexType name="phaseCollectionType">
+    <xs:sequence>
+      <xs:element name="phase" type="phaseType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="phaseType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:token" minOccurs="1">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Phase Name</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The name of the Phase unique within the context of the owning job.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="states" type="stateCollectionType" minOccurs="1">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Phase States</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>A collection of the states the Phase has been through, must initially contain a NOTAPPLICABLE or NOTSTARTED state.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="required" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Required</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>Whether or not this phase is required for the job to complete successfully.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="rights" type="rightsType">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Rights</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>Access rights given to the consumer for this phase.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="statesRights" type="rightsType">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>States Rights</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>Access rights given to the consumer for each state.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="stateCollectionType">
+    <xs:sequence>
+      <xs:element name="state" type="stateType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="stateType">
+    <xs:annotation>
+      <xs:appinfo>
+        <elementName>State</elementName>
+        <events>no</events>
+        <isSIFObject>no</isSIFObject>
+        <cedsId/>
+        <cedsURL/>
+        <servicePaths>
+					<servicePath>
+						<path>[services connector]/[job name]/[job id]/[phase name]/states/state</path>
+						<description>Used exclusively by the Consumer to create a new (and therefore current) state.</description>
+					</servicePath>
+        </servicePaths>
+      </xs:appinfo>
+      <xs:documentation>For states updatable by the Consumer, it creates a new state much like it would a single object. The actual result (state or error) is included in the response. Each functional service should define the expectations for which Adaptor is responsible for updating the phase status. NOTE: The &quot;states&quot; collection represented here is reserved for future capabilities.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="type" type="phaseStateType" minOccurs="1">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Type</elementName>
+            <sifChar>M</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The type of this State object.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="created" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Created</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The datetime this job was created.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="lastModified" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Last Modified</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>The datetime this job was last modified.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="description" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:appinfo>
+            <elementName>Description</elementName>
+            <sifChar>O</sifChar>
+          </xs:appinfo>
+          <xs:documentation>A descriptive message ellaborating the condition of this state, e.g. if the state is "FAILED" the stateDescription may be "Timeout occured".</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="uuidType"/>
+  </xs:complexType>
+
+  <xs:element name="state" type="stateType"/>
+
+  <xs:simpleType name="jobStateType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="NOTSTARTED"/>
+      <xs:enumeration value="INPROGRESS"/>
+      <xs:enumeration value="COMPLETED"/>
+      <xs:enumeration value="FAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="phaseStateType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="NOTAPPLICABLE"/>
+      <xs:enumeration value="NOTSTARTED"/>
+      <xs:enumeration value="PENDING"/>
+      <xs:enumeration value="SKIPPED"/>
+      <xs:enumeration value="INPROGRESS"/>
+      <xs:enumeration value="COMPLETED"/>
+      <xs:enumeration value="FAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.sifassociation.org/infrastructure/3.2"
+	targetNamespace="http://www.sifassociation.org/infrastructure/3.2"
+	elementFormDefault="qualified">
+	<xs:include schemaLocation="infrastructurecommontypes.xsd"/>
+	<xs:element name="xquery" type="xqueryType"> </xs:element>
+
+	<xs:complexType name="xqueryType">
+		<xs:annotation>
+			<xs:appinfo>
+				<elementName>XQuery</elementName>
+				<events>yes</events>
+				<isSIFObject>yes</isSIFObject>
+				<cedsId/>
+				<cedsURL/>
+			</xs:appinfo>
+			<xs:documentation>This collection defines the entire set of named queries that Consumers may legally issue for execution by Service Providers.  A Consumer specifies the ID of a Named XQuery in a Query Request to a specific Service Provider, along with a set of values for any associated script parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="type" minOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+							<elementName>Type</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+					<xs:documentation>Determines if the query may be sent to a data provider or if it requires the extended XQuery mechanism.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="SINGULAR"/>
+						<xs:enumeration value="FORMULA"/>
+						<xs:enumeration value="EXTENDED"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="status" minOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+							<elementName>Status</elementName>
+							<sifChar>M</sifChar>
+						</xs:appinfo>
+					<xs:documentation>Communicates if the query has been inspected for data hiding and the results of that assessment.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="PENDING"/>
+						<xs:enumeration value="APPROVED"/>
+						<xs:enumeration value="DISALLOWED"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="qualifier" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+							<elementName>Qualifier</elementName>
+							<sifChar>O</sifChar>
+						</xs:appinfo>
+					<xs:documentation>If status is DISALLOWED this element optionally contains the reason.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:normalizedString">
+						<xs:minLength value="0"/>
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="description" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+							<elementName>Description</elementName>
+							<sifChar>ON</sifChar>
+						</xs:appinfo>
+					<xs:documentation>Human readable description of the XQuery's intended behavior.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:normalizedString">
+						<xs:maxLength value="1024"/>
+						<xs:minLength value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="script" minOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+							<elementName>Script</elementName>
+							<sifChar>MN</sifChar>
+						</xs:appinfo>
+					<xs:documentation>The text of the XQuery which MAY accept parameters. Usage of the CDATA designation is recommended.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" name="parameter" type="parameterType"
+							minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="returnType" nillable="true" type="xs:anyURI">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Return Type</elementName>
+						<sifChar>Q</sifChar>
+					</xs:appinfo>
+					<xs:documentation>The fully qualified name of the root element returned by this service.
+						Example:   http://www.sifassociation.org/datamodel/na/3.3:students
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:token">
+			<xs:annotation>
+				<xs:appinfo>
+					<elementName>ID</elementName>
+					<sifChar>OC</sifChar>
+				</xs:appinfo>
+				<xs:documentation>The unique ID of the XQuery Template, which is contained in the Query Request URL when this template is being utilized.  “Suggested” by the Consumer issuing the create Request, or pre-set in accordance with the binding requirements of a particular SIF release.
+					This is NOT required to be a UUID, and must be provided as the Service Identifier in every Query URL which invokes this Template.  Ex:  “StudentSnapshot”.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="includeType">
+		<xs:sequence>
+			<xs:element name="xpath" type="xpathType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+							<elementName>Xpath</elementName>
+							<sifChar>MR</sifChar>
+						</xs:appinfo>
+					<xs:documentation>Indicates one of the pieces of data to include in the result. [CHANGE TO SIF XPATH TYPE]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="parameterType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Name</elementName>
+						<sifChar>M</sifChar>
+					</xs:appinfo>
+					<xs:documentation>The name of the query parameter to be passed in.  Note:  Must not conflict with any other query parameter name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="type" type="xs:token">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Type</elementName>
+						<sifChar>O</sifChar>
+					</xs:appinfo>
+					<xs:documentation>A well understood type that MAY be used for parameter validation.  Example:  xs:unsignedInt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="default" type="xs:token">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Default</elementName>
+						<sifChar>O</sifChar>
+					</xs:appinfo>
+					<xs:documentation>Value to be supplied for this parameter if the submitter omits it.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="description">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Description</elementName>
+						<sifChar>O</sifChar>
+					</xs:appinfo>
+					<xs:documentation>An explanation of what this parameter represents.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:normalizedString">
+						<xs:maxLength value="1024"/>
+						<xs:minLength value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="required" type="xs:boolean">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Required</elementName>
+						<sifChar>OC</sifChar>
+					</xs:appinfo>
+					<xs:documentation>Indicator as to if this parameter is required.  If omitted, the parameter is assumed to be required!</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="enumerations">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" name="enumeration" type="enumerationType">
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="range" type="rangeType"/>
+			<xs:element minOccurs="0" name="minLength" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Minimum Length</elementName>
+						<sifChar>O</sifChar>
+					</xs:appinfo>
+					<xs:documentation>The minimum length for values of this parameter.  If omitted, zero.  May be functionally different because of other restrictions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="maxLength" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Maximum Length</elementName>
+						<sifChar>O</sifChar>
+					</xs:appinfo>
+					<xs:documentation>The maximum length for values of this parameter.  If omitted, unbounded.  May be functionally different because of other restrictions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="enumerationType">
+		<xs:sequence>
+			<xs:element name="value" type="xs:token">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Enumeration</elementName>
+						<sifChar>M</sifChar>
+					</xs:appinfo>
+					<xs:documentation>An acceptable parameter value for this query.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="code" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Enumeration Code</elementName>
+						<sifChar>OC</sifChar>
+					</xs:appinfo>
+					<xs:documentation>If enumerated value has an equivalent code, this field may be used for conversion.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="rangeType">
+		<xs:sequence>
+			<xs:element name="start" type="xs:long">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Start</elementName>
+						<sifChar>M</sifChar>
+					</xs:appinfo>
+					<xs:documentation>If a numeric range is used, this holds the inclusive starting value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end" type="xs:long">
+				<xs:annotation>
+					<xs:appinfo>
+						<elementName>Range End</elementName>
+						<sifChar>M</sifChar>
+					</xs:appinfo>
+					<xs:documentation>If a numeric range is used, this holds the inclusive ending value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

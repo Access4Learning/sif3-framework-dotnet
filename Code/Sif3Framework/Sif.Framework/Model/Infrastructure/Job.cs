@@ -68,6 +68,11 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual DateTime? LastModified { get; set; }
 
         /// <summary>
+        /// The ammount of time after creation before this job is automatically deleted.
+        /// </summary>
+        public virtual TimeSpan Timeout { get; set; }
+
+        /// <summary>
         /// Collection of phase objects
         /// </summary>
         public virtual IDictionary<string, Phase> Phases { get; set; }
@@ -80,6 +85,7 @@ namespace Sif.Framework.Model.Infrastructure
             Created = DateTime.UtcNow;
             LastModified = Created;
             Phases = new Dictionary<string, Phase>();
+            Timeout = new TimeSpan(0,0,0,0);
         }
 
         /// <summary>

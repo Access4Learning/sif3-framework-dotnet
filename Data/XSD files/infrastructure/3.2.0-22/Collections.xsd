@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.sifassociation.org/infrastructure/3.2"
+    targetNamespace="http://www.sifassociation.org/infrastructure/3.2"
+    elementFormDefault="qualified">
+    <xs:include schemaLocation="infrastructurecommontypes.xsd"/>
+    <!-- Like a data model collections file.  -->
+    <!-- Where applicable, no repeatable root is included!  -->
+
+    <!-- Infrastructure Services -->
+    <xs:include schemaLocation="environment.xsd"></xs:include>
+    <xs:include schemaLocation="provisionrequest.xsd"></xs:include>
+    <xs:include schemaLocation="queue.xsd"></xs:include>
+    <xs:include schemaLocation="subscription.xsd"></xs:include>
+
+    <!-- Utilities -->
+    <xs:include schemaLocation="alert.xsd"></xs:include>
+    <xs:include schemaLocation="codeset.xsd"></xs:include>
+    <xs:include schemaLocation="namespace.xsd"></xs:include>
+    <xs:include schemaLocation="provider.xsd"></xs:include>
+    <xs:include schemaLocation="xquery.xsd"></xs:include>
+    <xs:include schemaLocation="zone.xsd"></xs:include>
+
+    <!-- Requests -->
+    <xs:include schemaLocation="deleterequest.xsd"></xs:include>
+
+    <!-- Responses -->
+    <xs:include schemaLocation="createresponse.xsd"></xs:include>
+    <xs:include schemaLocation="updateresponse.xsd"></xs:include>
+    <xs:include schemaLocation="deleteresponse.xsd"></xs:include>
+
+    <!-- Functional Services -->
+    <xs:include schemaLocation="job.xsd"></xs:include>
+
+    <!-- Infrastructure Services -->
+    <!-- While not part of the SIF specification this construct, consistent with the rest of the Infrastructure Services, is provided as a convienience. -->
+    <xs:complexType name="environmentCollectionType">
+        <xs:sequence>
+            <xs:element name="environment" type="environmentType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="environments" type="environmentCollectionType"/>
+
+    <xs:element name="provisionRequest" type="provisionRequestType"/>
+
+    <xs:complexType name="queueCollectionType">
+        <xs:sequence>
+            <xs:element name="queue" type="queueType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="queues" type="queueCollectionType"/>
+
+    <xs:complexType name="subscriptionCollectionType">
+        <xs:sequence>
+            <xs:element name="subscription" type="subscriptionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="subscriptions" type="subscriptionCollectionType"/>
+
+
+    <!-- Utilities -->
+    <xs:complexType name="alertCollectionType">
+        <xs:sequence>
+            <xs:element name="alert" type="alertType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="alerts" type="alertCollectionType"/>
+
+    <xs:complexType name="codeSetCollectionType">
+        <xs:sequence>
+            <xs:element name="codeSet" type="codeSetType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="codeSets" type="codeSetCollectionType"/>
+
+    <xs:complexType name="namespaceCollectionType">
+        <xs:sequence>
+            <xs:element name="namespace" type="namespaceType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="namespaces" type="namespaceCollectionType"/>
+
+    <xs:complexType name="providerCollectionType">
+        <xs:sequence>
+            <xs:element name="provider" type="providerType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="providers" type="providerCollectionType"/>
+
+    <xs:complexType name="xqueryCollectionType">
+        <xs:sequence>
+            <xs:element name="xquery" type="xqueryType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="xquerys" type="xqueryCollectionType"/>
+
+    <xs:complexType name="zoneCollectionType">
+        <xs:sequence>
+            <xs:element name="zone" type="zoneType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="zones" type="zoneCollectionType"/>
+
+    <!-- Requests -->
+    <xs:element name="deleteRequest" type="deleteRequestType"/>
+
+    <!-- Responses -->
+    <xs:element name="createResponse" type="createResponseType"/>
+    <xs:element name="updateResponse" type="updateResponseType"/>
+    <xs:element name="deleteResponse" type="deleteResponseType"/>
+    <xs:element name="error" type="errorType"/>
+
+    <!-- Functional Services -->
+    <xs:complexType name="jobCollectionType">
+        <xs:sequence>
+            <xs:element name="job" type="jobType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="jobs" type="jobCollectionType"/>
+
+    <xs:element name="states" type="stateCollectionType"/>
+
+</xs:schema>

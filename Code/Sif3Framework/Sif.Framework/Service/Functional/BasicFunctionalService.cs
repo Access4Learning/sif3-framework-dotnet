@@ -45,6 +45,16 @@ namespace Sif.Framework.Service.Functional
         public BasicFunctionalService() : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
         {
             phaseActions = new Dictionary<string, IPhaseActions>();
+
+            /*
+
+    xxxx
+
+    ALSO NEED TO HAVE A TIMER CULLING JOBS FROM THIS SERVICE IF THEIR TIMEOUT HAS OCCURRED
+
+    xxxx
+
+    */
         }
 
         /// <summary>

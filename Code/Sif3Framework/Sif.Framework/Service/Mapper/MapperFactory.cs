@@ -21,6 +21,7 @@ using Sif.Framework.Model.Responses;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Mapper
@@ -213,7 +214,8 @@ namespace Sif.Framework.Service.Mapper
                 .ConvertUsing<StatesConverter>();
 
             AutoMapper.Mapper.CreateMap<Phase, phaseType>()
-                .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights.Values));
+                .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights.Values))
+                .ForMember(dest => dest.statesRights, opt => opt.MapFrom(src => src.StatesRights.Values));
             AutoMapper.Mapper.CreateMap<phaseType, Phase>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
             AutoMapper.Mapper.CreateMap<phaseType[], IDictionary<string, Phase>>()
@@ -222,8 +224,11 @@ namespace Sif.Framework.Service.Mapper
             AutoMapper.Mapper.CreateMap<Job, jobType>()
                 .ForMember(dest => dest.phases, opt => opt.MapFrom(src => src.Phases.Values))
                 .ForMember(dest => dest.createdSpecified, opt => opt.MapFrom(src => src.Created != null))
-                .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null));
-            AutoMapper.Mapper.CreateMap<jobType, Job>();
+                .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null))
+                .ForMember(dest => dest.stateSpecified, opt => opt.MapFrom(src => src.State != null))
+                .ForMember(dest => dest.timeout, opt => opt.MapFrom(src => XmlConvert.ToString(src.Timeout)));
+            AutoMapper.Mapper.CreateMap<jobType, Job>()
+                .ForMember(dest => dest.Timeout, opt => opt.MapFrom(src => XmlConvert.ToTimeSpan(src.timeout)));
 
             AutoMapper.Mapper.CreateMap<ResponseError, errorType>();
             AutoMapper.Mapper.CreateMap<errorType, ResponseError>();

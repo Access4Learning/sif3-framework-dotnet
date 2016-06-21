@@ -58,12 +58,18 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual IDictionary<string, Right> Rights { get; set; }
 
         /// <summary>
+        /// Access rights given to the consumer for the states in this phase.
+        /// </summary>
+        public virtual IDictionary<string, Right> StatesRights { get; set; }
+
+        /// <summary>
         /// Basic constructor that sets logical default values
         /// </summary>
         public Phase()
         {
             States = new List<State>();
             Rights = new Dictionary<string, Right>();
+            StatesRights = new Dictionary<string, Right>();
         }
 
         /// <summary>

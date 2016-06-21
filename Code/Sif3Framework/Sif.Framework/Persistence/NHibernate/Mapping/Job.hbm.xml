@@ -10,6 +10,7 @@
     <property name="StateDescription" column="STATEDESCRIPTION" length="256"/>
     <property name="Created" column="CREATED" type="UtcDateTime" />
     <property name="LastModified" column="LASTMODIFIED" type="UtcDateTime" />
+    <property name="Timeout" column="TIMEOUT" />
     <map name="Phases" table="JOB_PHASES" cascade="all" lazy="false">
       <key column="JOB_ID"/>
       <index column="NAME" type="string"/>
