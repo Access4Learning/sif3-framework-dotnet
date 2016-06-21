@@ -62,38 +62,40 @@ namespace Sif.Framework.Providers
         {
             lock (locked)
             {
-                if (factory != null)
+                if (factory == null)
                 {
-                    log.Debug("Finalising providers:");
-                    foreach (string name in factory.providers.Keys)
-                    {
-                        try
-                        {
-                            log.Debug("--- " + name);
-                            factory.providers[name].Finalise();
-                        }
-                        catch (Exception ex)
-                        {
-                            log.Warn(ex.Message, ex);
-                        }
-                    }
+                    return;
+                }
 
-                    log.Debug("Stopping provider threads:");
-                    foreach (string name in factory.providerThreads.Keys)
+                log.Debug("Finalising providers:");
+                foreach (string name in factory.providers.Keys)
+                {
+                    try
                     {
-                        try
-                        {
-                            log.Debug("--- " + name);
-                            factory.providerThreads[name].Abort();
-                        }
-                        catch (Exception ex)
-                        {
-                            log.Warn(ex.Message, ex);
-                        }
+                        log.Debug("--- " + name);
+                        factory.providers[name].Finalise();
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Warn(ex.Message, ex);
                     }
                 }
-                log.Info("All providers are shut down.");
+
+                log.Debug("Stopping provider threads:");
+                foreach (string name in factory.providerThreads.Keys)
+                {
+                    try
+                    {
+                        log.Debug("--- " + name);
+                        factory.providerThreads[name].Abort();
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Warn(ex.Message, ex);
+                    }
+                }
             }
+            log.Info("All providers are shut down.");
         }
 
         /**
@@ -155,25 +157,24 @@ namespace Sif.Framework.Providers
                 {
                     ProviderClassInfo providerClassInfo = new ProviderClassInfo(type, new Type[] { });
 
-                    IService provider = providerClassInfo.GetClassInstance(null);
+                    IService provider = providerClassInfo.GetClassInstance();
 
-                    if (StringUtils.NotEmpty(provider.getServiceName()))
+                    if (StringUtils.IsEmpty(provider.getServiceName()))
                     {
-                        log.Info("Adding provider for '" + provider.getServiceName() + "', using provider class '" + provider.GetType().FullName + "'.");
-
-                        // First add it to the standard request/response dictionary
-                        providerClasses[provider.getServiceName()] = providerClassInfo;
-
-                        // Add it to dictionary of background threads
-                        providers[provider.getServiceName()] = provider;
-
-                        // Add it to dictionary of background threads
-                        providerThreads[provider.getServiceName()] = new Thread(new ThreadStart(provider.Run));
+                        log.Error("The provider is returning null or empty string from getServiceName(). Provider '" + provider.GetType().FullName + " not added to provider factory.");
+                        continue;
                     }
-                    else
-                    {
-                        log.Error("The ModelObjectInfo parameter is either null or does not have the ObjectName property set. This is required! Provider '" + provider.GetType().FullName + " not added to provider factory.");
-                    }
+
+                    log.Info("Adding provider for '" + provider.getServiceName() + "', using provider class '" + provider.GetType().FullName + "'.");
+
+                    // First add it to the standard request/response dictionary
+                    providerClasses[provider.getServiceName()] = providerClassInfo;
+
+                    // Add it to dictionary of background threads
+                    providers[provider.getServiceName()] = provider;
+
+                    // Add it to dictionary of background threads
+                    providerThreads[provider.getServiceName()] = new Thread(new ThreadStart(provider.Run));
                 }
                 catch (Exception ex)
                 {
@@ -189,10 +190,11 @@ namespace Sif.Framework.Providers
             log.Debug("Start up delay between providers is: " + delay + " seconds");
 
             int i = 0;
-            foreach (Thread thread in providerThreads.Values)
+            foreach (string serviceName in providerThreads.Keys)
             {
+                log.Debug("Starting thread for " + serviceName);
                 Timer timer = new Timer((o) => {
-                    thread.Start();
+                    providerThreads[serviceName].Start();
                 }, null, (i * delay), Timeout.Infinite);
                 i += 1000;
             }

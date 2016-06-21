@@ -343,6 +343,45 @@ namespace Sif.Framework.Model.Settings
 
         }
 
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EventsSupported"/>
+        /// </summary>
+        public bool EventsSupported
+        {
+
+            get
+            {
+                return GetBooleanSetting(SettingsPrefix + ".events.supported", false);
+            }
+
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EventsFrequency"/>
+        /// </summary>
+        public int EventsFrequency
+        {
+
+            get
+            {
+                return GetIntegerSetting(SettingsPrefix + ".events.frequency", 60);
+            }
+
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.MaxObjectsInEvent"/>
+        /// </summary>
+        public int MaxObjectsInEvent
+        {
+
+            get
+            {
+                return GetIntegerSetting(SettingsPrefix + ".events.maxobjects", 10);
+            }
+
+        }
+
     }
 
 }

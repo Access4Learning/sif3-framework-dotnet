@@ -52,13 +52,5 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             // Throw an exception to prevent job deletion
             base.JobShutdown(job);
         }
-
-        public override void Run()
-        {
-        }
-
-        public override void Finalise()
-        {
-        }
     }
 }

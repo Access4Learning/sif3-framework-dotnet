@@ -95,6 +95,20 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         string UserToken { get; }
 
+        /// <summary>
+        /// Intention to support events flag if it exists; false otherwise.
+        /// </summary>
+        bool EventsSupported { get; }
+
+        /// <summary>
+        /// Frequency of events if it exists; 60 otherwise.
+        /// </summary>
+        int EventsFrequency { get; }
+
+        /// <summary>
+        /// Number of objects in an event if it exists; 60 otherwise.
+        /// </summary>
+        int MaxObjectsInEvent { get; }
     }
 
 }

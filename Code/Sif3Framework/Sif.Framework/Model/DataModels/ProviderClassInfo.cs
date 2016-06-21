@@ -17,7 +17,7 @@ namespace Sif.Framework.Model.DataModels
             SetConstructor(clazz.GetConstructor(paramTypes));
         }
 
-        public IService GetClassInstance(Object[] args)
+        public IService GetClassInstance(Object[] args = null)
         {
             return GetConstructor().Invoke(args) as IService;
         }

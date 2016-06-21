@@ -249,13 +249,5 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + getServiceName().Substring(0, getServiceName().Length - 1) + ".");
             }
 		}
-
-        public override void Finalise()
-        {
-        }
-
-        public override void Run()
-        {
-        }
     }
 }

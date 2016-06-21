@@ -44,6 +44,7 @@ namespace Sif.Framework.Service
 
         void Update(IEnumerable<UI> items, string zone = null, string context = null);
 
+        void broadcastEvents();
     }
 
 }
