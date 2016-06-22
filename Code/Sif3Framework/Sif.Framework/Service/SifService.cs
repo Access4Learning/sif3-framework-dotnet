@@ -48,28 +48,33 @@ namespace Sif.Framework.Service
             log.Debug("Start " + serviceName + " provider thread....");
 
             // Only if we intend to support events we will start the event manager
-            if (settings.EventsSupported)
+            if (!settings.EventsSupported)
             {
-                int frequency = settings.EventsFrequency;
-                if (frequency == 0)
-                {
-                    log.Info("Intending to issue events for  " + serviceName + ", but events currently turned off (frequency=0)");
-                    return;
-                }
-
-                log.Debug("Starting events thread  for " + serviceName + ".");
-
-                frequency = frequency * 1000;
-                log.Info("Event Frequency = " + frequency + " secs.");
-
-                log.Debug("Start sending events from " + serviceName + " provider...");
-
-                eventTimer = new Timer((o) => {
-                    log.Debug("Start Event Timer Task for " + serviceName + ".");
-                    broadcastEvents();
-                }, null, 0, frequency);
+                log.Debug(serviceName + " started without event support.");
+                return;
             }
-            log.Debug(serviceName + " started.");
+
+            int frequencyInSec = settings.EventsFrequency;
+            if (frequencyInSec == 0)
+            {
+                log.Info("Intending to issue events for  " + serviceName + ", but events currently turned off (frequency=0)");
+                return;
+            }
+
+            log.Debug("Starting events thread  for " + serviceName + ".");
+
+            int frequency = frequencyInSec * 1000;
+            log.Info("Event frequency = " + frequencyInSec + " secs. (" + frequency + ")");
+
+            log.Debug("Start sending events from " + serviceName + " provider...");
+
+            eventTimer = new Timer((o) =>
+            {
+                log.Debug("Start event timer task for " + serviceName + ".");
+                broadcastEvents();
+            }, null, 0, frequency);
+
+            log.Debug(serviceName + " started with event support.");
         }
 
         public virtual void Finalise()
@@ -150,7 +155,7 @@ namespace Sif.Framework.Service
 
         public virtual void broadcastEvents()
         {
-            log.Debug("================================ broadcastEvents() called for provider " + getServiceName() + " (" + getServiceType().ToString() + ")");
+            log.Debug("============================== broadcastEvents() called for provider " + getServiceName() + " (" + getServiceType().ToString() + ")");
             int totalRecords = 0;
             int failedRecords = 0;
             /*
@@ -247,7 +252,7 @@ namespace Sif.Framework.Service
             */
             log.Info("Total SIF Event Objects broadcasted: " + totalRecords);
             log.Info("Total SIF Event Objects failed     : " + failedRecords);
-            log.Debug("================================ Finished broadcastEvents() for provider " + getServiceName());
+            log.Debug("============================== Finished broadcastEvents() for provider " + getServiceName());
             
         }
     }

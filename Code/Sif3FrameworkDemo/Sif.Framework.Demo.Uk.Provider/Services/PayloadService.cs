@@ -38,13 +38,15 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return "Payloads";
         }
 
-        protected override void addPhases(Job job)
+        protected override void configure(Job job)
         {
             job.addPhase(new Phase("default", true, Right.getRights(create: RightValue.APPROVED, query: RightValue.APPROVED, update: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 
             job.addPhase(new Phase("xml", true, Right.getRights(update: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 
             job.addPhase(new Phase("json", true, Right.getRights(update: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
+
+            job.Timeout = new TimeSpan(0, 1, 0);
         }
 
         protected override void JobShutdown(Job job)

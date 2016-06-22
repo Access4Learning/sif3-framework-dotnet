@@ -33,6 +33,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Web.Http;
+using System.Linq;
 
 namespace Sif.Framework.Controllers
 {
@@ -433,18 +434,20 @@ namespace Sif.Framework.Controllers
         /// <returns>An array of declared rights</returns>
         private IDictionary<string, Right> getRights(string serviceName, ProvisionedZone zone)
         {
-            foreach (Model.Infrastructure.Service service in zone.Services)
+            Model.Infrastructure.Service service = (from Model.Infrastructure.Service s in zone.Services
+                                                    where s.Type.Equals(ServiceType.FUNCTIONAL.ToString())
+                                                       && s.Name.Equals(serviceName)
+                                                    select s).FirstOrDefault();
+
+            if (service == null)
             {
-                log.Debug("Inspecting access rights for " + service.Type + " service " + service.Name);
-                if (service.Type.Equals(ServiceType.FUNCTIONAL.ToString()) && service.Name.Equals(serviceName))
-                {
-                    log.Debug("Found what we were looking for!");
-                    return service.Rights;
-                }
+                string msg = "No Functional Service called " + serviceName + " found in Environment.";
+                log.Debug(msg);
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
             }
-            string msg = "No Functional Service called " + serviceName + " found in Environment.";
-            log.Debug(msg);
-            throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
+
+            log.Debug("Found access rights for " + service.Type + " service " + service.Name);
+            return service.Rights;
         }
 
         /// <summary>

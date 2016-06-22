@@ -24,11 +24,20 @@ using Sif.Specification.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
 using Sif.Framework.Model;
+using System.Threading;
+using Sif.Framework.Model.Settings;
+using log4net;
+using System.Reflection;
+using System.Linq;
+using System.Xml;
 
 namespace Sif.Framework.Service.Functional
 {
     public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService 
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private Timer timeoutTimer = null;
+
         public override ServiceType getServiceType()
         {
             return ServiceType.FUNCTIONAL;
@@ -45,28 +54,86 @@ namespace Sif.Framework.Service.Functional
         public BasicFunctionalService() : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
         {
             phaseActions = new Dictionary<string, IPhaseActions>();
+        }
 
-            /*
+        public override void Run()
+        {
+            base.Run();
+            string serviceName = getServiceName();
+            ProviderSettings settings = new ProviderSettings();
 
-    xxxx
+            // Only if we intend to timeout jobs will we start the job manager
+            if (!settings.JobTimeoutEnabled)
+            {
+                log.Debug("Jobs under the service " + serviceName + " will not timeout.");
+                return;
+            }
 
-    ALSO NEED TO HAVE A TIMER CULLING JOBS FROM THIS SERVICE IF THEIR TIMEOUT HAS OCCURRED
+            int frequencyInSec = settings.JobTimeoutFrequency;
+            if (frequencyInSec == 0)
+            {
+                log.Debug("Intending to timeout jobs for " + serviceName + ", but job timeout currently turned off (frequency=0)");
+                return;
+            }
 
-    xxxx
+            int frequency = frequencyInSec * 1000;
+            log.Info("Job timeout frequency = " + frequencyInSec + " secs. (" + frequency + ")");
 
-    */
+            timeoutTimer = new Timer((o) =>
+            {
+                log.Debug("++++++++++++++++++++++++++++++ Starting job timout task for " + serviceName + ".");
+
+                IList<Job> jobs = (from job in repository.Retrieve()
+                       where (job.Name + "s").Equals(serviceName) &&
+                       job.Timeout.TotalSeconds != 0 &&
+                       DateTime.UtcNow.CompareTo((job.Created ?? DateTime.UtcNow).Add(job.Timeout)) > 0
+                       select job).ToList();
+
+                /*
+                foreach(Job job in repository.Retrieve()) {
+                    log.Debug("Id: " + job.Id);
+                    log.Debug("Name: " + job.Name + "s | " + serviceName);
+                    log.Debug("Timeout: " + job.Timeout.ToString(@"dd\.hh\:mm\:ss"));
+                    log.Debug("Created: " + (job.Created ?? DateTime.UtcNow).ToString(@"dd\/MM\/yyyy HH:mm"));
+                    DateTime calculated = (job.Created ?? DateTime.UtcNow).Add(job.Timeout);
+                    log.Debug("Timeout calculated: " + calculated.ToString(@"dd\/MM\/yyyy HH:mm"));
+                    log.Debug("Current time: " + DateTime.UtcNow);
+                    log.Debug("Span Comparison: " + DateTime.UtcNow.CompareTo(calculated) + " | 0");
+                }
+                */
+
+                foreach (Job job in jobs)
+                {
+                    log.Debug("Job " + job.Id + " has timed out, requesting its deletion.");
+                    Delete(job.Id);
+                }
+
+                log.Debug("++++++++++++++++++++++++++++++ Finished job timout task for " + serviceName + ".");
+            }, null, 0, frequency);
+        }
+
+        public override void Finalise()
+        {
+            base.Finalise();
+            if (timeoutTimer != null)
+            {
+                log.Debug("Shutdown job timeout timer for: " + getServiceName());
+                timeoutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                timeoutTimer.Dispose();
+                timeoutTimer = null;
+            }
         }
 
         /// <summary>
         /// Method that must be extended to add phases to a given job when it has been created.
         /// </summary>
-        protected abstract void addPhases(Job job);
+        protected abstract void configure(Job job);
         
         public override Guid Create(jobType item, string zone = null, string context = null)
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
             checkJob(job);
-            addPhases(job);
+            configure(job);
             return repository.Save(job);
         }
         
@@ -76,7 +143,7 @@ namespace Sif.Framework.Service.Functional
             foreach (Job job in jobs)
             {
                 checkJob(job);
-                addPhases(job);
+                configure(job);
             }
             repository.Save(jobs);
         }
@@ -95,7 +162,9 @@ namespace Sif.Framework.Service.Functional
         {
             try
             {
-                JobShutdown(MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context)));
+                Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+                checkJob(job);
+                JobShutdown(job);
             }
             catch (Exception e)
             {

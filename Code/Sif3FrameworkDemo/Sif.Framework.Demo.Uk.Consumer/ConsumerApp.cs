@@ -324,6 +324,8 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 consumer.UpdateToPhase(job, "json", json, contentTypeOverride: "application/json", acceptOverride: "text/plain");
 
                 // Delete the job.
+                // Comment this out to test the job timeout facility
+                /*----------*/
                 if (log.IsInfoEnabled) log.Info("*** Delete a job.");
                 consumer.Delete(job);
                 Job deletedJob = consumer.Query(job);
@@ -337,6 +339,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 {
                     if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was NOT deleted.");
                 }
+                /*----------*/
             }
             catch (Exception e)
             {

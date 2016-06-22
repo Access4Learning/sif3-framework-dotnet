@@ -97,5 +97,25 @@ namespace Sif.Framework.Model.Settings
                 return GetIntegerSetting(SettingsPrefix + ".startup.delay", 10);
             }
         }
+
+        public bool JobTimeoutEnabled
+        {
+
+            get
+            {
+                return GetBooleanSetting(SettingsPrefix + ".job.timeout.enabled", true);
+            }
+
+        }
+
+        public int JobTimeoutFrequency
+        {
+
+            get
+            {
+                return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60);
+            }
+
+        }
     }
 }

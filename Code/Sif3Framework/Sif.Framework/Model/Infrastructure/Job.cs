@@ -31,7 +31,6 @@ namespace Sif.Framework.Model.Infrastructure
     /// </summary>
     public class Job : IPersistable<Guid>
     {
-
         /// <summary>
         /// The ID of the Job as managed by the Functional Service.
         /// </summary>

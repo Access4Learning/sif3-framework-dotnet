@@ -112,7 +112,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <returns></returns>
         public virtual State changeState(PhaseStateType type, string description = null)
         {
-            State current = States.LastOrDefault();
+            State current = getCurrentState();
             if(current != null && current.Type == type)
             {
                 current.LastModified = DateTime.UtcNow;

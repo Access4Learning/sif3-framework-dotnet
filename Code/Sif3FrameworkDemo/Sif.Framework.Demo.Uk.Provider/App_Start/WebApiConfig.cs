@@ -66,16 +66,6 @@ namespace Sif.Framework.Demo.Uk.Provider
             );
 
             config.Routes.MapHttpRoute(
-                name: "ServicesRoute3",
-                routeTemplate: "services/{controller}/{id}/phase/{name}/states"
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "ServicesRoute2",
-                routeTemplate: "services/{controller}/{id}/phase/{name}"
-            );
-
-            config.Routes.MapHttpRoute(
                 name: "ServicesRoute",
                 routeTemplate: "services/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
