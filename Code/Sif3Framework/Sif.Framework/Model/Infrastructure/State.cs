@@ -22,12 +22,12 @@ namespace Sif.Framework.Model.Infrastructure
     /// <summary>
     /// Object representing a phase state
     /// </summary>
-    public class State : IPersistable<long>
+    public class State : IPersistable<Guid>
     {
         /// <summary>
         /// ID required by Hibernate, not part of the SIF specification
         /// </summary>
-        public virtual long Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         /// <summary>
         /// The type of the phase state
