@@ -35,7 +35,7 @@ using System.Text;
 using System.Web.Http;
 using System.Linq;
 
-namespace Sif.Framework.Controllers
+namespace Sif.Framework.Providers
 {
     /// <summary>
     /// Services Connector implementation

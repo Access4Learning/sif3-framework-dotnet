@@ -82,7 +82,7 @@
   <ItemGroup>
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
-    <Compile Include="Controllers\FunctionalServiceProvider.cs" />
+    <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ProviderClassInfo.cs" />
     <Compile Include="Model\Infrastructure\State.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
