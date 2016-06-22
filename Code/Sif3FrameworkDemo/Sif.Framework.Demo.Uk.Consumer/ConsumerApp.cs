@@ -323,6 +323,31 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
                 consumer.UpdateToPhase(job, "json", json, contentTypeOverride: "application/json", acceptOverride: "text/plain");
 
+                // Change state of phase "json".
+                if (log.IsInfoEnabled) log.Info("*** Executing CREATE to the state of phase 'json'.");
+                state = consumer.CreateToState(job, "json", new State(PhaseStateType.FAILED, "Because I want it to"));
+                if (state.Type == PhaseStateType.FAILED)
+                {
+                    if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
+                }
+                else
+                {
+                    if (log.IsInfoEnabled) log.Info("Got UNEXPECTED result " + state.Type + ", last modified at " + state.LastModified);
+                }
+
+                // Query phase "json".
+                if (log.IsInfoEnabled) log.Info("*** Check state of phase 'json', expecting FAILED.");
+                job = consumer.Query(job);
+                state = job.Phases["json"].getCurrentState();
+                if (state.Type == PhaseStateType.FAILED)
+                {
+                    if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
+                }
+                else
+                {
+                    if (log.IsInfoEnabled) log.Info("Got UNEXPECTED result " + state.Type + ", last modified at " + state.LastModified);
+                }
+
                 // Delete the job.
                 // Comment this out to test the job timeout facility
                 /*----------*/

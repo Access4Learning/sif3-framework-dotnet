@@ -95,11 +95,15 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="rights">Access rights for the phase</param>
         /// <param name="state">The initial state of the phase</param>
         /// <param name="stateDescription">The initial state descritpion for the phase</param>
-        public Phase(string phaseName, Boolean required, IDictionary<string, Right> rights = null, PhaseStateType state = PhaseStateType.NOTAPPLICABLE, string stateDescription = "Not applicable") : this(phaseName, required)
+        public Phase(string phaseName, Boolean required, IDictionary<string, Right> rights = null, IDictionary<string, Right> stateRights = null, PhaseStateType state = PhaseStateType.NOTAPPLICABLE, string stateDescription = "Not applicable") : this(phaseName, required)
         {
             if (rights != null)
             {
                 Rights = rights;
+            }
+            if (stateRights != null)
+            {
+                StatesRights = stateRights;
             }
             changeState(state, stateDescription);
         }

@@ -71,6 +71,12 @@ namespace Sif.Framework.Demo.Uk.Provider
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "ServiceStatesRoute",
+                routeTemplate: "services/{controller}/{id}/phases/{phaseName}/states/{stateId}",
+                defaults: new { stateId = RouteParameter.Optional }
+            );
+
             config.MessageHandlers.Add(new MethodOverrideHandler());
 
             config.Services.Replace(typeof(IHttpControllerTypeResolver), new ServiceProviderHttpControllerTypeResolver());

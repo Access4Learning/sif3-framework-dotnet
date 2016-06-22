@@ -47,5 +47,10 @@ namespace Sif.Framework.Service.Functional
         /// Handles a Delete message being sent to, and response from, the named phase on the job with the given RefId.
         /// </summary>
         string DeleteToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null);
+
+        /// <summary>
+        /// Handles creating a state on the named phase on the job with the given RefId.
+        /// </summary>
+        stateType CreateToState(Guid id, string phaseName, stateType item = null, string zone = null, string context = null);
     }
 }

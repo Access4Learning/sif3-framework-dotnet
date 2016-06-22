@@ -99,36 +99,36 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Serialise a single job entity.
+        /// Serialise a single entity.
         /// </summary>
-        /// <param name="job">Payload of a single job.</param>
-        /// <returns>XML string representation of the single job.</returns>
-        public virtual string SerialiseSingle(Job job)
+        /// <param name="item">Payload of a single entity.</param>
+        /// <returns>XML string representation of the single entity.</returns>
+        public virtual string SerialiseSingle<DB, UI>(DB item)
         {
-            jobType data = MapperFactory.CreateInstance<Job, jobType>(job);
-            return SerialiserFactory.GetXmlSerialiser<jobType>().Serialise(data);
+            UI data = MapperFactory.CreateInstance<DB, UI>(item);
+            return SerialiserFactory.GetXmlSerialiser<UI>().Serialise(data);
         }
 
         /// <summary>
-        /// Serialise an entity of multiple jobs.
+        /// Serialise an entity of multiple entities.
         /// </summary>
-        /// <param name="job">Payload of multiple jobs.</param>
-        /// <returns>XML string representation of the multiple jobs.</returns>
-        public virtual string SerialiseMultiple(IEnumerable<Job> job)
+        /// <param name="items">Payload of multiple entities.</param>
+        /// <returns>XML string representation of the multiple entities.</returns>
+        public virtual string SerialiseMultiple<DB, UI>(IEnumerable<DB> items)
         {
-            List<jobType> data = MapperFactory.CreateInstances<Job, jobType>(job).ToList();
-            return SerialiserFactory.GetXmlSerialiser<List<jobType>>().Serialise(data);
+            List<UI> data = MapperFactory.CreateInstances<DB, UI>(items).ToList();
+            return SerialiserFactory.GetXmlSerialiser<List<UI>>().Serialise(data);
         }
 
         /// <summary>
-        /// Deserialise a single job entity.
+        /// Deserialise a single entity.
         /// </summary>
-        /// <param name="payload">Payload of a single job.</param>
-        /// <returns>Entity representing the single job.</returns>
-        public virtual Job DeserialiseSingle(string payload)
+        /// <param name="payload">Payload of a single entity.</param>
+        /// <returns>The deserialised single entity.</returns>
+        public virtual DB DeserialiseSingle<DB, UI>(string payload)
         {
-            jobType data = SerialiserFactory.GetXmlSerialiser<jobType>().Deserialise(payload);
-            return MapperFactory.CreateInstance<jobType, Job>(data);
+            UI data = SerialiserFactory.GetXmlSerialiser<UI>().Deserialise(payload);
+            return MapperFactory.CreateInstance<UI, DB>(data);
         }
 
         /// <summary>
@@ -136,10 +136,10 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="payload">Payload of multiple jobs.</param>
         /// <returns>Entity representing multiple jobs.</returns>
-        public virtual List<Job> DeserialiseMultiple(string payload)
+        public virtual List<DB> DeserialiseMultiple<DB, UI>(string payload)
         {
-            List<jobType> data = SerialiserFactory.GetXmlSerialiser<List<jobType>>().Deserialise(payload);
-            return MapperFactory.CreateInstances<jobType, Job>(data).ToList();
+            List<UI> data = SerialiserFactory.GetXmlSerialiser<List<UI>>().Deserialise(payload);
+            return MapperFactory.CreateInstances<UI, DB>(data).ToList();
         }
 
         /// <summary>
@@ -174,12 +174,12 @@ namespace Sif.Framework.Consumers
             checkJob(job, RightType.CREATE, zone);
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + job.Name + "s" + "/" + job.Name + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseSingle(job);
+            string body = SerialiseSingle<Job, jobType>(job);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
-            return DeserialiseSingle(xml);
+            return DeserialiseSingle<Job, jobType>(xml);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Sif.Framework.Consumers
             string jobName = checkJobs(jobs, RightType.CREATE, zone);
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + jobName + "s" + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseMultiple(jobs);
+            string body = SerialiseMultiple<Job, jobType>(jobs);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -225,7 +225,7 @@ namespace Sif.Framework.Consumers
                 string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
                 if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(xml);
-                return DeserialiseSingle(xml);
+                return DeserialiseSingle<Job, jobType>(xml);
             }
             catch (WebException ex)
             {
@@ -276,7 +276,7 @@ namespace Sif.Framework.Consumers
                 xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
             }
 
-            return DeserialiseMultiple(xml);
+            return DeserialiseMultiple<Job, jobType>(xml);
         }
 
         /// <summary>
@@ -295,13 +295,13 @@ namespace Sif.Framework.Consumers
             checkJob(job, RightType.QUERY, zone);
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + job.Name + "s" + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseSingle(job);
+            string body = SerialiseSingle<Job, jobType>(job);
             // TODO: Update PostRequest to accept paging parameters.
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET");
             if (log.IsDebugEnabled) log.Debug("XML from POST (Query by Example) request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
-            return DeserialiseMultiple(xml);
+            return DeserialiseMultiple<Job, jobType>(xml);
         }
 
 
@@ -483,6 +483,31 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug("String from DELETE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
+        }
+
+        /// <summary>
+        /// Send a create operation to a specified phase on the specified job.
+        /// </summary>
+        /// <param name="job">The Job on which to execute the phase</param>
+        /// <param name="phaseName">The name of the phase</param>
+        /// <param name="body">The payload to send to the phase</param>
+        /// <param name="zone">The zone in which to operate</param>
+        /// <param name="context">The context in which to operate</param>
+        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
+        /// <param name="acceptOverride">The expected mime type of the result</param>
+        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
+        public virtual State CreateToState(Job job, string phaseName, State item, string zone = null, string context = null)
+        {
+            checkRegistered();
+
+            checkJob(job, zone);
+
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + job.Name + "s" + "/" + job.Id + "/phases/" + phaseName + "/states" + HttpUtils.MatrixParameters(zone, context);
+            string body = SerialiseSingle<State, stateType>(item);
+            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
+            if (log.IsDebugEnabled) log.Debug("Guid from CREATE request to state on phase ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+            return DeserialiseSingle<State, stateType>(xml);
         }
 
         private Model.Infrastructure.Service checkJob(Job job, string zone = null)

@@ -366,6 +366,47 @@ namespace Sif.Framework.Providers
             }
         }
 
+        /// <summary>
+        /// POST services/{TypeName}/phases/{PhaseName}
+        /// </summary>
+        [HttpPost]
+        [Route("{serviceName}/{id}/phases/{phaseName}/states")]
+        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [FromBody] stateType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        {
+            checkAuthorisation(serviceName, zone, context);
+            
+            preventPagingHeaders();
+
+            HttpResponseMessage result;
+            try
+            {
+                IFunctionalService service = getService(serviceName);
+                stateType state = service.CreateToState(id, phaseName, item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+
+                string uri = Url.Link("ServiceStatesRoute", new { controller = serviceName, id = id, phaseName = phaseName, stateId = state.id });
+                result = Request.CreateResponse<stateType>(HttpStatusCode.Created, state);
+                result.Headers.Location = new Uri(uri);
+            }
+            catch (ArgumentException e)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
+            }
+            catch (CreateException e)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Problem creating state data for " + phaseName + "@" + id + ".\n", e));
+            }
+            catch (RejectedException e)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Problem creating state data for " + phaseName + "@" + id + ".\n", e));
+            }
+            catch (Exception e)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Request failed for creating state for phase " + phaseName + " in job " + id + ".\n " + e.Message));
+            }
+           
+            return result;
+        }
+
         protected virtual IFunctionalService getService(string serviceName)
         {
             IService service = ProviderFactory.getInstance().GetProvider(serviceName);
@@ -405,9 +446,9 @@ namespace Sif.Framework.Providers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request failed as could not retrieve environment XML."));
             }
 
-            log.Debug("Zone: " + zone);
-            log.Debug("context: " + context);
-            log.Debug("Session: " + sessionToken);
+            //log.Debug("Zone: " + zone);
+            //log.Debug("context: " + context);
+            //log.Debug("Session: " + sessionToken);
 
             return environment;
         }

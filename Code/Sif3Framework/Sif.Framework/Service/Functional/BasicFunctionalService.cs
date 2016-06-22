@@ -209,14 +209,9 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
-            Right right = phase.Rights[RightType.CREATE.ToString()];
-            if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
-            {
-                string msg = "Insufficient rights for this operation";
-                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                //repository.Save(job);
-                throw new RejectedException(msg);
-            }
+
+            checkRight(phase.Rights, RightType.CREATE);
+
             IPhaseActions action = getActions(phaseName);
             string result = action.Create(job, phase, body, contentType, accept);
             repository.Save(job);
@@ -227,14 +222,9 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
-            Right right = phase.Rights[RightType.QUERY.ToString()];
-            if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
-            {
-                string msg = "Insufficient rights for this operation";
-                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                //repository.Save(job);
-                throw new RejectedException(msg);
-            }
+
+            checkRight(phase.Rights, RightType.QUERY);
+
             IPhaseActions action = getActions(phaseName);
             string result = action.Retrieve(job, phase, body, contentType, accept);
             repository.Save(job);
@@ -245,14 +235,9 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
-            Right right = phase.Rights[RightType.UPDATE.ToString()];
-            if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
-            {
-                string msg = "Insufficient rights for this operation";
-                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                //repository.Save(job);
-                throw new RejectedException(msg);
-            }
+
+            checkRight(phase.Rights, RightType.UPDATE);
+
             IPhaseActions action = getActions(phaseName);
             string result = action.Update(job, phase, body, contentType, accept);
             repository.Save(job);
@@ -263,18 +248,27 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
             Phase phase = getPhase(job, phaseName);
-            Right right = phase.Rights[RightType.DELETE.ToString()];
-            if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
-            {
-                string msg = "Insufficient rights for this operation";
-                //job.updatePhaseState(phaseName, PhaseStateType.FAILED, msg);
-                //repository.Save(job);
-                throw new RejectedException(msg);
-            }
+
+            checkRight(phase.Rights, RightType.DELETE);
+            
             IPhaseActions action = getActions(phaseName);
             string result = action.Delete(job, phase, body, contentType, accept);
             repository.Save(job);
             return result;
+        }
+
+        public virtual stateType CreateToState(Guid id, string phaseName, stateType item = null, string zone = null, string context = null)
+        {
+            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+            State state = MapperFactory.CreateInstance<stateType, State>(item);
+            Phase phase = getPhase(job, phaseName);
+
+            checkRight(phase.StatesRights, RightType.CREATE);
+
+            job.updatePhaseState(phaseName, state.Type, state.Description);
+            repository.Save(job);
+
+            return MapperFactory.CreateInstance<State, stateType>(phase.getCurrentState());
         }
 
         /// <summary>
@@ -328,5 +322,18 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + getServiceName().Substring(0, getServiceName().Length - 1) + ".");
             }
 		}
+
+        private void checkRight(IDictionary<string, Right> rights, RightType type)
+        {
+            if (!rights.ContainsKey(type.ToString()))
+            {
+                throw new RejectedException("Insufficient rights for this operation, no right for " + type.ToString() + " given in the rights collection");
+            }
+            Right right = rights[type.ToString()];
+            if (right == null || right.Value.Equals(RightValue.REJECTED.ToString()))
+            {
+                throw new RejectedException("Insufficient rights for this operation");
+            }
+        }
     }
 }
