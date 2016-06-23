@@ -65,20 +65,19 @@ namespace Sif.Framework.Providers
         /// POST services/{TypeName}
         /// </summary>
         [HttpPost]
-        [Route("{serviceName}/{serviceNameSingular}")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] string serviceNameSingular, [FromBody] jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        [Route("{serviceName}/{jobName}")]
+        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] string jobName, [FromBody] jobType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
-
-            if (!serviceName.Equals(serviceNameSingular + "s"))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unexpected URL composition, " + serviceName + " does not appear to be a plural of " + serviceNameSingular);
-            }
 
             HttpResponseMessage result;
             try
             {
                 IFunctionalService service = getService(serviceName);
+                if (!service.AcceptJob(serviceName, jobName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Service " + service.getServiceName() + " does not handle jobs named " + jobName);
+                }
                 Guid id = service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 

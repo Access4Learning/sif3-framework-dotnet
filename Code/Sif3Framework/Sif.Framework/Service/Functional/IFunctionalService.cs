@@ -52,5 +52,27 @@ namespace Sif.Framework.Service.Functional
         /// Handles creating a state on the named phase on the job with the given RefId.
         /// </summary>
         stateType CreateToState(Guid id, string phaseName, stateType item = null, string zone = null, string context = null);
+
+        /// <summary>
+        /// Checks if the job has the right name to be acceptable for this service.
+        /// </summary>
+        /// <param name="job">The job to check</param>
+        /// <returns>true if the job's name conforms to the expected format for this service</returns>
+        Boolean AcceptJob(Job job);
+
+        /// <summary>
+        /// Checks if a job's name is acceptable for this service.
+        /// </summary>
+        /// <param name="jobName">The job name to check</param>
+        /// <returns>true if the name conforms to the expected format for this service</returns>
+        Boolean AcceptJob(string jobName);
+
+        /// <summary>
+        /// Checks if a service name and a job's name is acceptable for this service.
+        /// </summary>
+        /// <param name="serviceName">The service name to check</param>
+        /// <param name="jobName">The job name to check</param>
+        /// <returns>true if the names conforms to the expected format for this service</returns>
+        Boolean AcceptJob(string serviceName, string jobName);
     }
 }

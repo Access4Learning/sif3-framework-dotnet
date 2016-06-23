@@ -82,7 +82,7 @@ namespace Sif.Framework.Service.Functional
                 log.Debug("++++++++++++++++++++++++++++++ Starting job timout task for " + serviceName + ".");
 
                 IList<Job> jobs = (from job in repository.Retrieve()
-                       where (job.Name + "s").Equals(serviceName) &&
+                       where AcceptJob(job) &&
                        job.Timeout.TotalSeconds != 0 &&
                        DateTime.UtcNow.CompareTo((job.Created ?? DateTime.UtcNow).Add(job.Timeout)) > 0
                        select job).ToList();
@@ -167,7 +167,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job repoItem = MapperFactory.CreateInstance<jobType, Job>(item);
             IList<Job> repoItems = (from Job job in repository.Retrieve(repoItem)
-                                          where getServiceName().Equals(job.Name + "s")
+                                          where AcceptJob(job)
                                           select job).ToList();
             return MapperFactory.CreateInstances<Job, jobType>(repoItems);
         }
@@ -175,7 +175,7 @@ namespace Sif.Framework.Service.Functional
         public override ICollection<jobType> Retrieve(string zone = null, string context = null)
         {
             IList<Job> repoItems = (from Job job in repository.Retrieve()
-                                    where getServiceName().Equals(job.Name + "s")
+                                    where AcceptJob(job)
                                     select job).ToList();
             return MapperFactory.CreateInstances<Job, jobType>(repoItems);
         }
@@ -300,6 +300,25 @@ namespace Sif.Framework.Service.Functional
         {
         }
 
+        public virtual Boolean AcceptJob(Job job)
+        {
+            return AcceptJob(job.Name);
+        }
+
+        public virtual Boolean AcceptJob(string jobName)
+        {
+            return AcceptJob(getServiceName(), jobName);
+        }
+
+        public virtual Boolean AcceptJob(string serviceName, string jobName)
+        {
+            if (StringUtils.IsEmpty(getServiceName()) || StringUtils.IsEmpty(serviceName) || StringUtils.IsEmpty(jobName))
+            {
+                return false;
+            }
+            return getServiceName().Equals(serviceName) && getServiceName().Equals(jobName + "s");
+        }
+
         /// <summary>
         /// Internal method to get a named phase from a job, throwing an appropriate exception if not found
         /// </summary>
@@ -339,7 +358,7 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Unsupported operation, job name not supplied.");
             }
 
-            if (!getServiceName().Equals(job.Name + "s"))
+            if (!AcceptJob(job))
             {
                 throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + getServiceName().Substring(0, getServiceName().Length - 1) + ".");
             }
