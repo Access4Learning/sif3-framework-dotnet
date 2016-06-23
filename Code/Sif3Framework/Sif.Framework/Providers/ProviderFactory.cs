@@ -142,7 +142,7 @@ namespace Sif.Framework.Providers
         /*---------------------*/
         private ProviderFactory()
         {
-            ProviderSettings settings = new ProviderSettings();
+            ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
             InitialiseProviders(settings);
             StartProviders(settings);
         }

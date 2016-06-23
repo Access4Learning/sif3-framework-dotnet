@@ -81,7 +81,7 @@ namespace Sif.Framework.Providers
                 Guid id = service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 
-                string uri = Url.Link("ServicesRoute", new { controller = item.name + "s", id = id });
+                string uri = Url.Link("ServicesRoute", new { controller = service.getServiceName(), id = id });
                 result = Request.CreateResponse<jobType>(HttpStatusCode.Created, job);
                 result.Headers.Location = new Uri(uri);
             }

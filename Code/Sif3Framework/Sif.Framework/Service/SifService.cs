@@ -24,6 +24,7 @@ using Sif.Framework.Model.Settings;
 using log4net;
 using System.Reflection;
 using System.Threading;
+using Sif.Framework.Utils;
 
 namespace Sif.Framework.Service
 {
@@ -44,7 +45,7 @@ namespace Sif.Framework.Service
         public virtual void Run()
         {
             string serviceName = getServiceName();
-            ProviderSettings settings = new ProviderSettings();
+            ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
             log.Debug("Start " + serviceName + " provider thread....");
 
             // Only if we intend to support events we will start the event manager

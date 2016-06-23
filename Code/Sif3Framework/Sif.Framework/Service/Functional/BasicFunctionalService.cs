@@ -58,7 +58,7 @@ namespace Sif.Framework.Service.Functional
         {
             base.Run();
             string serviceName = getServiceName();
-            ProviderSettings settings = new ProviderSettings();
+            ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
 
             // Only if we intend to timeout jobs will we start the job manager
             if (!settings.JobTimeoutEnabled)
