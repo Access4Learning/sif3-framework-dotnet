@@ -23,13 +23,11 @@ using Sif.Framework.Model.Exceptions;
 using Sif.Specification.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
-using Sif.Framework.Model;
 using System.Threading;
 using Sif.Framework.Model.Settings;
 using log4net;
 using System.Reflection;
 using System.Linq;
-using System.Xml;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -156,6 +154,30 @@ namespace Sif.Framework.Service.Functional
         public override void Update(IEnumerable<jobType> items, string zone = null, string context = null)
         {
             throw new RejectedException();
+        }
+
+        public override jobType Retrieve(Guid id, string zone = null, string context = null)
+        {
+            Job repoItem = repository.Retrieve(id);
+            checkJob(repoItem);
+            return MapperFactory.CreateInstance<Job, jobType>(repoItem);
+        }
+
+        public override ICollection<jobType> Retrieve(jobType item, string zone = null, string context = null)
+        {
+            Job repoItem = MapperFactory.CreateInstance<jobType, Job>(item);
+            IList<Job> repoItems = (from Job job in repository.Retrieve(repoItem)
+                                          where getServiceName().Equals(job.Name + "s")
+                                          select job).ToList();
+            return MapperFactory.CreateInstances<Job, jobType>(repoItems);
+        }
+
+        public override ICollection<jobType> Retrieve(string zone = null, string context = null)
+        {
+            IList<Job> repoItems = (from Job job in repository.Retrieve()
+                                    where getServiceName().Equals(job.Name + "s")
+                                    select job).ToList();
+            return MapperFactory.CreateInstances<Job, jobType>(repoItems);
         }
 
         public override void Delete(Guid id, string zone = null, string context = null)

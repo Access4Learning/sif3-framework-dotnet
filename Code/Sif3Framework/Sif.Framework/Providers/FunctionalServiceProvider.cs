@@ -17,7 +17,6 @@
 using log4net;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Providers;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Functional;
