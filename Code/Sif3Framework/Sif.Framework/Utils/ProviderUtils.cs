@@ -109,5 +109,61 @@ namespace Sif.Framework.Utils
 
             return error;
         }
+
+        public static createType CreateCreate(HttpStatusCode statusCode, string id, string advisoryId = null, errorType error = null)
+        {
+            createType create = new createType();
+            create.statusCode = ((int)statusCode).ToString();
+            create.id = id;
+            if (StringUtils.NotEmpty(advisoryId))
+            {
+                create.advisoryId = advisoryId;
+            }
+            if (error != null)
+            {
+                create.error = error;
+            }
+            return create;
+        }
+
+        public static createResponseType CreateCreateResponse(createType[] creates)
+        {
+            createResponseType createResponse = new createResponseType();
+            createResponse.creates = creates;
+            return createResponse;
+        }
+
+        public static createResponseType CreateCreateResponse(createType create)
+        {
+            createResponseType createResponse = new createResponseType();
+            createResponse.creates = new createType[] { create } ;
+            return createResponse;
+        }
+
+        public static deleteStatus CreateDelete(HttpStatusCode statusCode, string id, errorType error = null)
+        {
+            deleteStatus status = new deleteStatus();
+            status.statusCode = ((int)statusCode).ToString();
+            status.id = id;
+            if (error != null)
+            {
+                status.error = error;
+            }
+            return status;
+        }
+
+        public static deleteResponseType CreateDeleteResponse(deleteStatus[] statuses)
+        {
+            deleteResponseType deleteResponse = new deleteResponseType();
+            deleteResponse.deletes = statuses;
+            return deleteResponse;
+        }
+
+        public static deleteResponseType CreateDeleteResponse(deleteStatus status)
+        {
+            deleteResponseType deleteResponse = new deleteResponseType();
+            deleteResponse.deletes = new deleteStatus[] { status };
+            return deleteResponse;
+        }
     }
 }
