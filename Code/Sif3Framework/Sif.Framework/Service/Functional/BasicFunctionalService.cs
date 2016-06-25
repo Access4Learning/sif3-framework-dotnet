@@ -28,6 +28,8 @@ using Sif.Framework.Model.Settings;
 using log4net;
 using System.Reflection;
 using System.Linq;
+using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Query;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -126,10 +128,16 @@ namespace Sif.Framework.Service.Functional
         /// Method that must be extended to add phases to a given job when it has been created.
         /// </summary>
         protected abstract void configure(Job job);
-        
+
         public override Guid Create(jobType item, string zone = null, string context = null)
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
+
+            if (StringUtils.NotEmpty(job.Id) && repository.Exists(job.Id))
+            {
+                throw new CreateException("Create failed, an object with the id " + job.Id + "already exists.");
+            }
+
             checkJob(job);
             configure(job);
             return repository.Save(job);
@@ -140,6 +148,11 @@ namespace Sif.Framework.Service.Functional
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
             foreach (Job job in jobs)
             {
+                if (StringUtils.NotEmpty(job.Id) && repository.Exists(job.Id))
+                {
+                    throw new CreateException("Create failed, an object with the id " + job.Id + "already exists.");
+                }
+
                 checkJob(job);
                 configure(job);
             }
@@ -382,6 +395,41 @@ namespace Sif.Framework.Service.Functional
             {
                 throw new RejectedException("Insufficient rights for this operation");
             }
+        }
+
+        public MultipleUpdateResponse Update(ICollection<jobType> obj, string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public jobType Create(jobType obj, bool? mustUseAdvisory = default(bool?), string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(string refId, string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public jobType Retrieve(string refId, string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<jobType> Retrieve(uint? pageIndex = default(uint?), uint? pageSize = default(uint?), string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<jobType> Retrieve(jobType obj, uint? pageIndex = default(uint?), uint? pageSize = default(uint?), string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<jobType> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = default(uint?), uint? pageSize = default(uint?), string zone = null, string context = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

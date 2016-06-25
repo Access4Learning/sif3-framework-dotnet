@@ -335,12 +335,7 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string UserToken
         {
-
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.userToken");
-            }
-
+            get { return GetStringSetting(SettingsPrefix + ".environment.template.userToken"); }
         }
 
         /// <summary>
@@ -348,40 +343,7 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public bool EventsSupported
         {
-
-            get
-            {
-                return GetBooleanSetting(SettingsPrefix + ".events.supported", false);
-            }
-
+            get { return GetBooleanSetting(SettingsPrefix + ".events.supported", false); }
         }
-
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EventsFrequency"/>
-        /// </summary>
-        public int EventsFrequency
-        {
-
-            get
-            {
-                return GetIntegerSetting(SettingsPrefix + ".events.frequency", 60);
-            }
-
-        }
-
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.MaxObjectsInEvent"/>
-        /// </summary>
-        public int MaxObjectsInEvent
-        {
-
-            get
-            {
-                return GetIntegerSetting(SettingsPrefix + ".events.maxobjects", 10);
-            }
-
-        }
-
     }
-
 }
