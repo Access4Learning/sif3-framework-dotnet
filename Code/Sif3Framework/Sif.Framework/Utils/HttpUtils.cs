@@ -47,6 +47,8 @@ namespace Sif.Framework.Utils
             navigationPageSize
         }
 
+        public static readonly string JobIdHeader = "jobId";
+
         /// <summary>
         /// 
         /// </summary>
