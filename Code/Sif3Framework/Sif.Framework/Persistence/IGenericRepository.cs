@@ -91,6 +91,12 @@ namespace Sif.Framework.Persistence
         /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
         void Save(IEnumerable<T> objs);
 
+        /// <summary>
+        /// Check if an id exists.
+        /// </summary>
+        /// <param name="id">Id to check.</param>
+        /// <returns>True if the id exists in the repository, false otherwise.</returns>
+        bool Exists(PK id);
     }
 
 }
