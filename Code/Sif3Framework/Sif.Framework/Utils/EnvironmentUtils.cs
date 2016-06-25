@@ -143,8 +143,6 @@ namespace Sif.Framework.Utils
         /// <returns>Service URL.</returns>
         internal static string ParseServiceUrl(Environment environment, ServiceType serviceType = ServiceType.OBJECT)
         {
-            string serviceUrl = null;
-
             if (environment == null || environment.InfrastructureServices == null)
             {
                 return null;
