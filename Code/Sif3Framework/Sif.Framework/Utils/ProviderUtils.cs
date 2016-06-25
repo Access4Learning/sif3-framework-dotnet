@@ -20,6 +20,11 @@ namespace Sif.Framework.Utils
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Returns true if the given type is a functional service, false otherwise.
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <returns>See def.</returns>
         public static Boolean isFunctionalService(Type type)
         {
             if (type == null)
@@ -40,6 +45,11 @@ namespace Sif.Framework.Utils
             return isFService;
         }
 
+        /// <summary>
+        /// Returns true if the given type is a data service, false otherwise.
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <returns>See def.</returns>
         public static Boolean isDataService(Type type)
         {
             if (type == null)
@@ -53,6 +63,11 @@ namespace Sif.Framework.Utils
                 type.IsAssignableToGenericType(typeof(IDataModelService<,,>));
         }
 
+        /// <summary>
+        /// Returns true if the given type is a controller, false otherwise.
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <returns>See def.</returns>
         public static Boolean isController(Type type)
         {
             if (type == null)
@@ -89,11 +104,21 @@ namespace Sif.Framework.Utils
             return iscontroller;
         }
 
+        /// <summary>
+        /// Returns true if the given Guid instance is not null/empty or an empty Guid, false otherwise.
+        /// </summary>
+        /// <param name="id">The Guid instance to check.</param>
+        /// <returns>See def.</returns>
         public static Boolean IsAdvisoryId(Guid id)
         {
             return StringUtils.NotEmpty(id) && Guid.Empty != id;
         }
 
+        /// <summary>
+        /// Returns true if the given string instance is not null/empty or an empty Guid, false otherwise.
+        /// </summary>
+        /// <param name="id">The string representation of a Guid to check.</param>
+        /// <returns>See def.</returns>
         public static Boolean IsAdvisoryId(string id)
         {
             return StringUtils.NotEmpty(id) && Guid.Empty != Guid.Parse(id);
