@@ -158,9 +158,9 @@ namespace Sif.Framework.Service.Functional
 
         public override jobType Retrieve(Guid id, string zone = null, string context = null)
         {
-            Job repoItem = repository.Retrieve(id);
-            checkJob(repoItem);
-            return MapperFactory.CreateInstance<Job, jobType>(repoItem);
+            Job job = repository.Retrieve(id);
+            AcceptJob(job);
+            return MapperFactory.CreateInstance<Job, jobType>(job);
         }
 
         public override ICollection<jobType> Retrieve(jobType item, string zone = null, string context = null)
@@ -184,54 +184,59 @@ namespace Sif.Framework.Service.Functional
         {
             try
             {
-                Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+                Job job = repository.Retrieve(id);
                 checkJob(job);
                 JobShutdown(job);
+                repository.Delete(id);
             }
             catch (Exception e)
             {
-                throw new DeleteException("Unable to delete job with ID " + id, e);
+                throw new DeleteException("Unable to delete job with ID " + id + " due to: " + e.Message, e);
             }
-            base.Delete(id, zone, context);
         }
 
         public override void Delete(jobType item, string zone = null, string context = null)
         {
             try
             {
-                Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context));
+                Job job = repository.Retrieve(Guid.Parse(item.id));
                 checkJob(job);
                 JobShutdown(job);
+                repository.Delete(job);
             } catch(Exception e)
             {
                 throw new DeleteException("Unable to delete job with ID " + item.id, e);
             }
-            base.Delete(item, zone, context);
         }
 
         public override void Delete(IEnumerable<jobType> items, string zone = null, string context = null)
         {
-            foreach (jobType item in items)
+            ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
+            foreach (Job job in jobs)
             {
                 try
                 {
-                    Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(Guid.Parse(item.id), zone, context));
                     checkJob(job);
                     JobShutdown(job);
                 }
                 catch (Exception e)
                 {
-                    throw new DeleteException("Unable to delete job with ID " + item.id, e);
+                    throw new DeleteException("Unable to shutdown job with ID " + job.Id + ", delete failed", e);
                 }
             }
-            base.Delete(items, zone, context);
+            try {
+                repository.Delete(jobs);
+            }
+            catch (Exception e)
+            {
+                throw new DeleteException("Unable to delete jobs due to: " + e.Message, e);
+            }
         }
 
         public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+            Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
-
             checkRight(phase.Rights, RightType.CREATE);
 
             IPhaseActions action = getActions(phaseName);
@@ -242,9 +247,8 @@ namespace Sif.Framework.Service.Functional
 
         public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+            Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
-
             checkRight(phase.Rights, RightType.QUERY);
 
             IPhaseActions action = getActions(phaseName);
@@ -255,9 +259,8 @@ namespace Sif.Framework.Service.Functional
 
         public virtual string UpdateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+            Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
-
             checkRight(phase.Rights, RightType.UPDATE);
 
             IPhaseActions action = getActions(phaseName);
@@ -268,9 +271,8 @@ namespace Sif.Framework.Service.Functional
         
         public virtual string DeleteToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
         {
-            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
+            Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
-
             checkRight(phase.Rights, RightType.DELETE);
             
             IPhaseActions action = getActions(phaseName);
@@ -281,11 +283,11 @@ namespace Sif.Framework.Service.Functional
 
         public virtual stateType CreateToState(Guid id, string phaseName, stateType item = null, string zone = null, string context = null)
         {
-            Job job = MapperFactory.CreateInstance<jobType, Job>(Retrieve(id, zone, context));
-            State state = MapperFactory.CreateInstance<stateType, State>(item);
+            Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
-
             checkRight(phase.StatesRights, RightType.CREATE);
+
+            State state = MapperFactory.CreateInstance<stateType, State>(item);
 
             job.updatePhaseState(phaseName, state.Type, state.Description);
             repository.Save(job);
@@ -319,6 +321,29 @@ namespace Sif.Framework.Service.Functional
             return getServiceName().Equals(serviceName) && getServiceName().Equals(jobName + "s");
         }
 
+        public virtual string AcceptJob()
+        {
+            return getServiceName().Substring(0, getServiceName().Length - 1);
+        }
+
+        private void checkJob(Job job)
+        {
+            if (job == null)
+            {
+                throw new ArgumentException("Job cannot be null.");
+            }
+
+            if (StringUtils.IsEmpty(job.Name))
+            {
+                throw new ArgumentException("Unsupported operation, job name not supplied.");
+            }
+
+            if (!AcceptJob(job))
+            {
+                throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + AcceptJob() + ".");
+            }
+        }
+
         /// <summary>
         /// Internal method to get a named phase from a job, throwing an appropriate exception if not found
         /// </summary>
@@ -345,24 +370,6 @@ namespace Sif.Framework.Service.Functional
             }
             return actions;
         }
-
-        private void checkJob(Job job)
-        {
-            if (job == null)
-            {
-                throw new ArgumentException("Job cannot be null.");
-            }
-
-            if (StringUtils.IsEmpty(job.Name))
-            {
-                throw new ArgumentException("Unsupported operation, job name not supplied.");
-            }
-
-            if (!AcceptJob(job))
-            {
-                throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + getServiceName().Substring(0, getServiceName().Length - 1) + ".");
-            }
-		}
 
         private void checkRight(IDictionary<string, Right> rights, RightType type)
         {

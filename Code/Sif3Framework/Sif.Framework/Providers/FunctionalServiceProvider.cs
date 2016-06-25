@@ -207,17 +207,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                jobType item = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
-
-                if (item == null)
-                {
-                    throw new HttpResponseException(HttpStatusCode.NotFound);
-                }
-                else
-                {
-                    service.Delete(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
-                }
-
+                service.Delete(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
             }
             catch (Exception e)
             {
@@ -227,10 +217,10 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// POST services/{TypeName}/phases/{PhaseName}
+        /// POST services/{TypeName}/{PhaseName}
         /// </summary>
         [HttpPost]
-        [Route("{serviceName}/{id}/phases/{phaseName}")]
+        [Route("{serviceName}/{id}/{phaseName}")]
         public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -262,10 +252,10 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// GET services/{TypeName}/phases/{PhaseName}
+        /// GET services/{TypeName}/{PhaseName}
         /// </summary>
         [HttpGet]
-        [Route("{serviceName}/{id}/phases/{phaseName}")]
+        [Route("{serviceName}/{id}/{phaseName}")]
         public virtual HttpResponseMessage Get([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -297,10 +287,10 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// PUT services/{TypeName}/phases/{PhaseName}
+        /// PUT services/{TypeName}/{PhaseName}
         /// </summary>
         [HttpPut]
-        [Route("{serviceName}/{id}/phases/{phaseName}")]
+        [Route("{serviceName}/{id}/{phaseName}")]
         public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -330,10 +320,10 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// DELETE services/{TypeName}/phases/{PhaseName}
+        /// DELETE services/{TypeName}/{PhaseName}
         /// </summary>
         [HttpDelete]
-        [Route("{serviceName}/{id}/phases/{phaseName}")]
+        [Route("{serviceName}/{id}/{phaseName}")]
         public virtual HttpResponseMessage Delete([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -365,10 +355,10 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
-        /// POST services/{TypeName}/phases/{PhaseName}
+        /// POST services/{TypeName}/{PhaseName}
         /// </summary>
         [HttpPost]
-        [Route("{serviceName}/{id}/phases/{phaseName}/states")]
+        [Route("{serviceName}/{id}/{phaseName}/states/state")]
         public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id, [FromUri] string phaseName, [FromBody] stateType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context);
@@ -409,12 +399,22 @@ namespace Sif.Framework.Providers
         {
             IService service = ProviderFactory.getInstance().GetProvider(serviceName);
 
-            if (service != null && ProviderUtils.isFunctionalService(service.GetType()))
+            if (service == null)
             {
-                return service as IFunctionalService;
+                throw new InvalidOperationException("No functional service found to support messages to " + serviceName);
             }
 
-            throw new InvalidOperationException("Cannot find a Functional Service to support messages to " + serviceName);
+            if (!ProviderUtils.isFunctionalService(service.GetType()))
+            {
+                throw new InvalidOperationException("Service (" + service.GetType().Name + ") found for " + serviceName + " is not a functional service implementation");
+            }
+
+            if (!service.getServiceName().ToLower().EndsWith("s"))
+            {
+                throw new InvalidOperationException("Found a functional service to support messages to " + serviceName + ", but its name isn't a plural (doesn't end in 's'). This will not work in the current framework.");
+            }
+
+            return service as IFunctionalService;
         }
 
         /// <summary>

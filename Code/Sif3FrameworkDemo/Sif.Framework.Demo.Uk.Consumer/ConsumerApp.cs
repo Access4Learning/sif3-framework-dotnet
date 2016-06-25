@@ -353,16 +353,14 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 /*----------*/
                 if (log.IsInfoEnabled) log.Info("*** Delete a job.");
                 consumer.Delete(job);
-                Job deletedJob = consumer.Query(job);
-                bool jobDeleted = (deletedJob == null ? true : false);
+                try {
+                    Job deleted = consumer.Query(job);
 
-                if (jobDeleted)
-                {
-                    if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was successfully deleted.");
+                    if (log.IsInfoEnabled) log.Info("Shouldn't get here, provider should have caused an expection. Retrieving job with " + job.Id + " returned " + (job == null ? "null value" : "job object with ID " + deleted.Id) + ".");
                 }
-                else
+                catch (Exception e)
                 {
-                    if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was NOT deleted.");
+                    if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was successfully deleted. Provider responded with " + e.Message);
                 }
                 /*----------*/
             }

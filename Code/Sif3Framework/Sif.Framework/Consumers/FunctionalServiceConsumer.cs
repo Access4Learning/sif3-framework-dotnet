@@ -408,7 +408,7 @@ namespace Sif.Framework.Consumers
             checkJob(job, zone);
 
             string response = null;
-            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/phases/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from CREATE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -433,7 +433,7 @@ namespace Sif.Framework.Consumers
             checkJob(job, zone);
 
             string response = null;
-            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/phases/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET", contentTypeOverride, acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from GET request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -458,7 +458,7 @@ namespace Sif.Framework.Consumers
             checkJob(job, zone);
             
             string response = null;
-            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/phases/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from PUT request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -483,7 +483,7 @@ namespace Sif.Framework.Consumers
             checkJob(job, zone);
             
             string response = null;
-            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/phases/" + phaseName + HttpUtils.MatrixParameters(zone, context);
+            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zone, context);
             response = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken, body, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from DELETE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
@@ -507,7 +507,7 @@ namespace Sif.Framework.Consumers
 
             checkJob(job, zone);
 
-            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/phases/" + phaseName + "/states" + HttpUtils.MatrixParameters(zone, context);
+            string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + "/states/state" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle<State, stateType>(item);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("Guid from CREATE request to state on phase ...");

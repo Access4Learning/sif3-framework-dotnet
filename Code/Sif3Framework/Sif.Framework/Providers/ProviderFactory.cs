@@ -149,7 +149,8 @@ namespace Sif.Framework.Providers
 
         private void InitialiseProviders(ProviderSettings settings)
         {
-            log.Debug("Initialising ProviderFactory");
+            log.Debug("Initialising ProviderFactory (currently only supports Functional Services)");
+            // settings.Classes only returns functional services at the moment, but can easily be extended to other types of services.
             foreach (Type type in settings.Classes)
             {
                 log.Debug("Provider class to initialse: " + type.FullName);
@@ -175,6 +176,7 @@ namespace Sif.Framework.Providers
 
                     // Add it to dictionary of background threads
                     providerThreads[provider.getServiceName()] = new Thread(new ThreadStart(provider.Run));
+                    // Each thread is essentially a global instance of a service whose responsibility is to maintain the services using timed tasks etc. - it never recieves any REST calls.
                 }
                 catch (Exception ex)
                 {

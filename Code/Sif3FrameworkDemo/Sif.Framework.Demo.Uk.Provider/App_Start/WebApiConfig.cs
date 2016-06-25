@@ -73,7 +73,7 @@ namespace Sif.Framework.Demo.Uk.Provider
 
             config.Routes.MapHttpRoute(
                 name: "ServiceStatesRoute",
-                routeTemplate: "services/{controller}/{id}/phases/{phaseName}/states/{stateId}",
+                routeTemplate: "services/{controller}/{id}/{phaseName}/states/{stateId}",
                 defaults: new { stateId = RouteParameter.Optional }
             );
 
