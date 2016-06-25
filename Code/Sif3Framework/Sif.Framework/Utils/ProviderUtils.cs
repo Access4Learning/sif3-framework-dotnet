@@ -4,9 +4,11 @@ using Sif.Framework.Extensions;
 using Sif.Framework.Providers;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Functional;
+using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +87,27 @@ namespace Sif.Framework.Utils
             }
             */
             return iscontroller;
+        }
+
+        /// <summary>
+        /// Convenience method for creating an error record.
+        /// </summary>
+        /// <param name="statusCode">HTTP status code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Error record.</returns>
+        public static errorType CreateError(HttpStatusCode statusCode, string scope, string message = null)
+        {
+            errorType error = new errorType();
+            error.id = Guid.NewGuid().ToString();
+            error.code = (uint)statusCode;
+            error.scope = scope;
+
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                error.message = message.Trim();
+            }
+
+            return error;
         }
     }
 }
