@@ -82,7 +82,7 @@ namespace Sif.Framework.Providers
             HttpResponseMessage result;
             try
             {
-                bool hasAdvisoryId = StringUtils.NotEmpty(item.id) && Guid.Empty != Guid.Parse(item.id);
+                bool hasAdvisoryId = ProviderUtils.IsAdvisoryId(item.id);
                 bool? _mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
                 bool mustUseAdvisory = _mustUseAdvisory.HasValue && _mustUseAdvisory.Value;
 

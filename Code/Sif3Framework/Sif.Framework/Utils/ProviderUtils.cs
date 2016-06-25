@@ -89,6 +89,16 @@ namespace Sif.Framework.Utils
             return iscontroller;
         }
 
+        public static Boolean IsAdvisoryId(Guid id)
+        {
+            return StringUtils.NotEmpty(id) && Guid.Empty != id;
+        }
+
+        public static Boolean IsAdvisoryId(string id)
+        {
+            return StringUtils.NotEmpty(id) && Guid.Empty != Guid.Parse(id);
+        }
+
         /// <summary>
         /// Convenience method for creating an error record.
         /// </summary>
