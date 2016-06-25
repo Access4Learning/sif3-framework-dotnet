@@ -44,5 +44,15 @@ namespace Sif.Framework.Utils
         {
             return !String.IsNullOrWhiteSpace(content);
         }
+
+        public static bool IsEmpty(Guid content)
+        {
+            return content == null || StringUtils.IsEmpty(content.ToString());
+        }
+
+        public static bool NotEmpty(Guid content)
+        {
+            return content != null && StringUtils.NotEmpty(content.ToString());
+        }
     }
 }
