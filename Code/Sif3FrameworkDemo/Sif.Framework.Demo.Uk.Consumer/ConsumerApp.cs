@@ -85,6 +85,50 @@ namespace Sif.Framework.Demo.Uk.Consumer
             return learnerPersonalsCache;
         }
 
+        private static IList<Guid> ProcessCreates(MultipleCreateResponse creates)
+        {
+            if(creates == null)
+            {
+                throw new ArgumentNullException("creates");
+            }
+
+            List<Guid> ids = new List<Guid>();
+
+            foreach(CreateStatus s in creates.StatusRecords)
+            {
+                if(s.StatusCode.StartsWith("2"))
+                {
+                    log.Info("Created a job with id " + s.Id + " (" + s.StatusCode + ").");
+                    ids.Add(Guid.Parse(s.Id));
+                } else
+                {
+                    log.Info("Failed to create a job with id " + s.Id + " (" + s.StatusCode + "/" + s.Error.Code + ").\nDescription: " + s.Error.Description + "\nMessage: " + s.Error.Message);
+                }
+            }
+            return ids;
+        }
+
+        private static void ProcessDeletes(MultipleDeleteResponse deletes)
+        {
+            if (deletes == null)
+            {
+                throw new ArgumentNullException("creates");
+            }
+
+            foreach (DeleteStatus d in deletes.StatusRecords)
+            {
+                if (d.StatusCode.StartsWith("2"))
+                {
+                    log.Info("Deleted a job with id " + d.Id + " (" + d.StatusCode + ").");
+                }
+                else
+                {
+                    log.Info("Failed to delete a job with id " + d.Id + " (" + d.StatusCode + "/" + d.Error.Code + ".\nDescription: " + d.Error.Description + "\nMessage: " + d.Error.Message);
+                }
+            }
+        }
+
+
         void RunLearnerPersonalConsumer()
         {
             LearnerPersonalConsumer learnerPersonalConsumer = new LearnerPersonalConsumer("Sif3DemoApp");
@@ -241,7 +285,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 if (log.IsInfoEnabled) log.Info("*** Create a job.");
                 Job job = consumer.Create(new Job("Payload", "Testing"));
                 if (log.IsInfoEnabled) log.Info("Created new job " + job.Name + " (" + job.Id + ")");
-                
+
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting NOTSTARTED.");
                 job = consumer.Query(job);
@@ -293,7 +337,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 if (log.IsInfoEnabled) log.Info("*** Executing DELETE to phase 'default'.");
                 try {
                     consumer.DeleteToPhase(job, "default", "Sending DELETE", contentTypeOverride: "text/plain", acceptOverride: "text/plain");
-                } catch(Exception e)
+                } catch (Exception e)
                 {
                     if (log.IsInfoEnabled) log.Info("EXPECTED exception due to access rights: " + e.Message);
                 }
@@ -304,7 +348,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 try
                 {
                     xml = SerialiserFactory.GetXmlSerialiser<LearnerPersonal>().Serialise(CreateBruceWayne());
-                } catch(Exception e)
+                } catch (Exception e)
                 {
                     if (log.IsFatalEnabled) log.Info("***** Error serializing to xml: " + e.Message, e);
                 }
@@ -316,7 +360,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 try
                 {
                     json = JsonConvert.SerializeObject(CreateBruceWayne());
-                } catch(Exception e)
+                } catch (Exception e)
                 {
                     if (log.IsFatalEnabled) log.Info("***** Error serializing to json: " + e.Message, e);
                 }
@@ -349,8 +393,6 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 }
 
                 // Delete the job.
-                // Comment this out to test the job timeout facility
-                /*----------*/
                 if (log.IsInfoEnabled) log.Info("*** Delete a job.");
                 consumer.Delete(job);
                 try {
@@ -362,7 +404,30 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 {
                     if (log.IsInfoEnabled) log.Info("Job " + job.Id + " was successfully deleted. Provider responded with " + e.Message);
                 }
-                /*----------*/
+
+                /*------------------------------------------*/
+                /* Check multiple job creation and deletion */
+                /*------------------------------------------*/
+                List<Job> jobs = new List<Job>();
+                for(int i = 0; i < 5; i++)
+                {
+                    jobs.Add(new Job("Payload"));
+                }
+                MultipleCreateResponse creates = consumer.Create(jobs);
+
+                IList<Guid> ids = ProcessCreates(creates);
+                jobs.Clear();
+                foreach(Guid id in ids)
+                {
+                    jobs.Add(new Job("Payload") { Id = id });
+                }
+
+                // Change a random job's id, whihc will result in:
+                // 1) The missing job will be removed by the timeout
+                // 2) We expect a single job to have an error when being removed
+                jobs.ElementAt(random.Next(0, jobs.Count)).Id = Guid.NewGuid();
+
+                MultipleDeleteResponse deletes = consumer.Delete(jobs);
             }
             catch (Exception e)
             {

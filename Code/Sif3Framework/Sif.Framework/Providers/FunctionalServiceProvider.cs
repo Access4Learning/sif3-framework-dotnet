@@ -147,7 +147,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpPost]
         [Route("{serviceName}")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] string jobName, [FromBody] IEnumerable<jobType> items, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromBody] jobCollectionType items, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context, new Right(RightType.CREATE, RightValue.APPROVED));
 
@@ -155,15 +155,15 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                if (!service.AcceptJob(serviceName, jobName))
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Service " + service.getServiceName() + " does not handle jobs named " + jobName);
-                }
 
                 List<createType> creates = new List<createType>();
-                foreach (jobType job in items)
+                foreach (jobType job in items.job)
                 {
                     try {
+                        if (!service.AcceptJob(serviceName, job.name))
+                        {
+                            throw new ArgumentException("Service " + service.getServiceName() + " does not handle jobs named " + job.name);
+                        }
                         Guid id = service.Create(job, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                         creates.Add(ProviderUtils.CreateCreate(HttpStatusCode.Created, id.ToString(), job.id));
                     } catch(CreateException e)
@@ -302,7 +302,7 @@ namespace Sif.Framework.Providers
         /// <returns>Forbidden (403)</returns>
         [HttpPut]
         [Route("{serviceName}")]
-        public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromBody] ICollection<jobType> items, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromBody] jobCollectionType items, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             checkAuthorisation(serviceName, zone, context, new Right(RightType.UPDATE, RightValue.APPROVED));
 

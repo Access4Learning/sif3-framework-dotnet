@@ -114,10 +114,14 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="items">Payload of multiple entities.</param>
         /// <returns>XML string representation of the multiple entities.</returns>
-        public virtual string SerialiseMultiple<DB, UI>(IEnumerable<DB> items)
+        public virtual string SerialiseMultiple(IEnumerable<Job> items)
         {
-            List<UI> data = MapperFactory.CreateInstances<DB, UI>(items).ToList();
-            return SerialiserFactory.GetXmlSerialiser<List<UI>>().Serialise(data);
+            List<jobType> data = MapperFactory.CreateInstances<Job, jobType>(items).ToList();
+            jobCollectionType collection = new jobCollectionType()
+            {
+                job = data.ToArray()
+            };
+            return SerialiserFactory.GetXmlSerialiser<jobCollectionType>().Serialise(collection);
         }
 
         /// <summary>
@@ -193,7 +197,7 @@ namespace Sif.Framework.Consumers
         /// <param name="jobs">Job objects with defaults to use when creating the Jobs</param>
         /// <param name="zone">The zone in which to create the Jobs</param>
         /// <param name="context">The context in which to create the Jobs</param>
-        /// <returns>The created Job objects</returns>
+        /// <returns>A MultipleCreateResponse object</returns>
         public virtual MultipleCreateResponse Create(List<Job> jobs, string zone = null, string context = null)
         {
             checkRegistered();
@@ -201,7 +205,7 @@ namespace Sif.Framework.Consumers
             string jobName = checkJobs(jobs, RightType.CREATE, zone);
 
             string url = GetURLPrefix(jobName) + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseMultiple<Job, jobType>(jobs);
+            string body = SerialiseMultiple(jobs);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -209,6 +213,38 @@ namespace Sif.Framework.Consumers
             MultipleCreateResponse createResponse = MapperFactory.CreateInstance<createResponseType, MultipleCreateResponse>(createResponseType);
 
             return createResponse;
+        }
+
+        /// <summary>
+        /// Convenience method that processes a MultipleCreateResponse message and fetches all successfully created jobs. It does this by issuing multiple individual query requests for any create status codes that start with a "2" (OK, Created, etc.).
+        /// </summary>
+        /// <param name="creates">A MutilpleCreateResponse object to parse</param>
+        /// /// <param name="creates">The job name (singular) that the MultipleCreateResponse refers to</param>
+        /// <param name="zone">The zone in which to fetch the Jobs</param>
+        /// <param name="context">The context in which to fetch the Jobs</param>
+        /// <returns>The created Job objects</returns>
+        public virtual IList<Job> GetCreated(MultipleCreateResponse creates, string jobName, string zone = null, string context = null)
+        {
+            if(creates == null)
+            {
+                throw new ArgumentNullException("creates");
+            }
+
+            IList<Job> fetched = new List<Job>();
+            IList<Job> toFetch = (from CreateStatus s in creates.StatusRecords
+                                  where s.StatusCode.StartsWith("2")
+                                  select new Job()
+                                  {
+                                      Id = Guid.Parse(s.Id),
+                                      Name = jobName
+                                  }).ToList();
+
+            foreach(Job job in toFetch)
+            {
+                fetched.Add(this.Query(job, zone, context));
+            }
+
+            return fetched;
         }
 
         /// <summary>
