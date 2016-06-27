@@ -141,7 +141,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="environment">Environment object to parse.</param>
         /// <returns>Service URL.</returns>
-        internal static string ParseServiceUrl(Environment environment, ServiceType serviceType = ServiceType.OBJECT)
+        internal static string ParseServiceUrl(Environment environment, ServiceType serviceType = ServiceType.OBJECT, InfrastructureServiceNames connector = InfrastructureServiceNames.requestsConnector)
         {
             if (environment == null || environment.InfrastructureServices == null)
             {
@@ -151,6 +151,9 @@ namespace Sif.Framework.Utils
             InfrastructureServiceNames name;
             switch(serviceType)
             {
+                case ServiceType.UTILITY:
+                        name = connector;
+                    break;
                 case ServiceType.FUNCTIONAL:
                     name = InfrastructureServiceNames.servicesConnector;
                     break;
