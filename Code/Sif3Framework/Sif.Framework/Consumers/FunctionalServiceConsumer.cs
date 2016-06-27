@@ -53,11 +53,6 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Current consumer environment.
-        /// </summary>
-        protected Environment Environment { get; private set; }
-
-        /// <summary>
         /// Service for Consumer registration.
         /// </summary>
         protected RegistrationService RegistrationService
@@ -151,7 +146,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         public void Register()
         {
-            Environment = registrationService.Register(ref environmentTemplate);
+            registrationService.Register(ref environmentTemplate);
         }
 
         /// <summary>
@@ -161,7 +156,6 @@ namespace Sif.Framework.Consumers
         public void Unregister(bool? deleteOnUnregister = null)
         {
             registrationService.Unregister(deleteOnUnregister);
-            Environment = null;
         }
 
         protected virtual string GetURLPrefix(string jobName)
@@ -563,7 +557,7 @@ namespace Sif.Framework.Consumers
                 throw new ArgumentException("Job name must be specified.");
             }
             
-            Model.Infrastructure.Service service = ZoneUtils.GetService(EnvironmentUtils.GetTargetZone(Environment, zone), job.Name + "s", ServiceType.FUNCTIONAL);
+            Model.Infrastructure.Service service = ZoneUtils.GetService(EnvironmentUtils.GetTargetZone(registrationService.CurrentEnvironment, zone), job.Name + "s", ServiceType.FUNCTIONAL);
 
             if (service == null)
             {
