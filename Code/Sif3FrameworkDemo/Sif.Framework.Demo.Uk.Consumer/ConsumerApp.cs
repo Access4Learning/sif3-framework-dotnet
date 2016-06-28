@@ -440,22 +440,39 @@ namespace Sif.Framework.Demo.Uk.Consumer
             }
         }
 
+        private static Boolean RunDemo(string demoName)
+        {
+            Console.Write("\n\nWould you like run the " + demoName + " demo? (Y/n)");
+            ConsoleKeyInfo info = Console.ReadKey();
+            Console.Write("\n\n");
+            return info.Key == ConsoleKey.Y || info.Key == ConsoleKey.Enter;
+        }
+
         static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();
 
-            try
+            if (RunDemo("Learner Personal (Object Service)"))
             {
-                if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
+                try
                 {
-                    //app.RunLearnerPersonalConsumer();
+                    app.RunLearnerPersonalConsumer();
+                }
+                catch (Exception e)
+                {
+                    if (log.IsErrorEnabled) log.Error("Error running the SIF3 demo.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                }
+            }
+            if (RunDemo("Payload (Functional Service)"))
+            {
+                try
+                {
                     app.RunPayloadConsumer();
                 }
-
-            }
-            catch (Exception e)
-            {
-                if (log.IsErrorEnabled) log.Error("Error running the " + SettingsManager.ConsumerSettings.ApplicationKey + "  Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                catch (Exception e)
+                {
+                    if (log.IsErrorEnabled) log.Error("Error running the SIF3 demo.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                }
             }
 
             Console.WriteLine("Press any key to continue ...");
