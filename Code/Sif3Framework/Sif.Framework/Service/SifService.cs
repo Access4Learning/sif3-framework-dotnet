@@ -25,6 +25,10 @@ using log4net;
 using System.Reflection;
 using System.Threading;
 using Sif.Framework.Utils;
+using Sif.Framework.Service.Infrastructure;
+using System.Linq;
+using Sif.Framework.Service.Registration;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service
 {
@@ -34,12 +38,17 @@ namespace Sif.Framework.Service
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected IGenericRepository<DB, Guid> repository;
         private Timer eventTimer = null;
-
+        
         public abstract string getServiceName();
 
         public virtual ServiceType getServiceType()
         {
             return ServiceType.UTILITY;
+        }
+
+        public SifService(IGenericRepository<DB, Guid> repository)
+        {
+            this.repository = repository;
         }
 
         public virtual void Run()
@@ -72,7 +81,7 @@ namespace Sif.Framework.Service
             eventTimer = new Timer((o) =>
             {
                 log.Debug("Start event timer task for " + serviceName + ".");
-                broadcastEvents();
+                broadcastEvents(settings.MaxObjectsInEvent);
             }, null, 0, frequency);
 
             log.Debug(serviceName + " started with event support.");
@@ -87,11 +96,6 @@ namespace Sif.Framework.Service
                 eventTimer.Dispose();
                 eventTimer = null;
             }
-        }
-
-        public SifService(IGenericRepository<DB, Guid> repository)
-        {
-            this.repository = repository;
         }
 
         public virtual Guid Create(UI item, string zone = null, string context = null)
@@ -154,11 +158,24 @@ namespace Sif.Framework.Service
             repository.Save(repoItems);
         }
 
-        public virtual void broadcastEvents()
+        public virtual void broadcastEvents(int maxNumObjPerEvent)
         {
             log.Debug("============================== broadcastEvents() called for provider " + getServiceName() + " (" + getServiceType().ToString() + ")");
             int totalRecords = 0;
             int failedRecords = 0;
+
+            ICollection<ApplicationRegister> appRegisters = getEventingApplications();
+
+            foreach(ApplicationRegister appRegister in appRegisters)
+            {
+                foreach (EnvironmentRegister envRegister in appRegister.EnvironmentRegisters)
+                {
+                    //string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.UTILITY, InfrastructureServiceNames.eventsConnector);
+                }
+            }
+            //RegistrationService.
+            
+
             /*
             
             int maxNumObjPerEvent = getMaxObjectsInEvent();
@@ -251,10 +268,30 @@ namespace Sif.Framework.Service
                 logger.error("Failed to retrieve events for provider " + getPrettyName() + ": " + ex.getMessage(), ex);
             }
             */
+            log.Info("Total Applications to event for    : " + appRegisters.Count);
             log.Info("Total SIF Event Objects broadcasted: " + totalRecords);
             log.Info("Total SIF Event Objects failed     : " + failedRecords);
             log.Debug("============================== Finished broadcastEvents() for provider " + getServiceName());
             
+        }
+
+        private ICollection<ApplicationRegister> getEventingApplications()
+        {
+            ApplicationRegisterService appRegService = new ApplicationRegisterService();
+            ICollection<ApplicationRegister> appRegisters =
+                (from ApplicationRegister appRegister in appRegService.Retrieve()
+                 where (from EnvironmentRegister envRegister in appRegister.EnvironmentRegisters
+                        where (from ProvisionedZone zone in envRegister.ProvisionedZones.Values
+                               where (from Model.Infrastructure.Service service in zone.Services
+                                      where service.Type.Equals(getServiceType().ToString()) &&
+                                      service.Name == getServiceName() &&
+                                      service.Rights.ContainsKey(RightType.SUBSCRIBE.ToString()) &&
+                                      service.Rights[RightType.SUBSCRIBE.ToString()].Value == RightValue.SUPPORTED.ToString()
+                                      select service).FirstOrDefault() != null
+                               select zone).FirstOrDefault() != null
+                        select envRegister).FirstOrDefault() != null
+                 select appRegister).ToList();
+            return appRegisters;
         }
     }
 }
