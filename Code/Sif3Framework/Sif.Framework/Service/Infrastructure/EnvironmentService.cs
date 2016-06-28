@@ -169,7 +169,7 @@ namespace Sif.Framework.Service.Infrastructure
 
         }
 
-        public override string getServiceName()
+        public override string GetServiceName()
         {
             return "environment";
         }

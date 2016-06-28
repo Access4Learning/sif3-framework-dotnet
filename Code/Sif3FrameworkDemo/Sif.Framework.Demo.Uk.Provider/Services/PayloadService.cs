@@ -33,7 +33,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             phaseActions.Add("json", new JsonActions());
         }
 
-        public override string getServiceName()
+        public override string GetServiceName()
         {
             return "Payloads";
         }
@@ -46,7 +46,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
             job.addPhase(new Phase("json", true, Right.getRights(update: RightValue.APPROVED), Right.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 
-            job.Timeout = new TimeSpan(0, 2, 0);
+            job.Timeout = new TimeSpan(0, 1, 0);
         }
 
         protected override void JobShutdown(Job job)

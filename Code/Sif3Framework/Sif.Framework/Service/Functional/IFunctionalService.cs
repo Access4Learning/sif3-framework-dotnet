@@ -15,11 +15,8 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Persistence;
-using Sif.Framework.Service.Providers;
 using Sif.Specification.Infrastructure;
 using System;
-using System.Collections.Generic;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -74,5 +71,20 @@ namespace Sif.Framework.Service.Functional
         /// <param name="jobName">The job name to check</param>
         /// <returns>true if the names conforms to the expected format for this service</returns>
         Boolean AcceptJob(string serviceName, string jobName);
+
+        /// <summary>
+        /// Method that is run once to set up a thread for this service in the FunctionalServiceProviderFactory.
+        /// </summary>
+        void Startup();
+
+        /// <summary>
+        /// Method that is run once to abort this service's thread in the FunctionalServiceProviderFactory.
+        /// </summary>
+        void Shutdown();
+
+        /// <summary>
+        /// Method that is run at specified intervals to timeout jobs that belong to this service.
+        /// </summary>
+        void JobTimeout();
     }
 }

@@ -1,8 +1,13 @@
 ﻿using log4net;
 using Sif.Framework.Model.DataModels;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service;
+using Sif.Framework.Service.Functional;
+using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
+using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,22 +17,25 @@ using System.Threading;
 
 namespace Sif.Framework.Providers
 {
-    public class ProviderFactory
+    public class FunctionalServiceProviderFactory
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly Object locked = new Object();
 
-        private static ProviderFactory factory = null;
+        private static FunctionalServiceProviderFactory factory = null;
+
+        private Timer eventTimer = null;
+        private Timer timeoutTimer = null;
 
         // Active Providers for event publishing. These providers run in the background as an independent thread.
-        private Dictionary<string, IService> providers = new Dictionary<string, IService>();
+        private Dictionary<string, IFunctionalService> providers = new Dictionary<string, IFunctionalService>();
 
         private Dictionary<string, Thread> providerThreads = new Dictionary<string, Thread>();
 
         // Known providers that can be instantiated for standard request/response
         private Dictionary<string, ProviderClassInfo> providerClasses = new Dictionary<string, ProviderClassInfo>();
 
-        public static ProviderFactory createFactory()
+        public static FunctionalServiceProviderFactory CreateFactory()
         {
             lock (locked)
             {
@@ -36,7 +44,7 @@ namespace Sif.Framework.Providers
                 {
                     try
                     {
-                        factory = new ProviderFactory();
+                        factory = new FunctionalServiceProviderFactory();
                     }
                     catch (Exception ex)
                     {
@@ -52,7 +60,7 @@ namespace Sif.Framework.Providers
         /**
          * This will shut down each provider class that make up this provider
          */
-        public static void shutdown()
+        public static void Shutdown()
         {
             lock (locked)
             {
@@ -61,13 +69,29 @@ namespace Sif.Framework.Providers
                     return;
                 }
 
-                log.Debug("Finalising providers:");
+                log.Info("Shutting down events...");
+                if (factory.eventTimer != null)
+                {
+                    factory.eventTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    factory.eventTimer.Dispose();
+                    factory.eventTimer = null;
+                }
+
+                log.Info("Shutting job timeout task...");
+                if (factory.timeoutTimer != null)
+                {
+                    factory.timeoutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    factory.timeoutTimer.Dispose();
+                    factory.timeoutTimer = null;
+                }
+
+                log.Info("Shutting down providers...");
                 foreach (string name in factory.providers.Keys)
                 {
                     try
                     {
-                        log.Debug("--- " + name);
-                        factory.providers[name].Finalise();
+                        log.Info("--- " + name);
+                        factory.providers[name].Shutdown();
                     }
                     catch (Exception ex)
                     {
@@ -75,12 +99,12 @@ namespace Sif.Framework.Providers
                     }
                 }
 
-                log.Debug("Stopping provider threads:");
+                log.Info("Stopping provider threads...");
                 foreach (string name in factory.providerThreads.Keys)
                 {
                     try
                     {
-                        log.Debug("--- " + name);
+                        log.Info("--- " + name);
                         factory.providerThreads[name].Abort();
                     }
                     catch (Exception ex)
@@ -97,11 +121,11 @@ namespace Sif.Framework.Providers
          * 
          * @return See Desc.
          */
-        public static ProviderFactory getInstance()
+        public static FunctionalServiceProviderFactory GetInstance()
         {
             if (factory == null)
             {
-                return createFactory();
+                return CreateFactory();
             }
             return factory;
         }
@@ -134,11 +158,13 @@ namespace Sif.Framework.Providers
         /*---------------------*/
         /*-- Private Methods --*/
         /*---------------------*/
-        private ProviderFactory()
+        private FunctionalServiceProviderFactory()
         {
             ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
             InitialiseProviders(settings);
             StartProviders(settings);
+            StartEventing(settings);
+            StartTimeout(settings);
         }
 
         private void InitialiseProviders(ProviderSettings settings)
@@ -158,24 +184,24 @@ namespace Sif.Framework.Providers
                         continue;
                     }
 
-                    IService provider = providerClassInfo.GetClassInstance();
+                    IFunctionalService provider = providerClassInfo.GetClassInstance() as IFunctionalService;
 
-                    if (StringUtils.IsEmpty(provider.getServiceName()))
+                    if (StringUtils.IsEmpty(provider.GetServiceName()))
                     {
                         log.Error("The provider is returning null or empty string from getServiceName(). Provider '" + provider.GetType().FullName + " not added to provider factory.");
                         continue;
                     }
 
-                    log.Info("Adding provider for '" + provider.getServiceName() + "', using provider class '" + provider.GetType().FullName + "'.");
+                    log.Info("Adding provider for '" + provider.GetServiceName() + "', using provider class '" + provider.GetType().FullName + "'.");
 
                     // First add it to the standard request/response dictionary
-                    providerClasses[provider.getServiceName()] = providerClassInfo;
+                    providerClasses[provider.GetServiceName()] = providerClassInfo;
+
+                    // Add it to dictionary of providers
+                    providers[provider.GetServiceName()] = provider;
 
                     // Add it to dictionary of background threads
-                    providers[provider.getServiceName()] = provider;
-
-                    // Add it to dictionary of background threads
-                    providerThreads[provider.getServiceName()] = new Thread(new ThreadStart(provider.Run));
+                    providerThreads[provider.GetServiceName()] = new Thread(new ThreadStart(provider.Startup));
                     // Each thread is essentially a global instance of a service whose responsibility is to maintain the services using timed tasks etc. - it never recieves any REST calls.
                 }
                 catch (Exception ex)
@@ -200,6 +226,62 @@ namespace Sif.Framework.Providers
                 }, null, (i * delay), Timeout.Infinite);
                 i += 1000;
             }
+        }
+
+        private void StartEventing(ProviderSettings settings)
+        {
+            log.Info("Setting up eventing...");
+            if (!settings.EventsSupported)
+            {
+                log.Debug("Eventing disabled in settings.");
+                return;
+            }
+
+            int frequencyInSec = settings.EventsFrequency;
+            if (frequencyInSec == 0)
+            {
+                log.Info("Eventing enabled, but events currently turned off (frequency=0)");
+                return;
+            }
+
+            int frequency = frequencyInSec * 1000;
+            log.Info("Events will be issued every " + frequencyInSec + "s (" + frequency + "ms).");
+
+            eventTimer = new Timer((o) =>
+            {
+                foreach(IService service in providers.Values)
+                {
+                    service.BroadcastEvents();
+                }
+            }, null, 0, frequency);
+        }
+
+        private void StartTimeout(ProviderSettings settings)
+        {
+            log.Info("Setting up job timeout...");
+            if (!settings.JobTimeoutEnabled)
+            {
+                log.Debug("Job timeout disabled in settings.");
+                return;
+            }
+
+            int frequencyInSec = settings.JobTimeoutFrequency;
+            if (frequencyInSec == 0)
+            {
+                log.Debug("Job timeout enabled, but timeout currently turned off (frequency=0)");
+                return;
+            }
+
+            int frequency = frequencyInSec * 1000;
+            log.Info("Jobs timeout task will run every " + frequencyInSec + "s (" + frequency + "ms).");
+
+            timeoutTimer = new Timer((o) =>
+            {
+                foreach (IFunctionalService service in providers.Values)
+                {
+                    service.JobTimeout();
+                }
+            }, null, 0, frequency);
         }
     }
 }

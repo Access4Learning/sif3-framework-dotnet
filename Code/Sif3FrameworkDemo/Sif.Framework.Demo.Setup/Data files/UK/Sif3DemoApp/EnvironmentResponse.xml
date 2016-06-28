@@ -5,8 +5,8 @@
   </defaultZone>
   <infrastructureServices>
     <infrastructureService name="environment">http://sif.framework.environmentprovider:62921/api/environments</infrastructureService>
-    <infrastructureService name="requestsConnector">http://sif.framework.environmentprovider:51424/api</infrastructureService>
-	<infrastructureService name="servicesConnector">http://sif.framework.environmentprovider:51424/services</infrastructureService>
+    <infrastructureService name="requestsConnector">http://Sif.Framework.Demo.Uk.Provider:51424/api</infrastructureService>
+	<infrastructureService name="servicesConnector">http://Sif.Framework.Demo.Uk.Provider:51424/services</infrastructureService>
     <infrastructureService name="provisionRequests">http://sif.framework.environmentprovider:62921/api/provision</infrastructureService>
     <infrastructureService name="queues">http://sif.framework.environmentprovider:62921/api/queues</infrastructureService>
     <infrastructureService name="subscriptions">http://sif.framework.environmentprovider:62921/api/subscriptions</infrastructureService>

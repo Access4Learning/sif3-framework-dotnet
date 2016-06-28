@@ -87,24 +87,16 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             studentsCache = CreateStudents(20);
         }
 
-        public ServiceType getServiceType()
+        public ServiceType GetServiceType()
         {
             return ServiceType.OBJECT;
         }
 
-        public string getServiceName()
+        public string GetServiceName()
         {
             return "StudentPersonal";
         }
-
-        public void Run()
-        {
-        }
-
-        public void Finalise()
-        {
-        }
-
+        
         public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();
@@ -205,7 +197,18 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         {
             studentsCache.Remove(refId);
         }
+        
+        public void Startup()
+        {
+        }
 
+        public void Shutdown()
+        {
+        }
+
+        public void BroadcastEvents()
+        {
+        }
     }
 
 }

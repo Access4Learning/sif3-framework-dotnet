@@ -150,7 +150,7 @@
     <Compile Include="Providers\IProvider.cs" />
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
-    <Compile Include="Providers\ProviderFactory.cs" />
+    <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />

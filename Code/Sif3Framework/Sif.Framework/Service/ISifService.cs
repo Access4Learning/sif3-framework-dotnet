@@ -43,8 +43,6 @@ namespace Sif.Framework.Service
         void Update(UI item, string zone = null, string context = null);
 
         void Update(IEnumerable<UI> items, string zone = null, string context = null);
-
-        void broadcastEvents(int maxNumObjPerEvent);
     }
 
 }

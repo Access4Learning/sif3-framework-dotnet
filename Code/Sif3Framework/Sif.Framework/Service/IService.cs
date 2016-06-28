@@ -6,15 +6,16 @@ namespace Sif.Framework.Service
 {
     public interface IService
     {
-        ServiceType getServiceType();
+        ServiceType GetServiceType();
 
         /// <summary>
         /// Name of the Object (or Functional Service name) that the Provider is based on
         /// </summary>
-        string getServiceName();
+        string GetServiceName();
 
-        void Run();
-
-        void Finalise();
+        /// <summary>
+        /// Method that is run at specified intervals to broadcast events produced by this service.
+        /// </summary>
+        void BroadcastEvents();
     }
 }

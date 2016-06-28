@@ -36,9 +36,8 @@ namespace Sif.Framework.Service.Functional
     public abstract class BasicFunctionalService : SifService<jobType, Job>, IFunctionalService 
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private Timer timeoutTimer = null;
 
-        public override ServiceType getServiceType()
+        public override ServiceType GetServiceType()
         {
             return ServiceType.FUNCTIONAL;
         }
@@ -54,74 +53,6 @@ namespace Sif.Framework.Service.Functional
         public BasicFunctionalService() : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
         {
             phaseActions = new Dictionary<string, IPhaseActions>();
-        }
-
-        public override void Run()
-        {
-            base.Run();
-            string serviceName = getServiceName();
-            ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
-
-            // Only if we intend to timeout jobs will we start the job manager
-            if (!settings.JobTimeoutEnabled)
-            {
-                log.Debug("Jobs under the service " + serviceName + " will not timeout.");
-                return;
-            }
-
-            int frequencyInSec = settings.JobTimeoutFrequency;
-            if (frequencyInSec == 0)
-            {
-                log.Debug("Intending to timeout jobs for " + serviceName + ", but job timeout currently turned off (frequency=0)");
-                return;
-            }
-
-            int frequency = frequencyInSec * 1000;
-            log.Info("Job timeout frequency = " + frequencyInSec + " secs. (" + frequency + ")");
-
-            timeoutTimer = new Timer((o) =>
-            {
-                log.Debug("++++++++++++++++++++++++++++++ Starting job timout task for " + serviceName + ".");
-
-                IList<Job> jobs = (from job in repository.Retrieve()
-                       where AcceptJob(job) &&
-                       job.Timeout.TotalSeconds != 0 &&
-                       DateTime.UtcNow.CompareTo((job.Created ?? DateTime.UtcNow).Add(job.Timeout)) > 0
-                       select job).ToList();
-
-                /*
-                foreach(Job job in repository.Retrieve()) {
-                    log.Debug("Id: " + job.Id);
-                    log.Debug("Name: " + job.Name + "s | " + serviceName);
-                    log.Debug("Timeout: " + job.Timeout.ToString(@"dd\.hh\:mm\:ss"));
-                    log.Debug("Created: " + (job.Created ?? DateTime.UtcNow).ToString(@"dd\/MM\/yyyy HH:mm"));
-                    DateTime calculated = (job.Created ?? DateTime.UtcNow).Add(job.Timeout);
-                    log.Debug("Timeout calculated: " + calculated.ToString(@"dd\/MM\/yyyy HH:mm"));
-                    log.Debug("Current time: " + DateTime.UtcNow);
-                    log.Debug("Span Comparison: " + DateTime.UtcNow.CompareTo(calculated) + " | 0");
-                }
-                */
-
-                foreach (Job job in jobs)
-                {
-                    log.Debug("Job " + job.Id + " has timed out, requesting its deletion.");
-                    Delete(job.Id);
-                }
-
-                log.Debug("++++++++++++++++++++++++++++++ Finished job timout task for " + serviceName + ".");
-            }, null, 0, frequency);
-        }
-
-        public override void Finalise()
-        {
-            base.Finalise();
-            if (timeoutTimer != null)
-            {
-                log.Debug("Shutdown job timeout timer for: " + getServiceName());
-                timeoutTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                timeoutTimer.Dispose();
-                timeoutTimer = null;
-            }
         }
 
         /// <summary>
@@ -322,21 +253,21 @@ namespace Sif.Framework.Service.Functional
 
         public virtual Boolean AcceptJob(string jobName)
         {
-            return AcceptJob(getServiceName(), jobName);
+            return AcceptJob(GetServiceName(), jobName);
         }
 
         public virtual Boolean AcceptJob(string serviceName, string jobName)
         {
-            if (StringUtils.IsEmpty(getServiceName()) || StringUtils.IsEmpty(serviceName) || StringUtils.IsEmpty(jobName))
+            if (StringUtils.IsEmpty(GetServiceName()) || StringUtils.IsEmpty(serviceName) || StringUtils.IsEmpty(jobName))
             {
                 return false;
             }
-            return getServiceName().Equals(serviceName) && getServiceName().Equals(jobName + "s");
+            return GetServiceName().Equals(serviceName) && GetServiceName().Equals(jobName + "s");
         }
 
         public virtual string AcceptJob()
         {
-            return getServiceName().Substring(0, getServiceName().Length - 1);
+            return GetServiceName().Substring(0, GetServiceName().Length - 1);
         }
 
         private void checkJob(Job job)
@@ -355,6 +286,41 @@ namespace Sif.Framework.Service.Functional
             {
                 throw new ArgumentException("Unsupported job name '" + job.Name + "', expected " + AcceptJob() + ".");
             }
+        }
+
+        public virtual void JobTimeout()
+        {
+            log.Info("++++++++++++++++++++++++++++++ JobTimeout() called for service " + GetServiceName() + " (" + GetServiceType().ToString() + ")");
+            IList<Job> jobs = (from Job job in repository.Retrieve()
+                               where AcceptJob(job)
+                               && job.Timeout.TotalSeconds != 0
+                               && DateTime.UtcNow.CompareTo((job.Created ?? DateTime.UtcNow).Add(job.Timeout)) > 0
+                               select job).ToList();
+
+            /*
+            foreach(Job job in repository.Retrieve()) {
+                log.Debug("Id: " + job.Id);
+                log.Debug("Name: " + job.Name + "s | " + serviceName);
+                log.Debug("Timeout: " + job.Timeout.ToString(@"dd\.hh\:mm\:ss"));
+                log.Debug("Created: " + (job.Created ?? DateTime.UtcNow).ToString(@"dd\/MM\/yyyy HH:mm"));
+                DateTime calculated = (job.Created ?? DateTime.UtcNow).Add(job.Timeout);
+                log.Debug("Timeout calculated: " + calculated.ToString(@"dd\/MM\/yyyy HH:mm"));
+                log.Debug("Current time: " + DateTime.UtcNow);
+                log.Debug("Span Comparison: " + DateTime.UtcNow.CompareTo(calculated) + " | 0");
+            }
+            */
+
+            if (jobs.Count == 0)
+            {
+                log.Info("No jobs have timed out.");
+            }
+
+            foreach (Job job in jobs)
+            {
+                log.Info("Job " + job.Id + " has timed out, requesting its deletion.");
+                repository.Delete(job.Id);
+            }
+            log.Info("++++++++++++++++++++++++++++++ Finished JobTimeout() for service " + GetServiceName());
         }
 
         /// <summary>

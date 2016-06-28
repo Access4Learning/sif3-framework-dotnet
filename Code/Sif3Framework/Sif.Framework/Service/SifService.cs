@@ -37,11 +37,10 @@ namespace Sif.Framework.Service
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected IGenericRepository<DB, Guid> repository;
-        private Timer eventTimer = null;
         
-        public abstract string getServiceName();
+        public abstract string GetServiceName();
 
-        public virtual ServiceType getServiceType()
+        public virtual ServiceType GetServiceType()
         {
             return ServiceType.UTILITY;
         }
@@ -51,51 +50,12 @@ namespace Sif.Framework.Service
             this.repository = repository;
         }
 
-        public virtual void Run()
+        public virtual void Startup()
         {
-            string serviceName = getServiceName();
-            ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
-            log.Debug("Start " + serviceName + " provider thread....");
-
-            // Only if we intend to support events we will start the event manager
-            if (!settings.EventsSupported)
-            {
-                log.Debug(serviceName + " started without event support.");
-                return;
-            }
-
-            int frequencyInSec = settings.EventsFrequency;
-            if (frequencyInSec == 0)
-            {
-                log.Info("Intending to issue events for  " + serviceName + ", but events currently turned off (frequency=0)");
-                return;
-            }
-
-            log.Debug("Starting events thread  for " + serviceName + ".");
-
-            int frequency = frequencyInSec * 1000;
-            log.Info("Event frequency = " + frequencyInSec + " secs. (" + frequency + ")");
-
-            log.Debug("Start sending events from " + serviceName + " provider...");
-
-            eventTimer = new Timer((o) =>
-            {
-                log.Debug("Start event timer task for " + serviceName + ".");
-                broadcastEvents(settings.MaxObjectsInEvent);
-            }, null, 0, frequency);
-
-            log.Debug(serviceName + " started with event support.");
         }
 
-        public virtual void Finalise()
+        public virtual void Shutdown()
         {
-            if (eventTimer != null)
-            {
-                log.Debug("Shut Down event timer for: " + getServiceName());
-                eventTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                eventTimer.Dispose();
-                eventTimer = null;
-            }
         }
 
         public virtual Guid Create(UI item, string zone = null, string context = null)
@@ -158,9 +118,10 @@ namespace Sif.Framework.Service
             repository.Save(repoItems);
         }
 
-        public virtual void broadcastEvents(int maxNumObjPerEvent)
+        public virtual void BroadcastEvents()
         {
-            log.Debug("============================== broadcastEvents() called for provider " + getServiceName() + " (" + getServiceType().ToString() + ")");
+            log.Info("============================== BroadcastEvents() called for service " + GetServiceName() + " (" + GetServiceType().ToString() + ")");
+            int maxNumObjPerEvent = (SettingsManager.ProviderSettings as ProviderSettings).MaxObjectsInEvent;
             int totalRecords = 0;
             int failedRecords = 0;
 
@@ -271,7 +232,7 @@ namespace Sif.Framework.Service
             log.Info("Total Applications to event for    : " + appRegisters.Count);
             log.Info("Total SIF Event Objects broadcasted: " + totalRecords);
             log.Info("Total SIF Event Objects failed     : " + failedRecords);
-            log.Debug("============================== Finished broadcastEvents() for provider " + getServiceName());
+            log.Info("============================== Finished BroadcastEvents() for service " + GetServiceName());
             
         }
 
@@ -283,8 +244,8 @@ namespace Sif.Framework.Service
                  where (from EnvironmentRegister envRegister in appRegister.EnvironmentRegisters
                         where (from ProvisionedZone zone in envRegister.ProvisionedZones.Values
                                where (from Model.Infrastructure.Service service in zone.Services
-                                      where service.Type.Equals(getServiceType().ToString()) &&
-                                      service.Name == getServiceName() &&
+                                      where service.Type.Equals(GetServiceType().ToString()) &&
+                                      service.Name == GetServiceName() &&
                                       service.Rights.ContainsKey(RightType.SUBSCRIBE.ToString()) &&
                                       service.Rights[RightType.SUBSCRIBE.ToString()].Value == RightValue.SUPPORTED.ToString()
                                       select service).FirstOrDefault() != null

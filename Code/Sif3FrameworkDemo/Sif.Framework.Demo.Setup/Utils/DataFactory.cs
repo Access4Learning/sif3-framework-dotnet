@@ -62,6 +62,9 @@ namespace Sif.Framework.Demo.Setup.Utils
             Console.WriteLine("Processsing input from: " + path);
             Console.WriteLine("Request:  " + request);
             Console.WriteLine("Response: " + response);
+            if(!File.Exists(request) || !File.Exists(response)) {
+                Console.WriteLine("Failed to find request/response XML message pair.");
+            }
             Console.WriteLine("");
 
             using (FileStream xmlStream = File.OpenRead(request))
