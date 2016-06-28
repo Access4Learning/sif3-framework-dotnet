@@ -30,6 +30,8 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     [RoutePrefix("api/environments")]
     public class EnvironmentsController : Sif.Framework.Controllers.EnvironmentsController
     {
+        public EnvironmentsController() : base() { }
+
         [Route("environment")]
         [HttpPost]
         public override HttpResponseMessage Create
@@ -52,6 +54,11 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
             base.Delete(id, zone, context);
         }
 
+        [Route("{id}")]
+        [HttpGet]
+        public override environmentType Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        {
+            return base.Get(id, zone, context);
+        }
     }
-
 }
