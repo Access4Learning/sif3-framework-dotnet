@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0"?>
 <environment xmlns="http://www.sifassociation.org/infrastructure/3.2">
-  <solutionId>Sif3DemoSolution</solutionId>
+  <solutionId>ukTestSolution</solutionId>
   <authenticationMethod>Basic</authenticationMethod>
   <instanceId></instanceId>
   <userToken></userToken>
-  <consumerName>Sif3DemoLearnerPersonalConsumer</consumerName>
+  <consumerName>Sif3DemoApp</consumerName>
   <applicationInfo>
     <applicationKey>Sif3DemoApp</applicationKey>
     <supportedInfrastructureVersion>3.2</supportedInfrastructureVersion>

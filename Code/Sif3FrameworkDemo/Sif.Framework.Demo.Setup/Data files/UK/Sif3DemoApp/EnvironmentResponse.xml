@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <environment xmlns="http://www.sifassociation.org/infrastructure/3.2" type="DIRECT">
-  <defaultZone id="Sif3DemoZone">
-    <description>SIF3 demo default zone</description>
+  <defaultZone id="defaultZone">
+    <description>SIF3 demo consumer default zone</description>
   </defaultZone>
   <infrastructureServices>
     <infrastructureService name="environment">http://sif.framework.environmentprovider:62921/api/environments</infrastructureService>
@@ -12,7 +12,7 @@
     <infrastructureService name="subscriptions">http://sif.framework.environmentprovider:62921/api/subscriptions</infrastructureService>
   </infrastructureServices>
   <provisionedZones>
-    <provisionedZone id="Sif3DemoZone">
+    <provisionedZone id="defaultZone">
       <services>
         <service name="LearnerPersonals" contextId="DEFAULT" type="OBJECT">
           <rights>

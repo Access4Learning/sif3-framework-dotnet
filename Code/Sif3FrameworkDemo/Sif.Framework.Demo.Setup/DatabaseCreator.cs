@@ -18,6 +18,7 @@ using Sif.Framework.Demo.Setup.Utils;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence.NHibernate;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace Sif.Framework.Demo.Setup
@@ -60,9 +61,9 @@ namespace Sif.Framework.Demo.Setup
                     Console.WriteLine("Configuring the demonstration for the " + locale + " locale.");
                     DatabaseManager frameworkDatabaseManager = new DatabaseManager("SifFramework.cfg.xml");
                     frameworkDatabaseManager.CreateDatabaseTables("SifFramework schema.ddl");
-                    ApplicationRegister applicationRegister = DataFactory.CreateApplicationRegister(locale);
+                    ICollection<ApplicationRegister> applicationRegisters = DataFactory.CreateApplicationRegisters(locale);
                     ApplicationRegisterRepository applicationRegisterRepository = new ApplicationRegisterRepository();
-                    applicationRegisterRepository.Save(applicationRegister);
+                    applicationRegisterRepository.Save(applicationRegisters);
                 }
 
             }
