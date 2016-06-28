@@ -1,20 +1,14 @@
 ﻿using log4net;
-using Sif.Framework.Model;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Settings;
-using Sif.Framework.Providers;
 using Sif.Framework.Service;
 using Sif.Framework.Utils;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Sif.Framework.Providers
 {
@@ -156,7 +150,13 @@ namespace Sif.Framework.Providers
                 log.Debug("Provider class to initialse: " + type.FullName);
                 try
                 {
-                    ProviderClassInfo providerClassInfo = new ProviderClassInfo(type, new Type[] { });
+                    ProviderClassInfo providerClassInfo = new ProviderClassInfo(type, Type.EmptyTypes );
+                    
+                    if(providerClassInfo.GetConstructor() == null)
+                    {
+                        log.Error("The provider class " + type.FullName + " does not have a valid constructor. Must have a public constructor that takes no arguments.");
+                        continue;
+                    }
 
                     IService provider = providerClassInfo.GetClassInstance();
 
