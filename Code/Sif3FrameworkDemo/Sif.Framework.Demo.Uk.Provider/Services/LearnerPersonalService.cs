@@ -91,16 +91,6 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             learnerCache = CreateLearner(20);
         }
 
-        public ServiceType GetServiceType()
-        {
-            return ServiceType.OBJECT;
-        }
-
-        public string GetServiceName()
-        {
-            return "LearnerPersonal";
-        }
-        
         public LearnerPersonal Create(LearnerPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();
@@ -200,18 +190,6 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
         public void Delete(string refId, string zone = null, string context = null)
         {
             learnerCache.Remove(refId);
-        }
-
-        public void Startup()
-        {
-        }
-
-        public void Shutdown()
-        {
-        }
-
-        public void BroadcastEvents()
-        {
         }
     }
 }

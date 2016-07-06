@@ -26,6 +26,11 @@ namespace Sif.Framework.Service.Functional
     public interface IFunctionalService : ISifService<jobType, Job>
     {
         /// <summary>
+        /// Get the defined name of this service. Must be plural form, for example for a job named "Payload" this method should return "Payloads". Another example, for a job named "ISBSubmission" this should return "ISBSubmissions".
+        /// </summary>
+        string GetServiceName();
+
+        /// <summary>
         /// Handles a create message being sent to, and response from, the named phase on the job with the given RefId.
         /// </summary>
         string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null);

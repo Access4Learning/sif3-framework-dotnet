@@ -188,7 +188,7 @@ namespace Sif.Framework.Providers
                 log.Debug("Provider class to initialse: " + type.FullName);
                 try
                 {
-                    ProviderClassInfo providerClassInfo = new ProviderClassInfo(type, Type.EmptyTypes );
+                    ProviderClassInfo providerClassInfo = new ProviderClassInfo(type, Type.EmptyTypes);
                     
                     if(providerClassInfo.GetConstructor() == null)
                     {
@@ -197,23 +197,19 @@ namespace Sif.Framework.Providers
                     }
 
                     IFunctionalService provider = providerClassInfo.GetClassInstance() as IFunctionalService;
+                    
+                    string providerName = provider.GetServiceName();
 
-                    if (StringUtils.IsEmpty(provider.GetServiceName()))
-                    {
-                        log.Error("The provider is returning null or empty string from getServiceName(). Provider '" + provider.GetType().FullName + " not added to provider factory.");
-                        continue;
-                    }
-
-                    log.Info("Adding provider for '" + provider.GetServiceName() + "', using provider class '" + provider.GetType().FullName + "'.");
+                    log.Info("Adding provider for '" + providerName + "', using provider class '" + provider.GetType().FullName + "'.");
 
                     // First add it to the standard request/response dictionary
-                    providerClasses[provider.GetServiceName()] = providerClassInfo;
+                    providerClasses[providerName] = providerClassInfo;
 
                     // Add it to dictionary of providers
-                    providers[provider.GetServiceName()] = provider;
+                    providers[providerName] = provider;
 
                     // Add it to dictionary of background threads
-                    providerThreads[provider.GetServiceName()] = new Thread(new ThreadStart(provider.Startup));
+                    providerThreads[providerName] = new Thread(new ThreadStart(provider.Startup));
                     // Each thread is essentially a global instance of a service whose responsibility is to maintain the services using timed tasks etc. - it never recieves any REST calls.
                 }
                 catch (Exception ex)
@@ -242,6 +238,8 @@ namespace Sif.Framework.Providers
 
         private void StartEventing(ProviderSettings settings)
         {
+            // Incomplete and removed from current version of framework
+            /*
             log.Info("Setting up eventing...");
             if (!settings.EventsSupported)
             {
@@ -263,9 +261,10 @@ namespace Sif.Framework.Providers
             {
                 foreach(IService service in providers.Values)
                 {
-                    service.BroadcastEvents();
+                    // Call an event method
                 }
             }, null, 0, frequency);
+            */
         }
 
         private void StartTimeout(ProviderSettings settings)

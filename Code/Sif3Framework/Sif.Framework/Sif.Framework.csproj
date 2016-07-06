@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Sif.Framework.XML</DocumentationFile>
@@ -161,15 +161,15 @@
     <Compile Include="Model\Settings\ProviderSection.cs" />
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
-    <Compile Include="Service\Functional\BasicFunctionalService.cs" />
-    <Compile Include="Service\Functional\BasicPhaseActions.cs" />
+    <Compile Include="Service\Functional\FunctionalService.cs" />
+    <Compile Include="Service\Functional\PhaseActions.cs" />
     <Compile Include="Service\Functional\IPhaseActions.cs" />
     <Compile Include="Service\Functional\IFunctionalService.cs" />
     <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
     <Compile Include="Service\IService.cs" />
-    <Compile Include="Service\Providers\BasicProviderService.cs" />
+    <Compile Include="Service\Providers\ProviderService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
     <Compile Include="Service\IDataModelService.cs" />
@@ -243,17 +243,17 @@
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml">
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\State.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

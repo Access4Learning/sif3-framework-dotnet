@@ -19,7 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.Demo.Uk.Provider.Actions
 {
-    class DefaultActions : BasicPhaseActions
+    class DefaultActions : PhaseActions
     {
         public override string Create(Job job, Phase phase, string body = null, string contentType = null, string accept = null)
         {

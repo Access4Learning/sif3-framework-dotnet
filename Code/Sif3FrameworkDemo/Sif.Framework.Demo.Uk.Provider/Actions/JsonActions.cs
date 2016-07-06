@@ -24,7 +24,7 @@ using Sif.Specification.DataModel.Uk;
 
 namespace Sif.Framework.Demo.Uk.Provider.Actions
 {
-    class JsonActions : BasicPhaseActions
+    class JsonActions : PhaseActions
     {
         public override string Update(Job job, Phase phase, string body = null, string contentType = null, string accept = null)
         {

@@ -56,17 +56,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
         {
             studentsCache = CreateStudents(10);
         }
-
-        public ServiceType GetServiceType()
-        {
-            return ServiceType.OBJECT;
-        }
-
-        public string GetServiceName()
-        {
-            return "XStudent";
-        }
-
+        
         public XStudent Create(XStudent obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();
@@ -147,18 +137,5 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             }
 
         }
-        
-        public void Startup()
-        {
-        }
-
-        public void Shutdown()
-        {
-        }
-
-        public void BroadcastEvents()
-        {
-        }
     }
-
 }

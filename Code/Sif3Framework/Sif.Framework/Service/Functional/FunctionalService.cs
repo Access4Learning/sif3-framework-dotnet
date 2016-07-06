@@ -37,11 +37,6 @@ namespace Sif.Framework.Service.Functional
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public override ServiceType GetServiceType()
-        {
-            return ServiceType.FUNCTIONAL;
-        }
-
         /// <summary>
         /// The disctionary of phases this service contains, with the actions each can perform
         /// </summary>
@@ -59,6 +54,16 @@ namespace Sif.Framework.Service.Functional
         /// Method that must be extended to add phases to a given job when it has been created.
         /// </summary>
         protected abstract void configure(Job job);
+
+        public abstract string GetServiceName();
+
+        public void Startup()
+        {
+        }
+
+        public void Shutdown()
+        {
+        }
 
         public override Guid Create(jobType item, string zone = null, string context = null)
         {
@@ -290,7 +295,7 @@ namespace Sif.Framework.Service.Functional
 
         public virtual void JobTimeout()
         {
-            log.Info("++++++++++++++++++++++++++++++ JobTimeout() called for service " + GetServiceName() + " (" + GetServiceType().ToString() + ")");
+            log.Info("++++++++++++++++++++++++++++++ JobTimeout() called for service " + GetServiceName());
             IList<Job> jobs = (from Job job in repository.Retrieve()
                                where AcceptJob(job)
                                && job.Timeout.TotalSeconds != 0

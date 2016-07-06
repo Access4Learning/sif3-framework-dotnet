@@ -24,7 +24,7 @@ using Sif.Framework.Service.Serialisation;
 
 namespace Sif.Framework.Demo.Uk.Provider.Actions
 {
-    class XmlActions : BasicPhaseActions
+    class XmlActions : PhaseActions
     {
         public override string Update(Job job, Phase phase, string body = null, string contentType = null, string accept = null)
         {

@@ -7,7 +7,7 @@
     <property name="Name" column="NAME" length="128"/>
     <bag name="States" table="PHASESTATES" cascade="all" lazy="false">
       <key column="PHASE_ID"/>
-      <one-to-many class="Sif.Framework.Model.Infrastructure.State"/>
+      <one-to-many class="Sif.Framework.Model.Infrastructure.PhaseState"/>
     </bag>
     <property name="Required" column="REQUIRED" type="Boolean"/>
     <map name="StatesRights" table="PHASESTATES_RIGHTS" cascade="all" lazy="false">

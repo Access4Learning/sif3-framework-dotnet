@@ -87,9 +87,10 @@ namespace Sif.Framework.Providers
                 bool mustUseAdvisory = _mustUseAdvisory.HasValue && _mustUseAdvisory.Value;
 
                 IFunctionalService service = getService(serviceName);
+
                 if (!service.AcceptJob(serviceName, jobName))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Service " + service.GetServiceName() + " does not handle jobs named " + jobName);
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Service " + serviceName + " does not handle jobs named " + jobName);
                 }
 
                 if (hasAdvisoryId && !mustUseAdvisory)
@@ -106,7 +107,7 @@ namespace Sif.Framework.Providers
                 Guid id = service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                 jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
 
-                string uri = Url.Link("ServicesRoute", new { controller = service.GetServiceName(), id = id });
+                string uri = Url.Link("ServicesRoute", new { controller = serviceName, id = id });
 
                 result = Request.CreateResponse<jobType>(HttpStatusCode.Created, job);
                 result.Headers.Location = new Uri(uri);
@@ -162,7 +163,7 @@ namespace Sif.Framework.Providers
                     try {
                         if (!service.AcceptJob(serviceName, job.name))
                         {
-                            throw new ArgumentException("Service " + service.GetServiceName() + " does not handle jobs named " + job.name);
+                            throw new ArgumentException("Service " + serviceName + " does not handle jobs named " + job.name);
                         }
                         Guid id = service.Create(job, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
                         creates.Add(ProviderUtils.CreateCreate(HttpStatusCode.Created, id.ToString(), job.id));
@@ -175,7 +176,7 @@ namespace Sif.Framework.Providers
                 createResponseType createResponse = ProviderUtils.CreateCreateResponse(creates.ToArray());
 
                 result = Request.CreateResponse<createResponseType>(HttpStatusCode.Created, createResponse);
-                string uri = Url.Link("ServicesRoute", new { controller = service.GetServiceName() });
+                string uri = Url.Link("ServicesRoute", new { controller = serviceName });
                 result.Headers.Location = new Uri(uri);
             }
             catch (AlreadyExistsException e)
@@ -568,6 +569,11 @@ namespace Sif.Framework.Providers
 
         protected virtual IFunctionalService getService(string serviceName)
         {
+            if (!serviceName.ToLower().EndsWith("s"))
+            {
+                throw new InvalidOperationException("Found a functional service to support messages to " + serviceName + ", but its name isn't a plural (doesn't end in 's'). This will not work in the current framework.");
+            }
+
             IService service = FunctionalServiceProviderFactory.GetInstance().GetProvider(serviceName);
 
             if (service == null)
@@ -578,11 +584,6 @@ namespace Sif.Framework.Providers
             if (!ProviderUtils.isFunctionalService(service.GetType()))
             {
                 throw new InvalidOperationException("Service (" + service.GetType().Name + ") found for " + serviceName + " is not a functional service implementation");
-            }
-
-            if (!service.GetServiceName().ToLower().EndsWith("s"))
-            {
-                throw new InvalidOperationException("Found a functional service to support messages to " + serviceName + ", but its name isn't a plural (doesn't end in 's'). This will not work in the current framework.");
             }
 
             return service as IFunctionalService;

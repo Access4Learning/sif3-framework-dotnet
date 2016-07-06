@@ -26,16 +26,6 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
     public class SchoolInfoService : IBasicProviderService<SchoolInfo>
     {
-        public ServiceType GetServiceType()
-        {
-            return ServiceType.OBJECT;
-        }
-
-        public string GetServiceName()
-        {
-            return "SchoolInfo";
-        }
-
         public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
@@ -76,18 +66,5 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         {
             throw new NotImplementedException();
         }
-
-        public void Startup()
-        {
-        }
-
-        public void Shutdown()
-        {
-        }
-
-        public void BroadcastEvents()
-        {
-        }
     }
-
 }

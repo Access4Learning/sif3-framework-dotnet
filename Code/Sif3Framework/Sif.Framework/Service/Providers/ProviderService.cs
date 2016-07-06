@@ -11,17 +11,6 @@ namespace Sif.Framework.Service.Providers
 {
     public abstract class ProviderService<T> : IBasicProviderService<T>
     {
-        public abstract string GetServiceName();
-
-        public ServiceType GetServiceType()
-        {
-            return ServiceType.OBJECT;
-        }
-
-        public abstract void Startup();
-
-        public abstract void Shutdown();
-
         public abstract T Create(T obj, bool? mustUseAdvisory = default(bool?), string zone = null, string context = null);
 
         public abstract T Retrieve(string refId, string zone = null, string context = null);
@@ -35,9 +24,5 @@ namespace Sif.Framework.Service.Providers
         public abstract void Update(T obj, string zone = null, string context = null);
 
         public abstract void Delete(string refId, string zone = null, string context = null);
-
-        public virtual void BroadcastEvents()
-        {
-        }
     }
 }

@@ -169,11 +169,6 @@ namespace Sif.Framework.Service.Infrastructure
 
         }
 
-        public override string GetServiceName()
-        {
-            return "environment";
-        }
-
         public override Guid Create(environmentType item, string zone = null, string context = null)
         {
             EnvironmentRegister environmentRegister =

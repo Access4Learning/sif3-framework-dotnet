@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Sif.Framework.Controllers;
 using Sif.Framework.Extensions;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Providers;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Functional;
@@ -21,6 +22,30 @@ namespace Sif.Framework.Utils
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Infer the name of the Object/Functional Service type
+        /// </summary>
+        public static string GetServiceName(IService service)
+        {
+            try
+            {
+                if (isFunctionalService(service.GetType()))
+                {
+                    return ((IFunctionalService)service).GetServiceName();
+                }
+
+                if (isDataModelService(service.GetType()))
+                {
+                    return service.GetType().GenericTypeArguments[0].Name;
+                }
+            }
+            catch(Exception e) {
+                throw new NotFoundException("Could not infer the name of the service with type " + service.GetType().Name, e);
+            }
+
+            throw new NotFoundException("Could not infer the name of the service with type " + service.GetType().Name);
+        }
+
+        /// <summary>
         /// Returns true if the given type is a functional service, false otherwise.
         /// </summary>
         /// <param name="type">The type to check</param>
@@ -32,10 +57,10 @@ namespace Sif.Framework.Utils
                 throw new ArgumentNullException("Argument type cannot be null");
             }
 
-            Boolean isFService = type.IsClass &&
-                type.IsVisible &&
-                !type.IsAbstract &&
-                typeof(IFunctionalService).IsAssignableFrom(type);
+            Boolean isFService = type.IsClass
+                && type.IsVisible
+                && !type.IsAbstract
+                && typeof(IFunctionalService).IsAssignableFrom(type);
             /*
             if(isFService)
             {
@@ -50,17 +75,17 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="type">The type to check</param>
         /// <returns>See def.</returns>
-        public static Boolean isDataService(Type type)
+        public static Boolean isDataModelService(Type type)
         {
             if (type == null)
             {
                 throw new ArgumentNullException("Argument type cannot be null");
             }
 
-            return type.IsClass &&
-                type.IsVisible &&
-                !type.IsAbstract &&
-                type.IsAssignableToGenericType(typeof(IDataModelService<,,>));
+            return type.IsClass
+                && type.IsVisible 
+                && !type.IsAbstract
+                && type.IsAssignableToGenericType(typeof(IDataModelService<,,>));
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 namespace Sif.Framework.Demo.Uk.Provider.Services
 {
 
-    public class PayloadService : BasicFunctionalService
+    public class PayloadService : FunctionalService
     {
         public PayloadService() : base()
         {
