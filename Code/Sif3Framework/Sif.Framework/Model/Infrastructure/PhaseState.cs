@@ -25,7 +25,7 @@ namespace Sif.Framework.Model.Infrastructure
     public class PhaseState : IPersistable<Guid>
     {
         /// <summary>
-        /// ID required by Hibernate, not part of the SIF specification
+        /// The RefId of this object
         /// </summary>
         public virtual Guid Id { get; set; }
 
