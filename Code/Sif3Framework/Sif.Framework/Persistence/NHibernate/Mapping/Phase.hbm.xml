@@ -4,7 +4,7 @@
     <id name="Id" column="PHASE_ID">
       <generator class="native"/>
     </id>
-    <property name="Name" column="NAME" length="80"/>
+    <property name="Name" column="NAME" length="128"/>
     <bag name="States" table="PHASE_STATES" cascade="all" lazy="false">
       <key column="PHASE_ID"/>
       <one-to-many class="Sif.Framework.Model.Infrastructure.State"/>
