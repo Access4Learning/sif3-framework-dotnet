@@ -85,7 +85,7 @@
     <Compile Include="Consumers\IBasicConsumer.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ProviderClassInfo.cs" />
-    <Compile Include="Model\Infrastructure\State.cs" />
+    <Compile Include="Model\Infrastructure\PhaseState.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
     <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />

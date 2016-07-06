@@ -44,7 +44,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// The current state of the Phase.
         /// </summary>
-        public virtual IList<State> States { get; set; }
+        public virtual IList<PhaseState> States { get; set; }
 
         /// <summary>
         /// Whether or not this phase is required for the job to complete successfully.
@@ -67,7 +67,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         public Phase()
         {
-            States = new List<State>();
+            States = new List<PhaseState>();
             Rights = new Dictionary<string, Right>();
             StatesRights = new Dictionary<string, Right>();
         }
@@ -114,9 +114,9 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="type">The state to set</param>
         /// <param name="description">The optional description to set</param>
         /// <returns></returns>
-        public virtual State changeState(PhaseStateType type, string description = null)
+        public virtual PhaseState changeState(PhaseStateType type, string description = null)
         {
-            State current = getCurrentState();
+            PhaseState current = getCurrentState();
             if(current != null && current.Type == type)
             {
                 current.LastModified = DateTime.UtcNow;
@@ -124,7 +124,7 @@ namespace Sif.Framework.Model.Infrastructure
                 return current;
             }
 
-            State newState = new State(type, description);
+            PhaseState newState = new PhaseState(type, description);
             States.Add(newState);
             return newState;
         }
@@ -133,7 +133,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// Get the most recent/current/last state of this phase. 
         /// </summary>
         /// <returns></returns>
-        public virtual State getCurrentState()
+        public virtual PhaseState getCurrentState()
         {
             return States.LastOrDefault();
         }

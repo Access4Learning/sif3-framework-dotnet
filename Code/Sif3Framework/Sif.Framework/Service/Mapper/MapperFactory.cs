@@ -102,13 +102,13 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
-        class StatesConverter : ITypeConverter<stateType[], IList<State>>
+        class StatesConverter : ITypeConverter<stateType[], IList<PhaseState>>
         {
 
-            public IList<State> Convert(ResolutionContext context)
+            public IList<PhaseState> Convert(ResolutionContext context)
             {
-                ICollection<State> values = AutoMapper.Mapper.Map<stateType[], ICollection<State>>((stateType[])context.SourceValue);
-                return new List<State>(values);
+                ICollection<PhaseState> values = AutoMapper.Mapper.Map<stateType[], ICollection<PhaseState>>((stateType[])context.SourceValue);
+                return new List<PhaseState>(values);
             }
 
         }
@@ -205,12 +205,12 @@ namespace Sif.Framework.Service.Mapper
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.SifId, opt => opt.MapFrom(src => src.id));
 
-            AutoMapper.Mapper.CreateMap<State, stateType>()
+            AutoMapper.Mapper.CreateMap<PhaseState, stateType>()
                 .ForMember(dest => dest.createdSpecified, opt => opt.MapFrom(src => src.Created != null))
                 .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null));
-            AutoMapper.Mapper.CreateMap<stateType, State>()
+            AutoMapper.Mapper.CreateMap<stateType, PhaseState>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
-            AutoMapper.Mapper.CreateMap<stateType[], IList<State>>()
+            AutoMapper.Mapper.CreateMap<stateType[], IList<PhaseState>>()
                 .ConvertUsing<StatesConverter>();
 
             AutoMapper.Mapper.CreateMap<Phase, phaseType>()

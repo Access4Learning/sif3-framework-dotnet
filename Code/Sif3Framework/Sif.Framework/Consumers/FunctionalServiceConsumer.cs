@@ -531,18 +531,18 @@ namespace Sif.Framework.Consumers
         /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
         /// <param name="acceptOverride">The expected mime type of the result</param>
         /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
-        public virtual State CreateToState(Job job, string phaseName, State item, string zone = null, string context = null)
+        public virtual PhaseState CreateToState(Job job, string phaseName, PhaseState item, string zone = null, string context = null)
         {
             checkRegistered();
 
             checkJob(job, zone);
 
             string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + "/states/state" + HttpUtils.MatrixParameters(zone, context);
-            string body = SerialiseSingle<State, stateType>(item);
+            string body = SerialiseSingle<PhaseState, stateType>(item);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("Guid from CREATE request to state on phase ...");
             if (log.IsDebugEnabled) log.Debug(xml);
-            return DeserialiseSingle<State, stateType>(xml);
+            return DeserialiseSingle<PhaseState, stateType>(xml);
         }
 
         private Model.Infrastructure.Service checkJob(Job job, string zone = null)

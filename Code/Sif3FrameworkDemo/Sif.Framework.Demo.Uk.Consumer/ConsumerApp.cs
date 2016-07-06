@@ -289,7 +289,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting NOTSTARTED.");
                 job = consumer.Query(job);
-                State state = job.Phases["default"].getCurrentState();
+                PhaseState state = job.Phases["default"].getCurrentState();
                 if (state.Type == PhaseStateType.NOTSTARTED)
                 {
                     if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
@@ -369,7 +369,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
                 // Change state of phase "json".
                 if (log.IsInfoEnabled) log.Info("*** Executing CREATE to the state of phase 'json'.");
-                state = consumer.CreateToState(job, "json", new State(PhaseStateType.FAILED, "Because I want it to"));
+                state = consumer.CreateToState(job, "json", new PhaseState(PhaseStateType.FAILED, "Because I want it to"));
                 if (state.Type == PhaseStateType.FAILED)
                 {
                     if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);

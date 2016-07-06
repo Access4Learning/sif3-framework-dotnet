@@ -129,7 +129,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="stateDescription">Optional description</param>
         public virtual void updatePhaseState(string phaseName, PhaseStateType state, string stateDescription = null)
         {
-            State s = Phases[phaseName].changeState(state, stateDescription);
+            PhaseState s = Phases[phaseName].changeState(state, stateDescription);
             LastModified = s.LastModified;
         }
     }
