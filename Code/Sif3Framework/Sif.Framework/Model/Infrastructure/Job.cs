@@ -105,7 +105,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         /// <param name="type">The type to change the current status to</param>
         /// <param name="description">An optional description of the change</param>
-        public virtual void changeState(JobStateType type, string description = null)
+        public virtual void UpdateState(JobStateType type, string description = null)
         {
             LastModified = DateTime.UtcNow;
             StateDescription = description;
@@ -116,7 +116,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// Adds a phase to the collection of phases
         /// </summary>
         /// <param name="phase">Phase to add</param>
-        public virtual void addPhase(Phase phase)
+        public virtual void AddPhase(Phase phase)
         {
             Phases.Add(phase.Name, phase);
         }
@@ -127,9 +127,9 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="phaseName">Name of phase to update</param>
         /// <param name="state">The state to set</param>
         /// <param name="stateDescription">Optional description</param>
-        public virtual void updatePhaseState(string phaseName, PhaseStateType state, string stateDescription = null)
+        public virtual void UpdatePhaseState(string phaseName, PhaseStateType state, string stateDescription = null)
         {
-            PhaseState s = Phases[phaseName].changeState(state, stateDescription);
+            PhaseState s = Phases[phaseName].UpdateState(state, stateDescription);
             LastModified = s.LastModified;
         }
     }

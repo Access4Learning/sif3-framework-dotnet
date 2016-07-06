@@ -233,10 +233,10 @@ namespace Sif.Framework.Service.Functional
 
             PhaseState state = MapperFactory.CreateInstance<stateType, PhaseState>(item);
 
-            job.updatePhaseState(phaseName, state.Type, state.Description);
+            job.UpdatePhaseState(phaseName, state.Type, state.Description);
             repository.Save(job);
 
-            return MapperFactory.CreateInstance<PhaseState, stateType>(phase.getCurrentState());
+            return MapperFactory.CreateInstance<PhaseState, stateType>(phase.GetCurrentState());
         }
 
         /// <summary>

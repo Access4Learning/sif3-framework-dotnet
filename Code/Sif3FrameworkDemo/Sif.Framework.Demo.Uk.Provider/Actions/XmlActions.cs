@@ -28,12 +28,12 @@ namespace Sif.Framework.Demo.Uk.Provider.Actions
     {
         public override string Update(Job job, Phase phase, string body = null, string contentType = null, string accept = null)
         {
-            job.changeState(JobStateType.INPROGRESS, "UPDATE to " + phase.Name);
+            job.UpdateState(JobStateType.INPROGRESS, "UPDATE to " + phase.Name);
             string response;
             if (!contentType.ToLower().Equals("application/xml"))
             {
                 response = "Invalid Content-Type, expecting application/xml";
-                job.updatePhaseState(phase.Name, PhaseStateType.FAILED, response);
+                job.UpdatePhaseState(phase.Name, PhaseStateType.FAILED, response);
                 throw new RejectedException(response);
             }
 
@@ -43,12 +43,12 @@ namespace Sif.Framework.Demo.Uk.Provider.Actions
             } catch(Exception e)
             {
                 response = "Error decoding xml data: " + e.Message;
-                job.updatePhaseState(phase.Name, PhaseStateType.FAILED, response);
+                job.UpdatePhaseState(phase.Name, PhaseStateType.FAILED, response);
                 throw new RejectedException(response, e);
             }
 
             NameType name = data.PersonalInformation.Name;
-            job.updatePhaseState(phase.Name, PhaseStateType.COMPLETED, "UPDATE");
+            job.UpdatePhaseState(phase.Name, PhaseStateType.COMPLETED, "UPDATE");
             response = "Got UPDATE message for " + phase.Name + "@" + job.Id + " with content type " + contentType + " and accept " + accept + ".\nGot record for learner:" + name.GivenName + " " + name.FamilyName;
             return response;
         }

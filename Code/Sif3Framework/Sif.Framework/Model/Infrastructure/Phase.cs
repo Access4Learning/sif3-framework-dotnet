@@ -42,9 +42,9 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual string Name { get; set; }
         
         /// <summary>
-        /// The current state of the Phase.
+        /// A collection of states for the this phase, the last of which is the current phase state.
         /// </summary>
-        public virtual ICollection<PhaseState> States { get; set; }
+        public virtual IList<PhaseState> States { get; set; }
 
         /// <summary>
         /// Whether or not this phase is required for the job to complete successfully.
@@ -67,6 +67,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         public Phase()
         {
+            Name = "unnamed";
             States = new List<PhaseState>();
             Rights = new Dictionary<string, Right>();
             StatesRights = new Dictionary<string, Right>();
@@ -94,9 +95,9 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="required">If this phase is required to complete for the job to complete</param>
         /// <param name="rights">Access rights for the phase</param>
         /// <param name="stateRights">Access rights for the states on this phase</param>
-        /// <param name="state">The initial state of the phase</param>
+        /// <param name="phaseState">The initial state of the phase</param>
         /// <param name="stateDescription">The initial state descritpion for the phase</param>
-        public Phase(string phaseName, Boolean required, IDictionary<string, Right> rights = null, IDictionary<string, Right> stateRights = null, PhaseStateType state = PhaseStateType.NOTAPPLICABLE, string stateDescription = "Not applicable") : this(phaseName, required)
+        public Phase(string phaseName, Boolean required, IDictionary<string, Right> rights = null, IDictionary<string, Right> stateRights = null, PhaseStateType phaseState = PhaseStateType.NOTAPPLICABLE, string stateDescription = "Not applicable") : this(phaseName, required)
         {
             if (rights != null)
             {
@@ -106,7 +107,7 @@ namespace Sif.Framework.Model.Infrastructure
             {
                 StatesRights = stateRights;
             }
-            changeState(state, stateDescription);
+            UpdateState(phaseState, stateDescription);
         }
 
         /// <summary>
@@ -115,9 +116,9 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="type">The state to set</param>
         /// <param name="description">The optional description to set</param>
         /// <returns></returns>
-        public virtual PhaseState changeState(PhaseStateType type, string description = null)
+        public virtual PhaseState UpdateState(PhaseStateType type, string description = null)
         {
-            PhaseState current = getCurrentState();
+            PhaseState current = GetCurrentState();
             if(current != null && current.Type == type)
             {
                 current.LastModified = DateTime.UtcNow;
@@ -133,8 +134,8 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// Get the most recent/current/last state of this phase. 
         /// </summary>
-        /// <returns></returns>
-        public virtual PhaseState getCurrentState()
+        /// <returns>The last state in the list of states for this phase.</returns>
+        public virtual PhaseState GetCurrentState()
         {
             return States.LastOrDefault();
         }

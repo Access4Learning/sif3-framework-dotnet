@@ -20,7 +20,7 @@ using System;
 namespace Sif.Framework.Model.Infrastructure
 {
     /// <summary>
-    /// Object representing a phase state
+    /// Object representing the state of a phase
     /// </summary>
     public class PhaseState : IPersistable<Guid>
     {
@@ -50,7 +50,7 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual string Description { get; set; }
 
         /// <summary>
-        /// Basic constructor that sets logical defaults
+        /// Basic constructor that sets logical defaults of this phase state
         /// </summary>
         public PhaseState() {
             Type = PhaseStateType.NOTSTARTED;

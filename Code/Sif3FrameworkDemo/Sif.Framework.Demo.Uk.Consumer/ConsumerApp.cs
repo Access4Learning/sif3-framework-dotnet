@@ -289,7 +289,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting NOTSTARTED.");
                 job = consumer.Query(job);
-                PhaseState state = job.Phases["default"].getCurrentState();
+                PhaseState state = job.Phases["default"].GetCurrentState();
                 if (state.Type == PhaseStateType.NOTSTARTED)
                 {
                     if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
@@ -306,7 +306,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting INPROGRESS.");
                 job = consumer.Query(job);
-                state = job.Phases["default"].getCurrentState();
+                state = job.Phases["default"].GetCurrentState();
                 if (state.Type == PhaseStateType.INPROGRESS)
                 {
                     if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
@@ -323,7 +323,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 // Query phase "default".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'default', expecting COMPLETE.");
                 job = consumer.Query(job);
-                state = job.Phases["default"].getCurrentState();
+                state = job.Phases["default"].GetCurrentState();
                 if (state.Type == PhaseStateType.COMPLETED)
                 {
                     if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
@@ -382,7 +382,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                 // Query phase "json".
                 if (log.IsInfoEnabled) log.Info("*** Check state of phase 'json', expecting FAILED.");
                 job = consumer.Query(job);
-                state = job.Phases["json"].getCurrentState();
+                state = job.Phases["json"].GetCurrentState();
                 if (state.Type == PhaseStateType.FAILED)
                 {
                     if (log.IsInfoEnabled) log.Info("Got EXPECTED result, last modified at " + state.LastModified);
