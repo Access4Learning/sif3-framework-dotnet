@@ -44,7 +44,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// The current state of the Phase.
         /// </summary>
-        public virtual IList<PhaseState> States { get; set; }
+        public virtual ICollection<PhaseState> States { get; set; }
 
         /// <summary>
         /// Whether or not this phase is required for the job to complete successfully.
@@ -93,6 +93,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="phaseName">The name of the phase</param>
         /// <param name="required">If this phase is required to complete for the job to complete</param>
         /// <param name="rights">Access rights for the phase</param>
+        /// <param name="stateRights">Access rights for the states on this phase</param>
         /// <param name="state">The initial state of the phase</param>
         /// <param name="stateDescription">The initial state descritpion for the phase</param>
         public Phase(string phaseName, Boolean required, IDictionary<string, Right> rights = null, IDictionary<string, Right> stateRights = null, PhaseStateType state = PhaseStateType.NOTAPPLICABLE, string stateDescription = "Not applicable") : this(phaseName, required)
