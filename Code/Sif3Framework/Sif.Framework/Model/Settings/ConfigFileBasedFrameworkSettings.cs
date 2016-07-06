@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
+using log4net;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Utils;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Reflection;
 
 namespace Sif.Framework.Model.Settings
 {
@@ -26,6 +31,8 @@ namespace Sif.Framework.Model.Settings
     /// </summary>
     abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected Type[] classes = null;
         private Configuration configuration;
 
         /// <summary>
@@ -344,6 +351,90 @@ namespace Sif.Framework.Model.Settings
         public bool EventsSupported
         {
             get { return GetBooleanSetting(SettingsPrefix + ".events.supported", false); }
+        }
+
+        public Type[] Classes
+        {
+            get
+            {
+                if (classes != null)
+                {
+                    return classes;
+                }
+
+                string setting = GetStringSetting(SettingsPrefix + ".provider.classes", "any");
+
+                log.Debug("Attempting to load named providers: " + setting);
+
+                if (StringUtils.IsEmpty(setting))
+                {
+                    classes = new Type[0];
+                    return classes;
+                }
+
+                if (setting.ToLower().Equals("any"))
+                {
+                    classes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                               from type in assembly.GetTypes()
+                               where ProviderUtils.isFunctionalService(type)
+                               select type).ToArray();
+
+                    foreach (Type t in classes)
+                    {
+                        log.Info("Identified service class " + t.Name + ", to specifically identify this service in your configuration file use:\n" + t.AssemblyQualifiedName);
+                    }
+
+                    return classes;
+                }
+
+                List<Type> providers = new List<Type>();
+                string[] classNames = setting.Split('|');
+                foreach (string className in classNames)
+                {
+                    Type provider = Type.GetType(className.Trim());
+                    if (provider == null)
+                    {
+                        log.Error("Could not find provider with assembly qualified name " + className);
+                    }
+                    else
+                    {
+                        providers.Add(provider);
+                    }
+                }
+                classes = providers.ToArray();
+                return classes;
+            }
+        }
+
+        public int StartupDelay
+        {
+            get { return GetIntegerSetting(SettingsPrefix + ".startup.delay", 10); }
+        }
+
+        public bool JobTimeoutEnabled
+        {
+            get { return GetBooleanSetting(SettingsPrefix + ".job.timeout.enabled", true); }
+        }
+
+        public int JobTimeoutFrequency
+        {
+            get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
+        }
+
+        /// <summary>
+        /// Frequency of events if it exists; 60 otherwise.
+        /// </summary>
+        public int EventsFrequency
+        {
+            get { return GetIntegerSetting(SettingsPrefix + ".events.frequency", 60); }
+        }
+
+        /// <summary>
+        /// Number of objects in an event if it exists; 60 otherwise.
+        /// </summary>
+        public int MaxObjectsInEvent
+        {
+            get { return GetIntegerSetting(SettingsPrefix + ".events.maxobjects", 10); }
         }
     }
 }
