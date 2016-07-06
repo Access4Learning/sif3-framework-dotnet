@@ -107,8 +107,7 @@ namespace Sif.Framework.Service.Mapper
 
             public IList<PhaseState> Convert(ResolutionContext context)
             {
-                ICollection<PhaseState> values = AutoMapper.Mapper.Map<stateType[], ICollection<PhaseState>>((stateType[])context.SourceValue);
-                return new List<PhaseState>(values);
+                return AutoMapper.Mapper.Map<stateType[], IList<PhaseState>>((stateType[])context.SourceValue);
             }
 
         }
