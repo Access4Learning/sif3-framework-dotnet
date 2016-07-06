@@ -5,17 +5,17 @@
       <generator class="native"/>
     </id>
     <property name="Name" column="NAME" length="128"/>
-    <bag name="States" table="PHASE_STATES" cascade="all" lazy="false">
+    <bag name="States" table="PHASESTATES" cascade="all" lazy="false">
       <key column="PHASE_ID"/>
       <one-to-many class="Sif.Framework.Model.Infrastructure.State"/>
     </bag>
     <property name="Required" column="REQUIRED" type="Boolean"/>
-    <map name="StatesRights" table="STATES_RIGHTS" cascade="all" lazy="false">
+    <map name="StatesRights" table="PHASESTATES_RIGHTS" cascade="all" lazy="false">
       <key column="PHASE_ID"/>
       <index column="TYPE" type="string"/>
       <many-to-many column="RIGHT_ID" class="Sif.Framework.Model.Infrastructure.Right"/>
     </map>
-    <map name="Rights" table="PHASE_RIGHTS" cascade="all" lazy="false">
+    <map name="Rights" table="RIGHTS" cascade="all" lazy="false">
       <key column="PHASE_ID"/>
       <index column="TYPE" type="string"/>
       <many-to-many column="RIGHT_ID" class="Sif.Framework.Model.Infrastructure.Right"/>
