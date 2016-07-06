@@ -5,7 +5,7 @@ rem == User defined environment variables                                     ==
 rem ============================================================================
 
 set MSBUILD="C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
-set NUGET=..\..\..\Tools\NuGet\nuget.exe
+set NUGET=nuget.exe
 
 set SPEC=..\..\..\Code\Sif3Specification\Sif3Specification.sln
 set FRAMEWORK=..\..\..\Code\Sif3Framework\Sif3Framework.sln
@@ -22,12 +22,17 @@ rem ============================================================================
 
 if exist %MSBUILD% goto okMSBUILD
 echo Could not find : %MSBUILD%
+echo You may need to modify this script (the MSBUILD variable) to point to the correct location for your system.
 pause
 goto end
 :okMSBUILD
 
 if exist %NUGET% goto okNUGET
 echo Could not find : %NUGET%
+echo NuGet Command Line executable not found.
+echo Download it from https://www.nuget.org/ and either:
+echo A) put it in your path/in the same directory as this script, or
+echo B) modify this script (the NUGET variable)to point to its location
 pause
 goto end
 :okNUGET
