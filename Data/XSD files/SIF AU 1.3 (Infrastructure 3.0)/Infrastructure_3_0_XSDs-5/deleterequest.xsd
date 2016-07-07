@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.sifassociation.org/infrastructure/3.0"
+    targetNamespace="http://www.sifassociation.org/infrastructure/3.0"
+    elementFormDefault="qualified">
+    <xs:include schemaLocation="infrastructurecommontypes.xsd"/>
+
+    <xs:element name="deleteRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="deletes">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="delete">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:token" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
