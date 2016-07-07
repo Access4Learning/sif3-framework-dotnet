@@ -293,6 +293,12 @@ namespace Sif.Framework.Service.Functional
             }
         }
 
+        public void ExtendJobTimeout(Job job, TimeSpan duration)
+        {
+            job.Timeout = job.Timeout.Add(duration);
+            repository.Save(job);
+        }
+
         public virtual void JobTimeout()
         {
             log.Info("++++++++++++++++++++++++++++++ JobTimeout() called for service " + GetServiceName());

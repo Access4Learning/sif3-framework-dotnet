@@ -86,6 +86,13 @@ namespace Sif.Framework.Service.Functional
         /// Method that is run once to abort this service's thread in the FunctionalServiceProviderFactory.
         /// </summary>
         void Shutdown();
+        
+        /// <summary>
+        /// Extends the timeout of the specified job the by given duration.
+        /// </summary>
+        /// <param name="job">The job whose duration is to be extended.</param>
+        /// <param name="duration">The TimeSpan to increase the duration by.</param>
+        void ExtendJobTimeout(Job job, TimeSpan duration);
 
         /// <summary>
         /// Method that is run at specified intervals to timeout jobs that belong to this service.
