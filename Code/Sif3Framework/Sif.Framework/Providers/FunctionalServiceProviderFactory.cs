@@ -45,7 +45,7 @@ namespace Sif.Framework.Providers
         private Dictionary<string, Thread> providerThreads = new Dictionary<string, Thread>();
 
         // Known providers that can be instantiated for standard request/response
-        private Dictionary<string, ProviderClassInfo> providerClasses = new Dictionary<string, ProviderClassInfo>();
+        private Dictionary<string, ServiceClassInfo> providerClasses = new Dictionary<string, ServiceClassInfo>();
 
         public static FunctionalServiceProviderFactory CreateFactory()
         {
@@ -188,7 +188,7 @@ namespace Sif.Framework.Providers
                 log.Debug("Provider class to initialse: " + type.FullName);
                 try
                 {
-                    ProviderClassInfo providerClassInfo = new ProviderClassInfo(type, Type.EmptyTypes);
+                    ServiceClassInfo providerClassInfo = new ServiceClassInfo(type, Type.EmptyTypes);
                     
                     if(providerClassInfo.GetConstructor() == null)
                     {
