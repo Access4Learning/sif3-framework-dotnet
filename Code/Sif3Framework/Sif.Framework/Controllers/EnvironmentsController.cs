@@ -140,6 +140,13 @@ namespace Sif.Framework.Controllers
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
+        [Route("{id}")]
+        [HttpGet]
+        public override environmentType Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        {
+            return base.Get(id, zone, context);
+        }
+
         /// <summary>
         /// POST api/environments
         /// This operation is forbidden.
@@ -218,6 +225,13 @@ namespace Sif.Framework.Controllers
         public override void Put(Guid id, environmentType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
+        }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public override void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        {
+            base.Delete(id, zone, context);
         }
 
     }

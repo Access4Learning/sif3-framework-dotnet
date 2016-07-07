@@ -46,19 +46,5 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         {
             return base.Create(item, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
         }
-
-        [Route("{id}")]
-        [HttpDelete]
-        public override void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
-        {
-            base.Delete(id, zone, context);
-        }
-
-        [Route("{id}")]
-        [HttpGet]
-        public override environmentType Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
-        {
-            return base.Get(id, zone, context);
-        }
     }
 }
