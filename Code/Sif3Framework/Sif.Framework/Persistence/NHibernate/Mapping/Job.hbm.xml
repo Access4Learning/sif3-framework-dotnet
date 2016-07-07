@@ -4,7 +4,7 @@
     <id name="Id" type="Guid" column="JOB_ID">
       <generator class="guid"/>
     </id>
-    <property name="Name" column="NAME" />
+    <property name="Name" column="NAME" length="128" />
     <property name="Description" column="DESCRIPTION" length="256"/>
     <property name="State" column="STATE" />
     <property name="StateDescription" column="STATEDESCRIPTION" length="256"/>
