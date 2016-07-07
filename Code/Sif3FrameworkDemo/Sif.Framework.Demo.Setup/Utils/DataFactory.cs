@@ -40,11 +40,19 @@ namespace Sif.Framework.Demo.Setup.Utils
         {
             IList<ApplicationRegister> registers = new List<ApplicationRegister>();
 
-            string pathPrefix = "Data files\\" + locale.ToUpper();
+            string rootPath = "Data files\\" + locale.ToUpper();
 
-            foreach(string path in Directory.GetDirectories(pathPrefix))
+            // Paths to look for
+            List<string> paths = new List<string>(Directory.GetDirectories(rootPath));
+            paths.Insert(0, rootPath);
+
+            foreach (string path in paths)
             {
-                registers.Add(CreateApplicationRegister(path));
+                ApplicationRegister register = CreateApplicationRegister(path);
+                if (register != null)
+                {
+                    registers.Add(register);
+                }
             }
 
             return registers;
@@ -58,13 +66,15 @@ namespace Sif.Framework.Demo.Setup.Utils
             string request = @path + "\\EnvironmentRequest.xml";
             string response = @path + "\\EnvironmentResponse.xml";
 
+            if (!File.Exists(request) || !File.Exists(response))
+            {
+                return null;
+            }
+
             Console.WriteLine("");
             Console.WriteLine("Processsing input from: " + path);
             Console.WriteLine("Request:  " + request);
             Console.WriteLine("Response: " + response);
-            if(!File.Exists(request) || !File.Exists(response)) {
-                Console.WriteLine("Failed to find request/response XML message pair.");
-            }
             Console.WriteLine("");
 
             using (FileStream xmlStream = File.OpenRead(request))
