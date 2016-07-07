@@ -172,7 +172,7 @@
     <Compile Include="Service\Providers\ProviderService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
-    <Compile Include="Service\IDataModelService.cs" />
+    <Compile Include="Service\IObjectService.cs" />
     <Compile Include="Service\Registration\IRegistrationService.cs" />
     <Compile Include="Service\Registration\NoRegistrationService.cs" />
     <Compile Include="Service\Registration\RegistrationService.cs" />

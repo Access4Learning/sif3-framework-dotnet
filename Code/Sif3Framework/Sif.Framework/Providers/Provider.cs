@@ -45,7 +45,7 @@ namespace Sif.Framework.Providers
     public abstract class Provider<TSingle, TMultiple> : ApiController, IProvider<TSingle, TMultiple, string> where TSingle : ISifRefId<string>
     {
         protected IAuthenticationService authService;
-        protected IDataModelService<TSingle, TMultiple, string> service;
+        protected IObjectService<TSingle, TMultiple, string> service;
 
         /// <summary>
         /// Default constructor that is only available to derived instances of

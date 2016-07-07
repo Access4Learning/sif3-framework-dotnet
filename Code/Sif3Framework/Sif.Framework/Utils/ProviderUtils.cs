@@ -85,7 +85,7 @@ namespace Sif.Framework.Utils
             return type.IsClass
                 && type.IsVisible 
                 && !type.IsAbstract
-                && type.IsAssignableToGenericType(typeof(IDataModelService<,,>));
+                && type.IsAssignableToGenericType(typeof(IObjectService<,,>));
         }
 
         /// <summary>
