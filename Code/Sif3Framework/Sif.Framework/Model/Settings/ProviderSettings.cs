@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-using log4net;
-using Sif.Framework.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
 namespace Sif.Framework.Model.Settings
 {
 
@@ -29,16 +22,29 @@ namespace Sif.Framework.Model.Settings
     /// </summary>
     class ProviderSettings : ConfigFileBasedFrameworkSettings
     {
+
         /// <summary>
         /// <see cref="Sif.Framework.Model.Settings.ConfigFileBasedFrameworkSettings.SettingsPrefix"/>
         /// </summary>
-        protected override string SettingsPrefix { get { return "provider"; } }
+        protected override string SettingsPrefix
+        {
+
+            get
+            {
+                return "provider";
+            }
+
+        }
 
         /// <summary>
         /// <see cref="Sif.Framework.Model.Settings.ConfigFileBasedFrameworkSettings.ConfigFileBasedFrameworkSettings()"/>
         /// </summary>
-        public ProviderSettings() : base()
+        public ProviderSettings()
+            : base()
         {
+
         }
+
     }
+
 }
