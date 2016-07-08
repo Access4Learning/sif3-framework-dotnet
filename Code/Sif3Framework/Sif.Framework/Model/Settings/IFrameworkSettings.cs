@@ -96,9 +96,46 @@ namespace Sif.Framework.Model.Settings
         string UserToken { get; }
 
         /// <summary>
+        /// The types of the functional services that are configured. Default is "any".
+        /// </summary>
+        string JobClasses { get; }
+
+        /// <summary>
+        /// How long in seconds to delay between starting each Functional Service thread. Default 10.
+        /// </summary>
+        int StartupDelay { get; }
+
+        /// <summary>
+        /// True if jobs are tightly coupled to the consumer that created them, false otherwise. Default true.
+        /// </summary>
+        bool JobBinding { get; }
+
+        /// <summary>
+        /// True if job timeouts are enabled, false otherwise. Default true.
+        /// </summary>
+        bool JobTimeoutEnabled { get; }
+
+        /// <summary>
+        /// How often to check for timedout jobs in seconds. Default 60.
+        /// </summary>
+        int JobTimeoutFrequency { get; }
+
+        /*
+        /// <summary>
         /// Intention to support events flag if it exists; false otherwise.
         /// </summary>
         bool EventsSupported { get; }
+
+        /// <summary>
+        /// Frequency of events if it exists; 60 otherwise.
+        /// </summary>
+        int EventsFrequency { get; }
+
+        /// <summary>
+        /// Number of objects in an event if it exists; 60 otherwise.
+        /// </summary>
+        int MaxObjectsInEvent { get; }
+        */
     }
 
 }

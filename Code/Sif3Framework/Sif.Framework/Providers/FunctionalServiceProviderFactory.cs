@@ -47,6 +47,60 @@ namespace Sif.Framework.Providers
         // Known providers that can be instantiated for standard request/response
         private Dictionary<string, ServiceClassInfo> providerClasses = new Dictionary<string, ServiceClassInfo>();
 
+        private Type[] classes = null;
+        private Type[] Classes
+        {
+            get
+            {
+                if (classes != null)
+                {
+                    return classes;
+                }
+
+                string classesStr = SettingsManager.ProviderSettings.JobClasses;
+
+                log.Debug("Attempting to load named providers: " + classesStr);
+
+                if (StringUtils.IsEmpty(classesStr))
+                {
+                    classes = Type.EmptyTypes;
+                    return classes;
+                }
+
+                if (classesStr.ToLower().Equals("any"))
+                {
+                    classes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                               from type in assembly.GetTypes()
+                               where ProviderUtils.isFunctionalService(type)
+                               select type).ToArray();
+
+                    foreach (Type t in classes)
+                    {
+                        log.Info("Identified service class " + t.Name + ", to specifically identify this service in your configuration file use:\n" + t.AssemblyQualifiedName);
+                    }
+
+                    return classes;
+                }
+
+                List<Type> providers = new List<Type>();
+                string[] classNames = classesStr.Split('|');
+                foreach (string className in classNames)
+                {
+                    Type provider = Type.GetType(className.Trim());
+                    if (provider == null)
+                    {
+                        log.Error("Could not find provider with assembly qualified name " + className);
+                    }
+                    else
+                    {
+                        providers.Add(provider);
+                    }
+                }
+                classes = providers.ToArray();
+                return classes;
+            }
+        }
+
         public static FunctionalServiceProviderFactory CreateFactory()
         {
             lock (locked)
@@ -183,7 +237,7 @@ namespace Sif.Framework.Providers
         {
             log.Debug("Initialising ProviderFactory (currently only supports Functional Services)");
             // settings.Classes only returns functional services at the moment, but can easily be extended to other types of services.
-            foreach (Type type in settings.Classes)
+            foreach (Type type in Classes)
             {
                 log.Debug("Provider class to initialse: " + type.FullName);
                 try
