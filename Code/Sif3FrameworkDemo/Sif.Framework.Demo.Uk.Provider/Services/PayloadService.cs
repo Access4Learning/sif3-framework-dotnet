@@ -38,7 +38,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return "Payloads";
         }
 
-        protected override void configure(Job job)
+        protected override void Configure(Job job)
         {
             job.AddPhase(new Phase("default", true, Right.getRights(create: RightValue.APPROVED, query: RightValue.APPROVED, update: RightValue.APPROVED), Right.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 

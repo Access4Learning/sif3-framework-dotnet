@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
     <Compile Include="Model\Infrastructure\PhaseState.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
+    <Compile Include="Utils\RightsUtils.cs" />
     <Compile Include="Utils\ZoneUtils.cs" />
     <Compile Include="Utils\ProviderUtils.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />

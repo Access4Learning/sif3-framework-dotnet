@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="SifObjectBinding" table="SIF_OBJECT_BINDING">
+    <id name="Id" column="SIF_OBJECT_BINDING_ID">
+      <generator class="native"/>
+    </id>
+    <property name="RefId" column="SIF_ID" length="64"/>
+    <property name="SessionToken" column="SESSION_TOKEN" length="64"/>
+  </class>
+</hibernate-mapping>

@@ -78,6 +78,12 @@ namespace Sif.Framework.Service.Functional
         Boolean AcceptJob(string serviceName, string jobName);
 
         /// <summary>
+        /// Returns the name of supported jobs (the service name without the last character)
+        /// </summary>
+        /// <returns>The name of supported jobs</returns>
+        string AcceptJob();
+
+        /// <summary>
         /// Method that is run once to set up a thread for this service in the FunctionalServiceProviderFactory.
         /// </summary>
         void Startup();
@@ -98,5 +104,39 @@ namespace Sif.Framework.Service.Functional
         /// Method that is run at specified intervals to timeout jobs that belong to this service.
         /// </summary>
         void JobTimeout();
+
+        /// <summary>
+        /// Binds a (job) object's refid to a session token
+        /// </summary>
+        /// <param name="sessionToken">The session token the (job) object was created in</param>
+        /// <param name="objectId">The refid of the created object</param>
+        void Bind(string sessionToken, Guid objectId);
+
+        /// <summary>
+        /// Unbinds all (job) object refid from this session token
+        /// </summary>
+        /// <param name="sessionToken">The session token to unbind all objects from</param>
+        void Unbind(string sessionToken);
+
+        /// <summary>
+        /// Unbinds the (job) object's refid from its associated session token
+        /// </summary>
+        /// <param name="objectId">The refid of the object to unbind from its session token</param>
+        void Unbind(Guid objectId);
+
+        /// <summary>
+        /// Checks if the given (job) object id is bound, and if it is returns the session token.
+        /// </summary>
+        /// <param name="objectId">The refid of the object</param>
+        /// <returns>The session token this object id is bound to, null if not found</returns>
+        string GetBinding(Guid objectId);
+
+        /// <summary>
+        /// Returns true if the (job) object refid is associated with the session token.
+        /// </summary>
+        /// <param name="sessionToken">The session token to look for</param>
+        /// <param name="objectId">The refid of the (job) object to look for</param>
+        /// <returns>See summary</returns>
+        Boolean IsBound(string sessionToken, Guid objectId);
     }
 }

@@ -443,8 +443,15 @@ namespace Sif.Framework.Demo.Uk.Consumer
         private static Boolean RunDemo(string demoName)
         {
             Console.Write("\n\nWould you like run the " + demoName + " demo? (Y/n)");
-            ConsoleKeyInfo info = Console.ReadKey();
+            ConsoleKeyInfo info = new ConsoleKeyInfo();
+            do
+            {
+                info = Console.ReadKey();
+            }
+            while (!(info.Key == ConsoleKey.N || info.Key == ConsoleKey.Y || info.Key == ConsoleKey.Enter));
+
             Console.Write("\n\n");
+
             return info.Key == ConsoleKey.Y || info.Key == ConsoleKey.Enter;
         }
 
