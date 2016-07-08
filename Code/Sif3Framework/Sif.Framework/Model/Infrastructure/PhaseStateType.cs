@@ -21,12 +21,39 @@ namespace Sif.Framework.Model.Infrastructure
     /// </summary>
     public enum PhaseStateType
     {
+        /// <summary>
+        /// This phase is not applicable in the current context.
+        /// </summary>
         NOTAPPLICABLE,
+
+        /// <summary>
+        /// The phase has not been started yet.
+        /// </summary>
         NOTSTARTED,
+
+        /// <summary>
+        /// The phase is waiting.
+        /// </summary>
         PENDING,
+
+        /// <summary>
+        /// The phase has been safely skipped.
+        /// </summary>
         SKIPPED,
+
+        /// <summary>
+        /// The phase is currently working, awaiting input, etc.
+        /// </summary>
         INPROGRESS,
+
+        /// <summary>
+        /// The phase has completed successfully.
+        /// </summary>
         COMPLETED,
+
+        /// <summary>
+        /// The phase has failed, steps may be taken to recover it.
+        /// </summary>
         FAILED
     }
 

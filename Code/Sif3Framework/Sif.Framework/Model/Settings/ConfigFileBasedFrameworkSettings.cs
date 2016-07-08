@@ -345,14 +345,6 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EventsSupported"/>
-        /// </summary>
-        public bool EventsSupported
-        {
-            get { return GetBooleanSetting(SettingsPrefix + ".events.supported", false); }
-        }
-
-        /// <summary>
         /// <see cref="IFrameworkSettings.JobClasses"/>
         /// </summary>
         public string JobClasses
@@ -393,6 +385,14 @@ namespace Sif.Framework.Model.Settings
         }
 
         /*
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EventsSupported"/>
+        /// </summary>
+        public bool EventsSupported
+        {
+            get { return GetBooleanSetting(SettingsPrefix + ".events.supported", false); }
+        }
+
         /// <summary>
         /// Frequency of events if it exists; 60 otherwise.
         /// </summary>

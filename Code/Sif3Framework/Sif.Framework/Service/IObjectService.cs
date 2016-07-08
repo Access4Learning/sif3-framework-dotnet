@@ -96,6 +96,8 @@ namespace Sif.Framework.Service
         /// Retrieve multiple objects using Service Paths.
         /// </summary>
         /// <param name="conditions">Service Path conditions</param>
+        /// <param name="pageIndex">A (nullable) page index.</param>
+        /// <param name="pageSize">A (nullable) size of elements in a page.</param>
         /// <param name="zone">Zone associated with the request.</param>
         /// <param name="context">Zone context.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>

@@ -23,6 +23,9 @@ using System.Threading.Tasks;
 
 namespace Sif.Framework.Service.Functional
 {
+    /// <summary>
+    /// The interface used for all actions that a phase may perform.
+    /// </summary>
     public interface IPhaseActions
     {
         /// <summary>

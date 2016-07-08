@@ -174,7 +174,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Unregister()">Unregister</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Unregister(bool?)">Unregister</see>
         /// </summary>
         public void Unregister(bool? deleteOnUnregister = null)
         {
@@ -202,7 +202,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TMultiple)">Create</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TMultiple, string, string)">Create</see>
         /// </summary>
         public virtual MultipleCreateResponse Create(TMultiple obj, string zone = null, string context = null)
         {

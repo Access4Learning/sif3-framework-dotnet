@@ -47,7 +47,9 @@ namespace Sif.Framework.Utils
             navigationPageSize
         }
 
+        /*
         public static readonly string JobIdHeader = "jobId";
+        */
 
         /// <summary>
         /// 
@@ -57,6 +59,9 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
+        /// <param name="methodOverride">Overrides the method header.</param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
@@ -108,6 +113,8 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
@@ -140,6 +147,9 @@ namespace Sif.Framework.Utils
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
+        /// <param name="methodOverride">Overrides the method of the request, e.g. to implement a GET with a payload over a POST request.</param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         private static string RequestWithPayload(RequestMethod requestMethod, string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
@@ -178,6 +188,8 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         public static string DeleteRequest(string url, string authorisationToken, string contentTypeOverride = null, string acceptOverride = null)
         {
@@ -196,6 +208,8 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="navigationPage"></param>
         /// <param name="navigationPageSize"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         public static string GetRequest(string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
@@ -209,6 +223,8 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken"></param>
         /// <param name="body"></param>
         /// <param name="methodOverride"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         public static string PostRequest(string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
@@ -216,12 +232,14 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Makes and sends a put request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="body"></param>
-        /// <param name="methodOverride"></param>
+        /// <param name="url">Where to send the request.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="body">The data payload to send.</param>
+        /// <param name="methodOverride">The method that can be used to override the PUT, e.g. to issue a GET with a payload.</param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
         public static string PutRequest(string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {

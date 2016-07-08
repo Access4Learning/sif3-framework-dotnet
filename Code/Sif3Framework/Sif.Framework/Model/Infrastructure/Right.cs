@@ -38,19 +38,6 @@ namespace Sif.Framework.Model.Infrastructure
             Value = value.ToString();
         }
 
-        public static IDictionary<string, Right> getRights(RightValue admin = RightValue.REJECTED, RightValue create = RightValue.REJECTED, RightValue delete = RightValue.REJECTED, RightValue provide = RightValue.REJECTED, RightValue query = RightValue.REJECTED, RightValue subscribe = RightValue.REJECTED, RightValue update = RightValue.REJECTED)
-        {
-            IDictionary<string, Right> rights = new Dictionary<string, Right>();
-            rights.Add(RightType.ADMIN.ToString(), new Right(RightType.ADMIN, admin));
-            rights.Add(RightType.CREATE.ToString(), new Right(RightType.CREATE, create));
-            rights.Add(RightType.DELETE.ToString(), new Right(RightType.DELETE, delete));
-            rights.Add(RightType.PROVIDE.ToString(), new Right(RightType.PROVIDE, provide));
-            rights.Add(RightType.QUERY.ToString(), new Right(RightType.QUERY, query));
-            rights.Add(RightType.SUBSCRIBE.ToString(), new Right(RightType.SUBSCRIBE, subscribe));
-            rights.Add(RightType.UPDATE.ToString(), new Right(RightType.UPDATE, update));
-            return rights;
-        }
-
     }
 
 }

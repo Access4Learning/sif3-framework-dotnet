@@ -158,6 +158,11 @@ namespace Sif.Framework.Consumers
             registrationService.Unregister(deleteOnUnregister);
         }
 
+        /// <summary>
+        /// Gets the URL of the functional service for the specified job name.
+        /// </summary>
+        /// <param name="jobName">The jon name to build a URL for.</param>
+        /// <returns>A string in the form {http/https}://{domain:port}/{servicesConnectorPath}/{jobName}s.</returns>
         protected virtual string GetURLPrefix(string jobName)
         {
             return EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + jobName + "s";
@@ -213,7 +218,7 @@ namespace Sif.Framework.Consumers
         /// Convenience method that processes a MultipleCreateResponse message and fetches all successfully created jobs. It does this by issuing multiple individual query requests for any create status codes that start with a "2" (OK, Created, etc.).
         /// </summary>
         /// <param name="creates">A MutilpleCreateResponse object to parse</param>
-        /// /// <param name="creates">The job name (singular) that the MultipleCreateResponse refers to</param>
+        /// <param name="jobName">The job name (singular) that the MultipleCreateResponse refers to</param>
         /// <param name="zone">The zone in which to fetch the Jobs</param>
         /// <param name="context">The context in which to fetch the Jobs</param>
         /// <returns>The created Job objects</returns>
@@ -242,11 +247,11 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Get a single Job by its RefId
+        /// Get a single Job
         /// </summary>
-        /// <param name="id">The RefId of the Job to fetch</param>
-        /// <param name="zone">The zone in which to operate</param>
-        /// <param name="context">The context in which to operate</param>
+        /// <param name="job">The job template of the Job to fetch, must have name and id properties populated.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         /// <returns>The Job object</returns>
         public virtual Job Query(Job job, string zone = null, string context = null)
         {
@@ -288,6 +293,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Get a all Jobs
         /// </summary>
+        /// <param name="jobName">The name of the job used to resolve the right functional service</param>
         /// <param name="navigationPage">The page to fetch</param>
         /// <param name="navigationPageSize">The number of items to fetch per page</param>
         /// <param name="zone">The zone in which to operate</param>
@@ -371,11 +377,11 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Delete a Job object by its RefId
+        /// Delete a Job
         /// </summary>
-        /// <param name="id">The RefId of the Job to delete</param>
-        /// <param name="zone">The zone in which to delete the Job</param>
-        /// <param name="context">The context in which to delete the Job</param>
+        /// <param name="job">The job template of the Job to delete, must have name and id populated.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         public virtual void Delete(Job job, string zone = null, string context = null)
         {
             checkRegistered();
@@ -389,11 +395,11 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Delete a series of Job objects by their RefIds
+        /// Delete a series of Job objects
         /// </summary>
-        /// <param name="ids">The RefIds of the Jobs to delete</param>
-        /// <param name="zone">The zone in which to delete the Jobs</param>
-        /// <param name="context">The context in which to delete the Jobs</param>
+        /// <param name="jobs">The job objtect templates of the Jobs to delete, each must have name and id populated. tHe name of all jobs must be the same.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         /// <returns>A response</returns>
         public virtual MultipleDeleteResponse Delete(List<Job> jobs, string zone = null, string context = null)
         {
@@ -521,16 +527,14 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// Send a create operation to a specified phase on the specified job.
+        /// Send a create operation to  the state of the specified phase on the specified job.
         /// </summary>
-        /// <param name="job">The Job on which to execute the phase</param>
-        /// <param name="phaseName">The name of the phase</param>
-        /// <param name="body">The payload to send to the phase</param>
-        /// <param name="zone">The zone in which to operate</param>
-        /// <param name="context">The context in which to operate</param>
-        /// <param name="contentTypeOverride">The mime type of the data to be sent</param>
-        /// <param name="acceptOverride">The expected mime type of the result</param>
-        /// <returns>A string, possibly containing a serialized object, returned from the functional service</returns>
+        /// <param name="job">The Job on which to operate</param>
+        /// <param name="phaseName">The name of the phase whose state is to change</param>
+        /// <param name="item">The PhaseState instance template</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
+        /// <returns>The current state of the phase.</returns>
         public virtual PhaseState CreateToState(Job job, string phaseName, PhaseState item, string zone = null, string context = null)
         {
             checkRegistered();

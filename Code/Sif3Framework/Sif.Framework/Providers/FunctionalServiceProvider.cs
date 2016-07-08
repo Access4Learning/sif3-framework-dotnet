@@ -765,16 +765,21 @@ namespace Sif.Framework.Providers
             }
         }
 
-        protected HttpResponseMessage OKResult(string result)
+        /// <summary>
+        /// Convenience method to produce and OK response
+        /// </summary>
+        /// <param name="payload">The payload to send back in the response</param>
+        /// <returns>A response message</returns>
+        protected HttpResponseMessage OKResult(string payload = null)
         {
-            if(StringUtils.IsEmpty(result))
+            if(StringUtils.IsEmpty(payload))
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             string accept = HttpUtils.GetAccept(Request);
             return new HttpResponseMessage(HttpStatusCode.OK) {
-                Content = new StringContent(result, Encoding.UTF8, accept)
+                Content = new StringContent(payload, Encoding.UTF8, accept)
             };
         }
     }

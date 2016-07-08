@@ -140,6 +140,8 @@ namespace Sif.Framework.Utils
         /// Parse the Environment object for the service URL.
         /// </summary>
         /// <param name="environment">Environment object to parse.</param>
+        /// <param name="serviceType">The type of service to get a connector for.</param>
+        /// <param name="connector">The type of connector to get, only has an effect when the service type is UTILITY.</param>
         /// <returns>Service URL.</returns>
         internal static string ParseServiceUrl(Environment environment, ServiceType serviceType = ServiceType.OBJECT, InfrastructureServiceNames connector = InfrastructureServiceNames.requestsConnector)
         {

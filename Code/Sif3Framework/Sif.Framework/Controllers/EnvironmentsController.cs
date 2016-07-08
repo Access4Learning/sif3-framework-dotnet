@@ -152,6 +152,8 @@ namespace Sif.Framework.Controllers
         /// This operation is forbidden.
         /// </summary>
         /// <param name="item">Object to create.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         /// <returns>HTTP status 403.</returns>
         public override HttpResponseMessage Post(environmentType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {

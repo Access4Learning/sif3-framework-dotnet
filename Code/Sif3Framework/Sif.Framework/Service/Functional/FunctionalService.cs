@@ -452,7 +452,7 @@ namespace Sif.Framework.Service.Functional
                     }
                     catch (Exception e)
                     {
-                        log.Debug("Job " + job.Id + " has timed out, but could not be shut down. Will try again later.");
+                        log.Debug("Job " + job.Id + " has timed out, but could not be shut down. Will try again later.", e);
                         continue;
                     }
                     Unbind(job.Id);

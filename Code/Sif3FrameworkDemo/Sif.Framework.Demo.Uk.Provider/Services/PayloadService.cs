@@ -18,6 +18,7 @@ using Sif.Framework.Demo.Uk.Provider.Actions;
 using Sif.Framework.Model;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Functional;
+using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -40,11 +41,11 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
         protected override void Configure(Job job)
         {
-            job.AddPhase(new Phase("default", true, Right.getRights(create: RightValue.APPROVED, query: RightValue.APPROVED, update: RightValue.APPROVED), Right.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
+            job.AddPhase(new Phase("default", true, RightsUtils.getRights(create: RightValue.APPROVED, query: RightValue.APPROVED, update: RightValue.APPROVED), RightsUtils.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 
-            job.AddPhase(new Phase("xml", true, Right.getRights(update: RightValue.APPROVED), Right.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
+            job.AddPhase(new Phase("xml", true, RightsUtils.getRights(update: RightValue.APPROVED), RightsUtils.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 
-            job.AddPhase(new Phase("json", true, Right.getRights(update: RightValue.APPROVED), Right.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
+            job.AddPhase(new Phase("json", true, RightsUtils.getRights(update: RightValue.APPROVED), RightsUtils.getRights(create: RightValue.APPROVED), PhaseStateType.NOTSTARTED));
 
             job.Timeout = new TimeSpan(0, 1, 0);
         }

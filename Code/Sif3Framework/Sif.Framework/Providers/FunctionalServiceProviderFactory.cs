@@ -29,6 +29,9 @@ using System.Threading;
 
 namespace Sif.Framework.Providers
 {
+    /// <summary>
+    /// A factory for functional services. Manages timeouts, etc.
+    /// </summary>
     public class FunctionalServiceProviderFactory
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -101,6 +104,10 @@ namespace Sif.Framework.Providers
             }
         }
 
+        /// <summary>
+        /// Creates and configures the factory singleton instance.
+        /// </summary>
+        /// <returns>The factory singleton</returns>
         public static FunctionalServiceProviderFactory CreateFactory()
         {
             lock (locked)
@@ -196,7 +203,12 @@ namespace Sif.Framework.Providers
             return factory;
         }
 
-        public dynamic GetProvider(string name)
+        /// <summary>
+        /// Gets a new instance of a named provider service.
+        /// </summary>
+        /// <param name="name">The name of the provider service to look for</param>
+        /// <returns>See description</returns>
+        public IService GetProvider(string name)
         {
             if (StringUtils.IsEmpty(name))
             {
@@ -244,7 +256,7 @@ namespace Sif.Framework.Providers
                 {
                     ServiceClassInfo providerClassInfo = new ServiceClassInfo(type, Type.EmptyTypes);
                     
-                    if(providerClassInfo.GetConstructor() == null)
+                    if(providerClassInfo.HasConstructor())
                     {
                         log.Error("The provider class " + type.FullName + " does not have a valid constructor. Must have a public constructor that takes no arguments.");
                         continue;

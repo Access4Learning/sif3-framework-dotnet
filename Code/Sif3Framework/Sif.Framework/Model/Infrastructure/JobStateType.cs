@@ -21,9 +21,24 @@ namespace Sif.Framework.Model.Infrastructure
     /// </summary>
     public enum JobStateType
     {
+        /// <summary>
+        /// The job has not been started.
+        /// </summary>
         NOTSTARTED,
+
+        /// <summary>
+        /// The job is currently performing some operation, awaiting input, etc.
+        /// </summary>
         INPROGRESS,
+
+        /// <summary>
+        /// The job has finished and can be deleted.
+        /// </summary>
         COMPLETED,
+
+        /// <summary>
+        /// The job has failed, steps may be taken to recover the job.
+        /// </summary>
         FAILED
     }
 

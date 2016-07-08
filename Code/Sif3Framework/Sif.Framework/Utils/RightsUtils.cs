@@ -46,5 +46,29 @@ namespace Sif.Framework.Utils
                 throw new RejectedException("Insufficient rights for this operation");
             }
         }
+
+        /// <summary>
+        /// Gets a dictionary of rights. If no arguments are supplied all rights are assumed to have the value REJECTED.
+        /// </summary>
+        /// <param name="admin">The value of the ADMIN right</param>
+        /// <param name="create">The value of the CREATE right</param>
+        /// <param name="delete">The value of the DELETE right</param>
+        /// <param name="provide">The value of the PROVIDE right</param>
+        /// <param name="query">The value of the QUERY right</param>
+        /// <param name="subscribe">The value of the SUBSCRIBE right</param>
+        /// <param name="update">The value of the UPDATE right</param>
+        /// <returns>A dictionary of rights.</returns>
+        public static IDictionary<string, Right> getRights(RightValue admin = RightValue.REJECTED, RightValue create = RightValue.REJECTED, RightValue delete = RightValue.REJECTED, RightValue provide = RightValue.REJECTED, RightValue query = RightValue.REJECTED, RightValue subscribe = RightValue.REJECTED, RightValue update = RightValue.REJECTED)
+        {
+            IDictionary<string, Right> rights = new Dictionary<string, Right>();
+            rights.Add(RightType.ADMIN.ToString(), new Right(RightType.ADMIN, admin));
+            rights.Add(RightType.CREATE.ToString(), new Right(RightType.CREATE, create));
+            rights.Add(RightType.DELETE.ToString(), new Right(RightType.DELETE, delete));
+            rights.Add(RightType.PROVIDE.ToString(), new Right(RightType.PROVIDE, provide));
+            rights.Add(RightType.QUERY.ToString(), new Right(RightType.QUERY, query));
+            rights.Add(RightType.SUBSCRIBE.ToString(), new Right(RightType.SUBSCRIBE, subscribe));
+            rights.Add(RightType.UPDATE.ToString(), new Right(RightType.UPDATE, update));
+            return rights;
+        }
     }
 }
