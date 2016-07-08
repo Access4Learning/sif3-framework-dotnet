@@ -153,6 +153,7 @@ namespace Sif.Framework.Utils
         /// Convenience method for creating an error record.
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
+        /// <param name="scope">The scope of the error.</param>
         /// <param name="message">Error message.</param>
         /// <returns>Error record.</returns>
         public static errorType CreateError(HttpStatusCode statusCode, string scope, string message = null)
@@ -162,7 +163,7 @@ namespace Sif.Framework.Utils
             error.code = (uint)statusCode;
             error.scope = scope;
 
-            if (string.IsNullOrWhiteSpace(message))
+            if (!string.IsNullOrWhiteSpace(message))
             {
                 error.message = message.Trim();
             }
