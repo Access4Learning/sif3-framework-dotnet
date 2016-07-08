@@ -431,6 +431,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
             }
             catch (Exception e)
             {
+                log.Fatal(e.StackTrace);
                 throw new Exception(this.GetType().FullName, e);
             }
             finally

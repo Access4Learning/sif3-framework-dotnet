@@ -237,6 +237,7 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
