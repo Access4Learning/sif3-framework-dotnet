@@ -256,7 +256,7 @@ namespace Sif.Framework.Providers
                 {
                     ServiceClassInfo providerClassInfo = new ServiceClassInfo(type, Type.EmptyTypes);
                     
-                    if(providerClassInfo.HasConstructor())
+                    if(!providerClassInfo.HasConstructor())
                     {
                         log.Error("The provider class " + type.FullName + " does not have a valid constructor. Must have a public constructor that takes no arguments.");
                         continue;
