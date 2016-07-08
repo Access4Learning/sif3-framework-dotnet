@@ -4,11 +4,12 @@
     <description>SIF3 demo default zone</description>
   </defaultZone>
   <infrastructureServices>
-    <infrastructureService name="environment">http://sif.framework.environmentprovider:62921/api/environments</infrastructureService>
-    <infrastructureService name="requestsConnector">http://sif.framework.environmentprovider:50617/api</infrastructureService>
-    <infrastructureService name="provisionRequests">http://sif.framework.environmentprovider:62921/api/provision</infrastructureService>
-    <infrastructureService name="queues">http://sif.framework.environmentprovider:62921/api/queues</infrastructureService>
-    <infrastructureService name="subscriptions">http://sif.framework.environmentprovider:62921/api/subscriptions</infrastructureService>
+    <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
+    <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>
+    <infrastructureService name="servicesConnector">http://localhost:50617/services</infrastructureService>
+    <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
+    <infrastructureService name="queues">http://localhost:62921/api/queues</infrastructureService>
+    <infrastructureService name="subscriptions">http://localhost:62921/api/subscriptions</infrastructureService>
   </infrastructureServices>
   <provisionedZones>
     <provisionedZone id="Sif3DemoZone1">
