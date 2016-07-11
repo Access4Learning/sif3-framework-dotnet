@@ -115,7 +115,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         /// <param name="type">The state to set</param>
         /// <param name="description">The optional description to set</param>
-        /// <returns></returns>
+        /// <returns>The current state of the phase</returns>
         public virtual PhaseState UpdateState(PhaseStateType type, string description = null)
         {
             PhaseState current = GetCurrentState();
