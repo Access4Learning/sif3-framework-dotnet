@@ -383,31 +383,5 @@ namespace Sif.Framework.Model.Settings
         {
             get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
         }
-
-        /*
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EventsSupported"/>
-        /// </summary>
-        public bool EventsSupported
-        {
-            get { return GetBooleanSetting(SettingsPrefix + ".events.supported", false); }
-        }
-
-        /// <summary>
-        /// Frequency of events if it exists; 60 otherwise.
-        /// </summary>
-        public int EventsFrequency
-        {
-            get { return GetIntegerSetting(SettingsPrefix + ".events.frequency", 60); }
-        }
-
-        /// <summary>
-        /// Number of objects in an event if it exists; 60 otherwise.
-        /// </summary>
-        public int MaxObjectsInEvent
-        {
-            get { return GetIntegerSetting(SettingsPrefix + ".events.maxobjects", 10); }
-        }
-        */
     }
 }

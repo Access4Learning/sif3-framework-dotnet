@@ -49,7 +49,7 @@ namespace Sif.Framework.Model.Settings
         /// Data model namespace if it exists; null otherwise.
         /// </summary>
         string InfrastructureNamespace { get; }
-        
+
         /// <summary>
         /// Delete on unregister flag if it exists; false otherwise.
         /// </summary>
@@ -119,23 +119,5 @@ namespace Sif.Framework.Model.Settings
         /// How often to check for timedout jobs in seconds. Default 60.
         /// </summary>
         int JobTimeoutFrequency { get; }
-
-        /*
-        /// <summary>
-        /// Intention to support events flag if it exists; false otherwise.
-        /// </summary>
-        bool EventsSupported { get; }
-
-        /// <summary>
-        /// Frequency of events if it exists; 60 otherwise.
-        /// </summary>
-        int EventsFrequency { get; }
-
-        /// <summary>
-        /// Number of objects in an event if it exists; 60 otherwise.
-        /// </summary>
-        int MaxObjectsInEvent { get; }
-        */
     }
-
 }

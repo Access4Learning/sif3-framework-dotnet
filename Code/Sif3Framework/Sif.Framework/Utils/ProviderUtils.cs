@@ -7,12 +7,8 @@ using Sif.Framework.Service;
 using Sif.Framework.Service.Functional;
 using Sif.Specification.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 
 namespace Sif.Framework.Utils
@@ -61,12 +57,7 @@ namespace Sif.Framework.Utils
                 && type.IsVisible
                 && !type.IsAbstract
                 && typeof(IFunctionalService).IsAssignableFrom(type);
-            /*
-            if(isFService)
-            {
-                log.Debug("Found functional service: " + type.Name);
-            }
-            */
+
             return isFService;
         }
 
@@ -108,24 +99,7 @@ namespace Sif.Framework.Utils
                 typeof(FunctionalServiceProvider).IsAssignableFrom(type)) &&
                 typeof(IHttpController).IsAssignableFrom(type) &&
                 type.Name.EndsWith("Provider");
-            /*
-            if (type.Name.Contains("FunctionalServiceProvider"))
-            {
-                log.Debug(type.Name + " (" + iscontroller + ")");
-                log.Debug("isClass: " + type.IsClass);
-                log.Debug("isVisible: " + type.IsVisible);
-                log.Debug("isNotAbstract: " + !type.IsAbstract);
-                log.Debug("isAssignable(IProvider): " + type.IsAssignableToGenericType(typeof(IProvider<,,>)));
-                log.Debug("isAssignable(SifController): " + type.IsAssignableToGenericType(typeof(SifController<,>)));
-                log.Debug("isAssignable(FSProvider): " + typeof(FunctionalServiceProvider).IsAssignableFrom(type));
-                log.Debug("isAssignable: " + (type.IsAssignableToGenericType(typeof(IProvider<,,>)) ||
-                type.IsAssignableToGenericType(typeof(SifController<,>)) ||
-                typeof(FunctionalServiceProvider).IsAssignableFrom(type)));
-                log.Debug("Is an IHttpController: " + typeof(IHttpController).IsAssignableFrom(type));
-                log.Debug("Name ends with 'Provider': " + type.Name.EndsWith("Provider"));
-
-            }
-            */
+            
             return iscontroller;
         }
 
