@@ -17,8 +17,6 @@
 using Sif.Specification.Infrastructure;
 using System.Net.Http;
 using System.Web.Http;
-using Sif.Framework.WebApi.ModelBinders;
-using System;
 
 namespace Sif.Framework.EnvironmentProvider.Controllers
 {
@@ -27,13 +25,12 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     /// Valid single operations: POST, GET, DELETE.
     /// Valid multiple operations: none.
     /// </summary>
-    [RoutePrefix("api/environments")]
     public class EnvironmentsController : Sif.Framework.Controllers.EnvironmentsController
     {
-        public EnvironmentsController() : base() { }
 
-        [Route("environment")]
+        // POST api/{controller}
         [HttpPost]
+        [Route("api/environments/environment")]
         public override HttpResponseMessage Create
             (environmentType item,
              string authenticationMethod = null,
@@ -46,5 +43,7 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
         {
             return base.Create(item, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
         }
+
     }
+
 }
