@@ -79,28 +79,28 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <summary>
-        /// <see cref="IFunctionalService.Bind(string, Guid)"/>
+        /// <see cref="IFunctionalService.Bind(Guid, string)"/>
         /// </summary>
-        public virtual void Bind(string sessionToken, Guid objectId)
+        public virtual void Bind(Guid objectId, string ownerId)
         {
             long id = bindings.Save(new SifObjectBinding()
             {
-                SessionToken = sessionToken,
+                OwnerId = ownerId,
                 RefId = objectId
             });
-            log.Info("Bound object " + objectId + " with session token " + sessionToken + ". ID = " + id);
+            log.Info("Bound object " + objectId + " with session token " + ownerId + ". ID = " + id);
         }
 
         /// <summary>
         /// <see cref="IFunctionalService.Unbind(string)"/>
         /// </summary>
-        public virtual void Unbind(string sessionToken)
+        public virtual void Unbind(string ownerId)
         {
             bindings.Delete(bindings.Retrieve(new SifObjectBinding()
             {
-                SessionToken = sessionToken
+                OwnerId = ownerId
             }));
-            log.Info("Unbound all objects from the session token " + sessionToken);
+            log.Info("Unbound all objects from the session token " + ownerId);
         }
 
         /// <summary>
@@ -129,29 +129,29 @@ namespace Sif.Framework.Service.Functional
                 log.Debug("Could not find any bindings for the object " + objectId + ".");
                 return null;
             }
-            string sessionToken = candidates.FirstOrDefault().SessionToken;
+            string sessionToken = candidates.FirstOrDefault().OwnerId;
             log.Info("Binding for object " + objectId + " is session token " + sessionToken + ".");
             return sessionToken;
         }
 
         /// <summary>
-        /// <see cref="IFunctionalService.IsBound(string, Guid)"/>
+        /// <see cref="IFunctionalService.IsBound(Guid, string)"/>
         /// </summary>
-        public virtual Boolean IsBound(string sessionToken, Guid objectId)
+        public virtual Boolean IsBound(Guid objectId, string ownerId)
         {
             ICollection<SifObjectBinding> candidates = bindings.Retrieve(new SifObjectBinding()
             {
-                SessionToken = sessionToken,
+                OwnerId = ownerId,
                 RefId = objectId
             });
             Boolean bound = candidates != null && candidates.Count > 0;
             if (bound)
             {
-                log.Info("Found binding for object " + objectId + " with session token " + sessionToken + ".");
+                log.Info("Found binding for object " + objectId + " with session token " + ownerId + ".");
             }
             else
             {
-                log.Debug("Cound not find binding for object " + objectId + " with session token " + sessionToken + ".");
+                log.Debug("Cound not find binding for object " + objectId + " with session token " + ownerId + ".");
             }
             return bound;
         }

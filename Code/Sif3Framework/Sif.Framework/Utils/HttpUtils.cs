@@ -44,12 +44,10 @@ namespace Sif.Framework.Utils
             methodOverrideSif,
             mustUseAdvisory,
             navigationPage,
-            navigationPageSize
+            navigationPageSize,
+            applicationKey,
+            sourceName
         }
-
-        /*
-        public static readonly string JobIdHeader = "jobId";
-        */
 
         /// <summary>
         /// 
@@ -198,7 +196,7 @@ namespace Sif.Framework.Utils
 
         public static string DeleteRequest(string url, string authorisationToken, string body, string contentTypeOverride = null, string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body,  contentTypeOverride, acceptOverride);
+            return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -481,6 +479,49 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
+        /// Retrieve the applicationKey property from the header.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <returns>applicationKey value if set; null otherwise.</returns>
+        internal static string GetApplicationKey(HttpHeaders headers)
+        {
+            return GetHeaderValue(headers, RequestHeader.applicationKey.ToDescription());
+        }
+
+        /// <summary>
+        /// Retrieve the sourceName property from the header.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <returns>sourceName value if set; null otherwise.</returns>
+        internal static string GetSourceName(HttpHeaders headers)
+        {
+            return GetHeaderValue(headers, RequestHeader.sourceName.ToDescription());
+        }
+
+        /// <summary>
+        /// Gets the content type from the request headers.
+        /// </summary>
+        /// <param name="Request">HTTP Request</param>
+        public static string GetContentType(HttpRequestMessage Request)
+        {
+            return Request.Content.Headers.ContentType.MediaType;
+        }
+
+        /// <summary>
+        /// Gets the accept type from the request headers.
+        /// </summary>
+        /// <param name="Request">HTTP Request</param>
+        public static string GetAccept(HttpRequestMessage Request)
+        {
+            string[] values = (from a in Request.Headers.Accept select a.MediaType).ToArray();
+            if (values == null || values.Length == 0)
+            {
+                return "plain/text";
+            }
+            return values[0];
+        }
+
+        /// <summary>
         /// Build up a string of Matrix Parameters based upon the passed parameters.
         /// </summary>
         /// <param name="zone">Zone associated with a request.</param>
@@ -502,22 +543,5 @@ namespace Sif.Framework.Utils
 
             return matrixParameters;
         }
-
-        public static string GetAccept(HttpRequestMessage Request)
-        {
-            string[] values = (from a in Request.Headers.Accept select a.MediaType).ToArray();
-            if(values == null || values.Length == 0)
-            {
-                return "plain/text";
-            }
-            return values[0];
-        }
-
-        public static string getContentType(HttpRequestMessage Request)
-        {
-            return Request.Content.Headers.ContentType.MediaType;
-        }
-        
     }
-
 }

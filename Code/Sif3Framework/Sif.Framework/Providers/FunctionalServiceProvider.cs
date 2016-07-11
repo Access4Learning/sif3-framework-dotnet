@@ -106,7 +106,7 @@ namespace Sif.Framework.Providers
 
                 if (SettingsManager.ProviderSettings.JobBinding)
                 {
-                    service.Bind(getOwnerId(sessionToken), id);
+                    service.Bind(id, getOwnerId(sessionToken));
                 }
 
                 jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
@@ -170,7 +170,7 @@ namespace Sif.Framework.Providers
 
                         if (SettingsManager.ProviderSettings.JobBinding)
                         {
-                            service.Bind(getOwnerId(sessionToken), id);
+                            service.Bind(id, getOwnerId(sessionToken));
                         }
 
                         creates.Add(ProviderUtils.CreateCreate(HttpStatusCode.Created, id.ToString(), job.id));
@@ -245,7 +245,7 @@ namespace Sif.Framework.Providers
                 foreach (jobType job in jobs)
                 {
                     if (!SettingsManager.ProviderSettings.JobBinding
-                        || service.IsBound(getOwnerId(sessionToken), Guid.Parse(job.id)))
+                        || service.IsBound(Guid.Parse(job.id), getOwnerId(sessionToken)))
                     {
                         items.Add(job);
                     }
@@ -284,7 +284,7 @@ namespace Sif.Framework.Providers
                 item = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
 
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), Guid.Parse(item.id)))
+                    && !service.IsBound(Guid.Parse(item.id), getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
@@ -344,7 +344,7 @@ namespace Sif.Framework.Providers
                 IFunctionalService service = getService(serviceName);
 
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), id))
+                    && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
@@ -384,9 +384,9 @@ namespace Sif.Framework.Providers
                 try
                 {
                     if (SettingsManager.ProviderSettings.JobBinding
-                        && !service.IsBound(getOwnerId(sessionToken), Guid.Parse(deleteId.id)))
+                        && !service.IsBound(Guid.Parse(deleteId.id), getOwnerId(sessionToken)))
                     {
-                        throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
+                        throw new InvalidSessionException("Request failed as job does not belong to this consumer.");
                     }
 
                     service.Delete(Guid.Parse(deleteId.id), zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
@@ -412,7 +412,7 @@ namespace Sif.Framework.Providers
                 }
                 catch (InvalidSessionException e)
                 {
-                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.BadRequest, deleteId.id, ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName, "Request failed for object " + serviceName + " with ID of " + deleteId.id + ".\n " + e.Message)));
+                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.BadRequest, deleteId.id, ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName, "Request failed for object " + serviceName + " with ID of " + deleteId.id + ", job doesn't belong to this consumer.\n " + e.Message)));
                 }
                 catch (Exception e)
                 {
@@ -444,11 +444,11 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), id))
+                    && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.CreateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.CreateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -485,11 +485,11 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), id))
+                    && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.RetrieveToPhase(id, phaseName, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.RetrieveToPhase(id, phaseName, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -524,11 +524,11 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), id))
+                    && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.UpdateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.UpdateToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -565,11 +565,11 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), id))
+                    && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.DeleteToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.getContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.DeleteToPhase(id, phaseName, body, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -609,7 +609,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(getOwnerId(sessionToken), id))
+                    && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
@@ -787,7 +787,25 @@ namespace Sif.Framework.Providers
 
         private String getOwnerId(String sessionToken)
         {
-            return sessionToken;
+            String ownerId = null;
+
+            switch (SettingsManager.ProviderSettings.EnvironmentType)
+            {
+                case EnvironmentType.DIRECT:
+                    // Application key is either in header or in session token
+                    ownerId = HttpUtils.GetApplicationKey(Request.Headers) ?? sessionToken;
+                    break;
+                case EnvironmentType.BROKERED:
+                    // Application key must have been moved into sourceName property
+                    ownerId = HttpUtils.GetSourceName(Request.Headers);
+                    break;
+            }
+
+            if (ownerId == null)
+            {
+                throw new NotFoundException("Could not identify consumer.");
+            }
+            return ownerId;
         }
     }
 
