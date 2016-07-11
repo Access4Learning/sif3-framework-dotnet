@@ -19,7 +19,6 @@ using Sif.Framework.Model.Settings;
 using System;
 using System.Configuration;
 using System.Linq;
-using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Utils
@@ -151,10 +150,10 @@ namespace Sif.Framework.Utils
             }
 
             InfrastructureServiceNames name;
-            switch(serviceType)
+            switch (serviceType)
             {
                 case ServiceType.UTILITY:
-                        name = connector;
+                    name = connector;
                     break;
                 case ServiceType.FUNCTIONAL:
                     name = InfrastructureServiceNames.servicesConnector;
@@ -172,7 +171,7 @@ namespace Sif.Framework.Utils
             {
                 return null;
             }
-            
+
             return environment.InfrastructureServices[name].Value;
         }
 

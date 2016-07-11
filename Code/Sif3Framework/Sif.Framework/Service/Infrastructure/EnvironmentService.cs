@@ -23,7 +23,6 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
-using Sif.Framework.Model;
 
 namespace Sif.Framework.Service.Infrastructure
 {

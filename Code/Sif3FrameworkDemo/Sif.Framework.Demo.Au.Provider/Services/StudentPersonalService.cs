@@ -16,7 +16,6 @@
 
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Utils;
-using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Au;
@@ -86,7 +85,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         {
             studentsCache = CreateStudents(20);
         }
-        
+
         public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             string refId = Guid.NewGuid().ToString();

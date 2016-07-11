@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.Model.Persistence;
-using System.Collections.Generic;
 
 namespace Sif.Framework.Model.Infrastructure
 {
@@ -33,7 +32,7 @@ namespace Sif.Framework.Model.Infrastructure
 
         public Right(RightType type, RightValue value)
         {
-            
+
             Type = type.ToString();
             Value = value.ToString();
         }

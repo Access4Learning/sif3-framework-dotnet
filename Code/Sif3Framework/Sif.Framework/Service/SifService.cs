@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
 using System;
 using System.Collections.Generic;
-using Sif.Framework.Model.Settings;
 using log4net;
 using System.Reflection;
-using System.Threading;
-using Sif.Framework.Utils;
-using Sif.Framework.Service.Infrastructure;
-using System.Linq;
-using Sif.Framework.Service.Registration;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service
 {
