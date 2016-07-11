@@ -33,7 +33,6 @@ using System.Reflection;
 using System.Text;
 using System.Web.Http;
 using System.Linq;
-using Sif.Framework.Model.Settings;
 
 namespace Sif.Framework.Providers
 {
@@ -102,12 +101,12 @@ namespace Sif.Framework.Providers
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request requires use of advisory id, but none has been supplied.");
                 }
-                
+
                 Guid id = service.Create(item, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
 
-                if(SettingsManager.ProviderSettings.JobBinding)
+                if (SettingsManager.ProviderSettings.JobBinding)
                 {
-                    service.Bind(sessionToken, id);
+                    service.Bind(getOwnerId(sessionToken), id);
                 }
 
                 jobType job = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
@@ -161,7 +160,8 @@ namespace Sif.Framework.Providers
                 List<createType> creates = new List<createType>();
                 foreach (jobType job in items.job)
                 {
-                    try {
+                    try
+                    {
                         if (!service.AcceptJob(serviceName, job.name))
                         {
                             throw new ArgumentException("Service " + serviceName + " does not handle jobs named " + job.name);
@@ -170,16 +170,17 @@ namespace Sif.Framework.Providers
 
                         if (SettingsManager.ProviderSettings.JobBinding)
                         {
-                            service.Bind(sessionToken, id);
+                            service.Bind(getOwnerId(sessionToken), id);
                         }
 
                         creates.Add(ProviderUtils.CreateCreate(HttpStatusCode.Created, id.ToString(), job.id));
-                    } catch(CreateException e)
+                    }
+                    catch (CreateException e)
                     {
                         ProviderUtils.CreateCreate(HttpStatusCode.Conflict, job.id, error: ProviderUtils.CreateError(HttpStatusCode.Conflict, HttpStatusCode.Conflict.ToString(), e.Message));
                     }
                 }
-                
+
                 createResponseType createResponse = ProviderUtils.CreateCreateResponse(creates.ToArray());
 
                 result = Request.CreateResponse<createResponseType>(HttpStatusCode.Created, createResponse);
@@ -244,7 +245,7 @@ namespace Sif.Framework.Providers
                 foreach (jobType job in jobs)
                 {
                     if (!SettingsManager.ProviderSettings.JobBinding
-                        || service.IsBound(sessionToken, Guid.Parse(job.id)))
+                        || service.IsBound(getOwnerId(sessionToken), Guid.Parse(job.id)))
                     {
                         items.Add(job);
                     }
@@ -283,7 +284,7 @@ namespace Sif.Framework.Providers
                 item = service.Retrieve(id, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
 
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, Guid.Parse(item.id)))
+                    && !service.IsBound(getOwnerId(sessionToken), Guid.Parse(item.id)))
                 {
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
@@ -343,7 +344,7 @@ namespace Sif.Framework.Providers
                 IFunctionalService service = getService(serviceName);
 
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, id))
+                    && !service.IsBound(getOwnerId(sessionToken), id))
                 {
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
@@ -383,7 +384,7 @@ namespace Sif.Framework.Providers
                 try
                 {
                     if (SettingsManager.ProviderSettings.JobBinding
-                        && !service.IsBound(sessionToken, Guid.Parse(deleteId.id)))
+                        && !service.IsBound(getOwnerId(sessionToken), Guid.Parse(deleteId.id)))
                     {
                         throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                     }
@@ -443,7 +444,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, id))
+                    && !service.IsBound(getOwnerId(sessionToken), id))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
@@ -484,7 +485,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, id))
+                    && !service.IsBound(getOwnerId(sessionToken), id))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
@@ -523,7 +524,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, id))
+                    && !service.IsBound(getOwnerId(sessionToken), id))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
@@ -564,7 +565,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, id))
+                    && !service.IsBound(getOwnerId(sessionToken), id))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
@@ -608,7 +609,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
                 if (SettingsManager.ProviderSettings.JobBinding
-                    && !service.IsBound(sessionToken, id))
+                    && !service.IsBound(getOwnerId(sessionToken), id))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
@@ -634,7 +635,7 @@ namespace Sif.Framework.Providers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Request failed for creating state for phase " + phaseName + " in job " + id + ".\n " + e.Message));
             }
-           
+
             return result;
         }
 
@@ -684,7 +685,7 @@ namespace Sif.Framework.Providers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request failed as Zone and/or Context are invalid."));
             }
-            
+
             return sessionToken;
         }
 
@@ -751,7 +752,7 @@ namespace Sif.Framework.Providers
         /// <param name="right">The right to search for (the needle)</param>
         private void CheckRights(string serviceName, IDictionary<string, Right> rights, Right right)
         {
-            
+
         }
 
         /// <summary>
@@ -772,15 +773,21 @@ namespace Sif.Framework.Providers
         /// <returns>A response message</returns>
         protected HttpResponseMessage OKResult(string payload = null)
         {
-            if(StringUtils.IsEmpty(payload))
+            if (StringUtils.IsEmpty(payload))
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             string accept = HttpUtils.GetAccept(Request);
-            return new HttpResponseMessage(HttpStatusCode.OK) {
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
                 Content = new StringContent(payload, Encoding.UTF8, accept)
             };
+        }
+
+        private String getOwnerId(String sessionToken)
+        {
+            return sessionToken;
         }
     }
 
