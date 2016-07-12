@@ -282,3 +282,14 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Expose exception classes by making them public.
 - Remove redundant local database files.
 - Minor code updates.
+
+**July XX, 2016 - X.X.X Added Functional Service support**
+
+- Implemented function service providers
+- Implemented function service consumers
+- Implemented binding of SIF objects (e.g. jobs) to a specific consumer (curruntly only supported in functional services)
+- Implemented support for multiple enviroment templates
+- Generated SIF UK 2.0 data model and incorporated into UK demo
+- Generated SIF 3.2 Infrastructure model and incorporated in UK/US/AU demos
+- Added scripts to lauch projects from the command line
+- Added scripts to build projects from the command line
