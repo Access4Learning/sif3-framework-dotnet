@@ -4,7 +4,7 @@
     <id name="Id" column="SIF_OBJECT_BINDING_ID">
       <generator class="native"/>
     </id>
-    <property name="RefId" column="REF_ID" length="200"/>
-    <property name="OwnerId" column="OWNER_ID" length="200"/>
+    <property name="RefId" column="REF_ID" length="32"/>
+    <property name="OwnerId" column="OWNER_ID" length="256"/>
   </class>
 </hibernate-mapping>
