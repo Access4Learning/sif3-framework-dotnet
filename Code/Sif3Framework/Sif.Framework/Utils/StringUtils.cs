@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+using System;
+
 namespace Sif.Framework.Utils
 {
 
@@ -33,6 +35,24 @@ namespace Sif.Framework.Utils
             return (content == null ? null : content.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " "));
         }
 
-    }
+        public static bool IsEmpty(string content)
+        {
+            return String.IsNullOrWhiteSpace(content);
+        }
 
+        public static bool NotEmpty(string content)
+        {
+            return !String.IsNullOrWhiteSpace(content);
+        }
+
+        public static bool IsEmpty(Guid content)
+        {
+            return content == null || StringUtils.IsEmpty(content.ToString());
+        }
+
+        public static bool NotEmpty(Guid content)
+        {
+            return content != null && StringUtils.NotEmpty(content.ToString());
+        }
+    }
 }

@@ -25,6 +25,7 @@ namespace Sif.Framework.Model.Infrastructure
         environment,
         provisionRequests,
         requestsConnector,
+        servicesConnector,
         eventsConnector,
         queues,
         subscriptions,

@@ -91,7 +91,7 @@ namespace Sif.Framework.Providers
                             }
                             else
                             {
-                                status.error = CreateError(HttpStatusCode.BadRequest, "Create request failed as object ID provided (" + obj.RefId + "), but mustUseAdvisory is not specified or is false.");
+                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID provided (" + obj.RefId + "), but mustUseAdvisory is not specified or is false.");
                                 status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
 
@@ -101,7 +101,7 @@ namespace Sif.Framework.Providers
 
                             if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                             {
-                                status.error = CreateError(HttpStatusCode.BadRequest, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
+                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
                                 status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
                             else
@@ -115,27 +115,27 @@ namespace Sif.Framework.Providers
                     }
                     catch (AlreadyExistsException e)
                     {
-                        status.error = CreateError(HttpStatusCode.Conflict, "Object " + typeof(T).Name + " with ID of " + obj.RefId + " already exists.\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.Conflict, typeof(T).Name, "Object " + typeof(T).Name + " with ID of " + obj.RefId + " already exists.\n" + e.Message);
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (ArgumentException e)
                     {
-                        status.error = CreateError(HttpStatusCode.BadRequest, "Object to create of type " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + " is invalid.\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Object to create of type " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + " is invalid.\n " + e.Message);
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (CreateException e)
                     {
-                        status.error = CreateError(HttpStatusCode.BadRequest, "Request failed for object " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Request failed for object " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (RejectedException e)
                     {
-                        status.error = CreateError(HttpStatusCode.NotFound, "Create request rejected for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.NotFound, typeof(T).Name, "Create request rejected for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n" + e.Message);
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (Exception e)
                     {
-                        status.error = CreateError(HttpStatusCode.InternalServerError, "Request failed for object " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.InternalServerError, typeof(T).Name, "Request failed for object " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 
@@ -190,22 +190,22 @@ namespace Sif.Framework.Providers
                     }
                     catch (ArgumentException e)
                     {
-                        status.error = CreateError(HttpStatusCode.BadRequest, "Object to update of type " + typeof(T).Name + " is invalid.\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Object to update of type " + typeof(T).Name + " is invalid.\n " + e.Message);
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (NotFoundException e)
                     {
-                        status.error = CreateError(HttpStatusCode.NotFound, "Object " + typeof(T).Name + " with ID of " + obj.RefId + " not found.\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.NotFound, typeof(T).Name, "Object " + typeof(T).Name + " with ID of " + obj.RefId + " not found.\n" + e.Message);
                         status.statusCode = ((int)HttpStatusCode.NotFound).ToString();
                     }
                     catch (UpdateException e)
                     {
-                        status.error = CreateError(HttpStatusCode.BadRequest, "Request failed for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Request failed for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n " + e.Message);
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (Exception e)
                     {
-                        status.error = CreateError(HttpStatusCode.InternalServerError, "Request failed for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(HttpStatusCode.InternalServerError, typeof(T).Name, "Request failed for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n " + e.Message);
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 

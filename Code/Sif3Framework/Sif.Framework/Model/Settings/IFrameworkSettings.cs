@@ -46,6 +46,11 @@ namespace Sif.Framework.Model.Settings
         string DataModelNamespace { get; }
 
         /// <summary>
+        /// Data model namespace if it exists; null otherwise.
+        /// </summary>
+        string InfrastructureNamespace { get; }
+
+        /// <summary>
         /// Delete on unregister flag if it exists; false otherwise.
         /// </summary>
         bool DeleteOnUnregister { get; }
@@ -90,6 +95,29 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         string UserToken { get; }
 
-    }
+        /// <summary>
+        /// The types of the functional services that are configured. Default is "any".
+        /// </summary>
+        string JobClasses { get; }
 
+        /// <summary>
+        /// How long in seconds to delay between starting each Functional Service thread. Default 10.
+        /// </summary>
+        int StartupDelay { get; }
+
+        /// <summary>
+        /// True if jobs are tightly coupled to the consumer that created them, false otherwise. Default true.
+        /// </summary>
+        bool JobBinding { get; }
+
+        /// <summary>
+        /// True if job timeouts are enabled, false otherwise. Default true.
+        /// </summary>
+        bool JobTimeoutEnabled { get; }
+
+        /// <summary>
+        /// How often to check for timedout jobs in seconds. Default 60.
+        /// </summary>
+        int JobTimeoutFrequency { get; }
+    }
 }

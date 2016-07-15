@@ -37,17 +37,15 @@ namespace Sif.Framework.Service.Registration
         bool Registered { get; }
 
         /// <summary>
-        /// Register service with an Environment service (Broker or Environment Provider). This must be the first
-        /// method called, and only once. Subsequent calls are ignored.
+        /// Register service with an Environment service (Broker or Environment Provider). This must be the first method called, and only once. Subsequent calls are ignored.
         /// </summary>
-        void Register();
+        Environment Register();
 
         /// <summary>
-        /// Register service with an Environment service (Broker or Environment Provider). This must be the first
-        /// method called, and only once. Subsequent calls are ignored.
+        /// Register service with an Environment service (Broker or Environment Provider). This must be the first method called, and only once. Subsequent calls are ignored.
         /// </summary>
         /// <param name="environment">Environment used for registration.</param>
-        void Register(ref Environment environment);
+        Environment Register(ref Environment environment);
 
         /// <summary>
         /// Unregister service from an Environment service (Broker or Environment Provider). This must be the last

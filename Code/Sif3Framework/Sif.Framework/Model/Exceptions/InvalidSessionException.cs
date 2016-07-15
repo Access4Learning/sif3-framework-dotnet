@@ -24,7 +24,7 @@ namespace Sif.Framework.Model.Exceptions
     /// This exception represents the situation where a session (token) is not recognised.
     /// </summary>
     [Serializable]
-    class InvalidSessionException : BaseException
+    public class InvalidSessionException : BaseException
     {
 
         /// <summary>

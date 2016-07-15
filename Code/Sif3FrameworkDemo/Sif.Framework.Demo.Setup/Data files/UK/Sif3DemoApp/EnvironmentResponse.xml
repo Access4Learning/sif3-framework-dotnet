@@ -1,0 +1,42 @@
+﻿<?xml version="1.0"?>
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2" type="DIRECT">
+  <defaultZone id="defaultZone">
+    <description>SIF3 demo consumer default zone</description>
+  </defaultZone>
+  <infrastructureServices>
+    <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
+    <infrastructureService name="requestsConnector">http://localhost:51424/api</infrastructureService>
+    <infrastructureService name="servicesConnector">http://localhost:51424/services</infrastructureService>
+    <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
+    <infrastructureService name="queues">http://localhost:62921/api/queues</infrastructureService>
+    <infrastructureService name="subscriptions">http://localhost:62921/api/subscriptions</infrastructureService>
+  </infrastructureServices>
+  <provisionedZones>
+    <provisionedZone id="defaultZone">
+      <services>
+        <service name="LearnerPersonals" contextId="DEFAULT" type="OBJECT">
+          <rights>
+            <right type="QUERY">APPROVED</right>
+            <right type="CREATE">REJECTED</right>
+            <right type="UPDATE">REJECTED</right>
+            <right type="DELETE">REJECTED</right>
+            <right type="PROVIDE">REJECTED</right>
+            <right type="SUBSCRIBE">SUPPORTED</right>
+            <right type="ADMIN">REJECTED</right>
+          </rights>
+        </service>
+        <service name="Payloads" contextId="DEFAULT" type="FUNCTIONAL">
+          <rights>
+            <right type="QUERY">APPROVED</right>
+            <right type="CREATE">APPROVED</right>
+            <right type="UPDATE">APPROVED</right>
+            <right type="DELETE">APPROVED</right>
+            <right type="PROVIDE">REJECTED</right>
+            <right type="SUBSCRIBE">SUPPORTED</right>
+            <right type="ADMIN">REJECTED</right>
+          </rights>
+        </service>
+      </services>
+    </provisionedZone>
+  </provisionedZones>
+</environment>

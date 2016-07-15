@@ -101,7 +101,7 @@ namespace Sif.Framework.Consumers
         /// <param name="applicationKey">Application key.</param>
         /// <param name="instanceId">Instance ID.</param>
         /// <param name="userToken">User token.</param>
-        /// <param name="solutionId">Olution ID.</param>
+        /// <param name="solutionId">Solution ID.</param>
         public Consumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
         {
             Environment environment = new Environment(applicationKey, instanceId, userToken, solutionId);
@@ -115,6 +115,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zone">Zone associated with a request.</param>
         /// <param name="context">Zone context.</param>
         /// <returns>String of Matrix Parameters.</returns>
+        [Obsolete("This method is obsolete; HttpUtils.MatrixParameters instead")]
         private string MatrixParameters(string zone = null, string context = null)
         {
             string matrixParameters = "";
@@ -173,7 +174,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Unregister()">Unregister</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Unregister(bool?)">Unregister</see>
         /// </summary>
         public void Unregister(bool? deleteOnUnregister = null)
         {
@@ -191,7 +192,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + TypeName + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + TypeName + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
@@ -201,7 +202,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TMultiple)">Create</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TMultiple, string, string)">Create</see>
         /// </summary>
         public virtual MultipleCreateResponse Create(TMultiple obj, string zone = null, string context = null)
         {
@@ -211,7 +212,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseMultiple(obj);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
@@ -237,7 +238,7 @@ namespace Sif.Framework.Consumers
 
             try
             {
-                string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + refId + MatrixParameters(zone, context);
+                string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + refId + HttpUtils.MatrixParameters(zone, context);
                 string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
                 if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(xml);
@@ -281,7 +282,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string xml;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
@@ -307,7 +308,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
             // TODO: Update PostRequest to accept paging parameters.
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, "GET");
@@ -340,7 +341,7 @@ namespace Sif.Framework.Consumers
 
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + servicePath + "/" + TypeName + "s" + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + servicePath + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             if (log.IsDebugEnabled) log.Debug("Service Path URL is " + url);
             string xml;
 
@@ -367,7 +368,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + obj.RefId + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + obj.RefId + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseSingle(obj);
             string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
@@ -385,7 +386,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiseMultiple(obj);
             string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
@@ -407,7 +408,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + refId + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + refId + HttpUtils.MatrixParameters(zone, context);
             string xml = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken);
             if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
@@ -433,7 +434,7 @@ namespace Sif.Framework.Consumers
             }
 
             deleteRequestType request = new deleteRequestType { deletes = deleteIds.ToArray() };
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + MatrixParameters(zone, context);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
             string body = SerialiserFactory.GetXmlSerialiser<deleteRequestType>().Serialise(request);
             string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, "DELETE");
             if (log.IsDebugEnabled) log.Debug("XML from PUT (DELETE) request ...");

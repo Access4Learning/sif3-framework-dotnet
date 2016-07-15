@@ -18,8 +18,11 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Serialisation;
 using Sif.Specification.Infrastructure;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Demo.Setup.Utils
 {
@@ -29,22 +32,57 @@ namespace Sif.Framework.Demo.Setup.Utils
     /// </summary>
     static class DataFactory
     {
-
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public static ApplicationRegister CreateApplicationRegister(string locale)
+        public static ICollection<ApplicationRegister> CreateApplicationRegisters(string locale)
+        {
+            IList<ApplicationRegister> registers = new List<ApplicationRegister>();
+
+            string rootPath = "Data files\\" + locale.ToUpper();
+
+            // Paths to look for
+            List<string> paths = new List<string>(Directory.GetDirectories(rootPath));
+            paths.Insert(0, rootPath);
+
+            foreach (string path in paths)
+            {
+                ApplicationRegister register = CreateApplicationRegister(path);
+                if (register != null)
+                {
+                    registers.Add(register);
+                }
+            }
+
+            return registers;
+        }
+
+        private static ApplicationRegister CreateApplicationRegister(string path)
         {
             environmentType environmentTypeRequest;
             environmentType environmentTypeResponse;
 
-            using (FileStream xmlStream = File.OpenRead("Data files\\" + locale.ToUpper() + "\\EnvironmentRequest.xml"))
+            string request = @path + "\\EnvironmentRequest.xml";
+            string response = @path + "\\EnvironmentResponse.xml";
+
+            if (!File.Exists(request) || !File.Exists(response))
+            {
+                return null;
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("Processsing input from: " + path);
+            Console.WriteLine("Request:  " + request);
+            Console.WriteLine("Response: " + response);
+            Console.WriteLine("");
+
+            using (FileStream xmlStream = File.OpenRead(request))
             {
                 environmentTypeRequest = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }
 
-            using (FileStream xmlStream = File.OpenRead("Data files\\" + locale.ToUpper() + "\\EnvironmentResponse.xml"))
+            using (FileStream xmlStream = File.OpenRead(response))
             {
                 environmentTypeResponse = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(xmlStream);
             }

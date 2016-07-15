@@ -225,7 +225,15 @@ namespace Sif.Framework.Persistence.NHibernate
             }
 
         }
-        
+
+        public virtual bool Exists(PK id)
+        {
+            using (ISession session = sessionFactory.OpenSession())
+            {
+                return session.Get<T>(id) != null;
+            }
+        }
+
     }
 
 }

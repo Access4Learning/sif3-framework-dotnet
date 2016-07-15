@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.Infrastructure.v3_0_1", "Sif.Specification.Infrastructure.v3_0_1\Sif.Specification.Infrastructure.v3_0_1.csproj", "{5236202B-2E8E-48FA-9090-2BFC4F729FDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.Infrastructure.v3_1_0", "Sif.Specification.Infrastructure.v3_1_0\Sif.Specification.Infrastructure.v3_1_0.csproj", "{B5D92ED6-76D4-4B07-BAC7-DB1BA395E337}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.Infrastructure.v3_2_0", "Sif.Specification.Infrastructure.v3_2_0\Sif.Specification.Infrastructure.v3_2_0.csproj", "{8AE3CA09-2B58-4B5A-A02D-027AC7F39043}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Us.v3_2", "Sif.Specification.DataModel.Us.v3_2\Sif.Specification.DataModel.Us.v3_2.csproj", "{61008F27-15C5-4ED4-A358-E74D818CF571}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v1_4", "Sif.Specification.DataModel.Au.v1_4\Sif.Specification.DataModel.Au.v1_4.csproj", "{7920B78A-3AAD-4FCD-8794-4DC4D89C3B0F}"
@@ -16,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Us.v3_3", "Sif.Specification.DataModel.Us.v3_3\Sif.Specification.DataModel.Us.v3_3.csproj", "{34320E96-BC78-4F30-9C7E-FE0F787B4872}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v3_4", "Sif.Specification.DataModel.Au.v3_4\Sif.Specification.DataModel.Au.v3_4.csproj", "{C11FD42C-96D9-4237-BEA8-7D2177AD5054}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Uk.v2_0", "Sif.Specification.DataModel.Uk.v2_0\Sif.Specification.DataModel.Uk.v2_0.csproj", "{A055BF17-85AC-40D3-97F4-D88535CC9B1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +41,14 @@ Global
 		{5236202B-2E8E-48FA-9090-2BFC4F729FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5236202B-2E8E-48FA-9090-2BFC4F729FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5236202B-2E8E-48FA-9090-2BFC4F729FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5D92ED6-76D4-4B07-BAC7-DB1BA395E337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D92ED6-76D4-4B07-BAC7-DB1BA395E337}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D92ED6-76D4-4B07-BAC7-DB1BA395E337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D92ED6-76D4-4B07-BAC7-DB1BA395E337}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE3CA09-2B58-4B5A-A02D-027AC7F39043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE3CA09-2B58-4B5A-A02D-027AC7F39043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE3CA09-2B58-4B5A-A02D-027AC7F39043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE3CA09-2B58-4B5A-A02D-027AC7F39043}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61008F27-15C5-4ED4-A358-E74D818CF571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61008F27-15C5-4ED4-A358-E74D818CF571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61008F27-15C5-4ED4-A358-E74D818CF571}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +65,10 @@ Global
 		{C11FD42C-96D9-4237-BEA8-7D2177AD5054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11FD42C-96D9-4237-BEA8-7D2177AD5054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11FD42C-96D9-4237-BEA8-7D2177AD5054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A055BF17-85AC-40D3-97F4-D88535CC9B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A055BF17-85AC-40D3-97F4-D88535CC9B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A055BF17-85AC-40D3-97F4-D88535CC9B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A055BF17-85AC-40D3-97F4-D88535CC9B1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

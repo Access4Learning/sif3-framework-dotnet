@@ -45,6 +45,34 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+      <PropertyGroup>
+      <Version>@(Targets->'%(Version)')</Version>
+      <Major>$(Version.Split('.')[0])</Major>
+      <Minor>$(Version.Split('.')[1])</Minor>
+	  <Revision>$(Version.Split('.')[2])</Revision>
+      <Build>$(Version.Split('.')[3])</Build>
+    </PropertyGroup>
+    <ItemGroup>
+      <Version Include="$(Version)" />
+      <Major Include="$(Major)" />
+      <Minor Include="$(Minor)" />
+      <Revision Include="$(Revision)" />
+	  <Build Include="$(Build)" />
+      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor)\" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>if not exist "@(SifFrameworkOut)" mkdir "@(SifFrameworkOut)"
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "@(SifFrameworkOut)$(TargetFileName)" /Y /V</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

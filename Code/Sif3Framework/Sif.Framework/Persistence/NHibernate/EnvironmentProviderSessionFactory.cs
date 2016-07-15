@@ -16,6 +16,7 @@
 
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Tool.hbm2ddl;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
@@ -49,6 +50,7 @@ namespace Sif.Framework.Persistence.NHibernate
                     }
 
                     Configuration configuration = new Configuration().Configure(configurationFilePath);
+                    SchemaMetadataUpdater.QuoteTableAndColumns(configuration);
                     environmentProviderSessionFactory.SessionFactory = configuration.BuildSessionFactory();
                 }
 

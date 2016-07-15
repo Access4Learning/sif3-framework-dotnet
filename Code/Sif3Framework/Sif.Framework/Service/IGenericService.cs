@@ -81,7 +81,7 @@ namespace Sif.Framework.Service
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        ICollection<T> Retrieve(int pageIndex, int pageSizel);
+        ICollection<T> Retrieve(int pageIndex, int pageSize);
 
         /// <summary>
         /// 
