@@ -93,8 +93,8 @@ namespace Sif.Framework.Model.Infrastructure
                 { subscriptionsURL.Name, subscriptionsURL }
             };
 
-            Right adminRight = new Right { Type = "ADMIN", Value = "APPROVED" };
-            Right createRight = new Right { Type = "CREATE", Value = "APPROVED" };
+            Right adminRight = new Right() { Type = RightType.ADMIN.ToString(), Value = RightValue.APPROVED.ToString() };
+            Right createRight = new Right() { Type = RightType.CREATE.ToString(), Value = RightValue.APPROVED.ToString() };
             IDictionary<string, Right> rights = new Dictionary<string, Right> { { adminRight.Type, adminRight } };
 
             Infrastructure.Service studentPersonalsService = new Infrastructure.Service

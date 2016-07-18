@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="Job" table="JOB">
+    <id name="Id" type="Guid" column="JOB_ID">
+      <generator class="guid"/>
+    </id>
+    <property name="Name" column="NAME" length="128" />
+    <property name="Description" column="DESCRIPTION" length="256"/>
+    <property name="State" column="STATE" />
+    <property name="StateDescription" column="STATEDESCRIPTION" length="256"/>
+    <property name="Created" column="CREATED" /><!-- type="UtcDateTime" />-->
+    <property name="LastModified" column="LASTMODIFIED" /><!-- type="UtcDateTime" />-->
+    <property name="Timeout" column="TIMEOUT" />
+    <map name="Phases" table="JOB_PHASES" cascade="all" lazy="false">
+      <key column="JOB_ID"/>
+      <index column="NAME" type="string"/>
+      <many-to-many column="PHASE_ID" class="Sif.Framework.Model.Infrastructure.Phase"/>
+    </map>
+  </class>
+</hibernate-mapping>

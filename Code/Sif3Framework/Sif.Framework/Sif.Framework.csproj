@@ -17,9 +17,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Sif.Framework.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,9 +54,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
+    <Reference Include="Sif.Specification.Infrastructure">
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -81,7 +81,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
+    <Compile Include="Providers\FunctionalServiceProvider.cs" />
+    <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
+    <Compile Include="Model\Infrastructure\PhaseState.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
     <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />
@@ -103,6 +108,8 @@
     <Compile Include="Model\Exceptions\UpdateException.cs" />
     <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
     <Compile Include="Model\Infrastructure\ApplicationRegister.cs" />
+    <Compile Include="Model\Infrastructure\Phase.cs" />
+    <Compile Include="Model\Infrastructure\Job.cs" />
     <Compile Include="Model\Infrastructure\Environment.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentRegister.cs" />
     <Compile Include="Model\Infrastructure\EnvironmentType.cs" />
@@ -112,6 +119,8 @@
     <Compile Include="Model\Infrastructure\Property.cs" />
     <Compile Include="Model\Infrastructure\ProvisionedZone.cs" />
     <Compile Include="Model\Infrastructure\Right.cs" />
+    <Compile Include="Model\Infrastructure\JobStateType.cs" />
+    <Compile Include="Model\Infrastructure\PhaseStateType.cs" />
     <Compile Include="Model\Infrastructure\RightType.cs" />
     <Compile Include="Model\Infrastructure\RightValue.cs" />
     <Compile Include="Model\Infrastructure\Service.cs" />
@@ -142,6 +151,7 @@
     <Compile Include="Providers\IProvider.cs" />
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
+    <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
@@ -152,12 +162,17 @@
     <Compile Include="Model\Settings\ProviderSection.cs" />
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
+    <Compile Include="Service\Functional\FunctionalService.cs" />
+    <Compile Include="Service\Functional\PhaseActions.cs" />
+    <Compile Include="Service\Functional\IPhaseActions.cs" />
+    <Compile Include="Service\Functional\IFunctionalService.cs" />
     <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
+    <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
-    <Compile Include="Service\IService.cs" />
+    <Compile Include="Service\IObjectService.cs" />
     <Compile Include="Service\Registration\IRegistrationService.cs" />
     <Compile Include="Service\Registration\NoRegistrationService.cs" />
     <Compile Include="Service\Registration\RegistrationService.cs" />
@@ -166,6 +181,9 @@
     <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
     <Compile Include="Service\Sessions\ProviderSessionService.cs" />
     <Compile Include="Utils\EnvironmentUtils.cs" />
+    <Compile Include="Utils\RightsUtils.cs" />
+    <Compile Include="Utils\ZoneUtils.cs" />
+    <Compile Include="Utils\ProviderUtils.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
@@ -219,6 +237,7 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
@@ -230,9 +249,44 @@
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <Version>@(Targets->'%(Version)')</Version>
+      <Major>$(Version.Split('.')[0])</Major>
+      <Minor>$(Version.Split('.')[1])</Minor>
+      <Revision>$(Version.Split('.')[2])</Revision>
+      <Build>$(Version.Split('.')[3])</Build>
+    </PropertyGroup>
+    <ItemGroup>
+      <Version Include="$(Version)" />
+      <Major Include="$(Major)" />
+      <Minor Include="$(Minor)" />
+      <Revision Include="$(Revision)" />
+      <Build Include="$(Build)" />
+      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision)\" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>if not exist "@(SifFrameworkOut)" mkdir "@(SifFrameworkOut)"
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "@(SifFrameworkOut)$(TargetFileName)" /Y /V</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

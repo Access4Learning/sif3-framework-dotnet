@@ -24,7 +24,7 @@ namespace Sif.Framework.Service.Providers
     /// </summary>
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
-    public interface IProviderService<TSingle, TMultiple> : IService<TSingle, TMultiple, string>
+    public interface IProviderService<TSingle, TMultiple> : IObjectService<TSingle, TMultiple, string>
     {
 
         /// <summary>

@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0"?>
-<environment xmlns="http://www.sifassociation.org/infrastructure/3.0.1" type="DIRECT">
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2" type="DIRECT">
   <defaultZone id="Sif3DemoZone1">
     <description>SIF3 demo default zone</description>
   </defaultZone>
   <infrastructureServices>
     <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
     <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>
+    <infrastructureService name="servicesConnector">http://localhost:50617/services</infrastructureService>
     <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
     <infrastructureService name="queues">http://localhost:62921/api/queues</infrastructureService>
     <infrastructureService name="subscriptions">http://localhost:62921/api/subscriptions</infrastructureService>

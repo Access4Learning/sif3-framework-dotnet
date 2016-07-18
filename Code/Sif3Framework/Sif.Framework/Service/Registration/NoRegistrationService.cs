@@ -46,17 +46,19 @@ namespace Sif.Framework.Service.Registration
         /// <summary>
         /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register()">Register</see>
         /// </summary>
-        public void Register()
+        public Environment Register()
         {
             Registered = true;
+            return null;
         }
 
         /// <summary>
         /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register(Sif.Framework.Model.Infrastructure.Environment)">Register</see>
         /// </summary>
-        public void Register(ref Environment environment)
+        public Environment Register(ref Environment environment)
         {
             Registered = true;
+            return null;
         }
 
         /// <summary>

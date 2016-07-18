@@ -19,9 +19,12 @@ namespace Sif.Framework.Model.Infrastructure
 
     public enum ServiceType
     {
-        FUNCTION,
+        UTILITY,
         OBJECT,
-        UTILITY
+        FUNCTIONAL,
+        SERVICEPATH,
+        XQUERYTEMP,
+        LATE
     }
 
 }

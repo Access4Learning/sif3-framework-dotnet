@@ -18,6 +18,7 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using System;
 using System.Configuration;
+using System.Linq;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Utils
@@ -138,20 +139,64 @@ namespace Sif.Framework.Utils
         /// Parse the Environment object for the service URL.
         /// </summary>
         /// <param name="environment">Environment object to parse.</param>
+        /// <param name="serviceType">The type of service to get a connector for.</param>
+        /// <param name="connector">The type of connector to get, only has an effect when the service type is UTILITY.</param>
         /// <returns>Service URL.</returns>
-        internal static string ParseServiceUrl(Environment environment)
+        internal static string ParseServiceUrl(Environment environment, ServiceType serviceType = ServiceType.OBJECT, InfrastructureServiceNames connector = InfrastructureServiceNames.requestsConnector)
         {
-            string serviceUrl = null;
-
-            if (environment != null &&
-                environment.InfrastructureServices != null &&
-                environment.InfrastructureServices[InfrastructureServiceNames.requestsConnector] != null &&
-                environment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value != null)
+            if (environment == null || environment.InfrastructureServices == null)
             {
-                serviceUrl = environment.InfrastructureServices[InfrastructureServiceNames.requestsConnector].Value;
+                return null;
             }
 
-            return serviceUrl;
+            InfrastructureServiceNames name;
+            switch (serviceType)
+            {
+                case ServiceType.UTILITY:
+                    name = connector;
+                    break;
+                case ServiceType.FUNCTIONAL:
+                    name = InfrastructureServiceNames.servicesConnector;
+                    break;
+                case ServiceType.OBJECT:
+                    name = InfrastructureServiceNames.requestsConnector;
+                    break;
+                default:
+                    name = InfrastructureServiceNames.requestsConnector;
+                    break;
+            }
+
+            if (environment.InfrastructureServices[name] == null ||
+                environment.InfrastructureServices[name].Value == null)
+            {
+                return null;
+            }
+
+            return environment.InfrastructureServices[name].Value;
+        }
+
+        public static ProvisionedZone GetTargetZone(Environment environment, string zone = null)
+        {
+            // Return the requested zone
+            if (StringUtils.NotEmpty(zone))
+            {
+                return environment.ProvisionedZones[zone];
+            }
+
+            // No zone, so try getting the default zone
+            if (StringUtils.NotEmpty(environment.DefaultZone.SifId))
+            {
+                return environment.ProvisionedZones[environment.DefaultZone.SifId];
+            }
+
+            // No default zone defined
+            // Fallback: If there is exactly one zone defined then return that
+            if (environment.ProvisionedZones != null && environment.ProvisionedZones.Count == 1)
+            {
+                return environment.ProvisionedZones.Values.FirstOrDefault();
+            }
+
+            return null;
         }
 
     }

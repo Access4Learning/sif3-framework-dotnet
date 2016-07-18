@@ -25,7 +25,6 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
     public class SchoolInfoService : IBasicProviderService<SchoolInfo>
     {
-
         public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
         {
             throw new NotImplementedException();
@@ -66,7 +65,5 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         {
             throw new NotImplementedException();
         }
-
     }
-
 }

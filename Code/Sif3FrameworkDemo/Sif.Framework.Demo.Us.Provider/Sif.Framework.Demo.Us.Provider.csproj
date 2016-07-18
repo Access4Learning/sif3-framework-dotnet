@@ -29,6 +29,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,6 +51,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,7 +62,7 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Framework, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SharedLibs\Sif.Framework 2.0.0\Sif.Framework.dll</HintPath>
     </Reference>
@@ -64,8 +70,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Us 3.3\Sif.Specification.DataModel.Us.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure">
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.0.1\Sif.Specification.Infrastructure.dll</HintPath>
+    <Reference Include="Sif.Specification.Infrastructure, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.0\Sif.Specification.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.94.0\lib\net45\System.Data.SQLite.dll</HintPath>

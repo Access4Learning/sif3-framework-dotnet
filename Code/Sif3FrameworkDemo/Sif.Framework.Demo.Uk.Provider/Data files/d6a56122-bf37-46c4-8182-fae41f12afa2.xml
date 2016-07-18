@@ -1,0 +1,3089 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ESCS_BDA_Message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Users\steph\Documents\SJPProjects\Clients\DfE\BDA\BDA_XML_Design_Outputs\Converting_XML_to_ISB_using_XSLT\CTF_Test\SJP_Version\ESCS_ISB_XMLSchema_vs6.3.xsd">
+
+  <MsgHeader>
+
+    <MsgInfo>
+
+      <MessageID>CTF-167-201-2016-05-13T11:00:37+01:00</MessageID>
+
+      <TimeStamp>2016-05-13T11:00:37+01:00</TimeStamp>
+
+      <Sequence>01</Sequence>
+
+      <Initiator_Data>
+
+        <Initiator_Party_Id>167LLLL</Initiator_Party_Id>
+
+      </Initiator_Data>
+
+      <Receiver_Data>
+
+        <Receiver_Party_Id>201MMMM</Receiver_Party_Id>
+
+      </Receiver_Data>
+
+      <SchemaVersion/>
+
+      <Exchange_Name/>
+
+      <ExchangeSpec_Version/>
+
+    </MsgInfo>
+
+    <TransactionInfo>
+
+      <TransactionName>CTF</TransactionName>
+
+    </TransactionInfo>
+
+    <PackageInfo>
+
+      <Supplier>0004</Supplier>
+
+    </PackageInfo>
+
+  </MsgHeader>
+
+  <!--************  START OF NEW PUPIL *************** -->
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for each Pupil-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>Z12345678912Z</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Person</Party_Type>
+
+        <Person>
+
+          <Date_Of_Birth>1999-10-01</Date_Of_Birth>
+
+          <Legal_Sex_Type>Male</Legal_Sex_Type>
+
+          <PersonLanguage>
+
+            <PersonLanguage_ID>
+
+              <Language_Type>English</Language_Type>
+
+            </PersonLanguage_ID>
+
+          </PersonLanguage>
+
+        </Person>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking School to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+        <Harmonised_Ethnicity_Type>White - British</Harmonised_Ethnicity_Type>
+
+        <Declared_Gender_Type>Male</Declared_Gender_Type>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role building on the Party Rel that linked School to a Pupil and assign role as "Learner"-->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for DFE-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>DFE</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Organisation</Party_Type>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking DFE to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>DFE</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>DFE</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Party_Role_Effective_Date>2016-05-13T11:00:37+01:00</Party_Role_Effective_Date>
+
+        <Party_Role_Eff_End_Date>2016-05-13T11:00:37+01:00</Party_Role_Eff_End_Date>
+
+        <Relationship_Reference>Z12345678912Z</Relationship_Reference>
+
+        <Party_RR_Reference_Type>UPN</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for LRS-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>Learner Records Service</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Organisation</Party_Type>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking LRS to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>Learner Records Service</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role linking LRS to a Pupil and assign ULN - -->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>Learner Records Service</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Relationship_Reference>1234567891</Relationship_Reference>
+
+        <Party_RR_Reference_Type>ULN</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for JCQ DSG-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>JCQ DSG</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Organisation</Party_Type>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking JCQ DSG to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>JCQ DSG</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role linking JCQ DSG to a Pupil and assign UCI -->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>JCQ DSG</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Relationship_Reference>123456789123A</Relationship_Reference>
+
+        <Party_RR_Reference_Type>UCI</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Full" name for each Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>Z12345678912Z</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Full</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Johnathan</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>Smith</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipName_DS</DataBlockName>
+
+    <!--Link Pupil Full name in the Party Name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipName_DS>
+
+      <PartyRelationshipName>
+
+        <PartyRelationshipName_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Name>Z12345678912Z</Party_Id_Name>
+
+          <Party_Name_Description>Full</Party_Name_Description>
+
+          <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        </PartyRelationshipName_ID>
+
+        <Party_Name_Use_Type>Subject Name</Party_Name_Use_Type>
+
+      </PartyRelationshipName>
+
+    </PartyRelationshipName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role linking DFE to a Pupil and assign "Former" UPN - 
+
+                     note1 - no need to build the Party for DFE and Party Rel between DFE and Pupil as the UPN element is mandatory and so these data blocks will have been built previously in the message
+
+                     note2) - The UPN is the former UPN - this is established by the specific effective date being less than the current UPN effective date and a midnight time - see XSLT to ISB design concept (9) 
+
+                     -->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>DFE</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Party_Role_Effective_Date>2016-05-12T00:00:00+01:00</Party_Role_Effective_Date>
+
+        <Party_Role_Eff_End_Date>2016-05-12T00:00:00+01:00</Party_Role_Eff_End_Date>
+
+        <Relationship_Reference>Z99345678912Z</Relationship_Reference>
+
+        <Party_RR_Reference_Type>UPN</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Known As" name for the Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>Z12345678912Z</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Known As</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Jon</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>Smith</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipName_DS</DataBlockName>
+
+    <!--Link Pupil Known As name in the Party Name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipName_DS>
+
+      <PartyRelationshipName>
+
+        <PartyRelationshipName_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Name>Z12345678912Z</Party_Id_Name>
+
+          <Party_Name_Description>Known As</Party_Name_Description>
+
+          <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        </PartyRelationshipName_ID>
+
+        <Party_Name_Use_Type>Preferred Name</Party_Name_Use_Type>
+
+      </PartyRelationshipName>
+
+    </PartyRelationshipName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the BS7666 Address for the current Party-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>1234Chelmer DriveHuttonShenfieldEssex</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Postal Address</Locator_Type>
+
+        <PostalAddress>
+
+          <Postal_Address_Type>UK</Postal_Address_Type>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>1</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>1234</Address_Line_Contents>
+
+            <Address_Line_Type>PAON</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>2</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Chelmer Drive</Address_Line_Contents>
+
+            <Address_Line_Type>Street Description</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>3</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Hutton</Address_Line_Contents>
+
+            <Address_Line_Type>Locality</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>4</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Shenfield</Address_Line_Contents>
+
+            <Address_Line_Type>Town</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>5</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Essex</Address_Line_Contents>
+
+            <Address_Line_Type>Area</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>6</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>a</Address_Line_Contents>
+
+            <Address_Line_Type>Post Town</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>7</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>2222222222</Address_Line_Contents>
+
+            <Address_Line_Type>UPRN</Address_Line_Type>
+
+          </AddressLine>
+
+        </PostalAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contact and their name to the Relationship between the Pupil and the School - if the Party_Id_2nd and the Party_ID_Contact are the same then the Contact_Locator is the learners own Locator information. In this case no name or relationship is populated. -->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>Z12345678912Z</Party_Id_Contact>
+
+          <Locator_Id_Contact>1234Chelmer DriveHuttonShenfieldEssex</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build Party for a contact of the Pupil-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>MrsGwenMcGill</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Person</Party_Type>
+
+        <Person>
+
+          <Legal_Sex_Type>Female</Legal_Sex_Type>
+
+        </Person>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Full" name for a Contact of the Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>MrsGwenMcGill</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Full</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Mrs</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Gwen</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>3</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Ann</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>4</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>McGill</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the 5-line Address for the current Party-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>18, Chelmer Drive</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Postal Address</Locator_Type>
+
+        <PostalAddress>
+
+          <Postal_Address_Type>5-line</Postal_Address_Type>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>1</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>18, Chelmer Drive</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 1</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>2</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Hutton</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 2</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>3</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Shenfield</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 3</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>4</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Essex</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 4</Address_Line_Type>
+
+          </AddressLine>
+
+        </PostalAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contact and their name to the Relationship between the Pupil and the School - if the Party_Id_2nd and the Party_ID_Contact are the same then the Contact_Locator is the learners own Locator information. In this case no name or relationship is populated. -->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrsGwenMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>18, Chelmer Drive</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>01277637485</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>01277637485</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrsGwenMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>01277637485</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>07984694760</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>07984694760</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrsGwenMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>07984694760</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Email Address-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>gwen.mcgill@education.gsi.gov.uk</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Email Address</Locator_Type>
+
+        <EmailAddress>
+
+          <Email_Address>gwen.mcgill@education.gsi.gov.uk</Email_Address>
+
+        </EmailAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tele number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrsGwenMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>gwen.mcgill@education.gsi.gov.uk</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build Party for a contact of the Pupil-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>MrAlanMcGill</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Person</Party_Type>
+
+        <Person>
+
+          <Legal_Sex_Type>Male</Legal_Sex_Type>
+
+        </Person>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Full" name for a Contact of the Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>MrAlanMcGill</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Full</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Mr</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Alan</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>3</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>McGill</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the 5-line Address for the current Party-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>18, Chelmer Drive</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Postal Address</Locator_Type>
+
+        <PostalAddress>
+
+          <Postal_Address_Type>5-line</Postal_Address_Type>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>1</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>18, Chelmer Drive</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 1</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>2</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Hutton</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 2</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>3</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Shenfield</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 3</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>4</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Essex</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 4</Address_Line_Type>
+
+          </AddressLine>
+
+        </PostalAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contact and their name to the Relationship between the Pupil and the School - if the Party_Id_2nd and the Party_ID_Contact are the same then the Contact_Locator is the learners own Locator information. In this case no name or relationship is populated. -->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrAlanMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>18, Chelmer Drive</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAF</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>01277637485</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>01277637485</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrAlanMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>01277637485</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAF</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>079271986462</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>079271986462</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678912Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrAlanMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>079271986462</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAF</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <!--************  START OF NEW PUPIL *************** -->
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for each Pupil-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>Z12345678913Z</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Person</Party_Type>
+
+        <Person>
+
+          <Date_Of_Birth>1989-10-01</Date_Of_Birth>
+
+          <Legal_Sex_Type>Female</Legal_Sex_Type>
+
+          <PersonLanguage>
+
+            <PersonLanguage_ID>
+
+              <Language_Type>French</Language_Type>
+
+            </PersonLanguage_ID>
+
+          </PersonLanguage>
+
+        </Person>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking School to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+        <Harmonised_Ethnicity_Type>White - British</Harmonised_Ethnicity_Type>
+
+        <Declared_Gender_Type>Female</Declared_Gender_Type>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role building on the Party Rel that linked School to a Pupil and assign role as "Learner"-->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for DFE-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>DFE</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Organisation</Party_Type>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking DFE to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>DFE</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>DFE</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Party_Role_Effective_Date>2016-05-13T11:00:37+01:00</Party_Role_Effective_Date>
+
+        <Party_Role_Eff_End_Date>2016-05-13T11:00:37+01:00</Party_Role_Eff_End_Date>
+
+        <Relationship_Reference>Z12345678913Z</Relationship_Reference>
+
+        <Party_RR_Reference_Type>UPN</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for LRS-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>Learner Records Service</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Organisation</Party_Type>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking LRS to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>Learner Records Service</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role linking LRS to a Pupil and assign ULN - -->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>Learner Records Service</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Relationship_Reference>1234567890</Relationship_Reference>
+
+        <Party_RR_Reference_Type>ULN</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build the Party for JCQ DSG-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>JCQ DSG</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Organisation</Party_Type>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationship_DS</DataBlockName>
+
+    <!--Process Party Relationship linking JCQ DSG to a Pupil-->
+
+    <PartyRelationship_DS>
+
+      <PartyRelationship>
+
+        <PartyRelationship_ID>
+
+          <Party_Id_1st>JCQ DSG</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+        </PartyRelationship_ID>
+
+      </PartyRelationship>
+
+    </PartyRelationship_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role linking JCQ DSG to a Pupil and assign UCI -->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>JCQ DSG</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Relationship_Reference>123456789124A</Relationship_Reference>
+
+        <Party_RR_Reference_Type>UCI</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Full" name for each Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>Z12345678913Z</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Full</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Johnathan2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>Smith2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipName_DS</DataBlockName>
+
+    <!--Link Pupil Full name in the Party Name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipName_DS>
+
+      <PartyRelationshipName>
+
+        <PartyRelationshipName_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Name>Z12345678913Z</Party_Id_Name>
+
+          <Party_Name_Description>Full</Party_Name_Description>
+
+          <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        </PartyRelationshipName_ID>
+
+        <Party_Name_Use_Type>Subject Name</Party_Name_Use_Type>
+
+      </PartyRelationshipName>
+
+    </PartyRelationshipName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipRole_DS</DataBlockName>
+
+    <!--Build Party Relationship Role linking DFE to a Pupil and assign "Former" UPN - 
+
+                     note1 - no need to build the Party for DFE and Party Rel between DFE and Pupil as the UPN element is mandatory and so these data blocks will have been built previously in the message
+
+                     note2) - The UPN is the former UPN - this is established by the specific effective date being less than the current UPN effective date and a midnight time - see XSLT to ISB design concept (9) 
+
+                     -->
+
+    <PartyRelationshipRole_DS>
+
+      <PartyRelationshipRole>
+
+        <PartyRelationshipRole_ID>
+
+          <Party_Id_1st>DFE</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Role_Type>Learner</Party_Role_Type>
+
+        </PartyRelationshipRole_ID>
+
+        <Party_Role_Effective_Date>2016-05-12T00:00:00+01:00</Party_Role_Effective_Date>
+
+        <Party_Role_Eff_End_Date>2016-05-12T00:00:00+01:00</Party_Role_Eff_End_Date>
+
+        <Relationship_Reference>Z99945678913Z</Relationship_Reference>
+
+        <Party_RR_Reference_Type>UPN</Party_RR_Reference_Type>
+
+      </PartyRelationshipRole>
+
+    </PartyRelationshipRole_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Known As" name for the Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>Z12345678913Z</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Known As</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Jon2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>Smith2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipName_DS</DataBlockName>
+
+    <!--Link Pupil Known As name in the Party Name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipName_DS>
+
+      <PartyRelationshipName>
+
+        <PartyRelationshipName_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Name>Z12345678913Z</Party_Id_Name>
+
+          <Party_Name_Description>Known As</Party_Name_Description>
+
+          <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        </PartyRelationshipName_ID>
+
+        <Party_Name_Use_Type>Preferred Name</Party_Name_Use_Type>
+
+      </PartyRelationshipName>
+
+    </PartyRelationshipName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the BS7666 Address for the current Party-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>1235Chelmer Drive3Hutton2Shenfield2Essex2</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Postal Address</Locator_Type>
+
+        <PostalAddress>
+
+          <Postal_Address_Type>UK</Postal_Address_Type>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>1</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>1235</Address_Line_Contents>
+
+            <Address_Line_Type>PAON</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>2</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Chelmer Drive3</Address_Line_Contents>
+
+            <Address_Line_Type>Street Description</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>3</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Hutton2</Address_Line_Contents>
+
+            <Address_Line_Type>Locality</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>4</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Shenfield2</Address_Line_Contents>
+
+            <Address_Line_Type>Town</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>5</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Essex2</Address_Line_Contents>
+
+            <Address_Line_Type>Area</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>6</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>a</Address_Line_Contents>
+
+            <Address_Line_Type>Post Town</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>7</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>2222222223</Address_Line_Contents>
+
+            <Address_Line_Type>UPRN</Address_Line_Type>
+
+          </AddressLine>
+
+        </PostalAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contact and their name to the Relationship between the Pupil and the School - if the Party_Id_2nd and the Party_ID_Contact are the same then the Contact_Locator is the learners own Locator information. In this case no name or relationship is populated. -->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>Z12345678913Z</Party_Id_Contact>
+
+          <Locator_Id_Contact>1235Chelmer Drive3Hutton2Shenfield2Essex2</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build Party for a contact of the Pupil-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>Mrs2Gwen2McGill2</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Person</Party_Type>
+
+        <Person>
+
+          <Legal_Sex_Type>Female</Legal_Sex_Type>
+
+        </Person>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Full" name for a Contact of the Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>Mrs2Gwen2McGill2</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Full</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Mrs2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Gwen2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>3</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Ann2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>4</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>McGill2</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the 5-line Address for the current Party-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>18, Chelmer Drive2</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Postal Address</Locator_Type>
+
+        <PostalAddress>
+
+          <Postal_Address_Type>5-line</Postal_Address_Type>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>1</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>18, Chelmer Drive2</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 1</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>2</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Hutton2</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 2</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>3</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Shenfield2</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 3</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>4</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Essex</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 4</Address_Line_Type>
+
+          </AddressLine>
+
+        </PostalAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contact and their name to the Relationship between the Pupil and the School - if the Party_Id_2nd and the Party_ID_Contact are the same then the Contact_Locator is the learners own Locator information. In this case no name or relationship is populated. -->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>Mrs2Gwen2McGill2</Party_Id_Contact>
+
+          <Locator_Id_Contact>18, Chelmer Drive2</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>01277637485</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>01277637485</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>Mrs2Gwen2McGill2</Party_Id_Contact>
+
+          <Locator_Id_Contact>01277637485</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>07984694760</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>07984694760</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>Mrs2Gwen2McGill2</Party_Id_Contact>
+
+          <Locator_Id_Contact>07984694760</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Email Address-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>gwen.mcgill@education.gsi.gov.uk</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Email Address</Locator_Type>
+
+        <EmailAddress>
+
+          <Email_Address>gwen.mcgill@education.gsi.gov.uk</Email_Address>
+
+        </EmailAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tele number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>Mrs2Gwen2McGill2</Party_Id_Contact>
+
+          <Locator_Id_Contact>gwen.mcgill@education.gsi.gov.uk</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAM</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Party_DS</DataBlockName>
+
+    <!--Build Party for a contact of the Pupil-->
+
+    <Party_DS>
+
+      <Party>
+
+        <Party_ID>
+
+          <Party_Id>MrAlanMcGill</Party_Id>
+
+        </Party_ID>
+
+        <Party_Type>Person</Party_Type>
+
+        <Person>
+
+          <Legal_Sex_Type>Male</Legal_Sex_Type>
+
+        </Person>
+
+      </Party>
+
+    </Party_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyName_DS</DataBlockName>
+
+    <!--Build "Full" name for a Contact of the Pupil-->
+
+    <PartyName_DS>
+
+      <PartyName>
+
+        <Party_ID>
+
+          <Party_Id>MrAlanMcGill</Party_Id>
+
+        </Party_ID>
+
+        <PartyName_CN>
+
+          <PartyName_ID>
+
+            <Party_Name_Description>Full</Party_Name_Description>
+
+            <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+          </PartyName_ID>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>1</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Mr</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>2</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Given</Party_Name_Component_Type>
+
+            <Party_Name_Component>Alan</Party_Name_Component>
+
+          </PartyNameComponent>
+
+          <PartyNameComponent>
+
+            <PartyNameComponent_ID>
+
+              <Party_Name_Component_Order>3</Party_Name_Component_Order>
+
+            </PartyNameComponent_ID>
+
+            <Party_Name_Component_Type>Family</Party_Name_Component_Type>
+
+            <Party_Name_Component>McGill</Party_Name_Component>
+
+          </PartyNameComponent>
+
+        </PartyName_CN>
+
+      </PartyName>
+
+    </PartyName_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the 5-line Address for the current Party-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>18, Chelmer Drive</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Postal Address</Locator_Type>
+
+        <PostalAddress>
+
+          <Postal_Address_Type>5-line</Postal_Address_Type>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>1</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>18, Chelmer Drive</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 1</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>2</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Hutton</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 2</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>3</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Shenfield</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 3</Address_Line_Type>
+
+          </AddressLine>
+
+          <AddressLine>
+
+            <AddressLine_ID>
+
+              <Address_Line_Order>4</Address_Line_Order>
+
+            </AddressLine_ID>
+
+            <Address_Line_Contents>Essex</Address_Line_Contents>
+
+            <Address_Line_Type>Address Line 4</Address_Line_Type>
+
+          </AddressLine>
+
+        </PostalAddress>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contact and their name to the Relationship between the Pupil and the School - if the Party_Id_2nd and the Party_ID_Contact are the same then the Contact_Locator is the learners own Locator information. In this case no name or relationship is populated. -->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrAlanMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>18, Chelmer Drive</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAF</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>01277637485</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>01277637485</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrAlanMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>01277637485</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAF</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>Locator_DS</DataBlockName>
+
+    <!--Create the Contact's Telephone Numbers-->
+
+    <Locator_DS>
+
+      <Locator>
+
+        <Locator_ID>
+
+          <Locator_Id>079271986462</Locator_Id>
+
+        </Locator_ID>
+
+        <Locator_Type>Telephone Number</Locator_Type>
+
+        <TelephoneNumber>
+
+          <Telephone_Number>079271986462</Telephone_Number>
+
+        </TelephoneNumber>
+
+      </Locator>
+
+    </Locator_DS>
+
+  </DataBlock>
+
+  <DataBlock>
+
+    <DataBlockName>PartyRelationshipContact_DS</DataBlockName>
+
+    <!--Link a Contacts tel number and name to the Relationship between the Pupil and the School-->
+
+    <PartyRelationshipContact_DS>
+
+      <PartyRelationshipContact>
+
+        <PartyRelationshipContact_ID>
+
+          <Party_Id_1st>167LLLL</Party_Id_1st>
+
+          <Party_Id_2nd>Z12345678913Z</Party_Id_2nd>
+
+          <Party_Id_Contact>MrAlanMcGill</Party_Id_Contact>
+
+          <Locator_Id_Contact>079271986462</Locator_Id_Contact>
+
+        </PartyRelationshipContact_ID>
+
+        <Party_Name_Description>Full</Party_Name_Description>
+
+        <Party_Name_Effective_Date>2016-05-13T11:00:37+01:00</Party_Name_Effective_Date>
+
+        <Party_Contact_Use_Type>Main</Party_Contact_Use_Type>
+
+        <Contact_Relationship>PAF</Contact_Relationship>
+
+      </PartyRelationshipContact>
+
+    </PartyRelationshipContact_DS>
+
+  </DataBlock>
+
+</ESCS_BDA_Message>

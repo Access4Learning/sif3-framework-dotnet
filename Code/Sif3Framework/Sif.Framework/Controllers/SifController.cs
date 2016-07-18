@@ -17,6 +17,7 @@
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
+using Sif.Framework.WebApi.ModelBinders;
 using Sif.Framework.Service.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,9 @@ namespace Sif.Framework.Controllers
         /// DELETE api/{controller}/{id}
         /// </summary>
         /// <param name="id">Identifier of the object to delete.</param>
-        public virtual void Delete(Guid id)
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
+        public virtual void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -87,8 +90,10 @@ namespace Sif.Framework.Controllers
         /// GET api/{controller}/{id}
         /// </summary>
         /// <param name="id">Identifier of the object to retrieve.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         /// <returns>Object with that identifier.</returns>
-        public virtual UI Get(Guid id)
+        public virtual UI Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -120,7 +125,7 @@ namespace Sif.Framework.Controllers
         /// GET api/{controller}
         /// </summary>
         /// <returns>All objects.</returns>
-        public virtual ICollection<UI> Get()
+        public virtual ICollection<UI> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -147,8 +152,10 @@ namespace Sif.Framework.Controllers
         /// POST api/{controller}
         /// </summary>
         /// <param name="item">Object to create.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         /// <returns>HTTP response message indicating success or failure.</returns>
-        public virtual HttpResponseMessage Post(UI item)
+        public virtual HttpResponseMessage Post(UI item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
@@ -179,8 +186,10 @@ namespace Sif.Framework.Controllers
         /// PUT api/{controller}/{id}
         /// </summary>
         /// <param name="id">Identifier for the object to update.</param>
+        /// <param name="zone">The zone in which to perform the request.</param>
+        /// <param name="context">The context in which to perform the request.</param>
         /// <param name="item">Object to update.</param>
-        public virtual void Put(Guid id, UI item)
+        public virtual void Put(Guid id, UI item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
         {
 
             if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))

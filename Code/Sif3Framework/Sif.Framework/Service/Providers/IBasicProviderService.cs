@@ -25,7 +25,7 @@ namespace Sif.Framework.Service.Providers
     /// single objects.
     /// </summary>
     /// <typeparam name="T">SIF data model object type.</typeparam>
-    public interface IBasicProviderService<T> : IService<T, List<T>, string>
+    public interface IBasicProviderService<T> : IObjectService<T, List<T>, string>
     {
     }
 

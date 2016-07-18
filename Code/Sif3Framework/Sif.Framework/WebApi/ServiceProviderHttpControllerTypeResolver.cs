@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Controllers;
 using Sif.Framework.Extensions;
 using Sif.Framework.Providers;
+using Sif.Framework.Utils;
 using System;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
@@ -43,18 +45,7 @@ namespace Sif.Framework.WebApi
         /// <returns>True if the endpoint defines a Controller; false otherwise.</returns>
         internal static bool IsHttpEndpoint(Type type)
         {
-
-            if (type == null)
-            {
-                throw new ArgumentNullException("type");
-            }
-
-            return type.IsClass &&
-                type.IsVisible &&
-                !type.IsAbstract &&
-                type.IsAssignableToGenericType(typeof(IProvider<,,>)) &&
-                typeof(IHttpController).IsAssignableFrom(type) &&
-                type.Name.EndsWith("Provider");
+            return ProviderUtils.isController(type);
         }
 
     }

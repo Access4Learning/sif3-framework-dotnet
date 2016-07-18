@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
+using log4net;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Utils;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Reflection;
 
 namespace Sif.Framework.Model.Settings
 {
@@ -26,6 +31,7 @@ namespace Sif.Framework.Model.Settings
     /// </summary>
     abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Configuration configuration;
 
         /// <summary>
@@ -34,7 +40,7 @@ namespace Sif.Framework.Model.Settings
         /// <param name="key">Key (identifier) of the setting.</param>
         /// <param name="defaultValue">Value returned if key not found.</param>
         /// <returns>Setting (boolean) value associated with the key if found; default value otherwise.</returns>
-        private bool GetBooleanSetting(string key, bool defaultValue)
+        protected bool GetBooleanSetting(string key, bool defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
             bool value = defaultValue;
@@ -63,7 +69,7 @@ namespace Sif.Framework.Model.Settings
         /// <param name="key">Key (identifier) of the setting.</param>
         /// <param name="defaultValue">Value returned if key not found.</param>
         /// <returns>Setting (int) value associated with the key if found; default value otherwise.</returns>
-        private int GetIntegerSetting(string key, int defaultValue)
+        protected int GetIntegerSetting(string key, int defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
             int value = defaultValue;
@@ -90,18 +96,23 @@ namespace Sif.Framework.Model.Settings
         /// Retrieve the setting (string) value associated with the key.
         /// </summary>
         /// <param name="key">Key (identifier) of the setting.</param>
-        /// <returns>Setting (string) value associated with the key.</returns>
-        private string GetStringSetting(string key)
+        /// <param name="defaultValue">Value returned if key not found.</param>
+        /// <returns>Setting (string) value associated with the key if found; default value otherwise.</returns>
+        protected string GetStringSetting(string key, string defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
-            string value = null;
+            return setting != null ? setting.Value : defaultValue;
+        }
 
-            if (setting != null)
-            {
-                value = setting.Value;
-            }
-
-            return value;
+        /// <summary>
+        /// Retrieve the setting (string) value associated with the key.
+        /// </summary>
+        /// <param name="key">Key (identifier) of the setting.</param>
+        /// <returns>Setting (string) value associated with the key.</returns>
+        protected string GetStringSetting(string key)
+        {
+            KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
+            return setting != null ? setting.Value : null;
         }
 
         /// <summary>
@@ -182,6 +193,19 @@ namespace Sif.Framework.Model.Settings
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.dataModelNamespace");
+            }
+
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.InfrastructureNamespace"/>
+        /// </summary>
+        public string InfrastructureNamespace
+        {
+
+            get
+            {
+                return "http://www.sifassociation.org/infrastructure/" + SupportedInfrastructureVersion;
             }
 
         }
@@ -317,14 +341,47 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string UserToken
         {
-
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.userToken");
-            }
-
+            get { return GetStringSetting(SettingsPrefix + ".environment.template.userToken"); }
         }
 
-    }
+        /// <summary>
+        /// <see cref="IFrameworkSettings.JobClasses"/>
+        /// </summary>
+        public string JobClasses
+        {
+            get { return GetStringSetting(SettingsPrefix + ".job.classes", "any"); }
+        }
 
+        /// <summary>
+        /// How long in seconds to delay between starting each Functional Service thread. Default 10.
+        /// </summary>
+        public int StartupDelay
+        {
+            get { return GetIntegerSetting(SettingsPrefix + ".startup.delay", 10); }
+        }
+
+        /// <summary>
+        /// True if job objects should be bound to the consumer that created them, false otherwise. Default true.
+        /// </summary>
+        public bool JobBinding
+        {
+            get { return GetBooleanSetting(SettingsPrefix + ".job.binding", true); }
+        }
+
+        /// <summary>
+        /// True if job timeouts are enabled, false otherwise. Default true.
+        /// </summary>
+        public bool JobTimeoutEnabled
+        {
+            get { return GetBooleanSetting(SettingsPrefix + ".job.timeout.enabled", true); }
+        }
+
+        /// <summary>
+        /// How often to check for timedout jobs in seconds. Default 60.
+        /// </summary>
+        public int JobTimeoutFrequency
+        {
+            get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
+        }
+    }
 }

@@ -29,7 +29,6 @@ namespace Sif.Framework.Service.Infrastructure
 
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
-
         private Zone CopyDefaultZone(Zone sourceZone)
         {
             Zone destinationZone = null;
@@ -169,7 +168,7 @@ namespace Sif.Framework.Service.Infrastructure
 
         }
 
-        public override Guid Create(environmentType item)
+        public override Guid Create(environmentType item, string zone = null, string context = null)
         {
             EnvironmentRegister environmentRegister =
                 (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers
