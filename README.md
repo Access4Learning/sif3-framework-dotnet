@@ -1,4 +1,4 @@
-> Copyright 2014 Systemic Pty Ltd
+> Copyright 2016 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 Click on the button marked "Download ZIP" available from the Code tab.
 
 #####Option 2 - Using a Git command-line client.
-From the command-line type: `git clone git@github.com:nsip/Sif3Framework-dotNet.git`
+From the command-line type: `git clone https://github.com/nsip/sif3-framework-dotnet.git`
 
 If you want to use this option but don't have a client installed, one can be downloaded from [http://git-scm.com/download](http://git-scm.com/download "Git command-line client download").
 
@@ -283,7 +283,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Remove redundant local database files.
 - Minor code updates.
 
-**July XX, 2016 - X.X.X Added Functional Service support**
+**July 19, 2016 - 3.0.0 Added Functional Service support**
 
 - Implemented function service providers
 - Implemented function service consumers
