@@ -15,6 +15,7 @@
  */
 
 using log4net;
+using Sif.Framework.Demo.Au.Consumer.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Demo.Au.Consumer.Utils;
 using Sif.Framework.Model.Query;
@@ -33,15 +34,6 @@ namespace Sif.Framework.Demo.Au.Consumer
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static Random random = new Random();
-
-        private List<SchoolInfo> CreateSchools()
-        {
-            SchoolInfo applecrossHigh = new SchoolInfo { SchoolName = "Applecross SHS" };
-            SchoolInfo rossmoyneHigh = new SchoolInfo { SchoolName = "Rossmoyne SHS" };
-            List<SchoolInfo> schoolCollection = new List<SchoolInfo> { applecrossHigh, rossmoyneHigh };
-
-            return schoolCollection;
-        }
 
         private static StudentPersonal CreateStudent()
         {
@@ -64,112 +56,9 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
-        void RunSchoolInfoConsumer()
-        {
-            SchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
-            schoolInfoConsumer.Register();
-
-            try
-            {
-                // Query all schools.
-                IEnumerable<SchoolInfo> allSchools = schoolInfoConsumer.Query();
-
-                foreach (SchoolInfo school in allSchools)
-                {
-                    if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
-
-                if (log.IsInfoEnabled) log.Info("School count is " + allSchools.Count());
-
-                // Create multiple schools.
-                MultipleCreateResponse createResponse = schoolInfoConsumer.Create(CreateSchools());
-
-                foreach (CreateStatus status in createResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-                    if (log.IsInfoEnabled) log.Info("New school " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
-
-                // Update multiple schools.
-                List<SchoolInfo> schoolsToUpdate = new List<SchoolInfo>();
-
-                foreach (CreateStatus status in createResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-                    school.SchoolName += "x";
-                    schoolsToUpdate.Add(school);
-                }
-
-                MultipleUpdateResponse updateResponse = schoolInfoConsumer.Update(schoolsToUpdate);
-
-                foreach (UpdateStatus status in updateResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-                    if (log.IsInfoEnabled) log.Info("Updated school " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
-
-                // Delete multiple schools.
-                ICollection<string> schoolsToDelete = new List<string>();
-
-                foreach (CreateStatus status in createResponse.StatusRecords)
-                {
-                    schoolsToDelete.Add(status.Id);
-                }
-
-                MultipleDeleteResponse deleteResponse = schoolInfoConsumer.Delete(schoolsToDelete);
-
-                foreach (DeleteStatus status in deleteResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-
-                    if (school == null)
-                    {
-                        if (log.IsInfoEnabled) log.Info("School with RefId of " + status.Id + " has been deleted.");
-                    }
-                    else
-                    {
-                        if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " with RefId of " + school.RefId + " FAILED deletion.");
-                    }
-
-                }
-
-            }
-            finally
-            {
-                schoolInfoConsumer.Unregister();
-            }
-
-        }
-
-        void RunStaffPersonalConsumer()
-        {
-            StaffPersonalConsumer staffPersonalConsumer = new StaffPersonalConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
-            staffPersonalConsumer.Register();
-
-            try
-            {
-                EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
-                IList<EqualCondition> conditions = new List<EqualCondition>();
-                conditions.Add(condition);
-                IEnumerable<StaffPersonal> staffPersonals = staffPersonalConsumer.QueryByServicePath(conditions);
-
-                foreach (StaffPersonal staffPersonal in staffPersonals)
-                {
-                    if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
-                }
-
-                if (log.IsInfoEnabled) log.Info("Staff count is " + staffPersonals.Count());
-            }
-            finally
-            {
-                staffPersonalConsumer.Unregister();
-            }
-
-        }
-
         void RunStudentPersonalConsumer()
         {
-            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer("Sif3DemoApp");
+            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             studentPersonalConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
@@ -340,16 +229,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                if ("HITS".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
-                {
-                    app.RunSchoolInfoConsumer();
-                    app.RunStaffPersonalConsumer();
-                }
-                else if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
-                {
-                    app.RunStudentPersonalConsumer();
-                }
-
+                app.RunStudentPersonalConsumer();
             }
             catch (Exception e)
             {

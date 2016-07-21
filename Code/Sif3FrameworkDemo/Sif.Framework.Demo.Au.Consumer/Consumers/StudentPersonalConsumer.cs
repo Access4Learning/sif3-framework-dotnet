@@ -18,7 +18,7 @@ using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Demo.Au.Consumer
+namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
 
     class StudentPersonalConsumer : BasicConsumer<StudentPersonal>

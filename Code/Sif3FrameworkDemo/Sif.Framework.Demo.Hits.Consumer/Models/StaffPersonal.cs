@@ -18,12 +18,12 @@ using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Au.Consumer.Models
+namespace Sif.Framework.Demo.Hits.Consumer.Models
 {
 
-    [XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/1.4", IsNullable = false)]
-    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/1.4")]
-    public class SchoolInfo : SchoolInfoType, IDataModel
+    [XmlRoot("StaffPersonal", Namespace = "http://www.sifassociation.org/au/datamodel/3.4", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/3.4")]
+    public class StaffPersonal : StaffPersonalType, IDataModel
     {
     }
 

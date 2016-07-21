@@ -293,3 +293,12 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Generated SIF 3.2 Infrastructure model and incorporated in UK/US/AU demos
 - Added scripts to lauch projects from the command line
 - Added scripts to build projects from the command line
+
+**July ??, 2016 - ?.?.? Added demo projects for connecting to HITS**
+
+- Added a new demo project specifically for connecting to HITS.
+- Moved HITS specific Consumers from the demo.au.consumer project to the demo.hits.consumer project.
+- Added documentation for creating a Consumer for HITS connection.
+- Updated AU data models to SIF AU 3.4 in demo projects.
+- Removed SharedLibs/Sif.Framework 1.2.0 as that version was never released.
+- Fixed issue whereby SharedLibs/Sif.Framework 2.0.0 incorrectly contained version 3.0.0 of the framework.
