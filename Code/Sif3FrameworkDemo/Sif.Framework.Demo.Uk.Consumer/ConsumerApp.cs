@@ -131,7 +131,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
         void RunLearnerPersonalConsumer()
         {
-            LearnerPersonalConsumer learnerPersonalConsumer = new LearnerPersonalConsumer("Sif3DemoApp");
+            LearnerPersonalConsumer learnerPersonalConsumer = new LearnerPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             learnerPersonalConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
@@ -275,7 +275,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
         void RunPayloadConsumer()
         {
-            FunctionalServiceConsumer consumer = new FunctionalServiceConsumer("Sif3DemoApp");
+            FunctionalServiceConsumer consumer = new FunctionalServiceConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             consumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 

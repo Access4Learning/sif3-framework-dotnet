@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Au.Provider", "Sif.Framework.Demo.Au.Provider\Sif.Framework.Demo.Au.Provider.csproj", "{60BEC332-9F81-493C-A61A-96F76E14CD73}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Uk.Provider", "Sif.Framework.Demo.Uk.Provider\Sif.Framework.Demo.Uk.Provider.csproj", "{0289A4E3-44F1-476F-97CC-3A0B6BFFC1EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Uk.Consumer", "Sif.Framework.Demo.Uk.Consumer\Sif.Framework.Demo.Uk.Consumer.csproj", "{835185B1-7132-4E19-8076-E3F687F81A4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Hits.Consumer", "Sif.Framework.Demo.Hits.Consumer\Sif.Framework.Demo.Hits.Consumer.csproj", "{6F05F4B0-83CD-465A-8FF5-361424CD19BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{835185B1-7132-4E19-8076-E3F687F81A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{835185B1-7132-4E19-8076-E3F687F81A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{835185B1-7132-4E19-8076-E3F687F81A4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F05F4B0-83CD-465A-8FF5-361424CD19BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F05F4B0-83CD-465A-8FF5-361424CD19BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F05F4B0-83CD-465A-8FF5-361424CD19BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F05F4B0-83CD-465A-8FF5-361424CD19BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

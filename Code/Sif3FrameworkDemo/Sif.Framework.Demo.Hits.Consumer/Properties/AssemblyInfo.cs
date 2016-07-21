@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sif.Framework")]
-[assembly: AssemblyDescription("Core library of the SIF3 Framework based on SIF Infrastructure 3.2.")]
+[assembly: AssemblyTitle("Sif.Framework.Demo.Hits.Consumer")]
+[assembly: AssemblyDescription("Consumer created to demonstrate connection to HITS.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
-[assembly: AssemblyProduct("Sif.Framework")]
+[assembly: AssemblyProduct("Sif.Framework.Demo.Hits.Consumer")]
 [assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6d5ef338-c199-4c43-ae36-e7ddc3d1dabc")]
+[assembly: Guid("6f05f4b0-83cd-465a-8ff5-361424cd19bb")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -37,6 +37,3 @@ using System.Runtime.InteropServices;
 
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
-
-// Make types and members with internal scope visible to the assembly containing unit tests.
-[assembly: InternalsVisibleToAttribute("Sif.Framework.Tests")]

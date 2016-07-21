@@ -15,6 +15,7 @@
  */
 
 using log4net;
+using Sif.Framework.Demo.Us.Consumer.Consumers;
 using Sif.Framework.Demo.Us.Consumer.Models;
 using Sif.Framework.Utils;
 using Sif.Specification.DataModel.Us;
@@ -32,7 +33,7 @@ namespace Sif.Framework.Demo.Us.Consumer
 
         void RunStudentConsumer()
         {
-            XStudentConsumer studentConsumer = new XStudentConsumer("Sif3UsDemoApp");
+            XStudentConsumer studentConsumer = new XStudentConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             studentConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
