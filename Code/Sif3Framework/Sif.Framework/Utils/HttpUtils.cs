@@ -70,6 +70,12 @@ namespace Sif.Framework.Utils
             request.Accept = "application/xml";
             request.Headers.Add("Authorization", authorisationToken);
 
+            if (SettingsManager.ConsumerSettings.CompressPayload)
+            {
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            }
+
             if (navigationPage.HasValue)
             {
                 request.Headers.Add("navigationPage", navigationPage.Value.ToString());

@@ -302,3 +302,4 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated AU data models to SIF AU 3.4 in demo projects.
 - Removed SharedLibs/Sif.Framework 1.2.0 as that version was never released.
 - Fixed issue whereby SharedLibs/Sif.Framework 2.0.0 incorrectly contained version 3.0.0 of the framework.
+- Implemented message payload compression.
