@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,15 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="deleteOnUnregister">True to remove session data on unregister; false to leave session data.</param>
         void Unregister(bool? deleteOnUnregister = null);
+
+        /// <summary>
+        /// Retrieve the current Changes Since marker.
+        /// <para>HEAD /StudentPersonals</para>
+        /// </summary>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
+        /// <returns>Changes Since marker.</returns>
+        string GetChangesSinceMarker(string zone = null, string context = null);
 
         /// <summary>
         /// Create a single object.
@@ -110,6 +119,19 @@ namespace Sif.Framework.Consumers
         /// <param name="context">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
         TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
+
+        /// <summary>
+        /// Retrieve multiple objects based on the Changes Since marker.
+        /// <para>GET /StudentPersonals</para>
+        /// </summary>
+        /// <param name="changesSinceMarker">Changes Since marker.</param>
+        /// <param name="nextChangesSinceMarker">Next Changes Since marker.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
+        /// <returns>Retrieved objects.</returns>
+        TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
 
         /// <summary>
         /// Update a single object.

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
+
                 // Retrieve Bart Simpson using QBE.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve Bart Simpson using QBE.");
                 NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
@@ -206,6 +207,65 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                         }
 
+                    }
+
+                }
+
+                // Retrieve student changes since a particular point as defined by the Changes Since marker.
+                if (log.IsInfoEnabled) log.Info("*** Retrieve student changes since a particular point as defined by the Changes Since marker.");
+                string changesSinceMarker = studentPersonalConsumer.GetChangesSinceMarker();
+                string nextChangesSinceMarker;
+                IEnumerable<StudentPersonal> changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                if (log.IsInfoEnabled) log.Info("Iteration 1 - Student changes based on Changes Since marker - " + changesSinceMarker);
+
+                if (changedStudents == null || changedStudents.Count() == 0)
+                {
+                    if (log.IsInfoEnabled) log.Info("No student changes");
+                }
+                else
+                {
+
+                    foreach (StudentPersonal student in changedStudents)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    }
+
+                }
+
+                changesSinceMarker = nextChangesSinceMarker;
+                nextChangesSinceMarker = null;
+                changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                if (log.IsInfoEnabled) log.Info("Iteration 2 - Student changes based on Changes Since marker - " + changesSinceMarker);
+
+                if (changedStudents == null || changedStudents.Count() == 0)
+                {
+                    if (log.IsInfoEnabled) log.Info("No student changes");
+                }
+                else
+                {
+
+                    foreach (StudentPersonal student in changedStudents)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    }
+
+                }
+
+                changesSinceMarker = nextChangesSinceMarker;
+                nextChangesSinceMarker = null;
+                changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                if (log.IsInfoEnabled) log.Info("Iteration 3 - Student changes based on Changes Since marker - " + changesSinceMarker);
+
+                if (changedStudents == null || changedStudents.Count() == 0)
+                {
+                    if (log.IsInfoEnabled) log.Info("No student changes");
+                }
+                else
+                {
+
+                    foreach (StudentPersonal student in changedStudents)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
 
                 }

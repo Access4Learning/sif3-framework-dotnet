@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,10 +97,11 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="obj">Example object to base the query on.</param>
+        /// <param name="changesSinceMarker">Changes Since marker.</param>
         /// <param name="zone">Zone associated with the request.</param>
         /// <param name="context">Zone context.</param>
         /// <returns>All objects, objects that match the properties of the example object or no objects (TMultiple).</returns>
-        IHttpActionResult Get(TSingle obj, string[] zone = null, string[] context = null);
+        IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, string[] zone = null, string[] context = null);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -195,6 +196,23 @@ namespace Sif.Framework.Providers
         /// <param name="context">Zone context.</param>
         /// <returns>Response containing status of each object deleted (deleteResponseType).</returns>
         IHttpActionResult Delete(deleteRequestType deleteRequest, string[] zone = null, string[] context = null);
+
+        /// <summary>
+        /// Retrieve the message headers associated with a call to retrieve all objects.
+        /// <para>HEAD api/{controller}</para>
+        /// <para/>
+        /// <para>200 - Success, ok</para>
+        /// <para>204 - Success, no content</para>
+        /// <para>400 - Failue, bad request</para>
+        /// <para>401 - Failure, unauthorised</para>
+        /// <para>403 - Failure, forbidden</para>
+        /// <para>413 - Failure, response too large</para>
+        /// <para>500 - Failure, internal service error</para>
+        /// </summary>
+        /// <param name="zone">Zone associated with the request.</param>
+        /// <param name="context">Zone context.</param>
+        /// <returns>No objects, just message header information (void).</returns>
+        IHttpActionResult Head(string[] zone = null, string[] context = null);
 
     }
 

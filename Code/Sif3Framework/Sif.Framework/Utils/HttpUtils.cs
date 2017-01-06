@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,11 @@ namespace Sif.Framework.Utils
     public static class HttpUtils
     {
 
-        internal enum RequestMethod { DELETE, GET, POST, PUT }
+        internal enum RequestMethod { DELETE, GET, HEAD, POST, PUT }
 
-        enum RequestHeader
+        internal enum RequestHeader
         {
+            changesSinceMarker,
             [Description("X-HTTP-Method-Override")]
             methodOverride,
             [Description("methodOverride")]
@@ -86,27 +87,63 @@ namespace Sif.Framework.Utils
                 request.Headers.Add("navigationPageSize", navigationPageSize.Value.ToString());
             }
 
-            if (!String.IsNullOrWhiteSpace(methodOverride))
+            if (!string.IsNullOrWhiteSpace(methodOverride))
             {
                 request.Headers.Add("X-HTTP-Method-Override", methodOverride.Trim());
             }
 
-            if (!String.IsNullOrWhiteSpace(methodOverride))
+            if (!string.IsNullOrWhiteSpace(methodOverride))
             {
                 request.Headers.Add("methodOverride", methodOverride.Trim());
             }
 
-            if (!String.IsNullOrWhiteSpace(acceptOverride))
+            if (!string.IsNullOrWhiteSpace(acceptOverride))
             {
                 request.Accept = acceptOverride.Trim();
             }
 
-            if (!String.IsNullOrWhiteSpace(contentTypeOverride))
+            if (!string.IsNullOrWhiteSpace(contentTypeOverride))
             {
                 request.ContentType = contentTypeOverride.Trim();
             }
 
             return request;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="requestMethod"></param>
+        /// <param name="url"></param>
+        /// <param name="authorisationToken"></param>
+        /// <param name="responseHeaders"></param>
+        /// <param name="navigationPage"></param>
+        /// <param name="navigationPageSize"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <returns></returns>
+        private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        {
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+
+            using (WebResponse response = request.GetResponse())
+            {
+                responseHeaders = response.Headers;
+                string responseString = null;
+
+                if (response != null)
+                {
+
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseString = reader.ReadToEnd().Trim();
+                    }
+
+                }
+
+                return responseString;
+            }
+
         }
 
         /// <summary>
@@ -126,7 +163,6 @@ namespace Sif.Framework.Utils
 
             using (WebResponse response = request.GetResponse())
             {
-
                 string responseString = null;
 
                 if (response != null)
@@ -161,11 +197,13 @@ namespace Sif.Framework.Utils
 
             using (Stream requestStream = request.GetRequestStream())
             {
+
                 if (body != null)
                 {
-                    byte[] payload = UTF8Encoding.UTF8.GetBytes(body);
+                    byte[] payload = Encoding.UTF8.GetBytes(body);
                     requestStream.Write(payload, 0, payload.Length);
                 }
+
                 using (WebResponse response = request.GetResponse())
                 {
                     string responseString = null;
@@ -200,9 +238,34 @@ namespace Sif.Framework.Utils
             return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="authorisationToken"></param>
+        /// <param name="body"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <returns></returns>
         public static string DeleteRequest(string url, string authorisationToken, string body, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body, contentTypeOverride, acceptOverride);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="authorisationToken"></param>
+        /// <param name="responseHeaders"></param>
+        /// <param name="navigationPage"></param>
+        /// <param name="navigationPageSize"></param>
+        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
+        /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <returns></returns>
+        public static string GetRequestAndHeaders(string url, string authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        {
+            return RequestAndHeadersWithoutPayload(RequestMethod.GET, url, authorisationToken, out responseHeaders, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -218,6 +281,25 @@ namespace Sif.Framework.Utils
         public static string GetRequest(string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="authorisationToken"></param>
+        /// <returns></returns>
+        public static WebHeaderCollection HeadRequest(string url, string authorisationToken)
+        {
+            HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, null, null, null, null);
+            WebHeaderCollection responseHeaders = new WebHeaderCollection();
+
+            using (WebResponse response = request.GetResponse())
+            {
+                responseHeaders = response.Headers;
+            }
+
+            return responseHeaders;
         }
 
         /// <summary>
@@ -251,27 +333,29 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// This method will additionally add the exception message to the reason phrase of the error response.
-        /// <see cref="System.Net.Http.HttpRequestMessageExtensions.CreateErrorResponse(System.Net.HttpStatusCode, System.Exception)"/>
+        /// This method will add the exception message to the reason phrase of the error response.
         /// </summary>
         public static HttpResponseMessage CreateErrorResponse(HttpRequestMessage request, HttpStatusCode httpStatusCode, Exception exception)
         {
             string exceptionMessage = (exception.Message == null ? "" : exception.Message.Trim());
             HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, exception);
+
             // The ReasonPhrase may not contain new line characters.
             response.ReasonPhrase = StringUtils.RemoveNewLines(exceptionMessage);
+
             return response;
         }
 
         /// <summary>
-        /// This method will additionally add the message specified to the reason phrase of the error response.
-        /// <see cref="System.Net.Http.HttpRequestMessageExtensions.CreateErrorResponse(System.Net.HttpStatusCode, System.String)"/>
+        /// This method will add the message specified to the reason phrase of the error response.
         /// </summary>
         public static HttpResponseMessage CreateErrorResponse(HttpRequestMessage request, HttpStatusCode httpStatusCode, string message)
         {
             HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, message);
+
             // The ReasonPhrase may not contain new line characters.
             response.ReasonPhrase = StringUtils.RemoveNewLines(message);
+
             return response;
         }
 
@@ -292,7 +376,7 @@ namespace Sif.Framework.Utils
             }
 
             string value = null;
-            IEnumerable<String> headerValues;
+            IEnumerable<string> headerValues;
 
             if (headers.TryGetValues(headerName, out headerValues))
             {
@@ -520,10 +604,12 @@ namespace Sif.Framework.Utils
         public static string GetAccept(HttpRequestMessage Request)
         {
             string[] values = (from a in Request.Headers.Accept select a.MediaType).ToArray();
+
             if (values == null || values.Length == 0)
             {
                 return "plain/text";
             }
+
             return values[0];
         }
 
@@ -549,5 +635,7 @@ namespace Sif.Framework.Utils
 
             return matrixParameters;
         }
+
     }
+
 }

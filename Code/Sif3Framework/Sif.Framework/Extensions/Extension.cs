@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,9 @@
  */
 
 using Sif.Framework.WebApi;
+using Sif.Framework.WebApi.ActionResults;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.Http;
@@ -28,6 +30,40 @@ namespace Sif.Framework.Extensions
     /// </summary>
     static class Extension
     {
+
+        /// <summary>
+        /// Extension to add a custom header to an action result.
+        /// </summary>
+        /// <param name="actionResult">Action result.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <param name="headerValue">Value associated with the header.</param>
+        /// <returns>Action result with a custom header.</returns>
+        public static IHttpActionResult AddHeader(this IHttpActionResult actionResult, string headerName, string headerValue)
+        {
+            return AddHeader(actionResult, headerName, new[] { headerValue });
+        }
+
+        /// <summary>
+        /// Extension to add a custom header to an action result.
+        /// </summary>
+        /// <param name="actionResult">Action result.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <param name="headerValues">Values associated with the header.</param>
+        /// <returns>Action result with a custom header.</returns>
+        public static IHttpActionResult AddHeader(this IHttpActionResult actionResult, string headerName, ICollection<string> headerValues)
+        {
+            return new CustomHeaderResult(actionResult, headerName, headerValues);
+        }
+
+        /// <summary>
+        /// Extension to clear the content of an action result but the leave the content length.
+        /// </summary>
+        /// <param name="actionResult">Action result.</param>
+        /// <returns>Action result with empty content.</returns>
+        public static IHttpActionResult ClearContent(this IHttpActionResult actionResult)
+        {
+            return new EmptyContentResult(actionResult);
+        }
 
         /// <summary>
         /// Extension of types to check whether one is assignable from a generic type.
