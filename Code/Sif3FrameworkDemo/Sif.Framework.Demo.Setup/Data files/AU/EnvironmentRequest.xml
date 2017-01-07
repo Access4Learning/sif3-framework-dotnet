@@ -8,7 +8,7 @@
   <applicationInfo>
     <applicationKey>Sif3DemoApp</applicationKey>
     <supportedInfrastructureVersion>3.2</supportedInfrastructureVersion>
-    <dataModelNamespace>http://www.sifassociation.org/au/datamodel/1.4</dataModelNamespace>
+    <dataModelNamespace>http://www.sifassociation.org/au/datamodel/3.4</dataModelNamespace>
     <transport>REST</transport>
   </applicationInfo>
 </environment>

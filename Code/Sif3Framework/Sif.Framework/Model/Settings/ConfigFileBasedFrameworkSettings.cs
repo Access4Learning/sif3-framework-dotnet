@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Utils;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Reflection;
 
 namespace Sif.Framework.Model.Settings
 {
@@ -31,7 +26,6 @@ namespace Sif.Framework.Model.Settings
     /// </summary>
     abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Configuration configuration;
 
         /// <summary>
@@ -167,6 +161,19 @@ namespace Sif.Framework.Model.Settings
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.authenticationMethod");
+            }
+
+        }
+
+        /// <summary>
+        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.CompressPayload"/>
+        /// </summary>
+        public bool CompressPayload
+        {
+
+            get
+            {
+                return GetBooleanSetting(SettingsPrefix + ".payload.compress", false);
             }
 
         }

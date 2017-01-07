@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2016 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,11 @@ namespace Sif.Framework.Model.Settings
         /// Authentication method if it exists; null otherwise.
         /// </summary>
         string AuthenticationMethod { get; }
+
+        /// <summary>
+        /// Compress payload flag if it exists; false otherwise.
+        /// </summary>
+        bool CompressPayload { get; }
 
         /// <summary>
         /// Consumer name if it exists; null otherwise.

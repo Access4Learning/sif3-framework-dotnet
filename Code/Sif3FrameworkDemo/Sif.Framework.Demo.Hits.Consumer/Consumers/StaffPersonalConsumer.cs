@@ -15,10 +15,10 @@
  */
 
 using Sif.Framework.Consumers;
-using Sif.Framework.Demo.Au.Consumer.Models;
+using Sif.Framework.Demo.Hits.Consumer.Models;
 using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.Demo.Au.Consumer
+namespace Sif.Framework.Demo.Hits.Consumer.Consumers
 {
 
     class StaffPersonalConsumer : BasicConsumer<StaffPersonal>

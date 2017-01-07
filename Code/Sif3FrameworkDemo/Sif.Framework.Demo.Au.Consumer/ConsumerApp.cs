@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 using log4net;
+using Sif.Framework.Demo.Au.Consumer.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Demo.Au.Consumer.Utils;
 using Sif.Framework.Model.Query;
@@ -33,15 +34,6 @@ namespace Sif.Framework.Demo.Au.Consumer
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static Random random = new Random();
-
-        private List<SchoolInfo> CreateSchools()
-        {
-            SchoolInfo applecrossHigh = new SchoolInfo { SchoolName = "Applecross SHS" };
-            SchoolInfo rossmoyneHigh = new SchoolInfo { SchoolName = "Rossmoyne SHS" };
-            List<SchoolInfo> schoolCollection = new List<SchoolInfo> { applecrossHigh, rossmoyneHigh };
-
-            return schoolCollection;
-        }
 
         private static StudentPersonal CreateStudent()
         {
@@ -64,117 +56,15 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
-        void RunSchoolInfoConsumer()
-        {
-            SchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
-            schoolInfoConsumer.Register();
-
-            try
-            {
-                // Query all schools.
-                IEnumerable<SchoolInfo> allSchools = schoolInfoConsumer.Query();
-
-                foreach (SchoolInfo school in allSchools)
-                {
-                    if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
-
-                if (log.IsInfoEnabled) log.Info("School count is " + allSchools.Count());
-
-                // Create multiple schools.
-                MultipleCreateResponse createResponse = schoolInfoConsumer.Create(CreateSchools());
-
-                foreach (CreateStatus status in createResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-                    if (log.IsInfoEnabled) log.Info("New school " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
-
-                // Update multiple schools.
-                List<SchoolInfo> schoolsToUpdate = new List<SchoolInfo>();
-
-                foreach (CreateStatus status in createResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-                    school.SchoolName += "x";
-                    schoolsToUpdate.Add(school);
-                }
-
-                MultipleUpdateResponse updateResponse = schoolInfoConsumer.Update(schoolsToUpdate);
-
-                foreach (UpdateStatus status in updateResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-                    if (log.IsInfoEnabled) log.Info("Updated school " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
-
-                // Delete multiple schools.
-                ICollection<string> schoolsToDelete = new List<string>();
-
-                foreach (CreateStatus status in createResponse.StatusRecords)
-                {
-                    schoolsToDelete.Add(status.Id);
-                }
-
-                MultipleDeleteResponse deleteResponse = schoolInfoConsumer.Delete(schoolsToDelete);
-
-                foreach (DeleteStatus status in deleteResponse.StatusRecords)
-                {
-                    SchoolInfo school = schoolInfoConsumer.Query(status.Id);
-
-                    if (school == null)
-                    {
-                        if (log.IsInfoEnabled) log.Info("School with RefId of " + status.Id + " has been deleted.");
-                    }
-                    else
-                    {
-                        if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " with RefId of " + school.RefId + " FAILED deletion.");
-                    }
-
-                }
-
-            }
-            finally
-            {
-                schoolInfoConsumer.Unregister();
-            }
-
-        }
-
-        void RunStaffPersonalConsumer()
-        {
-            StaffPersonalConsumer staffPersonalConsumer = new StaffPersonalConsumer("HITS", null, "0EE41AE6-C43F-11E3-9050-E0F4DBD909AB", "HITS");
-            staffPersonalConsumer.Register();
-
-            try
-            {
-                EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
-                IList<EqualCondition> conditions = new List<EqualCondition>();
-                conditions.Add(condition);
-                IEnumerable<StaffPersonal> staffPersonals = staffPersonalConsumer.QueryByServicePath(conditions);
-
-                foreach (StaffPersonal staffPersonal in staffPersonals)
-                {
-                    if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
-                }
-
-                if (log.IsInfoEnabled) log.Info("Staff count is " + staffPersonals.Count());
-            }
-            finally
-            {
-                staffPersonalConsumer.Unregister();
-            }
-
-        }
-
         void RunStudentPersonalConsumer()
         {
-            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer("Sif3DemoApp");
+            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             studentPersonalConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
             try
             {
+
                 // Retrieve Bart Simpson using QBE.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve Bart Simpson using QBE.");
                 NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
@@ -321,6 +211,65 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 }
 
+                // Retrieve student changes since a particular point as defined by the Changes Since marker.
+                if (log.IsInfoEnabled) log.Info("*** Retrieve student changes since a particular point as defined by the Changes Since marker.");
+                string changesSinceMarker = studentPersonalConsumer.GetChangesSinceMarker();
+                string nextChangesSinceMarker;
+                IEnumerable<StudentPersonal> changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                if (log.IsInfoEnabled) log.Info("Iteration 1 - Student changes based on Changes Since marker - " + changesSinceMarker);
+
+                if (changedStudents == null || changedStudents.Count() == 0)
+                {
+                    if (log.IsInfoEnabled) log.Info("No student changes");
+                }
+                else
+                {
+
+                    foreach (StudentPersonal student in changedStudents)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    }
+
+                }
+
+                changesSinceMarker = nextChangesSinceMarker;
+                nextChangesSinceMarker = null;
+                changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                if (log.IsInfoEnabled) log.Info("Iteration 2 - Student changes based on Changes Since marker - " + changesSinceMarker);
+
+                if (changedStudents == null || changedStudents.Count() == 0)
+                {
+                    if (log.IsInfoEnabled) log.Info("No student changes");
+                }
+                else
+                {
+
+                    foreach (StudentPersonal student in changedStudents)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    }
+
+                }
+
+                changesSinceMarker = nextChangesSinceMarker;
+                nextChangesSinceMarker = null;
+                changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                if (log.IsInfoEnabled) log.Info("Iteration 3 - Student changes based on Changes Since marker - " + changesSinceMarker);
+
+                if (changedStudents == null || changedStudents.Count() == 0)
+                {
+                    if (log.IsInfoEnabled) log.Info("No student changes");
+                }
+                else
+                {
+
+                    foreach (StudentPersonal student in changedStudents)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    }
+
+                }
+
             }
             catch (Exception)
             {
@@ -340,16 +289,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                if ("HITS".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
-                {
-                    app.RunSchoolInfoConsumer();
-                    app.RunStaffPersonalConsumer();
-                }
-                else if ("Sif3DemoApp".Equals(SettingsManager.ConsumerSettings.ApplicationKey))
-                {
-                    app.RunStudentPersonalConsumer();
-                }
-
+                app.RunStudentPersonalConsumer();
             }
             catch (Exception e)
             {

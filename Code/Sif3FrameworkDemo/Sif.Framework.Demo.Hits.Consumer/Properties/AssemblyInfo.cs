@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sif.Framework.Demo.Us.Provider")]
-[assembly: AssemblyDescription("Provider created to demonstrate SIF 3 Framework usage.")]
+[assembly: AssemblyTitle("Sif.Framework.Demo.Hits.Consumer")]
+[assembly: AssemblyDescription("Consumer created to demonstrate connection to HITS.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
-[assembly: AssemblyProduct("Sif.Framework.Demo.Us.Provider")]
+[assembly: AssemblyProduct("Sif.Framework.Demo.Hits.Consumer")]
 [assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0538bd5c-72e8-470f-9658-0f80cf10230d")]
+[assembly: Guid("6f05f4b0-83cd-465a-8ff5-361424cd19bb")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +29,11 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers 
+// You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("3.1.0.0")]
 [assembly: AssemblyFileVersion("3.1.0.0")]
+
+// Configure log4net using the .config file
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]

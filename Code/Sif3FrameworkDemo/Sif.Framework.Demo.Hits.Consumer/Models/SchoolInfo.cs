@@ -14,26 +14,17 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Consumers;
-using Sif.Framework.Demo.Au.Consumer.Models;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.DataModels;
+using Sif.Specification.DataModel.Au;
+using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Au.Consumer
+namespace Sif.Framework.Demo.Hits.Consumer.Models
 {
 
-    class SchoolInfoConsumer : BasicConsumer<SchoolInfo>
+    [XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/3.4", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/3.4")]
+    public class SchoolInfo : SchoolInfoType, IDataModel
     {
-
-        public SchoolInfoConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
-            : base(applicationKey, instanceId, userToken, solutionId)
-        {
-        }
-
-        public SchoolInfoConsumer(Environment environment)
-            : base(environment)
-        {
-        }
-
     }
 
 }

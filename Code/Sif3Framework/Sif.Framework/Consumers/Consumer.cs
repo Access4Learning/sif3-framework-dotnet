@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 using log4net;
+using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
@@ -182,6 +183,23 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.GetChangesSinceMarker(string, string)">GetChangesSinceMarker</see>
+        /// </summary>
+        public string GetChangesSinceMarker(string zone = null, string context = null)
+        {
+
+            if (!RegistrationService.Registered)
+            {
+                throw new InvalidOperationException("Consumer has not registered.");
+            }
+
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context);
+            WebHeaderCollection responseHeaders = HttpUtils.HeadRequest(url, RegistrationService.AuthorisationToken);
+
+            return responseHeaders[HttpUtils.RequestHeader.changesSinceMarker.ToDescription()];
+        }
+
+        /// <summary>
         /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TSingle, string, string)">Create</see>
         /// </summary>
         public virtual TSingle Create(TSingle obj, string zone = null, string context = null)
@@ -298,7 +316,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByExample(TSingle, uint?, uint?, string, string)">Query</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByExample(TSingle, uint?, uint?, string, string)">QueryByExample</see>
         /// </summary>
         public virtual TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
@@ -319,7 +337,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByServicePath(IEnumerable{EqualCondition}, uint?, uint?, string, string)">Query</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByServicePath(IEnumerable{EqualCondition}, uint?, uint?, string, string)">QueryByServicePath</see>
         /// </summary>
         public virtual TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
         {
@@ -353,6 +371,36 @@ namespace Sif.Framework.Consumers
             {
                 xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
             }
+
+            return DeserialiseMultiple(xml);
+        }
+
+        /// <summary>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryChangesSince(string, out string, uint?, uint?, string, string)">QueryChangesSince</see>
+        /// </summary>
+        public TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null)
+        {
+
+            if (!RegistrationService.Registered)
+            {
+                throw new InvalidOperationException("Consumer has not registered.");
+            }
+
+            string changesSinceParameter = (changesSinceMarker == null ? string.Empty : "?changesSinceMarker=" + changesSinceMarker);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zone, context) + changesSinceParameter;
+            WebHeaderCollection responseHeaders;
+            string xml;
+
+            if (navigationPage.HasValue && navigationPageSize.HasValue)
+            {
+                xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, (int)navigationPage, (int)navigationPageSize);
+            }
+            else
+            {
+                xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
+            }
+
+            nextChangesSinceMarker = responseHeaders[HttpUtils.RequestHeader.changesSinceMarker.ToDescription()];
 
             return DeserialiseMultiple(xml);
         }

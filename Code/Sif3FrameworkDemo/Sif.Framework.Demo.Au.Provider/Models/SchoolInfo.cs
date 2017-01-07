@@ -21,8 +21,8 @@ using System.Xml.Serialization;
 namespace Sif.Framework.Demo.Au.Provider.Models
 {
 
-    [XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/1.4", IsNullable = false)]
-    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/1.4")]
+    [XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/3.4", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/3.4")]
     public class SchoolInfo : SchoolInfoType, IDataModel
     {
     }

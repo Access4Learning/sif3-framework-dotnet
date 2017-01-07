@@ -30,6 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -171,8 +174,10 @@
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
+    <Compile Include="Service\Providers\IChangesSinceService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
     <Compile Include="Service\IObjectService.cs" />
+    <Compile Include="Service\Providers\ISupportsChangesSince.cs" />
     <Compile Include="Service\Registration\IRegistrationService.cs" />
     <Compile Include="Service\Registration\NoRegistrationService.cs" />
     <Compile Include="Service\Registration\RegistrationService.cs" />
@@ -184,6 +189,8 @@
     <Compile Include="Utils\RightsUtils.cs" />
     <Compile Include="Utils\ZoneUtils.cs" />
     <Compile Include="Utils\ProviderUtils.cs" />
+    <Compile Include="WebApi\ActionResults\CustomHeaderResult.cs" />
+    <Compile Include="WebApi\ActionResults\EmptyContentResult.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
