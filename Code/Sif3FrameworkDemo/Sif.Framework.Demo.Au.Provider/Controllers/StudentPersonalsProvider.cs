@@ -32,7 +32,7 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
         }
 
         [Route("~/api/StudentPersonals/StudentPersonal")]
-        public override IHttpActionResult Post(StudentPersonal obj, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override IHttpActionResult Post(StudentPersonal obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj);
         }

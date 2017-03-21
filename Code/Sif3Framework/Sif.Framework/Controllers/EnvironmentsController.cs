@@ -135,16 +135,16 @@ namespace Sif.Framework.Controllers
         /// This operation is forbidden.
         /// </summary>
         /// <returns>HTTP status 403.</returns>
-        public override ICollection<environmentType> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override ICollection<environmentType> Get([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
         [Route("{id}")]
         [HttpGet]
-        public override environmentType Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override environmentType Get(Guid id, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            return base.Get(id, zone, context);
+            return base.Get(id, zoneId, contextId);
         }
 
         /// <summary>
@@ -152,10 +152,10 @@ namespace Sif.Framework.Controllers
         /// This operation is forbidden.
         /// </summary>
         /// <param name="item">Object to create.</param>
-        /// <param name="zone">The zone in which to perform the request.</param>
-        /// <param name="context">The context in which to perform the request.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
         /// <returns>HTTP status 403.</returns>
-        public override HttpResponseMessage Post(environmentType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override HttpResponseMessage Post(environmentType item, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
@@ -224,16 +224,16 @@ namespace Sif.Framework.Controllers
         /// </summary>
         /// <param name="id">Identifier for the object to update.</param>
         /// <param name="item">Object to update.</param>
-        public override void Put(Guid id, environmentType item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override void Put(Guid id, environmentType item, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
         [Route("{id}")]
         [HttpDelete]
-        public override void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override void Delete(Guid id, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            base.Delete(id, zone, context);
+            base.Delete(id, zoneId, contextId);
         }
 
     }
