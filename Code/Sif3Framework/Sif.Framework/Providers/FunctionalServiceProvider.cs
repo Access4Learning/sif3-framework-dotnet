@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +25,19 @@ using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Web.Http;
-using System.Linq;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Providers
 {
+
     /// <summary>
     /// Services Connector implementation
     /// </summary>
@@ -673,7 +675,7 @@ namespace Sif.Framework.Providers
         protected virtual string CheckAuthorisation(string[] zone, string[] context)
         {
             string sessionToken = "";
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization, out sessionToken))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 log.Debug("Could not verify request headers.");
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
@@ -785,9 +787,9 @@ namespace Sif.Framework.Providers
             };
         }
 
-        private String getOwnerId(String sessionToken)
+        private string getOwnerId(string sessionToken)
         {
-            String ownerId = null;
+            string ownerId = null;
 
             switch (SettingsManager.ProviderSettings.EnvironmentType)
             {
@@ -807,6 +809,7 @@ namespace Sif.Framework.Providers
             }
             return ownerId;
         }
+
     }
 
 }

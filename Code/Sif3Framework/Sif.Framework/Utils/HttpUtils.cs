@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Extensions;
+using Sif.Framework.Model.Authentication;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,7 +48,8 @@ namespace Sif.Framework.Utils
             navigationPage,
             navigationPageSize,
             applicationKey,
-            sourceName
+            sourceName,
+            timestamp
         }
 
         /// <summary>
@@ -62,14 +64,15 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
             request.Method = requestMethod.ToString();
             request.KeepAlive = false;
             request.Accept = "application/xml";
-            request.Headers.Add("Authorization", authorisationToken);
+            request.Headers.Add("Authorization", authorisationToken.Token);
+            request.Headers.Add("timestamp", authorisationToken.Timestamp);
 
             if (SettingsManager.ConsumerSettings.CompressPayload)
             {
@@ -122,7 +125,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
 
@@ -157,7 +160,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
 
@@ -191,7 +194,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        private static string RequestWithPayload(RequestMethod requestMethod, string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        private static string RequestWithPayload(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, methodOverride: methodOverride, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
 
@@ -233,7 +236,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        public static string DeleteRequest(string url, string authorisationToken, string contentTypeOverride = null, string acceptOverride = null)
+        public static string DeleteRequest(string url, AuthorisationToken authorisationToken, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
         }
@@ -247,7 +250,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        public static string DeleteRequest(string url, string authorisationToken, string body, string contentTypeOverride = null, string acceptOverride = null)
+        public static string DeleteRequest(string url, AuthorisationToken authorisationToken, string body, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body, contentTypeOverride, acceptOverride);
         }
@@ -263,7 +266,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        public static string GetRequestAndHeaders(string url, string authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        public static string GetRequestAndHeaders(string url, AuthorisationToken authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestAndHeadersWithoutPayload(RequestMethod.GET, url, authorisationToken, out responseHeaders, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
         }
@@ -278,7 +281,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        public static string GetRequest(string url, string authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        public static string GetRequest(string url, AuthorisationToken authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
         }
@@ -289,7 +292,7 @@ namespace Sif.Framework.Utils
         /// <param name="url"></param>
         /// <param name="authorisationToken"></param>
         /// <returns></returns>
-        public static WebHeaderCollection HeadRequest(string url, string authorisationToken)
+        public static WebHeaderCollection HeadRequest(string url, AuthorisationToken authorisationToken)
         {
             HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, null, null, null, null);
             WebHeaderCollection responseHeaders = new WebHeaderCollection();
@@ -312,7 +315,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        public static string PostRequest(string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        public static string PostRequest(string url, AuthorisationToken authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, methodOverride, contentTypeOverride, acceptOverride);
         }
@@ -327,7 +330,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns></returns>
-        public static string PutRequest(string url, string authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        public static string PutRequest(string url, AuthorisationToken authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
         {
             return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, methodOverride, contentTypeOverride, acceptOverride);
         }
@@ -586,6 +589,16 @@ namespace Sif.Framework.Utils
         internal static string GetSourceName(HttpHeaders headers)
         {
             return GetHeaderValue(headers, RequestHeader.sourceName.ToDescription());
+        }
+
+        /// <summary>
+        /// Retrieve the timestamp property from the header.
+        /// </summary>
+        /// <param name="headers">Request headers.</param>
+        /// <returns>timestamp value if set; null otherwise.</returns>
+        internal static string GetTimestamp(HttpHeaders headers)
+        {
+            return GetHeaderValue(headers, RequestHeader.timestamp.ToDescription());
         }
 
         /// <summary>

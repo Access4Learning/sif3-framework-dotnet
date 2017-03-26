@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,20 @@ namespace Sif.Framework.Controllers
     /// </summary>
     public abstract class EnvironmentsController : SifController<environmentType, Environment>
     {
+
+        /// <summary>
+        /// Default value for the authentication method.
+        /// </summary>
         protected static readonly string defaultAuthenticationMethod = "Basic";
+
+        /// <summary>
+        /// Default value for the Consumer name.
+        /// </summary>
         protected static readonly string defaultConsumerName = "Sif3FrameworkConsumer";
+
+        /// <summary>
+        /// Default value for the supported infrastructure version.
+        /// </summary>
         protected static readonly string defaultSupportedInfrastructureVersion = "3.0.1";
 
         /// <summary>
@@ -66,12 +78,12 @@ namespace Sif.Framework.Controllers
             applicationInfoType applicationInfo = new applicationInfoType();
             applicationInfo.applicationKey = applicationKey;
 
-            if (!String.IsNullOrWhiteSpace(dataModelNamespace))
+            if (!string.IsNullOrWhiteSpace(dataModelNamespace))
             {
                 applicationInfo.dataModelNamespace = dataModelNamespace;
             }
 
-            if (String.IsNullOrWhiteSpace(supportedInfrastructureVersion))
+            if (string.IsNullOrWhiteSpace(supportedInfrastructureVersion))
             {
                 applicationInfo.supportedInfrastructureVersion = defaultSupportedInfrastructureVersion;
             }
@@ -80,12 +92,12 @@ namespace Sif.Framework.Controllers
                 applicationInfo.supportedInfrastructureVersion = supportedInfrastructureVersion;
             }
 
-            if (!String.IsNullOrWhiteSpace(transport))
+            if (!string.IsNullOrWhiteSpace(transport))
             {
                 applicationInfo.transport = transport;
             }
 
-            if (!String.IsNullOrWhiteSpace(productName))
+            if (!string.IsNullOrWhiteSpace(productName))
             {
                 productIdentityType productIdentity = new productIdentityType();
                 productIdentity.productName = productName;
@@ -95,7 +107,7 @@ namespace Sif.Framework.Controllers
             environmentType environmentType = new environmentType();
             environmentType.applicationInfo = applicationInfo;
 
-            if (String.IsNullOrWhiteSpace(authenticationMethod))
+            if (string.IsNullOrWhiteSpace(authenticationMethod))
             {
                 environmentType.authenticationMethod = defaultAuthenticationMethod;
             }
@@ -104,7 +116,7 @@ namespace Sif.Framework.Controllers
                 environmentType.authenticationMethod = authenticationMethod;
             }
 
-            if (String.IsNullOrWhiteSpace(consumerName))
+            if (string.IsNullOrWhiteSpace(consumerName))
             {
                 environmentType.consumerName = defaultConsumerName;
             }
@@ -113,7 +125,7 @@ namespace Sif.Framework.Controllers
                 environmentType.consumerName = consumerName;
             }
 
-            if (!String.IsNullOrWhiteSpace(solutionId))
+            if (!string.IsNullOrWhiteSpace(solutionId))
             {
                 environmentType.solutionId = solutionId;
             }
@@ -127,19 +139,27 @@ namespace Sif.Framework.Controllers
         public EnvironmentsController()
             : base(new EnvironmentService())
         {
-
         }
 
         /// <summary>
         /// GET api/environments
         /// This operation is forbidden.
         /// </summary>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
         /// <returns>HTTP status 403.</returns>
         public override ICollection<environmentType> Get([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
+        /// <summary>
+        /// GET /api/environments/{id}
+        /// </summary>
+        /// <param name="id">Identifier for the environment to retrieve.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
+        /// <returns>Environment.</returns>
         [Route("{id}")]
         [HttpGet]
         public override environmentType Get(Guid id, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
@@ -187,7 +207,7 @@ namespace Sif.Framework.Controllers
             HttpResponseMessage responseMessage = null;
             string initialToken;
 
-            if (!authService.VerifyInitialAuthenticationHeader(Request.Headers.Authorization, out initialToken))
+            if (!authService.VerifyInitialAuthenticationHeader(Request.Headers, out initialToken))
             {
                 string errorMessage = "The POST request failed for Environment creation due to invalid authentication credentials.";
                 responseMessage = HttpUtils.CreateErrorResponse(Request, HttpStatusCode.Unauthorized, errorMessage);
@@ -204,7 +224,7 @@ namespace Sif.Framework.Controllers
                 {
                     Guid id = service.Create(item);
                     environmentType newItem = service.Retrieve(id);
-                    responseMessage = Request.CreateResponse<environmentType>(HttpStatusCode.Created, newItem);
+                    responseMessage = Request.CreateResponse(HttpStatusCode.Created, newItem);
                     //string uri = Url.Link("DefaultApi", new { id = id });
                     //responseMessage.Headers.Location = new Uri(uri);
                 }
@@ -222,13 +242,22 @@ namespace Sif.Framework.Controllers
         /// PUT api/environments/{id}
         /// This operation is forbidden (raises HTTP status 403).
         /// </summary>
-        /// <param name="id">Identifier for the object to update.</param>
+        /// <param name="id">Identifier for the environment to update.</param>
         /// <param name="item">Object to update.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
+        /// <exception cref="HttpResponseException">Exception representing HTTP status 403 Forbidden.</exception>
         public override void Put(Guid id, environmentType item, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
+        /// <summary>
+        /// DELETE api/environments{id}
+        /// </summary>
+        /// <param name="id">Identifier for the environment to delete.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
         [Route("{id}")]
         [HttpDelete]
         public override void Delete(Guid id, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)

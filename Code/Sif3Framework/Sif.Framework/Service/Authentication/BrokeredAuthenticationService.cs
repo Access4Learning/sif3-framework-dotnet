@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ namespace Sif.Framework.Service.Authentication
 {
 
     /// <summary>
-    /// <see cref="Sif.Framework.Service.Authentication.AuthenticationService">AuthenticationService</see>
+    /// <see cref="AuthenticationService">AuthenticationService</see>
     /// </summary>
     class BrokeredAuthenticationService : AuthenticationService
     {
@@ -46,16 +46,27 @@ namespace Sif.Framework.Service.Authentication
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.AuthenticationService.InitialSharedSecret(System.String)">InitialSharedSecret</see>
+        /// <see cref="AuthenticationService.GetEnvironmentBySessionToken(string)">GetEnvironmentBySessionToken</see>
+        /// </summary>
+        public override Environment GetEnvironmentBySessionToken(string sessionToken)
+        {
+            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
+
+            return MapperFactory.CreateInstance<environmentType, Environment>(environment);
+        }
+
+        /// <summary>
+        /// <see cref="AuthenticationService.InitialSharedSecret(string)">InitialSharedSecret</see>
         /// </summary>
         protected override string InitialSharedSecret(string applicationKey)
         {
             ApplicationRegister applicationRegister = applicationRegisterService.RetrieveByApplicationKey(applicationKey);
+
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.AuthenticationService.SharedSecret(System.String)">SharedSecret</see>
+        /// <see cref="AuthenticationService.SharedSecret(string)">SharedSecret</see>
         /// </summary>
         protected override string SharedSecret(string sessionToken)
         {
@@ -67,24 +78,20 @@ namespace Sif.Framework.Service.Authentication
             }
 
             ApplicationRegister applicationRegister = applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
+
             return (applicationRegister == null ? null : applicationRegister.SharedSecret);
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean)">VerifyAuthenticationHeader</see>
+        /// <see cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders)">VerifyAuthenticationHeader</see>
         /// </summary>
-        public override bool VerifyAuthenticationHeader(AuthenticationHeaderValue header)
+        public override bool VerifyAuthenticationHeader(HttpRequestHeaders headers)
         {
             string storedSessionToken = sessionService.RetrieveSessionToken(settings.ApplicationKey, settings.SolutionId, settings.UserToken, settings.UserToken);
             string sessionToken;
-            bool verified = VerifyAuthenticationHeader(header, false, out sessionToken);
-            return (verified && sessionToken.Equals(storedSessionToken));
-        }
+            bool verified = VerifyAuthenticationHeader(headers, false, out sessionToken);
 
-        public override Environment GetEnvironmentBySessionToken(string sessionToken)
-        {
-            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
-            return MapperFactory.CreateInstance<environmentType, Environment>(environment);
+            return (verified && sessionToken.Equals(storedSessionToken));
         }
 
     }

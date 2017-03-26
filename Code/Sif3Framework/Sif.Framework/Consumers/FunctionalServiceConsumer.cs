@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +27,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
+
     /// <summary>
     /// The base class for all Functional Service consumers
     /// </summary>
@@ -42,7 +43,6 @@ namespace Sif.Framework.Consumers
 
         private Environment environmentTemplate;
         private RegistrationService registrationService;
-
 
         /// <summary>
         /// Consumer environment template
@@ -55,7 +55,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Service for Consumer registration.
         /// </summary>
-        protected RegistrationService RegistrationService
+        protected IRegistrationService RegistrationService
         {
             get { return registrationService; }
         }
@@ -610,5 +610,7 @@ namespace Sif.Framework.Consumers
             }
             return name;
         }
+
     }
+
 }

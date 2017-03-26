@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Authentication;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Registration
 {
 
     /// <summary>
-    /// <see cref="Sif.Framework.Service.Registration.IRegistrationService">IRegistrationService</see>
+    /// <see cref="IRegistrationService">IRegistrationService</see>
     /// </summary>
     public class NoRegistrationService : IRegistrationService
     {
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.AuthorisationToken">AuthorisationToken</see>
+        /// <see cref="IRegistrationService.AuthorisationToken">AuthorisationToken</see>
         /// </summary>
-        public string AuthorisationToken { get; private set; }
+        public AuthorisationToken AuthorisationToken { get; private set; }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Registered">Registered</see>
+        /// <see cref="IRegistrationService.Registered">Registered</see>
         /// </summary>
         public bool Registered { get; private set; }
 
@@ -43,8 +44,9 @@ namespace Sif.Framework.Service.Registration
             AuthorisationToken = null;
             Registered = false;
         }
+
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register()">Register</see>
+        /// <see cref="IRegistrationService.Register()">Register</see>
         /// </summary>
         public Environment Register()
         {
@@ -53,7 +55,7 @@ namespace Sif.Framework.Service.Registration
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register(Sif.Framework.Model.Infrastructure.Environment)">Register</see>
+        /// <see cref="IRegistrationService.Register(ref Environment)">Register</see>
         /// </summary>
         public Environment Register(ref Environment environment)
         {
@@ -62,7 +64,7 @@ namespace Sif.Framework.Service.Registration
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Unregister(bool?)">Unregister</see>
+        /// <see cref="IRegistrationService.Unregister(bool?)">Unregister</see>
         /// </summary>
         public void Unregister(bool? deleteOnUnregister = null)
         {

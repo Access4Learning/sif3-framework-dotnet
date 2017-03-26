@@ -45,7 +45,7 @@ namespace Sif.Framework.Consumers
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private Environment environmentTemplate;
-        private RegistrationService registrationService;
+        private IRegistrationService registrationService;
 
         /// <summary>
         /// Consumer environment.
@@ -63,7 +63,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Service for Consumer registration.
         /// </summary>
-        protected RegistrationService RegistrationService
+        protected IRegistrationService RegistrationService
         {
 
             get

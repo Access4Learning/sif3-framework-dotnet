@@ -53,7 +53,7 @@ namespace Sif.Framework.Providers
         public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -160,7 +160,7 @@ namespace Sif.Framework.Providers
         public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }

@@ -89,7 +89,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Post(TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -174,7 +174,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Post(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -201,7 +201,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Get([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -390,7 +390,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -470,7 +470,7 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -546,7 +546,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Put([FromUri(Name = "id")] string refId, TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -596,7 +596,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Put(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -622,7 +622,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Delete([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -667,7 +667,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Delete(deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
@@ -738,7 +738,7 @@ namespace Sif.Framework.Providers
         public virtual IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.Service.Registration
@@ -29,7 +30,7 @@ namespace Sif.Framework.Service.Registration
         /// <summary>
         /// Authorisation token generated from registration.
         /// </summary>
-        string AuthorisationToken { get; }
+        AuthorisationToken AuthorisationToken { get; }
 
         /// <summary>
         /// Flag to indicate whether the service has been registered.
@@ -37,12 +38,14 @@ namespace Sif.Framework.Service.Registration
         bool Registered { get; }
 
         /// <summary>
-        /// Register service with an Environment service (Broker or Environment Provider). This must be the first method called, and only once. Subsequent calls are ignored.
+        /// Register service with an Environment service (Broker or Environment Provider). This must be the first
+        /// method called, and only once. Subsequent calls are ignored.
         /// </summary>
         Environment Register();
 
         /// <summary>
-        /// Register service with an Environment service (Broker or Environment Provider). This must be the first method called, and only once. Subsequent calls are ignored.
+        /// Register service with an Environment service (Broker or Environment Provider). This must be the first
+        /// method called, and only once. Subsequent calls are ignored.
         /// </summary>
         /// <param name="environment">Environment used for registration.</param>
         Environment Register(ref Environment environment);
