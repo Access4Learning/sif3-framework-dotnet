@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,73 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Specification.Infrastructure;
+using System;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Infrastructure
 {
 
+    /// <summary>
+    /// Unit test for EnvironmentService.
+    /// </summary>
     [TestClass]
     public class EnvironmentServiceTest
     {
+        private IEnvironmentRepository environmentRepository;
+        private IEnvironmentService environmentService;
 
-        // Use ClassInitialize to run code before running the first test in the class
+        /// <summary>
+        /// Use ClassInitialize to run code before running the first test in the class.
+        /// </summary>
+        /// <param name="testContext">Context information for the unit test.</param>
         [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        public static void ClassInitialize(TestContext testContext)
         {
             DataFactory.CreateDatabase();
         }
 
+        /// <summary>
+        /// Use ClassCleanup to run code after all tests in a class have run.
+        /// </summary>
+        [ClassCleanup()]
+        public static void ClassCleanup()
+        {
+        }
+
+        /// <summary>
+        /// Use TestInitialize to run code before running each test.
+        /// </summary>
+        [TestInitialize()]
+        public void TestInitialize()
+        {
+            environmentRepository = new EnvironmentRepository();
+            environmentService = new EnvironmentService();
+        }
+
+        /// <summary>
+        /// Use TestCleanup to run code after each test has run.
+        /// </summary>
+        [TestCleanup()]
+        public void TestCleanup()
+        {
+        }
+
+        /// <summary>
+        /// Save a new Environment and then retreieve it.
+        /// </summary>
         [TestMethod]
         public void Retrieve()
         {
+
+            // Save a new Environment and then retrieve it using it's identifier.
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            (new EnvironmentRepository()).Save(saved);
-            environmentType retrieved = (new EnvironmentService()).Retrieve(saved.Id);
+            Guid environmentId = environmentRepository.Save(saved);
+            environmentType retrieved = environmentService.Retrieve(environmentId);
+
+            // Assert that the retrieved Environment matches the saved Environment.
             Assert.AreEqual(saved.ApplicationInfo.AdapterProduct.IconURI, retrieved.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(saved.ApplicationInfo.AdapterProduct.ProductName, retrieved.applicationInfo.adapterProduct.productName);
             Assert.AreEqual(saved.ApplicationInfo.AdapterProduct.ProductVersion, retrieved.applicationInfo.adapterProduct.productVersion);
