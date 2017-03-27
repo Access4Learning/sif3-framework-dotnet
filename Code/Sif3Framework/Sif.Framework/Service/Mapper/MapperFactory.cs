@@ -165,7 +165,8 @@ namespace Sif.Framework.Service.Mapper
             AutoMapper.Mapper.CreateMap<Environment, environmentType>()
                 .ForMember(dest => dest.infrastructureServices, opt => opt.MapFrom(src => src.InfrastructureServices.Values))
                 .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values))
-                .ForMember(dest => dest.typeSpecified, opt => opt.UseValue<bool>(true));
+                .ForMember(dest => dest.typeSpecified, opt => opt.UseValue<bool>(true))
+                .ForMember(dest => dest.fingerprint, opt => opt.Ignore());
             AutoMapper.Mapper.CreateMap<environmentType, Environment>();
 
             AutoMapper.Mapper.CreateMap<ProductIdentity, productIdentityType>();
@@ -225,7 +226,8 @@ namespace Sif.Framework.Service.Mapper
                 .ForMember(dest => dest.createdSpecified, opt => opt.MapFrom(src => src.Created != null))
                 .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null))
                 .ForMember(dest => dest.stateSpecified, opt => opt.MapFrom(src => src.State != null))
-                .ForMember(dest => dest.timeout, opt => opt.MapFrom(src => XmlConvert.ToString(src.Timeout)));
+                .ForMember(dest => dest.timeout, opt => opt.MapFrom(src => XmlConvert.ToString(src.Timeout)))
+                .ForMember(dest => dest.initialization, opt => opt.Ignore());
             AutoMapper.Mapper.CreateMap<jobType, Job>()
                 .ForMember(dest => dest.Timeout, opt => opt.MapFrom(src => XmlConvert.ToTimeSpan(src.timeout)));
 

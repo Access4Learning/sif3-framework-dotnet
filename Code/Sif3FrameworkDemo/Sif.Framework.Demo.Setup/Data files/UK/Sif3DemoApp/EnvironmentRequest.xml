@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<environment xmlns="http://www.sifassociation.org/infrastructure/3.2">
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2.1">
   <solutionId>ukTestSolution</solutionId>
   <authenticationMethod>Basic</authenticationMethod>
   <instanceId></instanceId>
@@ -7,7 +7,7 @@
   <consumerName>Sif3DemoApp</consumerName>
   <applicationInfo>
     <applicationKey>Sif3DemoApp</applicationKey>
-    <supportedInfrastructureVersion>3.2</supportedInfrastructureVersion>
+    <supportedInfrastructureVersion>3.2.1</supportedInfrastructureVersion>
     <dataModelNamespace>http://www.sifassociation.org/uk/datamodel/2.0</dataModelNamespace>
     <transport>REST</transport>
   </applicationInfo>
