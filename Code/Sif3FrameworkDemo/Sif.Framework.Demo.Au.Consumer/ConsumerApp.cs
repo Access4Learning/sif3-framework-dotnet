@@ -142,7 +142,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Retrieve all students from zone "Gov" and context "Curr".
                 if (log.IsInfoEnabled) log.Info("*** Retrieve all students from zone \"Gov\" and context \"Curr\".");
-                IEnumerable<StudentPersonal> students = studentPersonalConsumer.Query(zone: "Gov", context: "Curr");
+                IEnumerable<StudentPersonal> students = studentPersonalConsumer.Query(zoneId: "Gov", contextId: "Curr");
 
                 foreach (StudentPersonal student in students)
                 {

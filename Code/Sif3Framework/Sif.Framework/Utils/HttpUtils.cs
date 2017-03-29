@@ -629,21 +629,21 @@ namespace Sif.Framework.Utils
         /// <summary>
         /// Build up a string of Matrix Parameters based upon the passed parameters.
         /// </summary>
-        /// <param name="zone">Zone associated with a request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with a request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>String of Matrix Parameters.</returns>
-        public static string MatrixParameters(string zone = null, string context = null)
+        public static string MatrixParameters(string zoneId = null, string contextId = null)
         {
             string matrixParameters = "";
 
-            if (!string.IsNullOrWhiteSpace(zone))
+            if (!string.IsNullOrWhiteSpace(zoneId))
             {
-                matrixParameters += ";zoneId=" + zone.Trim();
+                matrixParameters += ";zoneId=" + zoneId.Trim();
             }
 
-            if (!string.IsNullOrWhiteSpace(context))
+            if (!string.IsNullOrWhiteSpace(contextId))
             {
-                matrixParameters += ";contextId=" + context.Trim();
+                matrixParameters += ";contextId=" + contextId.Trim();
             }
 
             return matrixParameters;
