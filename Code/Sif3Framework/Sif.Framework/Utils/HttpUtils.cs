@@ -638,12 +638,12 @@ namespace Sif.Framework.Utils
 
             if (!string.IsNullOrWhiteSpace(zone))
             {
-                matrixParameters += ";zone=" + zone.Trim();
+                matrixParameters += ";zoneId=" + zone.Trim();
             }
 
             if (!string.IsNullOrWhiteSpace(context))
             {
-                matrixParameters += ";context=" + context.Trim();
+                matrixParameters += ";contextId=" + context.Trim();
             }
 
             return matrixParameters;
