@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,17 +25,18 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
     public class SchoolInfoService : IBasicProviderService<SchoolInfo>
     {
-        public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
+
+        public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public SchoolInfo Retrieve(string refId, string zone = null, string context = null)
+        public SchoolInfo Retrieve(string refId, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<SchoolInfo> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<SchoolInfo> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             SchoolInfo school = new SchoolInfo { SchoolName = "Applecross SHS" };
             List<SchoolInfo> schools = new List<SchoolInfo> { school };
@@ -43,7 +44,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return schools;
         }
 
-        public List<SchoolInfo> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<SchoolInfo> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             SchoolInfo school = new SchoolInfo { SchoolName = "Rossmoyne Conditional SHS" };
             List<SchoolInfo> schools = new List<SchoolInfo> { school };
@@ -51,19 +52,21 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return schools;
         }
 
-        public List<SchoolInfo> Retrieve(SchoolInfo obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<SchoolInfo> Retrieve(SchoolInfo obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(SchoolInfo obj, string zone = null, string context = null)
+        public void Update(SchoolInfo obj, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(string refId, string zone = null, string context = null)
+        public void Delete(string refId, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
+
     }
+
 }

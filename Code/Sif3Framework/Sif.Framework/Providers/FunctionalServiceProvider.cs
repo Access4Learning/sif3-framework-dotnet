@@ -104,14 +104,14 @@ namespace Sif.Framework.Providers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request requires use of advisory id, but none has been supplied.");
                 }
 
-                Guid id = service.Create(item, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                Guid id = service.Create(item, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 if (SettingsManager.ProviderSettings.JobBinding)
                 {
                     service.Bind(id, getOwnerId(sessionToken));
                 }
 
-                jobType job = service.Retrieve(id, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                jobType job = service.Retrieve(id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 string uri = Url.Link("ServicesRoute", new { controller = serviceName, id = id });
 
@@ -168,7 +168,7 @@ namespace Sif.Framework.Providers
                         {
                             throw new ArgumentException("Service " + serviceName + " does not handle jobs named " + job.name);
                         }
-                        Guid id = service.Create(job, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                        Guid id = service.Create(job, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                         if (SettingsManager.ProviderSettings.JobBinding)
                         {
@@ -243,7 +243,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                ICollection<jobType> jobs = service.Retrieve(zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                ICollection<jobType> jobs = service.Retrieve(zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                 foreach (jobType job in jobs)
                 {
                     if (!SettingsManager.ProviderSettings.JobBinding
@@ -283,7 +283,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                item = service.Retrieve(id, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                item = service.Retrieve(id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 if (SettingsManager.ProviderSettings.JobBinding
                     && !service.IsBound(Guid.Parse(item.id), getOwnerId(sessionToken)))
@@ -351,7 +351,7 @@ namespace Sif.Framework.Providers
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
 
-                service.Delete(id, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                service.Delete(id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 if (SettingsManager.ProviderSettings.JobBinding)
                 {
@@ -391,7 +391,7 @@ namespace Sif.Framework.Providers
                         throw new InvalidSessionException("Request failed as job does not belong to this consumer.");
                     }
 
-                    service.Delete(Guid.Parse(deleteId.id), zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                    service.Delete(Guid.Parse(deleteId.id), zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                     if (SettingsManager.ProviderSettings.JobBinding)
                     {
@@ -450,7 +450,7 @@ namespace Sif.Framework.Providers
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.CreateToPhase(id, phaseName, body, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.CreateToPhase(id, phaseName, body, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -491,7 +491,7 @@ namespace Sif.Framework.Providers
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.RetrieveToPhase(id, phaseName, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.RetrieveToPhase(id, phaseName, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -530,7 +530,7 @@ namespace Sif.Framework.Providers
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.UpdateToPhase(id, phaseName, body, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.UpdateToPhase(id, phaseName, body, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -571,7 +571,7 @@ namespace Sif.Framework.Providers
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                return OKResult(service.DeleteToPhase(id, phaseName, body, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OKResult(service.DeleteToPhase(id, phaseName, body, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]), contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
@@ -615,7 +615,7 @@ namespace Sif.Framework.Providers
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
                 }
-                stateType state = service.CreateToState(id, phaseName, item, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                stateType state = service.CreateToState(id, phaseName, item, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 string uri = Url.Link("ServiceStatesRoute", new { controller = serviceName, id = id, phaseName = phaseName, stateId = state.id });
                 result = Request.CreateResponse<stateType>(HttpStatusCode.Created, state);
