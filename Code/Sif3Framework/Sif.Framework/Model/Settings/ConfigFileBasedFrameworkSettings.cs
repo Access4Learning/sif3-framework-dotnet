@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 using Sif.Framework.Model.Infrastructure;
 using System;
 using System.Configuration;
+using System.IO;
+using System.Reflection;
+using System.Web.Hosting;
 
 namespace Sif.Framework.Model.Settings
 {
@@ -44,11 +47,11 @@ namespace Sif.Framework.Model.Settings
 
                 try
                 {
-                    value = Boolean.Parse(setting.Value);
+                    value = bool.Parse(setting.Value);
                 }
                 catch (FormatException)
                 {
-                    string message = String.Format("The valid values for the {0} setting are \"true\" or \"false\". The value \"{1}\" is not valid.", setting.Key, setting.Value);
+                    string message = $"The valid values for the {setting.Key} setting are \"true\" or \"false\". The value \"{setting.Value}\" is not valid.";
                     throw new ConfigurationErrorsException(message);
                 }
 
@@ -73,11 +76,11 @@ namespace Sif.Framework.Model.Settings
 
                 try
                 {
-                    value = Int32.Parse(setting.Value);
+                    value = int.Parse(setting.Value);
                 }
                 catch (FormatException)
                 {
-                    string message = String.Format("The value \"{1}\" is not a valid integer for the {0} setting.", setting.Key, setting.Value);
+                    string message = $"The value \"{setting.Value}\" is not a valid integer for the {setting.Key} setting.";
                     throw new ConfigurationErrorsException(message);
                 }
 
@@ -120,7 +123,7 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         protected ConfigFileBasedFrameworkSettings()
         {
-            string configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.config");
+            string configurationFilePath = HostingEnvironment.MapPath("~/SifFramework.config");
 
             if (configurationFilePath == null)
             {
@@ -133,14 +136,21 @@ namespace Sif.Framework.Model.Settings
 
             if (!configuration.HasFile)
             {
-                string message = String.Format("Missing configuration file {0}.", configurationFilePath);
+                string fullPath = Assembly.GetExecutingAssembly().Location;
+                exeConfigurationFileMap.ExeConfigFilename = Path.GetDirectoryName(fullPath) + "\\SifFramework.config";
+                configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
+            }
+
+            if (!configuration.HasFile)
+            {
+                string message = $"Missing configuration file {configurationFilePath}.";
                 throw new ConfigurationErrorsException(message);
             }
 
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.ApplicationKey"/>
+        /// <see cref="IFrameworkSettings.ApplicationKey"/>
         /// </summary>
         public string ApplicationKey
         {
@@ -153,7 +163,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.AuthenticationMethod"/>
+        /// <see cref="IFrameworkSettings.AuthenticationMethod"/>
         /// </summary>
         public string AuthenticationMethod
         {
@@ -166,7 +176,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.CompressPayload"/>
+        /// <see cref="IFrameworkSettings.CompressPayload"/>
         /// </summary>
         public bool CompressPayload
         {
@@ -179,7 +189,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.ConsumerName"/>
+        /// <see cref="IFrameworkSettings.ConsumerName"/>
         /// </summary>
         public string ConsumerName
         {
@@ -192,7 +202,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.DataModelNamespace"/>
+        /// <see cref="IFrameworkSettings.DataModelNamespace"/>
         /// </summary>
         public string DataModelNamespace
         {
@@ -205,7 +215,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.InfrastructureNamespace"/>
+        /// <see cref="IFrameworkSettings.InfrastructureNamespace"/>
         /// </summary>
         public string InfrastructureNamespace
         {
@@ -218,7 +228,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.DeleteOnUnregister"/>
+        /// <see cref="IFrameworkSettings.DeleteOnUnregister"/>
         /// </summary>
         public bool DeleteOnUnregister
         {
@@ -231,7 +241,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EnvironmentType"/>
+        /// <see cref="IFrameworkSettings.EnvironmentType"/>
         /// </summary>
         public EnvironmentType EnvironmentType
         {
@@ -254,7 +264,7 @@ namespace Sif.Framework.Model.Settings
                     }
                     else
                     {
-                        string message = String.Format("The valid values for the {0} setting are \"BROKERED\" or \"DIRECT\". The value \"{1}\" is not valid.", setting.Key, setting.Value);
+                        string message = $"The valid values for the {setting.Key} setting are \"BROKERED\" or \"DIRECT\". The value \"{setting.Value}\" is not valid.";
                         throw new ConfigurationErrorsException(message);
                     }
 
@@ -266,7 +276,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.EnvironmentUrl"/>
+        /// <see cref="IFrameworkSettings.EnvironmentUrl"/>
         /// </summary>
         public string EnvironmentUrl
         {
@@ -279,7 +289,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.InstanceId"/>
+        /// <see cref="IFrameworkSettings.InstanceId"/>
         /// </summary>
         public string InstanceId
         {
@@ -292,7 +302,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.NavigationPageSize"/>
+        /// <see cref="IFrameworkSettings.NavigationPageSize"/>
         /// </summary>
         public int NavigationPageSize
         {
@@ -305,7 +315,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.SharedSecret"/>
+        /// <see cref="IFrameworkSettings.SharedSecret"/>
         /// </summary>
         public string SharedSecret
         {
@@ -318,7 +328,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.SolutionId"/>
+        /// <see cref="IFrameworkSettings.SolutionId"/>
         /// </summary>
         public string SolutionId
         {
@@ -331,7 +341,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.SupportedInfrastructureVersion"/>
+        /// <see cref="IFrameworkSettings.SupportedInfrastructureVersion"/>
         /// </summary>
         public string SupportedInfrastructureVersion
         {
@@ -344,7 +354,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Model.Settings.IFrameworkSettings.UserToken"/>
+        /// <see cref="IFrameworkSettings.UserToken"/>
         /// </summary>
         public string UserToken
         {
@@ -390,5 +400,7 @@ namespace Sif.Framework.Model.Settings
         {
             get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
         }
+
     }
+
 }
