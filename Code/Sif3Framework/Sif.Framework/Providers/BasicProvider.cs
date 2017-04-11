@@ -86,7 +86,7 @@ namespace Sif.Framework.Providers
 
                             if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                             {
-                                status.id = service.Create(obj, mustUseAdvisory, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0])).RefId;
+                                status.id = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                             else
@@ -106,7 +106,7 @@ namespace Sif.Framework.Providers
                             }
                             else
                             {
-                                status.id = service.Create(obj, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0])).RefId;
+                                status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
 
@@ -185,7 +185,7 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        service.Update(obj, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                        service.Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)

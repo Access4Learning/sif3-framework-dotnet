@@ -16,6 +16,7 @@
 
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
+using Sif.Framework.Model.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,18 +54,27 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Create a HTTP web request.
         /// </summary>
-        /// <param name="requestMethod"></param>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="navigationPage"></param>
-        /// <param name="navigationPageSize"></param>
-        /// <param name="methodOverride">Overrides the method header.</param>
+        /// <param name="requestMethod">Request method, e.g. GET.</param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="serviceType">Service type.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="methodOverride">Overrides the method of the request, e.g. to implement a GET with a payload over a POST request.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>HTTP web request.</returns>
+        private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod,
+            string url,
+            AuthorisationToken authorisationToken,
+            ServiceType? serviceType = null,
+            int? navigationPage = null,
+            int? navigationPageSize = null,
+            string methodOverride = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
@@ -78,6 +88,11 @@ namespace Sif.Framework.Utils
             {
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            }
+
+            if (serviceType.HasValue)
+            {
+                request.Headers.Add("serviceType", serviceType.Value.ToDescription());
             }
 
             if (navigationPage.HasValue)
@@ -114,20 +129,27 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Make a HTTP request without a payload.
         /// </summary>
-        /// <param name="requestMethod"></param>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="responseHeaders"></param>
-        /// <param name="navigationPage"></param>
-        /// <param name="navigationPageSize"></param>
+        /// <param name="requestMethod">Request method, e.g. GET.</param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="responseHeaders">Response headers returned.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response (with headers).</returns>
+        private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod,
+            string url,
+            AuthorisationToken authorisationToken,
+            out WebHeaderCollection responseHeaders,
+            int? navigationPage = null,
+            int? navigationPageSize = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, null, navigationPage, navigationPageSize, null, contentTypeOverride, acceptOverride);
 
             using (WebResponse response = request.GetResponse())
             {
@@ -150,19 +172,27 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Make a HTTP request without a payload.
         /// </summary>
-        /// <param name="requestMethod"></param>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="navigationPage"></param>
-        /// <param name="navigationPageSize"></param>
+        /// <param name="requestMethod">Request method, e.g. GET.</param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="serviceType">Service type.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        private static string RequestWithoutPayload(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        private static string RequestWithoutPayload(RequestMethod requestMethod,
+            string url,
+            AuthorisationToken authorisationToken,
+            ServiceType? serviceType = null,
+            int? navigationPage = null,
+            int? navigationPageSize = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, navigationPage: navigationPage, navigationPageSize: navigationPageSize, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, navigationPage, navigationPageSize, null, contentTypeOverride, acceptOverride);
 
             using (WebResponse response = request.GetResponse())
             {
@@ -184,19 +214,27 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Make a HTTP request with a payload.
         /// </summary>
-        /// <param name="requestMethod"></param>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="body"></param>
+        /// <param name="requestMethod">Request method, e.g. GET.</param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="body">The data payload to send.</param>
+        /// <param name="serviceType">Service type.</param>
         /// <param name="methodOverride">Overrides the method of the request, e.g. to implement a GET with a payload over a POST request.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        private static string RequestWithPayload(RequestMethod requestMethod, string url, AuthorisationToken authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        private static string RequestWithPayload(RequestMethod requestMethod,
+            string url,
+            AuthorisationToken authorisationToken,
+            string body,
+            ServiceType? serviceType = null,
+            string methodOverride = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, methodOverride: methodOverride, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -229,72 +267,96 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Make a DELETE request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="serviceType">Service type.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        public static string DeleteRequest(string url, AuthorisationToken authorisationToken, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        public static string DeleteRequest(string url,
+            AuthorisationToken authorisationToken,
+            ServiceType serviceType = ServiceType.OBJECT,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+            return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken, serviceType, null, null, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
-        /// 
+        /// Make a DELETE request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="body"></param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="body">The data payload to send.</param>
+        /// <param name="serviceType">Service type.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        public static string DeleteRequest(string url, AuthorisationToken authorisationToken, string body, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        public static string DeleteRequest(string url,
+            AuthorisationToken authorisationToken,
+            string body,
+            ServiceType serviceType = ServiceType.OBJECT,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body, contentTypeOverride, acceptOverride);
+            return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body, serviceType, null, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
-        /// 
+        /// Make a GET request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="responseHeaders"></param>
-        /// <param name="navigationPage"></param>
-        /// <param name="navigationPageSize"></param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="responseHeaders">Response headers returned.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        public static string GetRequestAndHeaders(string url, AuthorisationToken authorisationToken, out WebHeaderCollection responseHeaders, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response (with headers).</returns>
+        public static string GetRequestAndHeaders(string url,
+            AuthorisationToken authorisationToken,
+            out WebHeaderCollection responseHeaders,
+            int? navigationPage = null,
+            int? navigationPageSize = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
             return RequestAndHeadersWithoutPayload(RequestMethod.GET, url, authorisationToken, out responseHeaders, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
-        /// 
+        /// Make a HEAD request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="navigationPage"></param>
-        /// <param name="navigationPageSize"></param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="serviceType">Service type.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        public static string GetRequest(string url, AuthorisationToken authorisationToken, int? navigationPage = null, int? navigationPageSize = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        public static string GetRequest(string url,
+            AuthorisationToken authorisationToken,
+            ServiceType serviceType = ServiceType.OBJECT,
+            int? navigationPage = null,
+            int? navigationPageSize = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
+            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, serviceType, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
-        /// 
+        /// Make a HEAD request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <returns></returns>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <returns>Web response headers.</returns>
         public static WebHeaderCollection HeadRequest(string url, AuthorisationToken authorisationToken)
         {
-            HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, null, null, null, null);
+            HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken);
             WebHeaderCollection responseHeaders = new WebHeaderCollection();
 
             using (WebResponse response = request.GetResponse())
@@ -306,33 +368,47 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// 
+        /// Make a POST request.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="authorisationToken"></param>
-        /// <param name="body"></param>
-        /// <param name="methodOverride"></param>
+        /// <param name="url">Request endpoint.</param>
+        /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="body">The data payload to send.</param>
+        /// <param name="serviceType">Service type.</param>
+        /// <param name="methodOverride">The method that can be used to override the POST, e.g. to issue a GET with a payload.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        public static string PostRequest(string url, AuthorisationToken authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        public static string PostRequest(string url,
+            AuthorisationToken authorisationToken,
+            string body,
+            ServiceType serviceType = ServiceType.OBJECT,
+            string methodOverride = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, methodOverride, contentTypeOverride, acceptOverride);
+            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
-        /// Makes and sends a put request.
+        /// Make a PUT request.
         /// </summary>
-        /// <param name="url">Where to send the request.</param>
+        /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="body">The data payload to send.</param>
-        /// <param name="methodOverride">The method that can be used to override the PUT, e.g. to issue a GET with a payload.</param>
+        /// <param name="serviceType">Service type.</param>
+        /// <param name="methodOverride">The method that can be used to override the PUT, e.g. to issue a DELETE with a payload.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns></returns>
-        public static string PutRequest(string url, AuthorisationToken authorisationToken, string body, string methodOverride = null, string contentTypeOverride = null, string acceptOverride = null)
+        /// <returns>Response.</returns>
+        public static string PutRequest(string url,
+            AuthorisationToken authorisationToken,
+            string body,
+            ServiceType serviceType = ServiceType.OBJECT,
+            string methodOverride = null,
+            string contentTypeOverride = null,
+            string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, methodOverride, contentTypeOverride, acceptOverride);
+            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride);
         }
 
         /// <summary>
@@ -629,21 +705,21 @@ namespace Sif.Framework.Utils
         /// <summary>
         /// Build up a string of Matrix Parameters based upon the passed parameters.
         /// </summary>
-        /// <param name="zone">Zone associated with a request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with a request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>String of Matrix Parameters.</returns>
-        public static string MatrixParameters(string zone = null, string context = null)
+        public static string MatrixParameters(string zoneId = null, string contextId = null)
         {
             string matrixParameters = "";
 
-            if (!string.IsNullOrWhiteSpace(zone))
+            if (!string.IsNullOrWhiteSpace(zoneId))
             {
-                matrixParameters += ";zone=" + zone.Trim();
+                matrixParameters += ";zoneId=" + zoneId.Trim();
             }
 
-            if (!string.IsNullOrWhiteSpace(context))
+            if (!string.IsNullOrWhiteSpace(contextId))
             {
-                matrixParameters += ";context=" + context.Trim();
+                matrixParameters += ";contextId=" + contextId.Trim();
             }
 
             return matrixParameters;

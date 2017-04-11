@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             studentsCache = CreateStudents(10);
         }
 
-        public XStudent Create(XStudent obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
+        public XStudent Create(XStudent obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -65,12 +65,12 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return obj;
         }
 
-        public void Delete(string refId, string zone = null, string context = null)
+        public void Delete(string refId, string zoneId = null, string contextId = null)
         {
             studentsCache.Remove(refId);
         }
 
-        public XStudent Retrieve(string refId, string zone = null, string context = null)
+        public XStudent Retrieve(string refId, string zoneId = null, string contextId = null)
         {
             XStudent student;
 
@@ -82,7 +82,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return student;
         }
 
-        public List<XStudent> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<XStudent> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<XStudent> allStudents = new List<XStudent>();
             allStudents.AddRange(studentsCache.Values);
@@ -116,17 +116,17 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return retrievedStudents;
         }
 
-        public List<XStudent> Retrieve(XStudent obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<XStudent> Retrieve(XStudent obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<XStudent> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<XStudent> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(XStudent obj, string zone = null, string context = null)
+        public void Update(XStudent obj, string zoneId = null, string contextId = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))
@@ -136,5 +136,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             }
 
         }
+
     }
+
 }

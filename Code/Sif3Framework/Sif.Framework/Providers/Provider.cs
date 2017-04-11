@@ -113,7 +113,7 @@ namespace Sif.Framework.Providers
 
                     if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                     {
-                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
                         result = Created(uri, createdObject);
                     }
@@ -132,7 +132,7 @@ namespace Sif.Framework.Providers
                     }
                     else
                     {
-                        TSingle createdObject = service.Create(obj, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                        TSingle createdObject = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
                         result = Created(uri, createdObject);
                     }
@@ -188,7 +188,7 @@ namespace Sif.Framework.Providers
 
             bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
             MultipleCreateResponse multipleCreateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
             createResponseType createResponse = MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
             IHttpActionResult result = Ok(createResponse);
 
@@ -222,7 +222,7 @@ namespace Sif.Framework.Providers
 
             try
             {
-                TSingle obj = service.Retrieve(refId, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                TSingle obj = service.Retrieve(refId, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 if (obj == null)
                 {
@@ -508,7 +508,7 @@ namespace Sif.Framework.Providers
 
                 }
 
-                TMultiple objs = service.Retrieve(conditions, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                TMultiple objs = service.Retrieve(conditions, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
                 if (objs == null)
                 {
@@ -567,7 +567,7 @@ namespace Sif.Framework.Providers
 
             try
             {
-                service.Update(obj, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                service.Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -609,7 +609,7 @@ namespace Sif.Framework.Providers
             }
 
             MultipleUpdateResponse multipleUpdateResponse = 
-                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
             updateResponseType updateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
             IHttpActionResult result = Ok(updateResponse);
 
@@ -638,7 +638,7 @@ namespace Sif.Framework.Providers
 
             try
             {
-                service.Delete(refId, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                service.Delete(refId, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -692,7 +692,7 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        service.Delete(deleteId.id, zone: (zoneId == null ? null : zoneId[0]), context: (contextId == null ? null : contextId[0]));
+                        service.Delete(deleteId.id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)

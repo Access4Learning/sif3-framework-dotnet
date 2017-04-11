@@ -113,7 +113,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             studentsChangedCache.Add("ver.2", CreateStudents(3));
         }
 
-        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
+        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -122,7 +122,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return obj;
         }
 
-        public StudentPersonal Retrieve(string refId, string zone = null, string context = null)
+        public StudentPersonal Retrieve(string refId, string zoneId = null, string contextId = null)
         {
             StudentPersonal student;
 
@@ -134,11 +134,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return student;
         }
 
-        public List<StudentPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<StudentPersonal> retrievedStudents = new List<StudentPersonal>();
 
-            if ((zone == null && context == null) || ("Gov".Equals(zone) && "Curr".Equals(context)))
+            if ((zoneId == null && contextId == null) || ("Gov".Equals(zoneId) && "Curr".Equals(contextId)))
             {
                 List<StudentPersonal> allStudents = new List<StudentPersonal>();
                 allStudents.AddRange(studentsCache.Values);
@@ -173,7 +173,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return retrievedStudents;
         }
 
-        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<StudentPersonal> students = new List<StudentPersonal>();
 
@@ -190,7 +190,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return students;
         }
 
-        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<StudentPersonal> students = new List<StudentPersonal>();
             students.Add(CreateBartSimpson());
@@ -198,7 +198,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return students;
         }
 
-        public List<StudentPersonal> RetrieveChangesSince(string changesSinceMarker, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> RetrieveChangesSince(string changesSinceMarker, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
 
             if (string.IsNullOrEmpty(changesSinceMarker))
@@ -216,7 +216,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return new List<StudentPersonal>(students.Values);
         }
 
-        public void Update(StudentPersonal obj, string zone = null, string context = null)
+        public void Update(StudentPersonal obj, string zoneId = null, string contextId = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))
@@ -227,7 +227,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         }
 
-        public void Delete(string refId, string zone = null, string context = null)
+        public void Delete(string refId, string zoneId = null, string contextId = null)
         {
             studentsCache.Remove(refId);
         }
