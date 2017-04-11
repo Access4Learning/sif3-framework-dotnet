@@ -90,6 +90,7 @@
     <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
     <Compile Include="Model\Authentication\AuthorisationToken.cs" />
     <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
+    <Compile Include="Model\Infrastructure\Initialization.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />

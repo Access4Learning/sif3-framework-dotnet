@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +15,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 
 namespace Sif.Framework.Model.Infrastructure
 {
@@ -75,6 +74,11 @@ namespace Sif.Framework.Model.Infrastructure
         /// Collection of phase objects
         /// </summary>
         public virtual IDictionary<string, Phase> Phases { get; set; }
+
+        /// <summary>
+        /// Initialisation object associated with the job.
+        /// </summary>
+        public virtual Initialization Initialization { get; set; }
 
         /// <summary>
         /// Basic constructor that sets logical default values

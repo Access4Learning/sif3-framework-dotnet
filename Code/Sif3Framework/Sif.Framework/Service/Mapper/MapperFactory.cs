@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Responses;
 using Sif.Specification.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Xml;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -221,13 +220,15 @@ namespace Sif.Framework.Service.Mapper
             AutoMapper.Mapper.CreateMap<phaseType[], IDictionary<string, Phase>>()
                 .ConvertUsing<PhasesConverter>();
 
+            AutoMapper.Mapper.CreateMap<Initialization, initializationType>();
+            AutoMapper.Mapper.CreateMap<initializationType, Initialization>();
+
             AutoMapper.Mapper.CreateMap<Job, jobType>()
                 .ForMember(dest => dest.phases, opt => opt.MapFrom(src => src.Phases.Values))
                 .ForMember(dest => dest.createdSpecified, opt => opt.MapFrom(src => src.Created != null))
                 .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null))
                 .ForMember(dest => dest.stateSpecified, opt => opt.MapFrom(src => src.State != null))
-                .ForMember(dest => dest.timeout, opt => opt.MapFrom(src => XmlConvert.ToString(src.Timeout)))
-                .ForMember(dest => dest.initialization, opt => opt.Ignore());
+                .ForMember(dest => dest.timeout, opt => opt.MapFrom(src => XmlConvert.ToString(src.Timeout)));
             AutoMapper.Mapper.CreateMap<jobType, Job>()
                 .ForMember(dest => dest.Timeout, opt => opt.MapFrom(src => XmlConvert.ToTimeSpan(src.timeout)));
 
