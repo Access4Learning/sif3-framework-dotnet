@@ -18,15 +18,12 @@ The SIF3 Framework is a .NET framework that enables developers to efficiently im
 
 The framework includes a demo Solution that illustrates how to use it.
 
-    NOTE: This current release is a Beta version that should only be used for inspection and prototyping. It is still
-    a work in progress and not intended for commercial use as yet.
-
 ### Contributing to this framework
 
 See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
 
 * contributing to this framework 
-* the Java coding style to be used and
+* the coding style to be used and
 * the structure of the SIF 3 Framework repositories
 
 ###Download Instructions
@@ -304,3 +301,12 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fixed issue whereby SharedLibs/Sif.Framework 2.0.0 incorrectly contained version 3.0.0 of the framework.
 - Implemented message payload compression.
 - Implemented Changes Since mechanism.
+
+**Apr 11, 2017 - 3.2.0 Updated to SIF Infrastructure 3.2.0**
+
+- Fixed issue with incorrectly named matrix parameters (zone to zoneId, context to contextId).
+- Completed and fixed SIF_HMACSHA256 authentication implementation.
+- Updated the SIF Framework to use the latest version of the SIF Infrastructure (3.2.0).
+- Fixed a namespace issue with the implementation of the SIF AU Data Model (3.4.0).
+- Implemented the serviceType header (with a value of FUNCTIONAL) for Functional Service calls.
+- Updated the SIF Framework to look for the SifFramework.config file in the current path first and the application folder second.
