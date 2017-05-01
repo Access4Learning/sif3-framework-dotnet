@@ -42,10 +42,10 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="obj">Object to create.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Object created (TSingle).</returns>
-        IHttpActionResult Post(TSingle obj, string[] zone = null, string[] context = null);
+        IHttpActionResult Post(TSingle obj, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Create multiple objects.
@@ -58,10 +58,10 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to create.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object created (createResponseType).</returns>
-        IHttpActionResult Post(TMultiple obj, string[] zone = null, string[] context = null);
+        IHttpActionResult Post(TMultiple obj, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Retrieve a single object.
@@ -76,10 +76,10 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Object with that SIF identifier (TSingle).</returns>
-        IHttpActionResult Get(TPrimaryKey refId, string[] zone = null, string[] context = null);
+        IHttpActionResult Get(TPrimaryKey refId, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Retrieve all objects.
@@ -98,10 +98,10 @@ namespace Sif.Framework.Providers
         /// </summary>
         /// <param name="obj">Example object to base the query on.</param>
         /// <param name="changesSinceMarker">Changes Since marker.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>All objects, objects that match the properties of the example object or no objects (TMultiple).</returns>
-        IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, string[] zone = null, string[] context = null);
+        IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -125,10 +125,10 @@ namespace Sif.Framework.Providers
         /// <param name="id2">Identifier of associated object.</param>
         /// <param name="object3">Associated object.</param>
         /// <param name="id3">Identifier of associated object.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Objects that meet the associated object and identifier pairs (TMultiple).</returns>
-        IHttpActionResult Get(string object1, string id1, string object2 = null, string id2 = null, string object3 = null, string id3 = null, string[] zone = null, string[] context = null);
+        IHttpActionResult Get(string object1, string id1, string object2 = null, string id2 = null, string object3 = null, string id3 = null, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Update a single object.
@@ -143,10 +143,10 @@ namespace Sif.Framework.Providers
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
         /// <param name="obj">Object to update.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Result of the update request (void).</returns>
-        IHttpActionResult Put(TPrimaryKey refId, TSingle obj, string[] zone = null, string[] context = null);
+        IHttpActionResult Put(TPrimaryKey refId, TSingle obj, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Update multiple objects.
@@ -159,10 +159,10 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to update.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object updated (updateResponseType).</returns>
-        IHttpActionResult Put(TMultiple obj, string[] zone = null, string[] context = null);
+        IHttpActionResult Put(TMultiple obj, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Delete a single object.
@@ -176,10 +176,10 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Result of the delete request (void).</returns>
-        IHttpActionResult Delete(TPrimaryKey refId, string[] zone = null, string[] context = null);
+        IHttpActionResult Delete(TPrimaryKey refId, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Delete multiple objects.
@@ -192,10 +192,10 @@ namespace Sif.Framework.Providers
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
         /// <param name="deleteRequest">Request containing a collection of SIF identifiers of the objects to delete.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object deleted (deleteResponseType).</returns>
-        IHttpActionResult Delete(deleteRequestType deleteRequest, string[] zone = null, string[] context = null);
+        IHttpActionResult Delete(deleteRequestType deleteRequest, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// Retrieve the message headers associated with a call to retrieve all objects.
@@ -209,10 +209,10 @@ namespace Sif.Framework.Providers
         /// <para>413 - Failure, response too large</para>
         /// <para>500 - Failure, internal service error</para>
         /// </summary>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>No objects, just message header information (void).</returns>
-        IHttpActionResult Head(string[] zone = null, string[] context = null);
+        IHttpActionResult Head(string[] zoneId = null, string[] contextId = null);
 
     }
 

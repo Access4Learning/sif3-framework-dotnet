@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,23 @@ using System.Collections.Generic;
 namespace Sif.Framework.Service.Mapper
 {
 
+    /// <summary>
+    /// Unit test for the MapperFactory.
+    /// </summary>
     [TestClass]
     public class MapperFactoryTest
     {
 
+        /// <summary>
+        /// Mapper test between Environment and environmentType.
+        /// </summary>
         [TestMethod]
         public void EnvironmentRequestMapperTest()
         {
             Environment source = DataFactory.CreateEnvironmentRequest();
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);
+
+            // Assert that the mapping was successful.
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconURI, destination.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductName, destination.applicationInfo.adapterProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductVersion, destination.applicationInfo.adapterProduct.productVersion);
@@ -47,7 +55,7 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
             Assert.AreEqual(source.DefaultZone.Description, destination.defaultZone.description);
-            Assert.AreEqual(source.DefaultZone.Id.ToString(), destination.defaultZone.id);
+            Assert.AreEqual(source.DefaultZone.SifId, destination.defaultZone.id);
             Assert.AreEqual(source.InstanceId, destination.instanceId);
             Assert.AreEqual(source.SessionToken, destination.sessionToken);
             Assert.AreEqual(source.SolutionId, destination.solutionId);
@@ -56,11 +64,16 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.Id.ToString(), destination.id);
         }
 
+        /// <summary>
+        /// Mapper test between Environment and environmentType.
+        /// </summary>
         [TestMethod]
         public void EnvironmentResponseMapperTest()
         {
             Environment source = DataFactory.CreateEnvironmentResponse();
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);
+
+            // Assert that the mapping was successful.
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconURI, destination.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductName, destination.applicationInfo.adapterProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductVersion, destination.applicationInfo.adapterProduct.productVersion);
@@ -76,7 +89,7 @@ namespace Sif.Framework.Service.Mapper
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
             Assert.AreEqual(source.DefaultZone.Description, destination.defaultZone.description);
-            Assert.AreEqual(source.DefaultZone.Id.ToString(), destination.defaultZone.id);
+            Assert.AreEqual(source.DefaultZone.SifId, destination.defaultZone.id);
             Assert.AreEqual(source.Id.ToString(), destination.id);
             int index = 0;
 
@@ -116,19 +129,25 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
+        /// <summary>
+        /// Mapper test between response types.
+        /// </summary>
         [TestMethod]
         public void ExplicitResponseMapperTest()
         {
+
+            // Error.
             ResponseError srcError = new ResponseError { Code = 123, Description = "Err desc", Id = "42", Message = "Error occurred", Scope = "request" };
             errorType destError = MapperFactory.CreateInstance<ResponseError, errorType>(srcError);
 
-            //// Create.
+            // Create.
             CreateStatus srcCreateStatus = new CreateStatus { AdvisoryId = "src456", Error = srcError, Id = "cr8", StatusCode = "200" };
             createType destCreateStatus = MapperFactory.CreateInstance<CreateStatus, createType>(srcCreateStatus);
             MultipleCreateResponse srcCreateResponse = new MultipleCreateResponse { StatusRecords = new List<CreateStatus> { srcCreateStatus } };
             createResponseType destCreateResponse = MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(srcCreateResponse);
             int index = 0;
 
+            // Assert that the mapping was successful.
             foreach (CreateStatus record in srcCreateResponse.StatusRecords)
             {
                 Assert.AreEqual(record.AdvisoryId, destCreateResponse.creates[index].advisoryId);
@@ -149,6 +168,7 @@ namespace Sif.Framework.Service.Mapper
             deleteResponseType destDeleteResponse = MapperFactory.CreateInstance<MultipleDeleteResponse, deleteResponseType>(srcDeleteResponse);
             index = 0;
 
+            // Assert that the mapping was successful.
             foreach (DeleteStatus record in srcDeleteResponse.StatusRecords)
             {
                 Assert.AreEqual(record.Error.Code, destDeleteResponse.deletes[index].error.code);
@@ -168,6 +188,7 @@ namespace Sif.Framework.Service.Mapper
             updateResponseType destUpdateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(srcUpdateResponse);
             index = 0;
 
+            // Assert that the mapping was successful.
             foreach (UpdateStatus record in srcUpdateResponse.StatusRecords)
             {
                 Assert.AreEqual(record.Error.Code, destUpdateResponse.updates[index].error.code);

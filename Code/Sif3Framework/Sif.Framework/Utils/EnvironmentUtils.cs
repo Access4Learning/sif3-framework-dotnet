@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ namespace Sif.Framework.Utils
                 merged.ApplicationInfo = new ApplicationInfo();
             }
 
-            if (String.IsNullOrWhiteSpace(settings.ApplicationKey))
+            if (string.IsNullOrWhiteSpace(settings.ApplicationKey))
             {
                 throw new ConfigurationErrorsException("An applicationKey must be defined in the Provider Environment template.");
             }
@@ -53,22 +53,22 @@ namespace Sif.Framework.Utils
                 merged.ApplicationInfo.ApplicationKey = settings.ApplicationKey;
             }
 
-            if (!String.IsNullOrWhiteSpace(settings.AuthenticationMethod))
+            if (!string.IsNullOrWhiteSpace(settings.AuthenticationMethod))
             {
                 merged.AuthenticationMethod = settings.AuthenticationMethod;
             }
 
-            if (!String.IsNullOrWhiteSpace(settings.ConsumerName))
+            if (!string.IsNullOrWhiteSpace(settings.ConsumerName))
             {
                 merged.ConsumerName = settings.ConsumerName;
             }
 
-            if (!String.IsNullOrWhiteSpace(settings.DataModelNamespace))
+            if (!string.IsNullOrWhiteSpace(settings.DataModelNamespace))
             {
                 merged.ApplicationInfo.DataModelNamespace = settings.DataModelNamespace;
             }
 
-            if (!String.IsNullOrWhiteSpace(settings.SupportedInfrastructureVersion))
+            if (!string.IsNullOrWhiteSpace(settings.SupportedInfrastructureVersion))
             {
                 merged.ApplicationInfo.SupportedInfrastructureVersion = settings.SupportedInfrastructureVersion;
             }
@@ -102,32 +102,32 @@ namespace Sif.Framework.Utils
                 merged.ApplicationInfo = new ApplicationInfo();
             }
 
-            if (String.IsNullOrWhiteSpace(merged.ApplicationInfo.ApplicationKey) && settings.ApplicationKey != null)
+            if (string.IsNullOrWhiteSpace(merged.ApplicationInfo.ApplicationKey) && settings.ApplicationKey != null)
             {
                 merged.ApplicationInfo.ApplicationKey = settings.ApplicationKey;
             }
 
-            if (String.IsNullOrWhiteSpace(merged.ApplicationInfo.ApplicationKey))
+            if (string.IsNullOrWhiteSpace(merged.ApplicationInfo.ApplicationKey))
             {
                 throw new ArgumentException("An applicationKey must either be provided or defined in the Consumer Environment template.", "applicationKey");
             }
 
-            if (String.IsNullOrWhiteSpace(merged.AuthenticationMethod) && settings.AuthenticationMethod != null)
+            if (string.IsNullOrWhiteSpace(merged.AuthenticationMethod) && settings.AuthenticationMethod != null)
             {
                 merged.AuthenticationMethod = settings.AuthenticationMethod;
             }
 
-            if (String.IsNullOrWhiteSpace(merged.ConsumerName) && settings.ConsumerName != null)
+            if (string.IsNullOrWhiteSpace(merged.ConsumerName) && settings.ConsumerName != null)
             {
                 merged.ConsumerName = settings.ConsumerName;
             }
 
-            if (String.IsNullOrWhiteSpace(merged.ApplicationInfo.DataModelNamespace) && settings.DataModelNamespace != null)
+            if (string.IsNullOrWhiteSpace(merged.ApplicationInfo.DataModelNamespace) && settings.DataModelNamespace != null)
             {
                 merged.ApplicationInfo.DataModelNamespace = settings.DataModelNamespace;
             }
 
-            if (String.IsNullOrWhiteSpace(merged.ApplicationInfo.SupportedInfrastructureVersion) && settings.SupportedInfrastructureVersion != null)
+            if (string.IsNullOrWhiteSpace(merged.ApplicationInfo.SupportedInfrastructureVersion) && settings.SupportedInfrastructureVersion != null)
             {
                 merged.ApplicationInfo.SupportedInfrastructureVersion = settings.SupportedInfrastructureVersion;
             }
@@ -175,12 +175,12 @@ namespace Sif.Framework.Utils
             return environment.InfrastructureServices[name].Value;
         }
 
-        public static ProvisionedZone GetTargetZone(Environment environment, string zone = null)
+        public static ProvisionedZone GetTargetZone(Environment environment, string zoneId = null)
         {
             // Return the requested zone
-            if (StringUtils.NotEmpty(zone))
+            if (StringUtils.NotEmpty(zoneId))
             {
-                return environment.ProvisionedZones[zone];
+                return environment.ProvisionedZones[zoneId];
             }
 
             // No zone, so try getting the default zone

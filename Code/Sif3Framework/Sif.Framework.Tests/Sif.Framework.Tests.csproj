@@ -75,7 +75,7 @@
     <Compile Include="Service\Infrastructure\EnvironmentServiceTest.cs" />
     <Compile Include="Service\Mapper\MapperFactoryTest.cs" />
     <Compile Include="Utils\SerialisationUtilsTest.cs" />
-    <Compile Include="Utils\AuthenticationUtilsTest.cs" />
+    <Compile Include="Service\Authentication\AuthorisationTokenServiceTest.cs" />
     <Compile Include="Utils\SettingsManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>

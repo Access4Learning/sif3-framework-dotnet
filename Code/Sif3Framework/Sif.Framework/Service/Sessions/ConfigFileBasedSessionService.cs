@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 using Sif.Framework.Model.Settings;
 using System;
 using System.Configuration;
+using System.IO;
+using System.Reflection;
+using System.Web.Hosting;
 
 namespace Sif.Framework.Service.Sessions
 {
@@ -43,7 +46,7 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public ConfigFileBasedSessionService()
         {
-            string configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.config");
+            string configurationFilePath = HostingEnvironment.MapPath("~/SifFramework.config");
 
             if (configurationFilePath == null)
             {
@@ -56,14 +59,21 @@ namespace Sif.Framework.Service.Sessions
 
             if (!Configuration.HasFile)
             {
-                string message = String.Format("Missing configuration file {0}.", configurationFilePath);
+                string fullPath = Assembly.GetExecutingAssembly().Location;
+                exeConfigurationFileMap.ExeConfigFilename = Path.GetDirectoryName(fullPath) + "\\SifFramework.config";
+                Configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
+            }
+
+            if (!Configuration.HasFile)
+            {
+                string message = $"Missing configuration file {configurationFilePath}.";
                 throw new ConfigurationErrorsException(message);
             }
 
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ISessionService.HasSession(System.String, System.String, System.String, System.String)"/>
+        /// <see cref="ISessionService.HasSession(string, string, string, string)"/>
         /// </summary>
         public bool HasSession(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
         {
@@ -71,7 +81,7 @@ namespace Sif.Framework.Service.Sessions
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ISessionService.HasSession(System.String)"/>
+        /// <see cref="ISessionService.HasSession(string)"/>
         /// </summary>
         public bool HasSession(string sessionToken)
         {
@@ -79,7 +89,7 @@ namespace Sif.Framework.Service.Sessions
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ISessionService.RemoveSession(System.String)"/>
+        /// <see cref="ISessionService.RemoveSession(string)"/>
         /// </summary>
         public void RemoveSession(string sessionToken)
         {
@@ -94,7 +104,7 @@ namespace Sif.Framework.Service.Sessions
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ISessionService.RetrieveEnvironmentUrl(System.String, System.String, System.String, System.String)"/>
+        /// <see cref="ISessionService.RetrieveEnvironmentUrl(string, string, string, string)"/>
         /// </summary>
         public string RetrieveEnvironmentUrl(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
         {
@@ -103,10 +113,10 @@ namespace Sif.Framework.Service.Sessions
             foreach (SessionElement session in SessionsSection.Sessions)
             {
 
-                if (String.Equals(applicationKey, session.ApplicationKey) &&
-                    (solutionId == null ? String.IsNullOrWhiteSpace(session.SolutionId) : solutionId.Equals(session.SolutionId)) &&
-                    (userToken == null ? String.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
-                    (instanceId == null ? String.IsNullOrWhiteSpace(session.InstanceId) : instanceId.Equals(session.InstanceId)))
+                if (string.Equals(applicationKey, session.ApplicationKey) &&
+                    (solutionId == null ? string.IsNullOrWhiteSpace(session.SolutionId) : solutionId.Equals(session.SolutionId)) &&
+                    (userToken == null ? string.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
+                    (instanceId == null ? string.IsNullOrWhiteSpace(session.InstanceId) : instanceId.Equals(session.InstanceId)))
                 {
                     environmentUrl = session.EnvironmentUrl;
                     break;
@@ -118,7 +128,7 @@ namespace Sif.Framework.Service.Sessions
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ISessionService.RetrieveSessionToken(System.String, System.String, System.String, System.String)"/>
+        /// <see cref="ISessionService.RetrieveSessionToken(string, string, string, string)"/>
         /// </summary>
         public string RetrieveSessionToken(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
         {
@@ -127,10 +137,10 @@ namespace Sif.Framework.Service.Sessions
             foreach (SessionElement session in SessionsSection.Sessions)
             {
 
-                if (String.Equals(applicationKey, session.ApplicationKey) &&
-                    (solutionId == null ? String.IsNullOrWhiteSpace(session.SolutionId) : solutionId.Equals(session.SolutionId)) &&
-                    (userToken == null ? String.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
-                    (instanceId == null ? String.IsNullOrWhiteSpace(session.InstanceId) : instanceId.Equals(session.InstanceId)))
+                if (string.Equals(applicationKey, session.ApplicationKey) &&
+                    (solutionId == null ? string.IsNullOrWhiteSpace(session.SolutionId) : solutionId.Equals(session.SolutionId)) &&
+                    (userToken == null ? string.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
+                    (instanceId == null ? string.IsNullOrWhiteSpace(session.InstanceId) : instanceId.Equals(session.InstanceId)))
                 {
                     sessionToken = session.SessionToken;
                     break;
@@ -142,14 +152,14 @@ namespace Sif.Framework.Service.Sessions
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ISessionService.StoreSession(System.String, System.String, System.String, System.String, System.String, System.String)"/>
+        /// <see cref="ISessionService.StoreSession(string, string, string, string, string, string)"/>
         /// </summary>
         public void StoreSession(string applicationKey, string sessionToken, string environmentUrl, string solutionId = null, string userToken = null, string instanceId = null)
         {
 
             if (HasSession(applicationKey, solutionId, userToken, instanceId))
             {
-                string message = String.Format("Session with the following credentials already exists - [applicationKey={0}]{1}{2}{3}.",
+                string message = string.Format("Session with the following credentials already exists - [applicationKey={0}]{1}{2}{3}.",
                     applicationKey,
                     (solutionId == null ? "" : "[solutionId=" + solutionId + "]"),
                     (userToken == null ? "" : "[userToken=" + userToken + "]"),
@@ -159,7 +169,7 @@ namespace Sif.Framework.Service.Sessions
 
             if (HasSession(sessionToken))
             {
-                string message = String.Format("Session already exists with a session token of {0}.", sessionToken);
+                string message = string.Format("Session already exists with a session token of {0}.", sessionToken);
                 throw new ConfigurationErrorsException(message);
             }
 

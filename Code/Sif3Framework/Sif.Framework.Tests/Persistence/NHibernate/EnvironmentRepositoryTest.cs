@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,42 +17,68 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.Model.Infrastructure;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
 
+    /// <summary>
+    /// Unit test for EnvironmentRepository.
+    /// </summary>
     [TestClass]
     public class EnvironmentRepositoryTest
     {
+        private IEnvironmentRepository environmentRepository;
 
-        // Use ClassInitialize to run code before running the first test in the class
+        /// <summary>
+        /// Use ClassInitialize to run code before running the first test in the class.
+        /// </summary>
+        /// <param name="testContext">Context information for the unit test.</param>
         [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        public static void ClassInitialize(TestContext testContext)
         {
             DataFactory.CreateDatabase();
         }
 
-        // Use ClassCleanup to run code after all tests in a class have run
+        /// <summary>
+        /// Use ClassCleanup to run code after all tests in a class have run.
+        /// </summary>
         [ClassCleanup()]
-        public static void MyClassCleanup() { }
+        public static void ClassCleanup()
+        {
+        }
 
-        // Use TestInitialize to run code before running each test 
+        /// <summary>
+        /// Use TestInitialize to run code before running each test.
+        /// </summary>
         [TestInitialize()]
-        public void MyTestInitialize() { }
+        public void TestInitialize()
+        {
+            environmentRepository = new EnvironmentRepository();
+        }
 
-        // Use TestCleanup to run code after each test has run
+        /// <summary>
+        /// Use TestCleanup to run code after each test has run.
+        /// </summary>
         [TestCleanup()]
-        public void MyTestCleanup() { }
+        public void MyTestCleanup()
+        {
+        }
 
+        /// <summary>
+        /// Save a new Environment and then retreieve it.
+        /// </summary>
         [TestMethod]
         public void SaveAndRetrieve()
         {
+
+            // Save a new Environment and then retrieve it using it's identifier.
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            Guid environmentId = (new EnvironmentRepository()).Save(saved);
-            Environment retrieved = (new EnvironmentRepository()).Retrieve(environmentId);
+            Guid environmentId = environmentRepository.Save(saved);
+            Environment retrieved = environmentRepository.Retrieve(environmentId);
+
+            // Assert that the retrieved Environment matches the saved Environment.
             Assert.AreEqual(saved.Type, retrieved.Type);
             Assert.AreEqual(saved.AuthenticationMethod, retrieved.AuthenticationMethod);
             Assert.AreEqual(saved.ConsumerName, retrieved.ConsumerName);
@@ -61,24 +87,32 @@ namespace Sif.Framework.Persistence.NHibernate
             Assert.AreEqual(saved.ApplicationInfo.DataModelNamespace, retrieved.ApplicationInfo.DataModelNamespace);
         }
 
+        /// <summary>
+        /// Save a new Environment and then retreieve it using an example Environment instance.
+        /// </summary>
         [TestMethod]
         public void SaveAndRetrieveByExample()
         {
+
+            // Save a new Environment.
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            Guid environmentId = (new EnvironmentRepository()).Save(saved);
-            ApplicationInfo applicationInfo = new ApplicationInfo
-            {
-                ApplicationKey = "UnitTesting",            };
+            environmentRepository.Save(saved);
+
+            // Create an example Environment instance for use in the retrieve call.
+            ApplicationInfo applicationInfo = new ApplicationInfo { ApplicationKey = "UnitTesting" };
             Environment example = new Environment
             {
                 ApplicationInfo = applicationInfo,
-                InstanceId = "ThisInstance01",
-                SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
-                SolutionId = "auTestSolution",
-                UserToken = "UserToken01"
+                InstanceId = saved.InstanceId,
+                SessionToken = saved.SessionToken,
+                SolutionId = saved.SolutionId,
+                UserToken = saved.UserToken
             };
-            IEnumerable<Environment> environments = (new EnvironmentRepository()).Retrieve(example);
 
+            // Retrieve Environments based on the example Environment instance.
+            IEnumerable<Environment> environments = environmentRepository.Retrieve(example);
+
+            // Assert that the retrieved Environments match properties of the example Environment instance.
             foreach (Environment retrieved in environments)
             {
                 Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
@@ -91,24 +125,19 @@ namespace Sif.Framework.Persistence.NHibernate
 
         }
 
+        /// <summary>
+        /// Save a new Environment and then retreieve it using its session token.
+        /// </summary>
         [TestMethod]
         public void SaveAndRetrieveBySessionToken()
         {
+
+            // Save a new Environment and then retrieve it based on it's session token.
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            Guid environmentId = (new EnvironmentRepository()).Save(saved);
-            ApplicationInfo applicationInfo = new ApplicationInfo
-            {
-                ApplicationKey = "UnitTesting",
-            };
-            Environment example = new Environment
-            {
-                ApplicationInfo = applicationInfo,
-                InstanceId = "ThisInstance01",
-                SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
-                SolutionId = "auTestSolution",
-                UserToken = "UserToken01"
-            };
-            Environment retrieved = (new EnvironmentRepository()).RetrieveBySessionToken("2e5dd3ca282fc8ddb3d08dcacc407e8a");
+            environmentRepository.Save(saved);
+            Environment retrieved = environmentRepository.RetrieveBySessionToken(saved.SessionToken);
+
+            // Assert that the retrieved Environment matches the saved Environment.
             Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.ApplicationInfo.ApplicationKey);
             Assert.AreEqual(saved.InstanceId, retrieved.InstanceId);
             Assert.AreEqual(saved.SessionToken, retrieved.SessionToken);

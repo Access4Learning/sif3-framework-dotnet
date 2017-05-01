@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,29 +27,34 @@ namespace Sif.Framework.Service.Authentication
     {
 
         /// <summary>
-        /// Verify the authentication header.
+        /// Retrieve an environment by session token.
         /// </summary>
-        /// <param name="header">Authentication header.</param>
-        /// <returns>True if the authentication header is valid; false otherwise.</returns>
-        bool VerifyAuthenticationHeader(AuthenticationHeaderValue header);
+        /// <param name="sessionToken">Session token associated with the environment.</param>
+        /// <returns>Environment.</returns>
+        Environment GetEnvironmentBySessionToken(string sessionToken);
 
         /// <summary>
         /// Verify the authentication header.
         /// </summary>
-        /// <param name="header">Authentication header.</param>
+        /// <param name="headers">HTTP request headers.</param>
+        /// <returns>True if the authentication header is valid; false otherwise.</returns>
+        bool VerifyAuthenticationHeader(HttpRequestHeaders headers);
+
+        /// <summary>
+        /// Verify the authentication header.
+        /// </summary>
+        /// <param name="headers">HTTP request headers.</param>
         /// <param name="sessionToken">Session token associated with the authentication header.</param>
         /// <returns>True if the authentication header is valid; false otherwise.</returns>
-        bool VerifyAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken);
+        bool VerifyAuthenticationHeader(HttpRequestHeaders headers, out string sessionToken);
 
         /// <summary>
         /// Verify the initial authentication header.
         /// </summary>
-        /// <param name="header">Intial authentication header.</param>
+        /// <param name="headers">HTTP request headers.</param>
         /// <param name="sessionToken">Session token associated with the initial authentication header.</param>
         /// <returns>True if the initial authentication header is valid; false otherwise.</returns>
-        bool VerifyInitialAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken);
-
-        Environment GetEnvironmentBySessionToken(string sessionToken);
+        bool VerifyInitialAuthenticationHeader(HttpRequestHeaders headers, out string sessionToken);
 
     }
 

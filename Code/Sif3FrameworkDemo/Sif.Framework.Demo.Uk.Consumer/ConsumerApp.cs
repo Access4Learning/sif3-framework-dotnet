@@ -206,7 +206,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
                 // Retrieve all learners from zone "Gov" and context "Curr".
                 if (log.IsInfoEnabled) log.Info("*** Retrieve all learners from zone \"Gov\" and context \"Curr\".");
-                IEnumerable<LearnerPersonal> learners = learnerPersonalConsumer.Query(zone: "Gov", context: "Curr");
+                IEnumerable<LearnerPersonal> learners = learnerPersonalConsumer.Query(zoneId: "Gov", contextId: "Curr");
 
                 foreach (LearnerPersonal learner in learners)
                 {

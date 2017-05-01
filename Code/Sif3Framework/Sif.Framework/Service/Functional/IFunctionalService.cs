@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,27 +34,27 @@ namespace Sif.Framework.Service.Functional
         /// <summary>
         /// Handles a create message being sent to, and response from, the named phase on the job with the given RefId.
         /// </summary>
-        string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null);
+        string CreateToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null);
 
         /// <summary>
         /// Handles a Retrieve message being sent to, and response from, the named phase on the job with the given RefId.
         /// </summary>
-        string RetrieveToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null);
+        string RetrieveToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null);
 
         /// <summary>
         /// Handles a Update message being sent to, and response from, the named phase on the job with the given RefId.
         /// </summary>
-        string UpdateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null);
+        string UpdateToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null);
 
         /// <summary>
         /// Handles a Delete message being sent to, and response from, the named phase on the job with the given RefId.
         /// </summary>
-        string DeleteToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null);
+        string DeleteToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null);
 
         /// <summary>
         /// Handles creating a state on the named phase on the job with the given RefId.
         /// </summary>
-        stateType CreateToState(Guid id, string phaseName, stateType item = null, string zone = null, string context = null);
+        stateType CreateToState(Guid id, string phaseName, stateType item = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Checks if the job has the right name to be acceptable for this service.

@@ -86,6 +86,9 @@
   <ItemGroup>
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
+    <Compile Include="Model\Authentication\AuthorisationToken.cs" />
+    <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
@@ -155,8 +158,10 @@
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
     <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
+    <Compile Include="Service\Authentication\BasicAuthorisationTokenService.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
+    <Compile Include="Service\Authentication\HmacShaAuthorisationTokenService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
     <Compile Include="Service\Authentication\DirectAuthenticationService.cs" />
     <Compile Include="Model\Settings\ConsumerSection.cs" />
@@ -165,6 +170,7 @@
     <Compile Include="Model\Settings\ProviderSection.cs" />
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
+    <Compile Include="Service\Authentication\IAuthorisationTokenService.cs" />
     <Compile Include="Service\Functional\FunctionalService.cs" />
     <Compile Include="Service\Functional\PhaseActions.cs" />
     <Compile Include="Service\Functional\IPhaseActions.cs" />

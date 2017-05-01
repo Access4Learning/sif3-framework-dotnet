@@ -38,13 +38,13 @@ namespace Sif.Framework.Service.Providers
         /// <param name="changesSinceMarker">Changes Since marker.</param>
         /// <param name="pageIndex">Current paging index.</param>
         /// <param name="pageSize">Page size.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <exception cref="System.ArgumentException">One or more parameters are invalid.</exception>
         /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
-        TMultiple RetrieveChangesSince(string changesSinceMarker, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null);
+        TMultiple RetrieveChangesSince(string changesSinceMarker, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null);
 
     }
 

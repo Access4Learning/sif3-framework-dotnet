@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,17 +50,17 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
-        public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
 
-            if ((zone != null && zone.Length != 1) || (context != null && context.Length != 1))
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
             }
@@ -86,7 +86,7 @@ namespace Sif.Framework.Providers
 
                             if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                             {
-                                status.id = service.Create(obj, mustUseAdvisory, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0])).RefId;
+                                status.id = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                             else
@@ -106,7 +106,7 @@ namespace Sif.Framework.Providers
                             }
                             else
                             {
-                                status.id = service.Create(obj, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0])).RefId;
+                                status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
 
@@ -157,17 +157,17 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
-        public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
 
-            if ((zone != null && zone.Length != 1) || (context != null && context.Length != 1))
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
             }
@@ -185,7 +185,7 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        service.Update(obj, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+                        service.Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)

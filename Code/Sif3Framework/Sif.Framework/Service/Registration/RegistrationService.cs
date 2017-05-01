@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,10 @@
  */
 
 using log4net;
+using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
+using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Service.Sessions;
@@ -31,24 +33,25 @@ namespace Sif.Framework.Service.Registration
 {
 
     /// <summary>
-    /// <see cref="Sif.Framework.Service.Registration.IRegistrationService">IRegistrationService</see>
+    /// <see cref="IRegistrationService">IRegistrationService</see>
     /// </summary>
-    public class RegistrationService : IRegistrationService
+    class RegistrationService : IRegistrationService
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private IAuthorisationTokenService authorisationTokenService;
         private string environmentUrl;
         private ISessionService sessionService;
         private string sessionToken;
         private IFrameworkSettings settings;
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.AuthorisationToken">AuthorisationToken</see>
+        /// <see cref="IRegistrationService.AuthorisationToken">AuthorisationToken</see>
         /// </summary>
-        public string AuthorisationToken { get; private set; }
+        public AuthorisationToken AuthorisationToken { get; private set; }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Registered">Registered</see>
+        /// <see cref="IRegistrationService.Registered">Registered</see>
         /// </summary>
         public bool Registered { get; private set; }
 
@@ -86,10 +89,24 @@ namespace Sif.Framework.Service.Registration
         {
             this.settings = settings;
             this.sessionService = sessionService;
+
+            if (AuthenticationMethod.Basic.ToString().Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))
+            {
+                authorisationTokenService = new BasicAuthorisationTokenService();
+            }
+            else if (AuthenticationMethod.SIF_HMACSHA256.ToString().Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))
+            {
+                authorisationTokenService = new HmacShaAuthorisationTokenService();
+            }
+            else
+            {
+                authorisationTokenService = new BasicAuthorisationTokenService();
+            }
+
             Registered = false;
         }
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register()">Register</see>
+        /// <see cref="IRegistrationService.Register()">Register</see>
         /// </summary>
         public Environment Register()
         {
@@ -98,10 +115,11 @@ namespace Sif.Framework.Service.Registration
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Register(Sif.Framework.Model.Infrastructure.Environment)">Register</see>
+        /// <see cref="IRegistrationService.Register(ref Environment)">Register</see>
         /// </summary>
         public Environment Register(ref Environment environment)
         {
+
             if (Registered)
             {
                 return CurrentEnvironment;
@@ -112,7 +130,7 @@ namespace Sif.Framework.Service.Registration
                 if (log.IsDebugEnabled) log.Debug("Session token already exists for this object service (Consumer/Provider).");
 
                 string storedSessionToken = sessionService.RetrieveSessionToken(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
-                AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(storedSessionToken, settings.SharedSecret);
+                AuthorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
                 string storedEnvironmentUrl = sessionService.RetrieveEnvironmentUrl(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
                 string environmentXml = HttpUtils.GetRequest(storedEnvironmentUrl, AuthorisationToken);
 
@@ -129,7 +147,7 @@ namespace Sif.Framework.Service.Registration
 
                 if (!storedSessionToken.Equals(sessionToken) || !storedEnvironmentUrl.Equals(environmentUrl))
                 {
-                    AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(sessionToken, settings.SharedSecret);
+                    AuthorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
                     sessionService.RemoveSession(storedSessionToken);
                     sessionService.StoreSession(environmentResponse.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
                 }
@@ -140,7 +158,7 @@ namespace Sif.Framework.Service.Registration
             {
                 if (log.IsDebugEnabled) log.Debug("Session token does not exist for this object service (Consumer/Provider).");
 
-                string initialToken = AuthenticationUtils.GenerateBasicAuthorisationToken(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
+                AuthorisationToken initialToken = authorisationTokenService.Generate(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
                 environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
                 string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
                 string environmentXml = HttpUtils.PostRequest(settings.EnvironmentUrl, initialToken, body);
@@ -158,7 +176,7 @@ namespace Sif.Framework.Service.Registration
 
                     if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
 
-                    AuthorisationToken = AuthenticationUtils.GenerateBasicAuthorisationToken(sessionToken, settings.SharedSecret);
+                    AuthorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
                     sessionService.StoreSession(environment.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
                     environment = environmentResponse;
                 }
@@ -169,7 +187,7 @@ namespace Sif.Framework.Service.Registration
                     {
                         HttpUtils.DeleteRequest(environmentUrl, AuthorisationToken);
                     }
-                    else if (!String.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentXml)))
+                    else if (!string.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentXml)))
                     {
                         HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentXml), AuthorisationToken);
                     }
@@ -185,7 +203,7 @@ namespace Sif.Framework.Service.Registration
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Registration.IRegistrationService.Unregister(bool?)">Unregister</see>
+        /// <see cref="IRegistrationService.Unregister(bool?)">Unregister</see>
         /// </summary>
         public void Unregister(bool? deleteOnUnregister = null)
         {
