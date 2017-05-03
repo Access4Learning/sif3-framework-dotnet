@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<environment xmlns="http://www.sifassociation.org/infrastructure/3.2" type="DIRECT">
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2.1" type="DIRECT">
   <defaultZone id="defaultZone">
     <description>SIF3 demo consumer default zone</description>
   </defaultZone>

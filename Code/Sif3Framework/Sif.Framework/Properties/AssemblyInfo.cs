@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Sif.Framework")]
-[assembly: AssemblyDescription("Core library of the SIF3 Framework based on SIF Infrastructure 3.2.")]
+[assembly: AssemblyDescription("Core library of the SIF3 Framework based on SIF Infrastructure 3.2.1")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
 [assembly: AssemblyProduct("Sif.Framework")]
@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.2.0.0")]
-[assembly: AssemblyFileVersion("3.2.0.0")]
+[assembly: AssemblyVersion("3.2.1.0")]
+[assembly: AssemblyFileVersion("3.2.1.0")]
 
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]

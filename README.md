@@ -302,7 +302,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Implemented message payload compression.
 - Implemented Changes Since mechanism.
 
-**Apr 11, 2017 - 3.2.0 Updated to SIF Infrastructure 3.2.0**
+**Apr 30, 2017 - 3.2.0 Updated to SIF Infrastructure 3.2.0**
 
 - Fixed issue with incorrectly named matrix parameters (zone to zoneId, context to contextId).
 - Completed and fixed SIF_HMACSHA256 authentication implementation.
@@ -310,3 +310,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fixed a namespace issue with the implementation of the SIF AU Data Model (3.4.0).
 - Implemented the serviceType header (with a value of FUNCTIONAL) for Functional Service calls.
 - Updated the SIF Framework to look for the SifFramework.config file in the current path first and the application folder second.
+
+**May 03, 2017 - 3.2.1 Updated to SIF Infrastructure 3.2.1, AU Data Model 3.4.1**
+
+- Updated the SIF Framework to use the latest version of the SIF Infrastructure (3.2.1).
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model (3.4.1).
+- Implemented the Initialization object for Functional Service Jobs.
