@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ using System.Xml.Serialization;
 namespace Sif.Framework.Demo.Hits.Consumer.Models
 {
 
-    [XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/au/datamodel/3.4", IsNullable = false)]
-    [XmlType(Namespace = "http://www.sifassociation.org/au/datamodel/3.4")]
+    [XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
     public class SchoolInfo : SchoolInfoType, IDataModel
     {
     }

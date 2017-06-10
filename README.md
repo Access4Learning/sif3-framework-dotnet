@@ -316,3 +316,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated the SIF Framework to use the latest version of the SIF Infrastructure (3.2.1).
 - Updated the SIF Framework to use the latest version of the SIF AU Data Model (3.4.1).
 - Implemented the Initialization object for Functional Service Jobs.
+
+**June 10, 2017 - 3.2.1.1 Applied updates to AU Data Model 3.4.1**
+
+- Updated the SIF Framework to use the officially approved version of the SIF AU Data Model (3.4.1).
+- Fixed namespace issues with SIF AU Data Model usage in the demo projects.
+- Updated the "Connecting Consumers to HITS" document to reflect recent updates to the HITS Dashboard and its usage.
