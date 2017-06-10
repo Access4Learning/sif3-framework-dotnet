@@ -1,7 +1,7 @@
 <!--
-		SIF Implementation Specification (Australia) 3.4.1 Draft (March 16, 2017) Infrastructure Version: v3
+		SIF Implementation Specification (Australia) 3.4.1 (April 27, 2017) Infrastructure Version: v3
 	-->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sifassociation.org/datamodel/au/3.4.1" targetNamespace="http://www.sifassociation.org/datamodel/au/3.4.1" elementFormDefault="qualified"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sifassociation.org/datamodel/au/3.4" targetNamespace="http://www.sifassociation.org/datamodel/au/3.4" elementFormDefault="qualified" version="3.4.1"
 >
   <!--SIFAU-->
 
@@ -2864,6 +2864,7 @@
       <xs:enumeration value="SL" />
       <xs:enumeration value="SP" />
       <xs:enumeration value="TE" />
+      <xs:enumeration value="Unknown" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsNAPTestTypeType">

@@ -20,8 +20,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SchoolInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SchoolInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SchoolInfoType {
         
         private string localIdField;
@@ -806,7 +806,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class OtherIdType {
         
         private string typeField;
@@ -841,7 +841,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ReportDataObjectType {
         
         private System.Xml.XmlElement[] anyField;
@@ -863,7 +863,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ObjectType {
         
         private System.Xml.XmlElement[] anyField;
@@ -885,7 +885,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AlternateIdentificationCodesType {
         
         private object alternateIdentificationCodesField;
@@ -920,7 +920,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class CodeFrameTestItemType {
         
         private string testItemRefIdField;
@@ -967,7 +967,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestItemContentType {
         
         private string nAPTestItemLocalIdField;
@@ -1411,7 +1411,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPTestItemTypeType {
         
         /// <remarks/>
@@ -1467,12 +1467,15 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         TE,
+        
+        /// <remarks/>
+        Unknown,
     }
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPWritingGenreType {
         
         /// <remarks/>
@@ -1485,7 +1488,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPTestItemMarkingTypeType {
         
         /// <remarks/>
@@ -1503,7 +1506,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SubstituteItemType {
         
         private string substituteItemRefIdField;
@@ -1549,7 +1552,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsPNPCodeType {
         
         /// <remarks/>
@@ -1606,7 +1609,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StimulusType {
         
         private string stimulusLocalIdField;
@@ -1693,7 +1696,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPWritingRubricType {
         
         private string rubricTypeField;
@@ -1741,7 +1744,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ScoreType {
         
         private decimal maxScoreValueField;
@@ -1788,7 +1791,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ScoreDescriptionType {
         
         private decimal scoreValueField;
@@ -1835,7 +1838,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestletCodeFrameType {
         
         private string nAPTestletRefIdField;
@@ -1882,7 +1885,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestletContentType {
         
         private string nAPTestletLocalIdField;
@@ -1968,7 +1971,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPSubscoreType {
         
         private string subscoreTypeField;
@@ -2015,7 +2018,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestletResponseItemType {
         
         private string nAPTestItemRefIdField;
@@ -2177,7 +2180,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPResponseCorrectnessType {
         
         /// <remarks/>
@@ -2198,7 +2201,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestletResponseType {
         
         private string nAPTestletRefIdField;
@@ -2271,7 +2274,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DomainScoreType {
         
         private decimal rawScoreField;
@@ -2444,7 +2447,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestItem2Type {
         
         private string testItemRefIdField;
@@ -2492,7 +2495,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DomainProficiencyContainerType {
         
         private decimal level1LowerField;
@@ -2701,7 +2704,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DomainBandsContainerType {
         
         private decimal band1LowerField;
@@ -3210,7 +3213,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestContentType {
         
         private string nAPTestLocalIdField;
@@ -3369,7 +3372,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class YearLevelType {
         
         private AUCodeSetsYearLevelCodeType codeField;
@@ -3401,7 +3404,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsYearLevelCodeType {
         
         /// <remarks/>
@@ -3504,7 +3507,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPTestTypeType {
         
         /// <remarks/>
@@ -3517,7 +3520,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPTestDomainType {
         
         /// <remarks/>
@@ -3542,7 +3545,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AdjustmentContainerType {
         
         private AUCodeSetsPNPCodeType[] pNPCodeListField;
@@ -3577,7 +3580,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TestDisruptionType {
         
         private string eventField;
@@ -3599,7 +3602,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AttendanceTimeType {
         
         private AttendanceCodeType attendanceCodeField;
@@ -3736,7 +3739,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AttendanceCodeType {
         
         private AUCodeSetsAttendanceCodeType codeField;
@@ -3782,7 +3785,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAttendanceCodeType {
         
         /// <remarks/>
@@ -4046,7 +4049,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class OtherCodeListTypeOtherCode {
         
         private OtherCodeListTypeOtherCodeCodeset codesetField;
@@ -4079,7 +4082,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum OtherCodeListTypeOtherCodeCodeset {
         
         /// <remarks/>
@@ -4098,7 +4101,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAttendanceStatusType {
         
         /// <remarks/>
@@ -4125,7 +4128,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ExpenseAccountType {
         
         private string accountCodeField;
@@ -4186,7 +4189,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class MonetaryAmountType {
         
         private ISO4217CurrencyNamesAndCodeElementsType currencyField;
@@ -4232,7 +4235,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ISO4217CurrencyNamesAndCodeElementsType {
         
         /// <remarks/>
@@ -4778,7 +4781,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DebitOrCreditAmountType : MonetaryAmountType {
         
         private DebitOrCreditAmountTypeType typeField;
@@ -4798,7 +4801,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum DebitOrCreditAmountTypeType {
         
         /// <remarks/>
@@ -4813,7 +4816,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ExpenseAccountsType {
         
         private object expenseAccountTypeField;
@@ -4848,7 +4851,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PurchasingItemType {
         
         private object[] purchasingItemField;
@@ -5011,7 +5014,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsYesOrNoCategoryType {
         
         /// <remarks/>
@@ -5035,7 +5038,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ScheduledActivityOverrideType {
         
         private System.DateTime dateOfOverrideField;
@@ -5083,7 +5086,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ActivityTimeType {
         
         private System.DateTime creationDateField;
@@ -5209,7 +5212,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ActivityTimeTypeDuration {
         
         private ActivityTimeTypeDurationUnits unitsField;
@@ -5242,7 +5245,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ActivityTimeTypeDurationUnits {
         
         /// <remarks/>
@@ -5266,7 +5269,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SoftwareRequirementType {
         
         private string softwareTitleField;
@@ -5326,7 +5329,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TechnicalRequirementsType {
         
         private string technicalRequirementField;
@@ -5348,7 +5351,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SchoolCourseInfoOverrideType {
         
         private string courseCodeField;
@@ -5461,7 +5464,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SubjectAreaType {
         
         private string codeField;
@@ -5495,7 +5498,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SchoolCourseInfoOverrideTypeOverride {
         
         /// <remarks/>
@@ -5510,7 +5513,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LocationOfInstructionType {
         
         private AUCodeSetsReceivingLocationOfInstructionType codeField;
@@ -5556,7 +5559,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsReceivingLocationOfInstructionType {
         
         /// <remarks/>
@@ -5608,7 +5611,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LanguageOfInstructionType {
         
         private AUCodeSetsAustralianStandardClassificationOfLanguagesASCLType codeField;
@@ -5654,7 +5657,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAustralianStandardClassificationOfLanguagesASCLType {
         
         /// <remarks/>
@@ -7679,7 +7682,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class MediumOfInstructionType {
         
         private AUCodeSetsMediumOfInstructionType codeField;
@@ -7725,7 +7728,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsMediumOfInstructionType {
         
         /// <remarks/>
@@ -7769,7 +7772,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SchoolProgramType {
         
         private string categoryField;
@@ -7818,7 +7821,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentActivityType {
         
         private AUCodeSetsActivityInvolvementCodeType codeField;
@@ -7864,7 +7867,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsActivityInvolvementCodeType {
         
         /// <remarks/>
@@ -9068,7 +9071,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ContactFlagsType {
         
         private System.Nullable<AUCodeSetsYesOrNoCategoryType> parentLegalGuardianField;
@@ -9415,7 +9418,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class RelationshipType {
         
         private AUCodeSetsRelationshipToStudentType codeField;
@@ -9461,7 +9464,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsRelationshipToStudentType {
         
         /// <remarks/>
@@ -9533,7 +9536,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LEAContactType {
         
         private System.Nullable<AUCodeSetsYesOrNoCategoryType> publishInDirectoryField;
@@ -9580,7 +9583,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ContactInfoType {
         
         private NameType nameField;
@@ -9668,7 +9671,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NameType : BaseNameType {
         
         private AUCodeSetsNameUsageTypeType typeField;
@@ -9688,7 +9691,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNameUsageTypeType {
         
         /// <remarks/>
@@ -9733,7 +9736,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class BaseNameType {
         
         private string titleField;
@@ -9898,7 +9901,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class OtherNameType : BaseNameType {
         
         private AUCodeSetsNameUsageTypeType typeField;
@@ -9920,7 +9923,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NameOfRecordType : BaseNameType {
         
         private NameOfRecordTypeType typeField;
@@ -9940,7 +9943,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum NameOfRecordTypeType {
         
         /// <remarks/>
@@ -9952,7 +9955,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AddressType {
         
         private System.Nullable<System.DateTime> effectiveFromDateField;
@@ -10208,7 +10211,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AddressStreetType {
         
         private string line1Field;
@@ -10384,7 +10387,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum CountryType {
         
         /// <remarks/>
@@ -11761,7 +11764,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class GridLocationType {
         
         private decimal latitudeField;
@@ -11820,7 +11823,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class MapReferenceType {
         
         private string xCoordinateField;
@@ -11868,7 +11871,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StatisticalAreaType {
         
         private StatisticalAreaTypeSpatialUnitType spatialUnitTypeField;
@@ -11901,7 +11904,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StatisticalAreaTypeSpatialUnitType {
         
         /// <remarks/>
@@ -11945,7 +11948,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAddressTypeType {
         
         /// <remarks/>
@@ -11991,7 +11994,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAddressRoleType {
         
         /// <remarks/>
@@ -12039,7 +12042,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class EmailType {
         
         private AUCodeSetsEmailTypeType typeField;
@@ -12072,7 +12075,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsEmailTypeType {
         
         /// <remarks/>
@@ -12112,7 +12115,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PhoneNumberType {
         
         private string numberField;
@@ -12210,7 +12213,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsTelephoneNumberTypeType {
         
         /// <remarks/>
@@ -12286,7 +12289,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AgencyType {
         
         private AUCodeSetsEducationAgencyTypeType codeField;
@@ -12332,7 +12335,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsEducationAgencyTypeType {
         
         /// <remarks/>
@@ -12360,7 +12363,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TeacherCoverType {
         
         private string staffPersonalRefIdField;
@@ -12523,7 +12526,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsTeacherCoverCreditType {
         
         /// <remarks/>
@@ -12546,7 +12549,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsTeacherCoverSupervisionType {
         
         /// <remarks/>
@@ -12567,7 +12570,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TeachingGroupPeriodType {
         
         private string timeTableCellRefIdField;
@@ -12680,7 +12683,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TeachingGroupTeacherType {
         
         private string staffPersonalRefIdField;
@@ -12741,7 +12744,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TeachingGroupStudentType {
         
         private string studentPersonalRefIdField;
@@ -12789,7 +12792,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TimeTablePeriodType {
         
         private string periodIdField;
@@ -12978,7 +12981,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum TimeTablePeriodTypeBellPeriod {
         
         /// <remarks/>
@@ -12991,7 +12994,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum TimeTablePeriodTypeRegularSchoolPeriod {
         
         /// <remarks/>
@@ -13004,7 +13007,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum TimeTablePeriodTypeUseInAttendanceCalculations {
         
         /// <remarks/>
@@ -13019,7 +13022,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TimeTableDayType {
         
         private string dayIdField;
@@ -13067,7 +13070,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class YearRangeType {
         
         private YearLevelType startField;
@@ -13102,7 +13105,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentPackageType {
         
         private object itemField;
@@ -13140,7 +13143,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentPackageTypeBinaryData {
         
         private string mIMETypeField;
@@ -13201,7 +13204,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentPackageTypeReference {
         
         private string uRLField;
@@ -13249,7 +13252,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentPackageTypeTextData {
         
         private string mIMETypeField;
@@ -13310,7 +13313,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentPackageTypeXMLData {
         
         private System.Xml.XmlElement anyField;
@@ -13345,7 +13348,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ReportPackageType : AbstractContentPackageType {
     }
     
@@ -13354,7 +13357,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ComponentType {
         
         private string nameField;
@@ -13429,7 +13432,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AssociatedObjectsTypeAssociatedObject {
         
         private string sIF_RefObjectField;
@@ -13464,7 +13467,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class EvaluationType {
         
         private string descriptionField;
@@ -13538,7 +13541,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ApprovalType {
         
         private string organizationField;
@@ -13586,7 +13589,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ContactType {
         
         private NameType nameField;
@@ -13647,7 +13650,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ResourcesType {
         
         private ResourcesTypeResourceType resourceTypeField;
@@ -13680,7 +13683,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ResourcesTypeResourceType {
         
         /// <remarks/>
@@ -13701,7 +13704,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ACStrandSubjectAreaType {
         
         private AUCodeSetsACStrandType aCStrandField;
@@ -13746,7 +13749,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsACStrandType {
         
         /// <remarks/>
@@ -13803,7 +13806,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentElementType {
         
         private object itemField;
@@ -13828,7 +13831,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentElementTypeBinaryData {
         
         private string mIMETypeField;
@@ -13889,7 +13892,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentElementTypeReference {
         
         private string uRLField;
@@ -13937,7 +13940,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentElementTypeTextData {
         
         private string mIMETypeField;
@@ -13998,7 +14001,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AbstractContentElementTypeXMLData {
         
         private System.Xml.XmlElement anyField;
@@ -14033,7 +14036,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class CreationUserType {
         
         private string userIdField;
@@ -14066,7 +14069,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum CreationUserTypeType {
         
         /// <remarks/>
@@ -14095,7 +14098,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AuditInfoType {
         
         private CreationUserType creationUserField;
@@ -14141,7 +14144,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AttendanceInfoType {
         
         private AttendanceInfoTypeCountsTowardAttendance countsTowardAttendanceField;
@@ -14198,7 +14201,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AttendanceInfoTypeCountsTowardAttendance {
         
         /// <remarks/>
@@ -14213,7 +14216,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class CalendarDateInfoType {
         
         private AUCodeSetsCalendarEventType codeField;
@@ -14259,7 +14262,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsCalendarEventType {
         
         /// <remarks/>
@@ -14301,7 +14304,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ProgramAvailabilityType {
         
         private AUCodeSets0211ProgramAvailabilityType codeField;
@@ -14347,7 +14350,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSets0211ProgramAvailabilityType {
         
         /// <remarks/>
@@ -14395,7 +14398,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ProgramStatusType {
         
         private ProgramStatusTypeCode codeField;
@@ -14441,7 +14444,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ProgramStatusTypeCode {
         
         /// <remarks/>
@@ -14472,7 +14475,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ReferralSourceType {
         
         private AUCodeSets0792IdentificationProcedureType codeField;
@@ -14518,7 +14521,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSets0792IdentificationProcedureType {
         
         /// <remarks/>
@@ -14558,7 +14561,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ProgramFundingSourceType {
         
         private AUCodeSetsProgramFundingSourceCodeType codeField;
@@ -14604,7 +14607,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsProgramFundingSourceCodeType {
         
         /// <remarks/>
@@ -14640,7 +14643,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentSubjectChoiceType {
         
         private System.Nullable<uint> preferenceNumberField;
@@ -14714,7 +14717,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PromotionInfoType {
         
         private System.Nullable<PromotionInfoTypePromotionStatus> promotionStatusField;
@@ -14747,7 +14750,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum PromotionInfoTypePromotionStatus {
         
         /// <remarks/>
@@ -14768,7 +14771,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class CatchmentStatusContainerType {
         
         private AUCodeSetsPublicSchoolCatchmentStatusType codeField;
@@ -14814,7 +14817,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsPublicSchoolCatchmentStatusType {
         
         /// <remarks/>
@@ -14838,7 +14841,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentExitContainerType {
         
         private AUCodeSetsExitWithdrawalTypeType codeField;
@@ -14884,7 +14887,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsExitWithdrawalTypeType {
         
         /// <remarks/>
@@ -15028,7 +15031,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentExitStatusContainerType {
         
         private AUCodeSetsExitWithdrawalStatusType codeField;
@@ -15074,7 +15077,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsExitWithdrawalStatusType {
         
         /// <remarks/>
@@ -15098,7 +15101,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentEntryContainerType {
         
         private AUCodeSetsEntryTypeType codeField;
@@ -15144,7 +15147,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsEntryTypeType {
         
         /// <remarks/>
@@ -15240,7 +15243,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentMostRecentContainerType {
         
         private string schoolLocalIdField;
@@ -15662,7 +15665,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsEmploymentTypeType {
         
         /// <remarks/>
@@ -15696,7 +15699,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolEducationLevelTypeType {
         
         /// <remarks/>
@@ -15726,7 +15729,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNonSchoolEducationType {
         
         /// <remarks/>
@@ -15756,7 +15759,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolEnrollmentTypeType {
         
         /// <remarks/>
@@ -15778,7 +15781,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsFFPOSStatusCodeType {
         
         /// <remarks/>
@@ -15802,7 +15805,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class MedicalAlertMessageType {
         
         private MedicalAlertMessageTypeSeverity severityField;
@@ -15835,7 +15838,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum MedicalAlertMessageTypeSeverity {
         
         /// <remarks/>
@@ -15859,7 +15862,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AlertMessageType {
         
         private AlertMessageTypeType typeField;
@@ -15892,7 +15895,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AlertMessageTypeType {
         
         /// <remarks/>
@@ -15913,7 +15916,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StaffMostRecentContainerType {
         
         private string schoolLocalIdField;
@@ -15988,7 +15991,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class HouseholdContactInfoType {
         
         private uint preferenceNumberField;
@@ -16090,7 +16093,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class VisaSubClassType {
         
         private string codeField;
@@ -16202,7 +16205,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ReligiousEventType {
         
         private string typeField;
@@ -16250,7 +16253,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ReligionType {
         
         private AUCodeSetsAustralianStandardClassificationOfReligiousGroupsASCRGType codeField;
@@ -16296,7 +16299,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAustralianStandardClassificationOfReligiousGroupsASCRGType {
         
         /// <remarks/>
@@ -16856,7 +16859,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DwellingArrangementType {
         
         private AUCodeSetsDwellingArrangementType codeField;
@@ -16902,7 +16905,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsDwellingArrangementType {
         
         /// <remarks/>
@@ -16990,7 +16993,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LanguageBaseType {
         
         private AUCodeSetsAustralianStandardClassificationOfLanguagesASCLType codeField;
@@ -17075,7 +17078,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsLanguageTypeType {
         
         /// <remarks/>
@@ -17115,7 +17118,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class EnglishProficiencyType {
         
         private AUCodeSetsEnglishProficiencyType codeField;
@@ -17161,7 +17164,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsEnglishProficiencyType {
         
         /// <remarks/>
@@ -17197,7 +17200,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DemographicsType {
         
         private System.Nullable<AUCodeSetsIndigenousStatusType> indigenousStatusField;
@@ -17742,7 +17745,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsIndigenousStatusType {
         
         /// <remarks/>
@@ -17772,7 +17775,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSexCodeType {
         
         /// <remarks/>
@@ -17798,7 +17801,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsBirthdateVerificationType {
         
         /// <remarks/>
@@ -17858,7 +17861,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAustralianCitizenshipStatusType {
         
         /// <remarks/>
@@ -17895,7 +17898,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsPermanentResidentStatusType {
         
         /// <remarks/>
@@ -17918,7 +17921,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsImmunisationCertificateStatusType {
         
         /// <remarks/>
@@ -17937,7 +17940,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAustralianStandardClassificationOfCulturalAndEthnicGroupsASCCEGType {
         
         /// <remarks/>
@@ -19224,7 +19227,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsMaritalStatusAIHWType {
         
         /// <remarks/>
@@ -19260,7 +19263,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PersonInfoType {
         
         private NameOfRecordType nameField;
@@ -19364,7 +19367,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ElectronicIdType {
         
         private AUCodeSetsElectronicIdTypeType typeField;
@@ -19397,7 +19400,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsElectronicIdTypeType {
         
         /// <remarks/>
@@ -19425,7 +19428,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StaffActivityExtensionType {
         
         private AUCodeSetsStaffActivityType codeField;
@@ -19471,7 +19474,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsStaffActivityType {
         
         /// <remarks/>
@@ -20235,7 +20238,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StaffSubjectType {
         
         private uint preferenceNumberField;
@@ -20295,7 +20298,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LocationType {
         
         private string locationNameField;
@@ -20356,7 +20359,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LocationTypeLocationRefId {
         
         private LocationTypeLocationRefIdSIF_RefObject sIF_RefObjectField;
@@ -20389,7 +20392,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum LocationTypeLocationRefIdSIF_RefObject {
         
         /// <remarks/>
@@ -20405,7 +20408,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum LocationTypeType {
         
         /// <remarks/>
@@ -20441,7 +20444,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ExclusionRuleType {
         
         private ExclusionRuleTypeType typeField;
@@ -20474,7 +20477,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ExclusionRuleTypeType {
         
         /// <remarks/>
@@ -20489,7 +20492,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ExtendedContentType {
         
         private string[] textField;
@@ -20511,7 +20514,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class EducationFilterType {
         
         private string[] learningStandardItemsField;
@@ -20534,7 +20537,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LifeCycleType {
         
         private LifeCycleTypeCreated createdField;
@@ -20584,7 +20587,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LifeCycleTypeCreated {
         
         private System.DateTime dateTimeField;
@@ -20632,7 +20635,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LifeCycleTypeCreatedCreator {
         
         private string nameField;
@@ -20667,7 +20670,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LifeCycleTypeModified {
         
         private string byField;
@@ -20727,7 +20730,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TimeElementType {
         
         private string typeField;
@@ -20879,7 +20882,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TimeElementTypeSpanGap {
         
         private string typeField;
@@ -20992,7 +20995,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SIF_MetadataType {
         
         private TimeElementType[] timeElementsField;
@@ -21041,7 +21044,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class TotalEnrollmentsType {
         
         private string girlsField;
@@ -21089,7 +21092,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class YearLevelEnrollmentType {
         
         private AUCodeSetsYearLevelCodeType yearField;
@@ -21136,7 +21139,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class CampusContainerType {
         
         private string parentSchoolIdField;
@@ -21220,7 +21223,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolLevelType {
         
         /// <remarks/>
@@ -21302,7 +21305,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SchoolContactType {
         
         private System.Nullable<AUCodeSetsYesOrNoCategoryType> publishInDirectoryField;
@@ -21349,7 +21352,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PrincipalInfoType {
         
         private NameOfRecordType contactNameField;
@@ -21411,7 +21414,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SchoolInfoTypeOtherLEA {
         
         private SchoolInfoTypeOtherLEASIF_RefObject sIF_RefObjectField;
@@ -21444,7 +21447,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SchoolInfoTypeOtherLEASIF_RefObject {
         
         /// <remarks/>
@@ -21454,7 +21457,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolFocusCodeType {
         
         /// <remarks/>
@@ -21488,7 +21491,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSessionTypeType {
         
         /// <remarks/>
@@ -21530,7 +21533,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum OperationalStatusType {
         
         /// <remarks/>
@@ -21558,7 +21561,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsFederalElectorateType {
         
         /// <remarks/>
@@ -22220,7 +22223,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolSectorCodeType {
         
         /// <remarks/>
@@ -22236,7 +22239,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSystemicStatusType {
         
         /// <remarks/>
@@ -22252,7 +22255,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolSystemType {
         
         /// <remarks/>
@@ -22282,7 +22285,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolLocationType {
         
         /// <remarks/>
@@ -22548,7 +22551,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsAustralianStandardGeographicalClassificationASGCType {
         
         /// <remarks/>
@@ -28151,7 +28154,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSchoolCoEdStatusType {
         
         /// <remarks/>
@@ -28172,7 +28175,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SIF_ExtendedElementsTypeSIF_ExtendedElement : ExtendedContentType {
         
         private string nameField;
@@ -28218,7 +28221,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SIF_ExtendedElementsTypeSIF_ExtendedElementSIF_Action {
         
         /// <remarks/>
@@ -28230,8 +28233,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SchoolInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SchoolInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SchoolInfoCollectionType {
         
         private SchoolInfoType[] schoolInfoField;
@@ -28253,8 +28256,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SystemRole", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SystemRole", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SystemRoleType {
         
         private SystemRoleTypeSIF_RefId sIF_RefIdField;
@@ -28328,7 +28331,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SystemRoleTypeSIF_RefId {
         
         private SystemRoleTypeSIF_RefIdSIF_RefObject sIF_RefObjectField;
@@ -28361,7 +28364,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SystemRoleTypeSIF_RefIdSIF_RefObject {
         
         /// <remarks/>
@@ -28382,7 +28385,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SystemRoleTypeSystemContext {
         
         private SystemRoleTypeSystemContextRole[] roleListField;
@@ -28418,7 +28421,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SystemRoleTypeSystemContextRole {
         
         private SystemRoleTypeSystemContextRoleRoleScope[] roleScopeListField;
@@ -28454,7 +28457,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SystemRoleTypeSystemContextRoleRoleScope {
         
         private string roleScopeNameField;
@@ -28489,7 +28492,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SystemRoleTypeSystemContextRoleRoleScopeRoleScopeRefId {
         
         private SystemRoleTypeSystemContextRoleRoleScopeRoleScopeRefIdSIF_RefObject sIF_RefObjectField;
@@ -28522,7 +28525,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SystemRoleTypeSystemContextRoleRoleScopeRoleScopeRefIdSIF_RefObject {
         
         /// <remarks/>
@@ -28540,8 +28543,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SystemRoles", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SystemRoles", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SystemRoleCollectionType {
         
         private SystemRoleType[] systemRoleField;
@@ -28563,8 +28566,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class AggregateStatisticInfoType {
         
         private string statisticNameField;
@@ -28809,7 +28812,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class AggregateStatisticInfoTypeCalculationRule {
         
         private AggregateStatisticInfoTypeCalculationRuleType typeField;
@@ -28842,7 +28845,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AggregateStatisticInfoTypeCalculationRuleType {
         
         /// <remarks/>
@@ -28861,7 +28864,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AggregateStatisticInfoTypeMeasure {
         
         /// <remarks/>
@@ -28906,8 +28909,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class AggregateStatisticInfoCollectionType {
         
         private AggregateStatisticInfoType[] aggregateStatisticInfoField;
@@ -28929,8 +28932,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("AggregateCharacteristicInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AggregateCharacteristicInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class AggregateCharacteristicInfoType {
         
         private string descriptionField;
@@ -29018,8 +29021,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("AggregateCharacteristicInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AggregateCharacteristicInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class AggregateCharacteristicInfoCollectionType {
         
         private AggregateCharacteristicInfoType[] aggregateCharacteristicInfoField;
@@ -29041,8 +29044,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticFact", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticFact", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class AggregateStatisticFactType {
         
         private string aggregateStatisticInfoRefIdField;
@@ -29166,7 +29169,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AggregateStatisticFactTypeExcluded {
         
         /// <remarks/>
@@ -29181,8 +29184,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticFacts", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AggregateStatisticFacts", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class AggregateStatisticFactCollectionType {
         
         private AggregateStatisticFactType[] aggregateStatisticFactField;
@@ -29204,8 +29207,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ResourceUsage", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ResourceUsage", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ResourceUsageType {
         
         private string schoolInfoRefIdField;
@@ -29305,7 +29308,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ResourceUsageTypeResourceUsageContentType {
         
         private AUCodeSetsResourceUsageContentTypeType codeField;
@@ -29350,7 +29353,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsResourceUsageContentTypeType {
         
         /// <remarks/>
@@ -29370,7 +29373,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ResourceUsageTypeResourceReportColumn {
         
         private string columnNameField;
@@ -29418,7 +29421,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ResourceUsageTypeResourceReportLine {
         
         private ResourceUsageTypeResourceReportLineSIF_RefId sIF_RefIdField;
@@ -29517,7 +29520,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ResourceUsageTypeResourceReportLineSIF_RefId {
         
         private ResourceUsageTypeResourceReportLineSIF_RefIdSIF_RefObject sIF_RefObjectField;
@@ -29550,7 +29553,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ResourceUsageTypeResourceReportLineSIF_RefIdSIF_RefObject {
         
         /// <remarks/>
@@ -29568,8 +29571,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ResourceUsages", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ResourceUsages", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ResourceUsageCollectionType {
         
         private ResourceUsageType[] resourceUsageField;
@@ -29591,8 +29594,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("RoomInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("RoomInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class RoomInfoType {
         
         private string schoolInfoRefIdField;
@@ -29811,8 +29814,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("RoomInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("RoomInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class RoomInfoCollectionType {
         
         private RoomInfoType[] roomInfoField;
@@ -29834,8 +29837,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StaffAssignment", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StaffAssignment", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StaffAssignmentType {
         
         private string schoolInfoRefIdField;
@@ -30183,7 +30186,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsStaffStatusType {
         
         /// <remarks/>
@@ -30207,8 +30210,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StaffAssignments", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StaffAssignments", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StaffAssignmentCollectionType {
         
         private StaffAssignmentType[] staffAssignmentField;
@@ -30230,8 +30233,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StaffPersonal", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StaffPersonal", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StaffPersonalType {
         
         private string localIdField;
@@ -30398,8 +30401,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StaffPersonals", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StaffPersonals", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StaffPersonalCollectionType {
         
         private StaffPersonalType[] staffPersonalField;
@@ -30421,8 +30424,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentPersonal", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentPersonal", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentPersonalType {
         
         private AlertMessageType[] alertMessagesField;
@@ -30968,8 +30971,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentPersonals", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentPersonals", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentPersonalCollectionType {
         
         private StudentPersonalType[] studentPersonalField;
@@ -30991,8 +30994,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentSchoolEnrollment", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentSchoolEnrollment", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentSchoolEnrollmentType {
         
         private string studentPersonalRefIdField;
@@ -31584,7 +31587,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsEnrollmentTimeFrameType {
         
         /// <remarks/>
@@ -31605,7 +31608,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentSchoolEnrollmentTypeHomeroom {
         
         private StudentSchoolEnrollmentTypeHomeroomSIF_RefObject sIF_RefObjectField;
@@ -31638,7 +31641,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentSchoolEnrollmentTypeHomeroomSIF_RefObject {
         
         /// <remarks/>
@@ -31650,7 +31653,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentSchoolEnrollmentTypeAdvisor {
         
         private StudentSchoolEnrollmentTypeAdvisorSIF_RefObject sIF_RefObjectField;
@@ -31683,7 +31686,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentSchoolEnrollmentTypeAdvisorSIF_RefObject {
         
         /// <remarks/>
@@ -31695,7 +31698,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentSchoolEnrollmentTypeCounselor {
         
         private StudentSchoolEnrollmentTypeCounselorSIF_RefObject sIF_RefObjectField;
@@ -31728,7 +31731,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentSchoolEnrollmentTypeCounselorSIF_RefObject {
         
         /// <remarks/>
@@ -31740,7 +31743,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentSchoolEnrollmentTypeCalendar {
         
         private StudentSchoolEnrollmentTypeCalendarSIF_RefObject sIF_RefObjectField;
@@ -31773,7 +31776,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentSchoolEnrollmentTypeCalendarSIF_RefObject {
         
         /// <remarks/>
@@ -31783,7 +31786,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsFTPTStatusCodeType {
         
         /// <remarks/>
@@ -31801,7 +31804,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentSchoolEnrollmentTypeRecordClosureReason {
         
         /// <remarks/>
@@ -31822,8 +31825,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentSchoolEnrollments", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentSchoolEnrollments", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentSchoolEnrollmentCollectionType {
         
         private StudentSchoolEnrollmentType[] studentSchoolEnrollmentField;
@@ -31845,8 +31848,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentContactPersonal", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentContactPersonal", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentContactPersonalType {
         
         private string localIdField;
@@ -32012,8 +32015,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentContactPersonals", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentContactPersonals", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentContactPersonalCollectionType {
         
         private StudentContactPersonalType[] studentContactPersonalField;
@@ -32035,8 +32038,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentParticipation", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentParticipation", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentParticipationType {
         
         private string studentPersonalRefIdField;
@@ -32642,7 +32645,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsStudentFamilyProgramTypeType {
         
         /// <remarks/>
@@ -32850,7 +32853,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentParticipationTypeManagingSchool {
         
         private StudentParticipationTypeManagingSchoolSIF_RefObject sIF_RefObjectField;
@@ -32883,7 +32886,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentParticipationTypeManagingSchoolSIF_RefObject {
         
         /// <remarks/>
@@ -32895,8 +32898,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentParticipations", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentParticipations", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentParticipationCollectionType {
         
         private StudentParticipationType[] studentParticipationField;
@@ -32918,8 +32921,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("PersonPicture", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("PersonPicture", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class PersonPictureType {
         
         private PersonPictureTypeParentObjectRefId parentObjectRefIdField;
@@ -33031,7 +33034,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PersonPictureTypeParentObjectRefId {
         
         private PersonPictureTypeParentObjectRefIdSIF_RefObject sIF_RefObjectField;
@@ -33064,7 +33067,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum PersonPictureTypeParentObjectRefIdSIF_RefObject {
         
         /// <remarks/>
@@ -33082,7 +33085,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PersonPictureTypePictureSource {
         
         private AUCodeSetsPictureSourceType typeField;
@@ -33115,7 +33118,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsPictureSourceType {
         
         /// <remarks/>
@@ -33159,8 +33162,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("PersonPictures", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("PersonPictures", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class PersonPictureCollectionType {
         
         private PersonPictureType[] personPictureField;
@@ -33182,8 +33185,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("CalendarDate", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("CalendarDate", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class CalendarDateType {
         
         private System.DateTime dateField;
@@ -33375,8 +33378,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("CalendarDates", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("CalendarDates", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class CalendarDateCollectionType {
         
         private CalendarDateType[] calendarDateField;
@@ -33398,8 +33401,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("CalendarSummary", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("CalendarSummary", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class CalendarSummaryType {
         
         private string schoolInfoRefIdField;
@@ -33708,8 +33711,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("CalendarSummarys", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("CalendarSummarys", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class CalendarSummaryCollectionType {
         
         private CalendarSummaryType[] calendarSummaryField;
@@ -33731,8 +33734,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceSummary", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceSummary", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentAttendanceSummaryType {
         
         private string studentPersonalRefIdField;
@@ -34076,8 +34079,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceSummarys", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceSummarys", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentAttendanceSummaryCollectionType {
         
         private StudentAttendanceSummaryType[] studentAttendanceSummaryField;
@@ -34099,8 +34102,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentDailyAttendance", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentDailyAttendance", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentDailyAttendanceType {
         
         private string studentPersonalRefIdField;
@@ -34366,7 +34369,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsDayValueCodeType {
         
         /// <remarks/>
@@ -34394,8 +34397,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentDailyAttendances", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentDailyAttendances", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentDailyAttendanceCollectionType {
         
         private StudentDailyAttendanceType[] studentDailyAttendanceField;
@@ -34417,8 +34420,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentPeriodAttendance", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentPeriodAttendance", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentPeriodAttendanceType {
         
         private string studentPersonalRefIdField;
@@ -34686,8 +34689,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentPeriodAttendances", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentPeriodAttendances", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentPeriodAttendanceCollectionType {
         
         private StudentPeriodAttendanceType[] studentPeriodAttendanceField;
@@ -34709,8 +34712,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SessionInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SessionInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SessionInfoType {
         
         private string schoolInfoRefIdField;
@@ -35006,8 +35009,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SessionInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SessionInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SessionInfoCollectionType {
         
         private SessionInfoType[] sessionInfoField;
@@ -35029,8 +35032,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningStandardDocument", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningStandardDocument", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningStandardDocumentType {
         
         private string titleField;
@@ -35403,7 +35406,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum LearningStandardDocumentTypeSource {
         
         /// <remarks/>
@@ -35431,7 +35434,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum LearningStandardDocumentTypeDocumentStatus {
         
         /// <remarks/>
@@ -35452,7 +35455,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningStandardDocumentTypeCopyright {
         
         private System.Nullable<System.DateTime> dateField;
@@ -35500,8 +35503,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningStandardDocuments", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningStandardDocuments", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningStandardDocumentCollectionType {
         
         private LearningStandardDocumentType[] learningStandardDocumentField;
@@ -35523,8 +35526,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningStandardItem", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningStandardItem", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningStandardItemType {
         
         private ResourcesType[] resourcesField;
@@ -35746,7 +35749,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningStandardItemTypeStandardSettingBody {
         
         private CountryType countryField;
@@ -35806,7 +35809,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningStandardItemTypeStandardHierarchyLevel {
         
         private uint numberField;
@@ -35852,7 +35855,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningStandardItemTypeStandardIdentifier {
         
         private string yearCreatedField;
@@ -35978,7 +35981,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningStandardItemTypeLearningStandardItemRefId {
         
         private string relationshipTypeField;
@@ -36013,8 +36016,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningStandardItems", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningStandardItems", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningStandardItemCollectionType {
         
         private LearningStandardItemType[] learningStandardItemField;
@@ -36036,8 +36039,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningResource", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningResource", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningResourceType {
         
         private string nameField;
@@ -36314,7 +36317,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningResourceTypeLocation {
         
         private string referenceTypeField;
@@ -36349,8 +36352,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningResources", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningResources", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningResourceCollectionType {
         
         private LearningResourceType[] learningResourceField;
@@ -36372,8 +36375,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningResourcePackage", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningResourcePackage", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningResourcePackageType : AbstractContentPackageType {
     }
     
@@ -36382,8 +36385,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LearningResourcePackages", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LearningResourcePackages", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningResourcePackageCollectionType {
         
         private LearningResourcePackageType[] learningResourcePackageField;
@@ -36405,8 +36408,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TimeTableSubject", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TimeTableSubject", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TimeTableSubjectType {
         
         private string subjectLocalIdField;
@@ -36703,8 +36706,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TimeTableSubjects", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TimeTableSubjects", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TimeTableSubjectCollectionType {
         
         private TimeTableSubjectType[] timeTableSubjectField;
@@ -36726,8 +36729,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TimeTable", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TimeTable", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TimeTableType {
         
         private string schoolInfoRefIdField;
@@ -37021,8 +37024,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TimeTables", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TimeTables", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TimeTableCollectionType {
         
         private TimeTableType[] timeTableField;
@@ -37044,8 +37047,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TeachingGroup", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TeachingGroup", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TeachingGroupType {
         
         private string schoolYearField;
@@ -37370,8 +37373,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TeachingGroups", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TeachingGroups", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TeachingGroupCollectionType {
         
         private TeachingGroupType[] teachingGroupField;
@@ -37393,8 +37396,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TimeTableCell", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TimeTableCell", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TimeTableCellType {
         
         private string timeTableRefIdField;
@@ -37666,8 +37669,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TimeTableCells", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TimeTableCells", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TimeTableCellCollectionType {
         
         private TimeTableCellType[] timeTableCellField;
@@ -37689,8 +37692,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SchoolCourseInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SchoolCourseInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SchoolCourseInfoType {
         
         private string schoolInfoRefIdField;
@@ -37974,8 +37977,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SchoolCourseInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SchoolCourseInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SchoolCourseInfoCollectionType {
         
         private SchoolCourseInfoType[] schoolCourseInfoField;
@@ -37997,8 +38000,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LEAInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LEAInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LEAInfoType {
         
         private string localIdField;
@@ -38232,8 +38235,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("LEAInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("LEAInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LEAInfoCollectionType {
         
         private LEAInfoType[] lEAInfoField;
@@ -38255,8 +38258,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TermInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TermInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TermInfoType {
         
         private string schoolInfoRefIdField;
@@ -38552,8 +38555,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("TermInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("TermInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class TermInfoCollectionType {
         
         private TermInfoType[] termInfoField;
@@ -38575,8 +38578,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentContactRelationship", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentContactRelationship", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentContactRelationshipType {
         
         private string studentPersonalRefIdField;
@@ -38792,7 +38795,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum StudentContactRelationshipTypeParentRelationshipStatus {
         
         /// <remarks/>
@@ -38808,7 +38811,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsSourceCodeTypeType {
         
         /// <remarks/>
@@ -38835,8 +38838,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentContactRelationships", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentContactRelationships", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentContactRelationshipCollectionType {
         
         private StudentContactRelationshipType[] studentContactRelationshipField;
@@ -38858,8 +38861,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentActivityInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentActivityInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentActivityInfoType {
         
         private string titleField;
@@ -39010,7 +39013,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsActivityTypeType {
         
         /// <remarks/>
@@ -39034,8 +39037,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentActivityInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentActivityInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentActivityInfoCollectionType {
         
         private StudentActivityInfoType[] studentActivityInfoField;
@@ -39057,8 +39060,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentActivityParticipation", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentActivityParticipation", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentActivityParticipationType {
         
         private string studentPersonalRefIdField;
@@ -39238,8 +39241,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentActivityParticipations", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentActivityParticipations", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentActivityParticipationCollectionType {
         
         private StudentActivityParticipationType[] studentActivityParticipationField;
@@ -39261,8 +39264,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Identity", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Identity", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class IdentityType {
         
         private IdentityTypeSIF_RefId sIF_RefIdField;
@@ -39389,7 +39392,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class IdentityTypeSIF_RefId {
         
         private IdentityTypeSIF_RefIdSIF_RefObject sIF_RefObjectField;
@@ -39422,7 +39425,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum IdentityTypeSIF_RefIdSIF_RefObject {
         
         /// <remarks/>
@@ -39438,7 +39441,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum IdentityTypeAuthenticationSource {
         
         /// <remarks/>
@@ -39465,7 +39468,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class IdentityAssertionsTypeIdentityAssertion {
         
         private string schemaNameField;
@@ -39500,7 +39503,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PasswordListTypePassword {
         
         private PasswordListTypePasswordAlgorithm algorithmField;
@@ -39546,7 +39549,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum PasswordListTypePasswordAlgorithm {
         
         /// <remarks/>
@@ -39576,8 +39579,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Identitys", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Identitys", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class IdentityCollectionType {
         
         private IdentityType[] identityField;
@@ -39599,8 +39602,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SchoolPrograms", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SchoolPrograms", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SchoolProgramsType {
         
         private string schoolInfoRefIdField;
@@ -39689,8 +39692,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SchoolProgramss", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SchoolProgramss", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SchoolProgramsCollectionType {
         
         private SchoolProgramsType[] schoolProgramsField;
@@ -39712,8 +39715,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SectionInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SectionInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SectionInfoType {
         
         private string schoolCourseInfoRefIdField;
@@ -39955,7 +39958,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SectionInfoTypeSummerSchool {
         
         /// <remarks/>
@@ -39968,7 +39971,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SectionInfoTypeCountForAttendance {
         
         /// <remarks/>
@@ -39983,8 +39986,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("SectionInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("SectionInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class SectionInfoCollectionType {
         
         private SectionInfoType[] sectionInfoField;
@@ -40006,8 +40009,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentSectionEnrollment", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentSectionEnrollment", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentSectionEnrollmentType {
         
         private string studentPersonalRefIdField;
@@ -40147,8 +40150,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentSectionEnrollments", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentSectionEnrollments", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentSectionEnrollmentCollectionType {
         
         private StudentSectionEnrollmentType[] studentSectionEnrollmentField;
@@ -40170,8 +40173,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Activity", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Activity", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ActivityType {
         
         private string titleField;
@@ -40500,7 +40503,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class SourceObjectsTypeSourceObject {
         
         private SourceObjectsTypeSourceObjectSIF_RefObject sIF_RefObjectField;
@@ -40533,7 +40536,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum SourceObjectsTypeSourceObjectSIF_RefObject {
         
         /// <remarks/>
@@ -40554,7 +40557,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ActivityTypeEvaluation {
         
         private string descriptionField;
@@ -40587,7 +40590,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ActivityTypeEvaluationEvaluationType {
         
         /// <remarks/>
@@ -40602,8 +40605,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Activitys", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Activitys", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ActivityCollectionType {
         
         private ActivityType[] activityField;
@@ -40625,8 +40628,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ScheduledActivity", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ScheduledActivity", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ScheduledActivityType {
         
         private string schoolInfoRefIdField;
@@ -41004,7 +41007,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsScheduledActivityTypeType {
         
         /// <remarks/>
@@ -41049,8 +41052,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ScheduledActivitys", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ScheduledActivitys", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ScheduledActivityCollectionType {
         
         private ScheduledActivityType[] scheduledActivityField;
@@ -41072,8 +41075,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ResourceBooking", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ResourceBooking", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ResourceBookingType {
         
         private ResourceBookingTypeResourceRefId resourceRefIdField;
@@ -41289,7 +41292,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class ResourceBookingTypeResourceRefId {
         
         private ResourceBookingTypeResourceRefIdSIF_RefObject sIF_RefObjectField;
@@ -41322,7 +41325,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ResourceBookingTypeResourceRefIdSIF_RefObject {
         
         /// <remarks/>
@@ -41340,8 +41343,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ResourceBookings", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ResourceBookings", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ResourceBookingCollectionType {
         
         private ResourceBookingType[] resourceBookingField;
@@ -41363,8 +41366,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("EquipmentInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("EquipmentInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class EquipmentInfoType {
         
         private string nameField;
@@ -41517,7 +41520,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class EquipmentInfoTypeSIF_RefId {
         
         private EquipmentInfoTypeSIF_RefIdSIF_RefObject sIF_RefObjectField;
@@ -41550,7 +41553,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum EquipmentInfoTypeSIF_RefIdSIF_RefObject {
         
         /// <remarks/>
@@ -41571,8 +41574,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("EquipmentInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("EquipmentInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class EquipmentInfoCollectionType {
         
         private EquipmentInfoType[] equipmentInfoField;
@@ -41594,8 +41597,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Invoice", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Invoice", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class InvoiceType {
         
         private InvoiceTypeInvoicedEntity invoicedEntityField;
@@ -41968,7 +41971,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class InvoiceTypeInvoicedEntity {
         
         private InvoiceTypeInvoicedEntitySIF_RefObject sIF_RefObjectField;
@@ -42001,7 +42004,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum InvoiceTypeInvoicedEntitySIF_RefObject {
         
         /// <remarks/>
@@ -42014,7 +42017,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum InvoiceTypeLedger {
         
         /// <remarks/>
@@ -42032,8 +42035,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Invoices", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Invoices", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class InvoiceCollectionType {
         
         private InvoiceType[] invoiceField;
@@ -42055,8 +42058,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("FinancialAccount", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("FinancialAccount", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class FinancialAccountType {
         
         private string parentAccountRefIdField;
@@ -42245,7 +42248,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum FinancialAccountTypeClassType {
         
         /// <remarks/>
@@ -42266,8 +42269,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("FinancialAccounts", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("FinancialAccounts", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class FinancialAccountCollectionType {
         
         private FinancialAccountType[] financialAccountField;
@@ -42289,8 +42292,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ChargedLocationInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ChargedLocationInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ChargedLocationInfoType {
         
         private ChargedLocationInfoTypeLocationType locationTypeField;
@@ -42481,7 +42484,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum ChargedLocationInfoTypeLocationType {
         
         /// <remarks/>
@@ -42496,8 +42499,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("ChargedLocationInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("ChargedLocationInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class ChargedLocationInfoCollectionType {
         
         private ChargedLocationInfoType[] chargedLocationInfoField;
@@ -42519,8 +42522,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("PaymentReceipt", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("PaymentReceipt", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class PaymentReceiptType {
         
         private PaymentReceiptTypeTransactionType transactionTypeField;
@@ -42813,7 +42816,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum PaymentReceiptTypeTransactionType {
         
         /// <remarks/>
@@ -42846,8 +42849,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("PaymentReceipts", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("PaymentReceipts", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class PaymentReceiptCollectionType {
         
         private PaymentReceiptType[] paymentReceiptField;
@@ -42869,8 +42872,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("PurchaseOrder", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("PurchaseOrder", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class PurchaseOrderType {
         
         private string formNumberField;
@@ -43127,8 +43130,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("PurchaseOrders", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("PurchaseOrders", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class PurchaseOrderCollectionType {
         
         private PurchaseOrderType[] purchaseOrderField;
@@ -43150,8 +43153,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("VendorInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("VendorInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class VendorInfoType {
         
         private string nameField;
@@ -43343,8 +43346,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("VendorInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("VendorInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class VendorInfoCollectionType {
         
         private VendorInfoType[] vendorInfoField;
@@ -43366,8 +43369,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Journal", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Journal", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class JournalType {
         
         private string debitFinancialAccountRefIdField;
@@ -43584,7 +43587,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class JournalTypeOriginatingTransactionRefId {
         
         private JournalTypeOriginatingTransactionRefIdSIF_RefObject sIF_RefObjectField;
@@ -43617,7 +43620,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum JournalTypeOriginatingTransactionRefIdSIF_RefObject {
         
         /// <remarks/>
@@ -43635,8 +43638,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Journals", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Journals", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class JournalCollectionType {
         
         private JournalType[] journalField;
@@ -43658,8 +43661,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Debtor", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Debtor", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class DebtorType {
         
         private DebtorTypeBilledEntity billedEntityField;
@@ -43773,7 +43776,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class DebtorTypeBilledEntity {
         
         private DebtorTypeBilledEntitySIF_RefObject sIF_RefObjectField;
@@ -43806,7 +43809,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum DebtorTypeBilledEntitySIF_RefObject {
         
         /// <remarks/>
@@ -43827,8 +43830,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("Debtors", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("Debtors", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class DebtorCollectionType {
         
         private DebtorType[] debtorField;
@@ -43850,8 +43853,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceTimeList", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceTimeList", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentAttendanceTimeListType {
         
         private string studentPersonalRefIdField;
@@ -43978,8 +43981,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceTimeLists", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentAttendanceTimeLists", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class StudentAttendanceTimeListCollectionType {
         
         private StudentAttendanceTimeListType[] studentAttendanceTimeListField;
@@ -44001,8 +44004,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("GradingAssignment", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("GradingAssignment", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class GradingAssignmentType {
         
         private string teachingGroupRefIdField;
@@ -44245,8 +44248,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("GradingAssignments", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("GradingAssignments", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class GradingAssignmentCollectionType {
         
         private GradingAssignmentType[] gradingAssignmentField;
@@ -44268,8 +44271,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("GradingAssignmentScore", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("GradingAssignmentScore", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class GradingAssignmentScoreType {
         
         private string studentPersonalRefIdField;
@@ -44461,8 +44464,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("GradingAssignmentScores", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("GradingAssignmentScores", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class GradingAssignmentScoreCollectionType {
         
         private GradingAssignmentScoreType[] gradingAssignmentScoreField;
@@ -44484,8 +44487,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPEventStudentLink", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPEventStudentLink", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPEventStudentLinkType {
         
         private string studentPersonalRefIdField;
@@ -44986,7 +44989,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPJurisdictionType {
         
         /// <remarks/>
@@ -45029,7 +45032,7 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public enum AUCodeSetsNAPParticipationCodeType {
         
         /// <remarks/>
@@ -45062,8 +45065,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPEventStudentLinks", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPEventStudentLinks", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPEventStudentLinkCollectionType {
         
         private NAPEventStudentLinkType[] nAPEventStudentLinkField;
@@ -45085,8 +45088,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTest", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTest", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestType {
         
         private NAPTestContentType testContentField;
@@ -45147,8 +45150,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTests", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTests", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestCollectionType {
         
         private NAPTestType[] nAPTestField;
@@ -45170,8 +45173,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTestlet", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTestlet", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestletType {
         
         private string nAPTestRefIdField;
@@ -45271,8 +45274,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTestlets", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTestlets", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestletCollectionType {
         
         private NAPTestletType[] nAPTestletField;
@@ -45294,8 +45297,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTestScoreSummary", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTestScoreSummary", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestScoreSummaryType {
         
         private string schoolInfoRefIdField;
@@ -45526,8 +45529,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTestScoreSummarys", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTestScoreSummarys", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestScoreSummaryCollectionType {
         
         private NAPTestScoreSummaryType[] nAPTestScoreSummaryField;
@@ -45549,8 +45552,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTestItem", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTestItem", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestItemType {
         
         private NAPTestItemContentType testItemContentField;
@@ -45611,8 +45614,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPTestItems", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPTestItems", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPTestItemCollectionType {
         
         private NAPTestItemType[] nAPTestItemField;
@@ -45634,8 +45637,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPStudentResponseSet", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPStudentResponseSet", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPStudentResponseSetType {
         
         private bool reportExclusionFlagField;
@@ -45838,8 +45841,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPStudentResponseSets", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPStudentResponseSets", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPStudentResponseSetCollectionType {
         
         private NAPStudentResponseSetType[] nAPStudentResponseSetField;
@@ -45861,8 +45864,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPCodeFrame", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPCodeFrame", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPCodeFrameType {
         
         private string nAPTestRefIdField;
@@ -45949,8 +45952,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4.1")]
-    [System.Xml.Serialization.XmlRootAttribute("NAPCodeFrames", Namespace="http://www.sifassociation.org/datamodel/au/3.4.1", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("NAPCodeFrames", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPCodeFrameCollectionType {
         
         private NAPCodeFrameType[] nAPCodeFrameField;

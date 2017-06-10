@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,12 +51,17 @@ namespace Sif.Framework.Demo.Hits.Consumer
                 // Query all schools.
                 IEnumerable<SchoolInfo> allSchools = schoolInfoConsumer.Query();
 
-                foreach (SchoolInfo school in allSchools)
-                {
-                    if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " has a RefId of " + school.RefId + ".");
-                }
+                if (log.IsInfoEnabled) log.Info("School count is " + (allSchools == null ? 0 : allSchools.Count()));
 
-                if (log.IsInfoEnabled) log.Info("School count is " + allSchools.Count());
+                if (allSchools != null)
+                {
+
+                    foreach (SchoolInfo school in allSchools)
+                    {
+                        if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " has a RefId of " + school.RefId + ".");
+                    }
+
+                }
 
                 // Create multiple schools.
                 MultipleCreateResponse createResponse = schoolInfoConsumer.Create(CreateSchools());
@@ -130,12 +135,18 @@ namespace Sif.Framework.Demo.Hits.Consumer
                 conditions.Add(condition);
                 IEnumerable<StaffPersonal> staffPersonals = staffPersonalConsumer.QueryByServicePath(conditions);
 
-                foreach (StaffPersonal staffPersonal in staffPersonals)
+                if (log.IsInfoEnabled) log.Info("Staff count is " + (staffPersonals == null ? 0 : staffPersonals.Count()));
+
+                if (staffPersonals != null)
                 {
-                    if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
+
+                    foreach (StaffPersonal staffPersonal in staffPersonals)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
+                    }
+
                 }
 
-                if (log.IsInfoEnabled) log.Info("Staff count is " + staffPersonals.Count());
             }
             finally
             {
