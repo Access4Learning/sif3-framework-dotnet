@@ -322,3 +322,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Updated the SIF Framework to use the officially approved version of the SIF AU Data Model (3.4.1).
 - Fixed namespace issues with SIF AU Data Model usage in the demo projects.
 - Updated the "Connecting Consumers to HITS" document to reflect recent updates to the HITS Dashboard and its usage.
+
+**June 15, 2017 - 3.2.1.2 Updated to use strict version of AU Data Model 3.4.1**
+
+- Updated the SIF Framework to use the "strict" version of the SIF AU Data Model (3.4.1).

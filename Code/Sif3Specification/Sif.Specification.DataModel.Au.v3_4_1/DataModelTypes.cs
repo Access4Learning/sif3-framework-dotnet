@@ -84,8 +84,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsSchoolSectorCodeType schoolSectorField;
         
-        private bool schoolSectorFieldSpecified;
-        
         private System.Nullable<AUCodeSetsYesOrNoCategoryType> independentSchoolField;
         
         private bool independentSchoolFieldSpecified;
@@ -475,17 +473,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.schoolSectorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool SchoolSectorSpecified {
-            get {
-                return this.schoolSectorFieldSpecified;
-            }
-            set {
-                this.schoolSectorFieldSpecified = value;
             }
         }
         
@@ -976,8 +963,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsNAPTestItemTypeType itemTypeField;
         
-        private bool itemTypeFieldSpecified;
-        
         private string subdomainField;
         
         private System.Nullable<AUCodeSetsNAPWritingGenreType> writingGenreField;
@@ -988,11 +973,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool releasedStatusField;
         
-        private bool releasedStatusFieldSpecified;
-        
         private AUCodeSetsNAPTestItemMarkingTypeType markingTypeField;
-        
-        private bool markingTypeFieldSpecified;
         
         private System.Nullable<int> multipleChoiceOptionCountField;
         
@@ -1002,27 +983,15 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal maximumScoreField;
         
-        private bool maximumScoreFieldSpecified;
-        
         private decimal itemDifficultyField;
-        
-        private bool itemDifficultyFieldSpecified;
         
         private decimal itemDifficultyLogit5Field;
         
-        private bool itemDifficultyLogit5FieldSpecified;
-        
         private decimal itemDifficultyLogit62Field;
-        
-        private bool itemDifficultyLogit62FieldSpecified;
         
         private decimal itemDifficultyLogit5SEField;
         
-        private bool itemDifficultyLogit5SEFieldSpecified;
-        
         private decimal itemDifficultyLogit62SEField;
-        
-        private bool itemDifficultyLogit62SEFieldSpecified;
         
         private string itemProficiencyBandField;
         
@@ -1067,17 +1036,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.itemTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemTypeSpecified {
-            get {
-                return this.itemTypeFieldSpecified;
-            }
-            set {
-                this.itemTypeFieldSpecified = value;
             }
         }
         
@@ -1136,34 +1094,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ReleasedStatusSpecified {
-            get {
-                return this.releasedStatusFieldSpecified;
-            }
-            set {
-                this.releasedStatusFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public AUCodeSetsNAPTestItemMarkingTypeType MarkingType {
             get {
                 return this.markingTypeField;
             }
             set {
                 this.markingTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MarkingTypeSpecified {
-            get {
-                return this.markingTypeFieldSpecified;
-            }
-            set {
-                this.markingTypeFieldSpecified = value;
             }
         }
         
@@ -1211,34 +1147,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MaximumScoreSpecified {
-            get {
-                return this.maximumScoreFieldSpecified;
-            }
-            set {
-                this.maximumScoreFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ItemDifficulty {
             get {
                 return this.itemDifficultyField;
             }
             set {
                 this.itemDifficultyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemDifficultySpecified {
-            get {
-                return this.itemDifficultyFieldSpecified;
-            }
-            set {
-                this.itemDifficultyFieldSpecified = value;
             }
         }
         
@@ -1253,34 +1167,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemDifficultyLogit5Specified {
-            get {
-                return this.itemDifficultyLogit5FieldSpecified;
-            }
-            set {
-                this.itemDifficultyLogit5FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ItemDifficultyLogit62 {
             get {
                 return this.itemDifficultyLogit62Field;
             }
             set {
                 this.itemDifficultyLogit62Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemDifficultyLogit62Specified {
-            get {
-                return this.itemDifficultyLogit62FieldSpecified;
-            }
-            set {
-                this.itemDifficultyLogit62FieldSpecified = value;
             }
         }
         
@@ -1295,34 +1187,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemDifficultyLogit5SESpecified {
-            get {
-                return this.itemDifficultyLogit5SEFieldSpecified;
-            }
-            set {
-                this.itemDifficultyLogit5SEFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ItemDifficultyLogit62SE {
             get {
                 return this.itemDifficultyLogit62SEField;
             }
             set {
                 this.itemDifficultyLogit62SEField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemDifficultyLogit62SESpecified {
-            get {
-                return this.itemDifficultyLogit62SEFieldSpecified;
-            }
-            set {
-                this.itemDifficultyLogit62SEFieldSpecified = value;
             }
         }
         
@@ -1749,8 +1619,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal maxScoreValueField;
         
-        private bool maxScoreValueFieldSpecified;
-        
         private ScoreDescriptionType[] scoreDescriptionListField;
         
         /// <remarks/>
@@ -1760,17 +1628,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.maxScoreValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MaxScoreValueSpecified {
-            get {
-                return this.maxScoreValueFieldSpecified;
-            }
-            set {
-                this.maxScoreValueFieldSpecified = value;
             }
         }
         
@@ -1796,8 +1653,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal scoreValueField;
         
-        private bool scoreValueFieldSpecified;
-        
         private string descriptorField;
         
         /// <remarks/>
@@ -1807,17 +1662,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.scoreValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ScoreValueSpecified {
-            get {
-                return this.scoreValueFieldSpecified;
-            }
-            set {
-                this.scoreValueFieldSpecified = value;
             }
         }
         
@@ -1898,8 +1742,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal testletMaximumScoreField;
         
-        private bool testletMaximumScoreFieldSpecified;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string NAPTestletLocalId {
@@ -1953,17 +1795,6 @@ namespace Sif.Specification.DataModel.Au {
                 this.testletMaximumScoreField = value;
             }
         }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TestletMaximumScoreSpecified {
-            get {
-                return this.testletMaximumScoreFieldSpecified;
-            }
-            set {
-                this.testletMaximumScoreFieldSpecified = value;
-            }
-        }
     }
     
     /// <remarks/>
@@ -1977,8 +1808,6 @@ namespace Sif.Specification.DataModel.Au {
         private string subscoreTypeField;
         
         private decimal subscoreValueField;
-        
-        private bool subscoreValueFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
@@ -1998,17 +1827,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.subscoreValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool SubscoreValueSpecified {
-            get {
-                return this.subscoreValueFieldSpecified;
-            }
-            set {
-                this.subscoreValueFieldSpecified = value;
             }
         }
     }
@@ -2040,8 +1858,6 @@ namespace Sif.Specification.DataModel.Au {
         private string sequenceNumberField;
         
         private decimal itemWeightField;
-        
-        private bool itemWeightFieldSpecified;
         
         private NAPSubscoreType[] subscoreListField;
         
@@ -2154,17 +1970,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemWeightSpecified {
-            get {
-                return this.itemWeightFieldSpecified;
-            }
-            set {
-                this.itemWeightFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("Subscore", IsNullable=false)]
         public NAPSubscoreType[] SubscoreList {
@@ -2210,8 +2015,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal testletSubScoreField;
         
-        private bool testletSubScoreFieldSpecified;
-        
         private NAPTestletResponseItemType[] itemResponseListField;
         
         /// <remarks/>
@@ -2247,17 +2050,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TestletSubScoreSpecified {
-            get {
-                return this.testletSubScoreFieldSpecified;
-            }
-            set {
-                this.testletSubScoreFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("ItemResponse", IsNullable=false)]
         public NAPTestletResponseItemType[] ItemResponseList {
             get {
@@ -2279,23 +2071,13 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal rawScoreField;
         
-        private bool rawScoreFieldSpecified;
-        
         private decimal scaledScoreValueField;
-        
-        private bool scaledScoreValueFieldSpecified;
         
         private decimal scaledScoreLogitValueField;
         
-        private bool scaledScoreLogitValueFieldSpecified;
-        
         private decimal scaledScoreStandardErrorField;
         
-        private bool scaledScoreStandardErrorFieldSpecified;
-        
         private decimal scaledScoreLogitStandardErrorField;
-        
-        private bool scaledScoreLogitStandardErrorFieldSpecified;
         
         private string studentDomainBandField;
         
@@ -2314,34 +2096,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool RawScoreSpecified {
-            get {
-                return this.rawScoreFieldSpecified;
-            }
-            set {
-                this.rawScoreFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ScaledScoreValue {
             get {
                 return this.scaledScoreValueField;
             }
             set {
                 this.scaledScoreValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ScaledScoreValueSpecified {
-            get {
-                return this.scaledScoreValueFieldSpecified;
-            }
-            set {
-                this.scaledScoreValueFieldSpecified = value;
             }
         }
         
@@ -2356,17 +2116,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ScaledScoreLogitValueSpecified {
-            get {
-                return this.scaledScoreLogitValueFieldSpecified;
-            }
-            set {
-                this.scaledScoreLogitValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ScaledScoreStandardError {
             get {
                 return this.scaledScoreStandardErrorField;
@@ -2377,34 +2126,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ScaledScoreStandardErrorSpecified {
-            get {
-                return this.scaledScoreStandardErrorFieldSpecified;
-            }
-            set {
-                this.scaledScoreStandardErrorFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ScaledScoreLogitStandardError {
             get {
                 return this.scaledScoreLogitStandardErrorField;
             }
             set {
                 this.scaledScoreLogitStandardErrorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ScaledScoreLogitStandardErrorSpecified {
-            get {
-                return this.scaledScoreLogitStandardErrorFieldSpecified;
-            }
-            set {
-                this.scaledScoreLogitStandardErrorFieldSpecified = value;
             }
         }
         
@@ -2500,35 +2227,19 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal level1LowerField;
         
-        private bool level1LowerFieldSpecified;
-        
         private decimal level1UpperField;
-        
-        private bool level1UpperFieldSpecified;
         
         private decimal level2LowerField;
         
-        private bool level2LowerFieldSpecified;
-        
         private decimal level2UpperField;
-        
-        private bool level2UpperFieldSpecified;
         
         private decimal level3LowerField;
         
-        private bool level3LowerFieldSpecified;
-        
         private decimal level3UpperField;
-        
-        private bool level3UpperFieldSpecified;
         
         private decimal level4LowerField;
         
-        private bool level4LowerFieldSpecified;
-        
         private decimal level4UpperField;
-        
-        private bool level4UpperFieldSpecified;
         
         /// <remarks/>
         public decimal Level1Lower {
@@ -2537,17 +2248,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.level1LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level1LowerSpecified {
-            get {
-                return this.level1LowerFieldSpecified;
-            }
-            set {
-                this.level1LowerFieldSpecified = value;
             }
         }
         
@@ -2562,34 +2262,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level1UpperSpecified {
-            get {
-                return this.level1UpperFieldSpecified;
-            }
-            set {
-                this.level1UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Level2Lower {
             get {
                 return this.level2LowerField;
             }
             set {
                 this.level2LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level2LowerSpecified {
-            get {
-                return this.level2LowerFieldSpecified;
-            }
-            set {
-                this.level2LowerFieldSpecified = value;
             }
         }
         
@@ -2604,34 +2282,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level2UpperSpecified {
-            get {
-                return this.level2UpperFieldSpecified;
-            }
-            set {
-                this.level2UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Level3Lower {
             get {
                 return this.level3LowerField;
             }
             set {
                 this.level3LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level3LowerSpecified {
-            get {
-                return this.level3LowerFieldSpecified;
-            }
-            set {
-                this.level3LowerFieldSpecified = value;
             }
         }
         
@@ -2646,17 +2302,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level3UpperSpecified {
-            get {
-                return this.level3UpperFieldSpecified;
-            }
-            set {
-                this.level3UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Level4Lower {
             get {
                 return this.level4LowerField;
@@ -2667,34 +2312,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level4LowerSpecified {
-            get {
-                return this.level4LowerFieldSpecified;
-            }
-            set {
-                this.level4LowerFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Level4Upper {
             get {
                 return this.level4UpperField;
             }
             set {
                 this.level4UpperField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Level4UpperSpecified {
-            get {
-                return this.level4UpperFieldSpecified;
-            }
-            set {
-                this.level4UpperFieldSpecified = value;
             }
         }
     }
@@ -2709,83 +2332,43 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal band1LowerField;
         
-        private bool band1LowerFieldSpecified;
-        
         private decimal band1UpperField;
-        
-        private bool band1UpperFieldSpecified;
         
         private decimal band2LowerField;
         
-        private bool band2LowerFieldSpecified;
-        
         private decimal band2UpperField;
-        
-        private bool band2UpperFieldSpecified;
         
         private decimal band3LowerField;
         
-        private bool band3LowerFieldSpecified;
-        
         private decimal band3UpperField;
-        
-        private bool band3UpperFieldSpecified;
         
         private decimal band4LowerField;
         
-        private bool band4LowerFieldSpecified;
-        
         private decimal band4UpperField;
-        
-        private bool band4UpperFieldSpecified;
         
         private decimal band5LowerField;
         
-        private bool band5LowerFieldSpecified;
-        
         private decimal band5UpperField;
-        
-        private bool band5UpperFieldSpecified;
         
         private decimal band6LowerField;
         
-        private bool band6LowerFieldSpecified;
-        
         private decimal band6UpperField;
-        
-        private bool band6UpperFieldSpecified;
         
         private decimal band7LowerField;
         
-        private bool band7LowerFieldSpecified;
-        
         private decimal band7UpperField;
-        
-        private bool band7UpperFieldSpecified;
         
         private decimal band8LowerField;
         
-        private bool band8LowerFieldSpecified;
-        
         private decimal band8UpperField;
-        
-        private bool band8UpperFieldSpecified;
         
         private decimal band9LowerField;
         
-        private bool band9LowerFieldSpecified;
-        
         private decimal band9UpperField;
-        
-        private bool band9UpperFieldSpecified;
         
         private decimal band10LowerField;
         
-        private bool band10LowerFieldSpecified;
-        
         private decimal band10UpperField;
-        
-        private bool band10UpperFieldSpecified;
         
         /// <remarks/>
         public decimal Band1Lower {
@@ -2794,17 +2377,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.band1LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band1LowerSpecified {
-            get {
-                return this.band1LowerFieldSpecified;
-            }
-            set {
-                this.band1LowerFieldSpecified = value;
             }
         }
         
@@ -2819,34 +2391,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band1UpperSpecified {
-            get {
-                return this.band1UpperFieldSpecified;
-            }
-            set {
-                this.band1UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band2Lower {
             get {
                 return this.band2LowerField;
             }
             set {
                 this.band2LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band2LowerSpecified {
-            get {
-                return this.band2LowerFieldSpecified;
-            }
-            set {
-                this.band2LowerFieldSpecified = value;
             }
         }
         
@@ -2861,34 +2411,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band2UpperSpecified {
-            get {
-                return this.band2UpperFieldSpecified;
-            }
-            set {
-                this.band2UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band3Lower {
             get {
                 return this.band3LowerField;
             }
             set {
                 this.band3LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band3LowerSpecified {
-            get {
-                return this.band3LowerFieldSpecified;
-            }
-            set {
-                this.band3LowerFieldSpecified = value;
             }
         }
         
@@ -2903,34 +2431,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band3UpperSpecified {
-            get {
-                return this.band3UpperFieldSpecified;
-            }
-            set {
-                this.band3UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band4Lower {
             get {
                 return this.band4LowerField;
             }
             set {
                 this.band4LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band4LowerSpecified {
-            get {
-                return this.band4LowerFieldSpecified;
-            }
-            set {
-                this.band4LowerFieldSpecified = value;
             }
         }
         
@@ -2945,34 +2451,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band4UpperSpecified {
-            get {
-                return this.band4UpperFieldSpecified;
-            }
-            set {
-                this.band4UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band5Lower {
             get {
                 return this.band5LowerField;
             }
             set {
                 this.band5LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band5LowerSpecified {
-            get {
-                return this.band5LowerFieldSpecified;
-            }
-            set {
-                this.band5LowerFieldSpecified = value;
             }
         }
         
@@ -2987,34 +2471,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band5UpperSpecified {
-            get {
-                return this.band5UpperFieldSpecified;
-            }
-            set {
-                this.band5UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band6Lower {
             get {
                 return this.band6LowerField;
             }
             set {
                 this.band6LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band6LowerSpecified {
-            get {
-                return this.band6LowerFieldSpecified;
-            }
-            set {
-                this.band6LowerFieldSpecified = value;
             }
         }
         
@@ -3029,34 +2491,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band6UpperSpecified {
-            get {
-                return this.band6UpperFieldSpecified;
-            }
-            set {
-                this.band6UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band7Lower {
             get {
                 return this.band7LowerField;
             }
             set {
                 this.band7LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band7LowerSpecified {
-            get {
-                return this.band7LowerFieldSpecified;
-            }
-            set {
-                this.band7LowerFieldSpecified = value;
             }
         }
         
@@ -3071,34 +2511,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band7UpperSpecified {
-            get {
-                return this.band7UpperFieldSpecified;
-            }
-            set {
-                this.band7UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band8Lower {
             get {
                 return this.band8LowerField;
             }
             set {
                 this.band8LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band8LowerSpecified {
-            get {
-                return this.band8LowerFieldSpecified;
-            }
-            set {
-                this.band8LowerFieldSpecified = value;
             }
         }
         
@@ -3113,34 +2531,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band8UpperSpecified {
-            get {
-                return this.band8UpperFieldSpecified;
-            }
-            set {
-                this.band8UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band9Lower {
             get {
                 return this.band9LowerField;
             }
             set {
                 this.band9LowerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band9LowerSpecified {
-            get {
-                return this.band9LowerFieldSpecified;
-            }
-            set {
-                this.band9LowerFieldSpecified = value;
             }
         }
         
@@ -3155,17 +2551,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band9UpperSpecified {
-            get {
-                return this.band9UpperFieldSpecified;
-            }
-            set {
-                this.band9UpperFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band10Lower {
             get {
                 return this.band10LowerField;
@@ -3176,34 +2561,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band10LowerSpecified {
-            get {
-                return this.band10LowerFieldSpecified;
-            }
-            set {
-                this.band10LowerFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Band10Upper {
             get {
                 return this.band10UpperField;
             }
             set {
                 this.band10UpperField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Band10UpperSpecified {
-            get {
-                return this.band10UpperFieldSpecified;
-            }
-            set {
-                this.band10UpperFieldSpecified = value;
             }
         }
     }
@@ -3224,17 +2587,11 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsNAPTestTypeType testTypeField;
         
-        private bool testTypeFieldSpecified;
-        
         private AUCodeSetsNAPTestDomainType domainField;
-        
-        private bool domainFieldSpecified;
         
         private string testYearField;
         
         private int stagesCountField;
-        
-        private bool stagesCountFieldSpecified;
         
         private DomainBandsContainerType domainBandsField;
         
@@ -3283,34 +2640,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TestTypeSpecified {
-            get {
-                return this.testTypeFieldSpecified;
-            }
-            set {
-                this.testTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public AUCodeSetsNAPTestDomainType Domain {
             get {
                 return this.domainField;
             }
             set {
                 this.domainField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DomainSpecified {
-            get {
-                return this.domainFieldSpecified;
-            }
-            set {
-                this.domainFieldSpecified = value;
             }
         }
         
@@ -3332,17 +2667,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.stagesCountField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StagesCountSpecified {
-            get {
-                return this.stagesCountFieldSpecified;
-            }
-            set {
-                this.stagesCountFieldSpecified = value;
             }
         }
         
@@ -3377,8 +2701,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsYearLevelCodeType codeField;
         
-        private bool codeFieldSpecified;
-        
         /// <remarks/>
         public AUCodeSetsYearLevelCodeType Code {
             get {
@@ -3386,17 +2708,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
     }
@@ -3609,15 +2920,9 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsAttendanceStatusType attendanceStatusField;
         
-        private bool attendanceStatusFieldSpecified;
-        
         private System.DateTime startTimeField;
         
-        private bool startTimeFieldSpecified;
-        
         private System.DateTime endTimeField;
-        
-        private bool endTimeFieldSpecified;
         
         private System.Nullable<decimal> durationValueField;
         
@@ -3646,17 +2951,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AttendanceStatusSpecified {
-            get {
-                return this.attendanceStatusFieldSpecified;
-            }
-            set {
-                this.attendanceStatusFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
         public System.DateTime StartTime {
             get {
@@ -3668,17 +2962,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartTimeSpecified {
-            get {
-                return this.startTimeFieldSpecified;
-            }
-            set {
-                this.startTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
         public System.DateTime EndTime {
             get {
@@ -3686,17 +2969,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.endTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool EndTimeSpecified {
-            get {
-                return this.endTimeFieldSpecified;
-            }
-            set {
-                this.endTimeFieldSpecified = value;
             }
         }
         
@@ -3744,8 +3016,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsAttendanceCodeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -3755,17 +3025,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -4196,7 +3455,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool currencyFieldSpecified;
         
-        private string valueField;
+        private decimal valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -4222,7 +3481,7 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        public decimal Value {
             get {
                 return this.valueField;
             }
@@ -5045,7 +4304,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool dateOfOverrideFieldSpecified;
         
-        private string valueField;
+        private AUCodeSetsYesOrNoCategoryType valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="date")]
@@ -5071,7 +4330,7 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        public AUCodeSetsYesOrNoCategoryType Value {
             get {
                 return this.valueField;
             }
@@ -5090,8 +4349,6 @@ namespace Sif.Specification.DataModel.Au {
     public partial class ActivityTimeType {
         
         private System.DateTime creationDateField;
-        
-        private bool creationDateFieldSpecified;
         
         private ActivityTimeTypeDuration durationField;
         
@@ -5115,17 +4372,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.creationDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CreationDateSpecified {
-            get {
-                return this.creationDateFieldSpecified;
-            }
-            set {
-                this.creationDateFieldSpecified = value;
             }
         }
         
@@ -5217,7 +4463,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private ActivityTimeTypeDurationUnits unitsField;
         
-        private string valueField;
+        private uint valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -5232,7 +4478,7 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        public uint Value {
             get {
                 return this.valueField;
             }
@@ -5518,8 +4764,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsReceivingLocationOfInstructionType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -5529,17 +4773,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -5616,8 +4849,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsAustralianStandardClassificationOfLanguagesASCLType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -5627,17 +4858,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -7687,8 +6907,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsMediumOfInstructionType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -7698,17 +6916,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -7826,8 +7033,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsActivityInvolvementCodeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -7837,17 +7042,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -9423,8 +8617,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsRelationshipToStudentType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -9434,17 +8626,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -11769,11 +10950,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal latitudeField;
         
-        private bool latitudeFieldSpecified;
-        
         private decimal longitudeField;
-        
-        private bool longitudeFieldSpecified;
         
         /// <remarks/>
         public decimal Latitude {
@@ -11786,34 +10963,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LatitudeSpecified {
-            get {
-                return this.latitudeFieldSpecified;
-            }
-            set {
-                this.latitudeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal Longitude {
             get {
                 return this.longitudeField;
             }
             set {
                 this.longitudeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LongitudeSpecified {
-            get {
-                return this.longitudeFieldSpecified;
-            }
-            set {
-                this.longitudeFieldSpecified = value;
             }
         }
     }
@@ -12294,8 +11449,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsEducationAgencyTypeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -12305,17 +11458,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -13152,7 +12294,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private string descriptionField;
         
-        private string valueField;
+        private byte[] valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
@@ -13188,8 +12330,8 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        [System.Xml.Serialization.XmlTextAttribute(DataType="base64Binary")]
+        public byte[] Value {
             get {
                 return this.valueField;
             }
@@ -13451,7 +12593,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -13548,8 +12690,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string Organization {
@@ -13569,17 +12709,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.dateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
             }
         }
     }
@@ -13669,7 +12798,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -13709,8 +12838,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsACStrandType aCStrandField;
         
-        private bool aCStrandFieldSpecified;
-        
         private SubjectAreaType subjectAreaField;
         
         /// <remarks/>
@@ -13720,17 +12847,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.aCStrandField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ACStrandSpecified {
-            get {
-                return this.aCStrandFieldSpecified;
-            }
-            set {
-                this.aCStrandFieldSpecified = value;
             }
         }
         
@@ -13840,7 +12956,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private string descriptionField;
         
-        private string valueField;
+        private byte[] valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
@@ -13876,8 +12992,8 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        [System.Xml.Serialization.XmlTextAttribute(DataType="base64Binary")]
+        public byte[] Value {
             get {
                 return this.valueField;
             }
@@ -14105,8 +13221,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime creationDateTimeField;
         
-        private bool creationDateTimeFieldSpecified;
-        
         /// <remarks/>
         public CreationUserType CreationUser {
             get {
@@ -14126,17 +13240,6 @@ namespace Sif.Specification.DataModel.Au {
                 this.creationDateTimeField = value;
             }
         }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CreationDateTimeSpecified {
-            get {
-                return this.creationDateTimeFieldSpecified;
-            }
-            set {
-                this.creationDateTimeFieldSpecified = value;
-            }
-        }
     }
     
     /// <remarks/>
@@ -14149,11 +13252,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private AttendanceInfoTypeCountsTowardAttendance countsTowardAttendanceField;
         
-        private bool countsTowardAttendanceFieldSpecified;
-        
         private decimal attendanceValueField;
-        
-        private bool attendanceValueFieldSpecified;
         
         /// <remarks/>
         public AttendanceInfoTypeCountsTowardAttendance CountsTowardAttendance {
@@ -14166,34 +13265,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CountsTowardAttendanceSpecified {
-            get {
-                return this.countsTowardAttendanceFieldSpecified;
-            }
-            set {
-                this.countsTowardAttendanceFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal AttendanceValue {
             get {
                 return this.attendanceValueField;
             }
             set {
                 this.attendanceValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AttendanceValueSpecified {
-            get {
-                return this.attendanceValueFieldSpecified;
-            }
-            set {
-                this.attendanceValueFieldSpecified = value;
             }
         }
     }
@@ -14221,8 +13298,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsCalendarEventType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14232,17 +13307,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -14309,8 +13373,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSets0211ProgramAvailabilityType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14320,17 +13382,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -14403,8 +13454,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private ProgramStatusTypeCode codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14414,17 +13463,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -14480,8 +13518,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSets0792IdentificationProcedureType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14491,17 +13527,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -14566,8 +13591,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsProgramFundingSourceCodeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14577,17 +13600,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -14776,8 +13788,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsPublicSchoolCatchmentStatusType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14787,17 +13797,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -14846,8 +13845,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsExitWithdrawalTypeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -14857,17 +13854,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -15036,8 +14022,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsExitWithdrawalStatusType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -15047,17 +14031,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -15106,8 +14079,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsEntryTypeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -15117,17 +14088,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -15299,8 +14259,6 @@ namespace Sif.Specification.DataModel.Au {
         private string classCodeField;
         
         private AUCodeSetsSchoolEnrollmentTypeType membershipTypeField;
-        
-        private bool membershipTypeFieldSpecified;
         
         private System.Nullable<AUCodeSetsFFPOSStatusCodeType> fFPOSField;
         
@@ -15603,17 +14561,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.membershipTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MembershipTypeSpecified {
-            get {
-                return this.membershipTypeFieldSpecified;
-            }
-            set {
-                this.membershipTypeFieldSpecified = value;
             }
         }
         
@@ -15996,8 +14943,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private uint preferenceNumberField;
         
-        private bool preferenceNumberFieldSpecified;
-        
         private string householdContactIdField;
         
         private string householdSalutationField;
@@ -16015,17 +14960,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.preferenceNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool PreferenceNumberSpecified {
-            get {
-                return this.preferenceNumberFieldSpecified;
-            }
-            set {
-                this.preferenceNumberFieldSpecified = value;
             }
         }
         
@@ -16212,8 +15146,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string Type {
@@ -16235,17 +15167,6 @@ namespace Sif.Specification.DataModel.Au {
                 this.dateField = value;
             }
         }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
-            }
-        }
     }
     
     /// <remarks/>
@@ -16258,8 +15179,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsAustralianStandardClassificationOfReligiousGroupsASCRGType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -16269,17 +15188,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -16864,8 +15772,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsDwellingArrangementType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -16875,17 +15781,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -16998,8 +15893,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsAustralianStandardClassificationOfLanguagesASCLType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         private System.Nullable<AUCodeSetsLanguageTypeType> languageTypeField;
@@ -17015,17 +15908,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -17123,8 +16005,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsEnglishProficiencyType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -17134,17 +16014,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -19433,8 +18302,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsStaffActivityType codeField;
         
-        private bool codeFieldSpecified;
-        
         private OtherCodeListTypeOtherCode[] otherCodeListField;
         
         /// <remarks/>
@@ -19444,17 +18311,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -20243,8 +19099,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private uint preferenceNumberField;
         
-        private bool preferenceNumberFieldSpecified;
-        
         private string subjectLocalIdField;
         
         private string timeTableSubjectRefIdField;
@@ -20256,17 +19110,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.preferenceNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool PreferenceNumberSpecified {
-            get {
-                return this.preferenceNumberFieldSpecified;
-            }
-            set {
-                this.preferenceNumberFieldSpecified = value;
             }
         }
         
@@ -20378,7 +19221,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -20592,8 +19435,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateTimeField;
         
-        private bool dateTimeFieldSpecified;
-        
         private LifeCycleTypeCreatedCreator[] creatorsField;
         
         /// <remarks/>
@@ -20603,17 +19444,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.dateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateTimeSpecified {
-            get {
-                return this.dateTimeFieldSpecified;
-            }
-            set {
-                this.dateTimeFieldSpecified = value;
             }
         }
         
@@ -20677,8 +19507,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateTimeField;
         
-        private bool dateTimeFieldSpecified;
-        
         private string descriptionField;
         
         /// <remarks/>
@@ -20699,17 +19527,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.dateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateTimeSpecified {
-            get {
-                return this.dateTimeFieldSpecified;
-            }
-            set {
-                this.dateTimeFieldSpecified = value;
             }
         }
         
@@ -20752,8 +19569,6 @@ namespace Sif.Specification.DataModel.Au {
         private TimeElementTypeSpanGap[] spanGapsField;
         
         private bool isCurrentField;
-        
-        private bool isCurrentFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
@@ -20862,17 +19677,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.isCurrentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool IsCurrentSpecified {
-            get {
-                return this.isCurrentFieldSpecified;
-            }
-            set {
-                this.isCurrentFieldSpecified = value;
             }
         }
     }
@@ -21097,8 +19901,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsYearLevelCodeType yearField;
         
-        private bool yearFieldSpecified;
-        
         private string enrollmentField;
         
         /// <remarks/>
@@ -21108,17 +19910,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.yearField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool YearSpecified {
-            get {
-                return this.yearFieldSpecified;
-            }
-            set {
-                this.yearFieldSpecified = value;
             }
         }
         
@@ -21151,8 +19942,6 @@ namespace Sif.Specification.DataModel.Au {
         private bool campusTypeFieldSpecified;
         
         private AUCodeSetsYesOrNoCategoryType adminStatusField;
-        
-        private bool adminStatusFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
@@ -21205,17 +19994,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.adminStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AdminStatusSpecified {
-            get {
-                return this.adminStatusFieldSpecified;
-            }
-            set {
-                this.adminStatusFieldSpecified = value;
             }
         }
     }
@@ -21433,7 +20211,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -28350,7 +27128,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -28511,7 +27289,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -29058,8 +27836,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal valueField;
         
-        private bool valueFieldSpecified;
-        
         private SIF_MetadataType sIF_MetadataField;
         
         private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
@@ -29117,17 +27893,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.valueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ValueSpecified {
-            get {
-                return this.valueFieldSpecified;
-            }
-            set {
-                this.valueFieldSpecified = value;
             }
         }
         
@@ -29313,8 +28078,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsResourceUsageContentTypeType codeField;
         
-        private bool codeFieldSpecified;
-        
         private string localDescriptionField;
         
         /// <remarks/>
@@ -29324,17 +28087,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CodeSpecified {
-            get {
-                return this.codeFieldSpecified;
-            }
-            set {
-                this.codeFieldSpecified = value;
             }
         }
         
@@ -29428,8 +28180,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime startDateField;
         
-        private bool startDateFieldSpecified;
-        
         private System.Nullable<System.DateTime> endDateField;
         
         private bool endDateFieldSpecified;
@@ -29457,17 +28207,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.startDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartDateSpecified {
-            get {
-                return this.startDateFieldSpecified;
-            }
-            set {
-                this.startDateFieldSpecified = value;
             }
         }
         
@@ -29539,7 +28278,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -29851,8 +28590,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsYesOrNoCategoryType primaryAssignmentField;
         
-        private bool primaryAssignmentFieldSpecified;
-        
         private System.Nullable<System.DateTime> jobStartDateField;
         
         private bool jobStartDateFieldSpecified;
@@ -29944,17 +28681,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.primaryAssignmentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool PrimaryAssignmentSpecified {
-            get {
-                return this.primaryAssignmentFieldSpecified;
-            }
-            set {
-                this.primaryAssignmentFieldSpecified = value;
             }
         }
         
@@ -31004,19 +29730,13 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsSchoolEnrollmentTypeType membershipTypeField;
         
-        private bool membershipTypeFieldSpecified;
-        
         private string localIdField;
         
         private AUCodeSetsEnrollmentTimeFrameType timeFrameField;
         
-        private bool timeFrameFieldSpecified;
-        
         private string schoolYearField;
         
         private System.DateTime entryDateField;
-        
-        private bool entryDateFieldSpecified;
         
         private StudentEntryContainerType entryTypeField;
         
@@ -31121,17 +29841,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MembershipTypeSpecified {
-            get {
-                return this.membershipTypeFieldSpecified;
-            }
-            set {
-                this.membershipTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
         public string LocalId {
             get {
@@ -31149,17 +29858,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.timeFrameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TimeFrameSpecified {
-            get {
-                return this.timeFrameFieldSpecified;
-            }
-            set {
-                this.timeFrameFieldSpecified = value;
             }
         }
         
@@ -31182,17 +29880,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.entryDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool EntryDateSpecified {
-            get {
-                return this.entryDateFieldSpecified;
-            }
-            set {
-                this.entryDateFieldSpecified = value;
             }
         }
         
@@ -31627,7 +30314,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -31672,7 +30359,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -31717,7 +30404,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -31762,7 +30449,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -32046,8 +30733,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime studentParticipationAsOfDateField;
         
-        private bool studentParticipationAsOfDateFieldSpecified;
-        
         private System.Nullable<AUCodeSetsStudentFamilyProgramTypeType> programTypeField;
         
         private bool programTypeFieldSpecified;
@@ -32153,17 +30838,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.studentParticipationAsOfDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StudentParticipationAsOfDateSpecified {
-            get {
-                return this.studentParticipationAsOfDateFieldSpecified;
-            }
-            set {
-                this.studentParticipationAsOfDateFieldSpecified = value;
             }
         }
         
@@ -32872,7 +31546,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -33053,7 +31727,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -33191,8 +31865,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         private string calendarSummaryRefIdField;
         
         private string schoolInfoRefIdField;
@@ -33225,17 +31897,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.dateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
             }
         }
         
@@ -33415,8 +32076,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private uint daysInSessionField;
         
-        private bool daysInSessionFieldSpecified;
-        
         private System.Nullable<System.DateTime> startDateField;
         
         private bool startDateFieldSpecified;
@@ -33502,17 +32161,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.daysInSessionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DaysInSessionSpecified {
-            get {
-                return this.daysInSessionFieldSpecified;
-            }
-            set {
-                this.daysInSessionFieldSpecified = value;
             }
         }
         
@@ -33746,11 +32394,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime startDateField;
         
-        private bool startDateFieldSpecified;
-        
         private System.DateTime endDateField;
-        
-        private bool endDateFieldSpecified;
         
         private System.Nullable<uint> startDayField;
         
@@ -33766,23 +32410,15 @@ namespace Sif.Specification.DataModel.Au {
         
         private decimal daysAttendedField;
         
-        private bool daysAttendedFieldSpecified;
-        
         private decimal excusedAbsencesField;
         
-        private bool excusedAbsencesFieldSpecified;
-        
         private decimal unexcusedAbsencesField;
-        
-        private bool unexcusedAbsencesFieldSpecified;
         
         private System.Nullable<decimal> daysTardyField;
         
         private bool daysTardyFieldSpecified;
         
         private decimal daysInMembershipField;
-        
-        private bool daysInMembershipFieldSpecified;
         
         private SIF_MetadataType sIF_MetadataField;
         
@@ -33835,17 +32471,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartDateSpecified {
-            get {
-                return this.startDateFieldSpecified;
-            }
-            set {
-                this.startDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
         public System.DateTime EndDate {
             get {
@@ -33853,17 +32478,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.endDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool EndDateSpecified {
-            get {
-                return this.endDateFieldSpecified;
-            }
-            set {
-                this.endDateFieldSpecified = value;
             }
         }
         
@@ -33944,17 +32558,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DaysAttendedSpecified {
-            get {
-                return this.daysAttendedFieldSpecified;
-            }
-            set {
-                this.daysAttendedFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal ExcusedAbsences {
             get {
                 return this.excusedAbsencesField;
@@ -33965,34 +32568,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ExcusedAbsencesSpecified {
-            get {
-                return this.excusedAbsencesFieldSpecified;
-            }
-            set {
-                this.excusedAbsencesFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal UnexcusedAbsences {
             get {
                 return this.unexcusedAbsencesField;
             }
             set {
                 this.unexcusedAbsencesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool UnexcusedAbsencesSpecified {
-            get {
-                return this.unexcusedAbsencesFieldSpecified;
-            }
-            set {
-                this.unexcusedAbsencesFieldSpecified = value;
             }
         }
         
@@ -34025,17 +32606,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.daysInMembershipField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DaysInMembershipSpecified {
-            get {
-                return this.daysInMembershipFieldSpecified;
-            }
-            set {
-                this.daysInMembershipFieldSpecified = value;
             }
         }
         
@@ -34112,8 +32682,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         private string schoolYearField;
         
         private System.Nullable<AUCodeSetsDayValueCodeType> dayValueField;
@@ -34123,8 +32691,6 @@ namespace Sif.Specification.DataModel.Au {
         private AttendanceCodeType attendanceCodeField;
         
         private AUCodeSetsAttendanceStatusType attendanceStatusField;
-        
-        private bool attendanceStatusFieldSpecified;
         
         private System.Nullable<System.DateTime> timeInField;
         
@@ -34180,17 +32746,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="gYear")]
         public string SchoolYear {
             get {
@@ -34240,17 +32795,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.attendanceStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AttendanceStatusSpecified {
-            get {
-                return this.attendanceStatusFieldSpecified;
-            }
-            set {
-                this.attendanceStatusFieldSpecified = value;
             }
         }
         
@@ -34430,8 +32974,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         private string sessionInfoRefIdField;
         
         private string scheduledActivityRefIdField;
@@ -34449,8 +32991,6 @@ namespace Sif.Specification.DataModel.Au {
         private AttendanceCodeType attendanceCodeField;
         
         private AUCodeSetsAttendanceStatusType attendanceStatusField;
-        
-        private bool attendanceStatusFieldSpecified;
         
         private string schoolYearField;
         
@@ -34494,17 +33034,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.dateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
             }
         }
         
@@ -34602,17 +33131,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.attendanceStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AttendanceStatusSpecified {
-            get {
-                return this.attendanceStatusFieldSpecified;
-            }
-            set {
-                this.attendanceStatusFieldSpecified = value;
             }
         }
         
@@ -34739,8 +33257,6 @@ namespace Sif.Specification.DataModel.Au {
         private string periodIdField;
         
         private System.DateTime sessionDateField;
-        
-        private bool sessionDateFieldSpecified;
         
         private System.Nullable<System.DateTime> startTimeField;
         
@@ -34893,17 +33409,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool SessionDateSpecified {
-            get {
-                return this.sessionDateFieldSpecified;
-            }
-            set {
-                this.sessionDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time", IsNullable=true)]
         public System.Nullable<System.DateTime> StartTime {
             get {
@@ -35044,8 +33549,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private LearningStandardDocumentTypeSource sourceField;
         
-        private bool sourceFieldSpecified;
-        
         private string[] organizationsField;
         
         private string[] authorsField;
@@ -35055,8 +33558,6 @@ namespace Sif.Specification.DataModel.Au {
         private ACStrandSubjectAreaType[] subjectAreasField;
         
         private LearningStandardDocumentTypeDocumentStatus documentStatusField;
-        
-        private bool documentStatusFieldSpecified;
         
         private System.Nullable<System.DateTime> documentDateField;
         
@@ -35136,17 +33637,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool SourceSpecified {
-            get {
-                return this.sourceFieldSpecified;
-            }
-            set {
-                this.sourceFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Organization", DataType="normalizedString", IsNullable=false)]
         public string[] Organizations {
             get {
@@ -35198,17 +33688,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.documentStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DocumentStatusSpecified {
-            get {
-                return this.documentStatusFieldSpecified;
-            }
-            set {
-                this.documentStatusFieldSpecified = value;
             }
         }
         
@@ -35754,8 +34233,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private CountryType countryField;
         
-        private bool countryFieldSpecified;
-        
         private string stateProvinceField;
         
         private string settingBodyNameField;
@@ -35767,17 +34244,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.countryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CountrySpecified {
-            get {
-                return this.countryFieldSpecified;
-            }
-            set {
-                this.countryFieldSpecified = value;
             }
         }
         
@@ -35814,8 +34280,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private uint numberField;
         
-        private bool numberFieldSpecified;
-        
         private string descriptionField;
         
         /// <remarks/>
@@ -35825,17 +34289,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.numberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool NumberSpecified {
-            get {
-                return this.numberFieldSpecified;
-            }
-            set {
-                this.numberFieldSpecified = value;
             }
         }
         
@@ -36000,7 +34453,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -36743,11 +35196,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private uint daysPerCycleField;
         
-        private bool daysPerCycleFieldSpecified;
-        
         private uint periodsPerDayField;
-        
-        private bool periodsPerDayFieldSpecified;
         
         private System.Nullable<uint> teachingPeriodsPerDayField;
         
@@ -36832,34 +35281,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DaysPerCycleSpecified {
-            get {
-                return this.daysPerCycleFieldSpecified;
-            }
-            set {
-                this.daysPerCycleFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public uint PeriodsPerDay {
             get {
                 return this.periodsPerDayField;
             }
             set {
                 this.periodsPerDayField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool PeriodsPerDaySpecified {
-            get {
-                return this.periodsPerDayFieldSpecified;
-            }
-            set {
-                this.periodsPerDayFieldSpecified = value;
             }
         }
         
@@ -38268,11 +36695,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime startDateField;
         
-        private bool startDateFieldSpecified;
-        
         private System.DateTime endDateField;
-        
-        private bool endDateFieldSpecified;
         
         private string descriptionField;
         
@@ -38340,17 +36763,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartDateSpecified {
-            get {
-                return this.startDateFieldSpecified;
-            }
-            set {
-                this.startDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
         public System.DateTime EndDate {
             get {
@@ -38358,17 +36770,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.endDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool EndDateSpecified {
-            get {
-                return this.endDateFieldSpecified;
-            }
-            set {
-                this.endDateFieldSpecified = value;
             }
         }
         
@@ -39272,8 +37673,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private IdentityTypeAuthenticationSource authenticationSourceField;
         
-        private bool authenticationSourceFieldSpecified;
-        
         private IdentityAssertionsTypeIdentityAssertion[] identityAssertionsField;
         
         private PasswordListTypePassword[] passwordListField;
@@ -39303,17 +37702,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.authenticationSourceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AuthenticationSourceSpecified {
-            get {
-                return this.authenticationSourceFieldSpecified;
-            }
-            set {
-                this.authenticationSourceFieldSpecified = value;
             }
         }
         
@@ -39411,7 +37799,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -39510,7 +37898,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private string keyNameField;
         
-        private string valueField;
+        private byte[] valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -39535,8 +37923,8 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        [System.Xml.Serialization.XmlTextAttribute(DataType="base64Binary")]
+        public byte[] Value {
             get {
                 return this.valueField;
             }
@@ -40522,7 +38910,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -40644,15 +39032,9 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime activityDateField;
         
-        private bool activityDateFieldSpecified;
-        
         private System.DateTime startTimeField;
         
-        private bool startTimeFieldSpecified;
-        
         private System.DateTime finishTimeField;
-        
-        private bool finishTimeFieldSpecified;
         
         private string cellTypeField;
         
@@ -40755,17 +39137,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ActivityDateSpecified {
-            get {
-                return this.activityDateFieldSpecified;
-            }
-            set {
-                this.activityDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
         public System.DateTime StartTime {
             get {
@@ -40777,17 +39148,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartTimeSpecified {
-            get {
-                return this.startTimeFieldSpecified;
-            }
-            set {
-                this.startTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
         public System.DateTime FinishTime {
             get {
@@ -40795,17 +39155,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.finishTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool FinishTimeSpecified {
-            get {
-                return this.finishTimeFieldSpecified;
-            }
-            set {
-                this.finishTimeFieldSpecified = value;
             }
         }
         
@@ -41085,11 +39434,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime startDateTimeField;
         
-        private bool startDateTimeFieldSpecified;
-        
         private System.DateTime finishDateTimeField;
-        
-        private bool finishDateTimeFieldSpecified;
         
         private string fromPeriodField;
         
@@ -41144,34 +39489,12 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartDateTimeSpecified {
-            get {
-                return this.startDateTimeFieldSpecified;
-            }
-            set {
-                this.startDateTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public System.DateTime FinishDateTime {
             get {
                 return this.finishDateTimeField;
             }
             set {
                 this.finishDateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool FinishDateTimeSpecified {
-            get {
-                return this.finishDateTimeFieldSpecified;
-            }
-            set {
-                this.finishDateTimeFieldSpecified = value;
             }
         }
         
@@ -41311,7 +39634,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -41539,7 +39862,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -41607,15 +39930,11 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime billingDateField;
         
-        private bool billingDateFieldSpecified;
-        
         private string transactionDescriptionField;
         
         private DebitOrCreditAmountType billedAmountField;
         
         private InvoiceTypeLedger ledgerField;
-        
-        private bool ledgerFieldSpecified;
         
         private string chargedLocationInfoRefIdField;
         
@@ -41690,17 +40009,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BillingDateSpecified {
-            get {
-                return this.billingDateFieldSpecified;
-            }
-            set {
-                this.billingDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string TransactionDescription {
             get {
@@ -41728,17 +40036,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.ledgerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LedgerSpecified {
-            get {
-                return this.ledgerFieldSpecified;
-            }
-            set {
-                this.ledgerFieldSpecified = value;
             }
         }
         
@@ -41990,7 +40287,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -42074,15 +40371,9 @@ namespace Sif.Specification.DataModel.Au {
         
         private FinancialAccountTypeClassType classTypeField;
         
-        private bool classTypeFieldSpecified;
-        
         private System.DateTime creationDateField;
         
-        private bool creationDateFieldSpecified;
-        
         private System.DateTime creationTimeField;
-        
-        private bool creationTimeFieldSpecified;
         
         private SIF_MetadataType sIF_MetadataField;
         
@@ -42156,17 +40447,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ClassTypeSpecified {
-            get {
-                return this.classTypeFieldSpecified;
-            }
-            set {
-                this.classTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
         public System.DateTime CreationDate {
             get {
@@ -42178,17 +40458,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CreationDateSpecified {
-            get {
-                return this.creationDateFieldSpecified;
-            }
-            set {
-                this.creationDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
         public System.DateTime CreationTime {
             get {
@@ -42196,17 +40465,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.creationTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CreationTimeSpecified {
-            get {
-                return this.creationTimeFieldSpecified;
-            }
-            set {
-                this.creationTimeFieldSpecified = value;
             }
         }
         
@@ -42298,8 +40556,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private ChargedLocationInfoTypeLocationType locationTypeField;
         
-        private bool locationTypeFieldSpecified;
-        
         private string siteCategoryField;
         
         private string nameField;
@@ -42331,17 +40587,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.locationTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LocationTypeSpecified {
-            get {
-                return this.locationTypeFieldSpecified;
-            }
-            set {
-                this.locationTypeFieldSpecified = value;
             }
         }
         
@@ -42528,8 +40773,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private PaymentReceiptTypeTransactionType transactionTypeField;
         
-        private bool transactionTypeFieldSpecified;
-        
         private string invoiceRefIdField;
         
         private string vendorInfoRefIdField;
@@ -42539,8 +40782,6 @@ namespace Sif.Specification.DataModel.Au {
         private string chargedLocationInfoRefIdField;
         
         private System.DateTime transactionDateField;
-        
-        private bool transactionDateFieldSpecified;
         
         private DebitOrCreditAmountType transactionAmountField;
         
@@ -42577,17 +40818,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.transactionTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TransactionTypeSpecified {
-            get {
-                return this.transactionTypeFieldSpecified;
-            }
-            set {
-                this.transactionTypeFieldSpecified = value;
             }
         }
         
@@ -42643,17 +40873,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.transactionDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TransactionDateSpecified {
-            get {
-                return this.transactionDateFieldSpecified;
-            }
-            set {
-                this.transactionDateFieldSpecified = value;
             }
         }
         
@@ -43606,7 +41825,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -43795,7 +42014,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
         public string Value {
             get {
                 return this.valueField;
@@ -43863,8 +42082,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         private string schoolYearField;
         
         private AttendanceTimeType[] attendanceTimesField;
@@ -43905,17 +42122,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.dateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
             }
         }
         
@@ -44018,8 +42224,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private uint pointsPossibleField;
         
-        private bool pointsPossibleFieldSpecified;
-        
         private System.Nullable<System.DateTime> createDateField;
         
         private bool createDateFieldSpecified;
@@ -44095,17 +42299,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.pointsPossibleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool PointsPossibleSpecified {
-            get {
-                return this.pointsPossibleFieldSpecified;
-            }
-            set {
-                this.pointsPossibleFieldSpecified = value;
             }
         }
         
@@ -44505,8 +42698,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsSchoolSectorCodeType schoolSectorField;
         
-        private bool schoolSectorFieldSpecified;
-        
         private System.Nullable<AUCodeSetsSchoolSystemType> systemField;
         
         private bool systemFieldSpecified;
@@ -44523,19 +42714,13 @@ namespace Sif.Specification.DataModel.Au {
         
         private AUCodeSetsNAPParticipationCodeType participationCodeField;
         
-        private bool participationCodeFieldSpecified;
-        
         private string participationTextField;
         
         private string deviceField;
         
         private System.DateTime dateField;
         
-        private bool dateFieldSpecified;
-        
         private System.DateTime startTimeField;
-        
-        private bool startTimeFieldSpecified;
         
         private string lapsedTimeTestField;
         
@@ -44644,17 +42829,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool SchoolSectorSpecified {
-            get {
-                return this.schoolSectorFieldSpecified;
-            }
-            set {
-                this.schoolSectorFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public System.Nullable<AUCodeSetsSchoolSystemType> System {
             get {
@@ -44742,17 +42916,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ParticipationCodeSpecified {
-            get {
-                return this.participationCodeFieldSpecified;
-            }
-            set {
-                this.participationCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string ParticipationText {
             get {
@@ -44786,17 +42949,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
         public System.DateTime StartTime {
             get {
@@ -44804,17 +42956,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.startTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StartTimeSpecified {
-            get {
-                return this.startTimeFieldSpecified;
-            }
-            set {
-                this.startTimeFieldSpecified = value;
             }
         }
         
@@ -45643,8 +43784,6 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool reportExclusionFlagField;
         
-        private bool reportExclusionFlagFieldSpecified;
-        
         private string calibrationSampleFlagField;
         
         private string equatingSampleFlagField;
@@ -45678,17 +43817,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.reportExclusionFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ReportExclusionFlagSpecified {
-            get {
-                return this.reportExclusionFlagFieldSpecified;
-            }
-            set {
-                this.reportExclusionFlagFieldSpecified = value;
             }
         }
         
