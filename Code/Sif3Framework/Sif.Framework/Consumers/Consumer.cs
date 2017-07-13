@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Query;
@@ -27,7 +26,6 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -42,7 +40,7 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
     public class Consumer<TSingle, TMultiple, TPrimaryKey> : IConsumer<TSingle, TMultiple, TPrimaryKey> where TSingle : ISifRefId<TPrimaryKey>
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Environment environmentTemplate;
         private IRegistrationService registrationService;

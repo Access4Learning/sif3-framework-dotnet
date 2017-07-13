@@ -35,8 +35,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("3.2.1.0")]
 [assembly: AssemblyFileVersion("3.2.1.0")]
 
-// Configure log4net using the .config file
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-
 // Make types and members with internal scope visible to the assembly containing unit tests.
-[assembly: InternalsVisibleToAttribute("Sif.Framework.Tests")]
+[assembly: InternalsVisibleTo("Sif.Framework.Tests")]

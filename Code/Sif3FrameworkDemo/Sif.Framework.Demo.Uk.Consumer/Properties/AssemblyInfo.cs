@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -34,6 +33,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("3.2.1.0")]
 [assembly: AssemblyFileVersion("3.2.1.0")]
-
-// Configure log4net using the .config file
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]

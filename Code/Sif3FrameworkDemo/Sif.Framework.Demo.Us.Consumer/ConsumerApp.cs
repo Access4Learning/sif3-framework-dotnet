@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Demo.Us.Consumer.Consumers;
 using Sif.Framework.Demo.Us.Consumer.Models;
 using Sif.Framework.Utils;
@@ -22,14 +21,13 @@ using Sif.Specification.DataModel.Us;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Sif.Framework.Demo.Us.Consumer
 {
 
     class ConsumerApp
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         void RunStudentConsumer()
         {
@@ -80,9 +78,9 @@ namespace Sif.Framework.Demo.Us.Consumer
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                if (log.IsErrorEnabled) log.Error("Error running the Student Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
             finally
             {
@@ -102,7 +100,7 @@ namespace Sif.Framework.Demo.Us.Consumer
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the student Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
 
             Console.WriteLine("Press any key to continue ...");

@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service.Mapper;
@@ -27,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -39,7 +37,7 @@ namespace Sif.Framework.Consumers
     /// </summary>
     public class FunctionalServiceConsumer
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Environment environmentTemplate;
         private RegistrationService registrationService;

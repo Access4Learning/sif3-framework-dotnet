@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service;
@@ -30,7 +29,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -44,7 +42,7 @@ namespace Sif.Framework.Providers
     [RoutePrefix("services")]
     public class FunctionalServiceProvider : ApiController
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Authentication (BROKERED or DIRECT) service against which requests will be checked.

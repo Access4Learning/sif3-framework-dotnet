@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +15,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service;
@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 namespace Sif.Framework.Providers
@@ -34,7 +33,7 @@ namespace Sif.Framework.Providers
     /// </summary>
     public class FunctionalServiceProviderFactory
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly Object locked = new Object();
 
         private static FunctionalServiceProviderFactory factory = null;
