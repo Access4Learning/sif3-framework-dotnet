@@ -105,16 +105,6 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
-        class StatesConverter : ITypeConverter<stateType[], IList<PhaseState>>
-        {
-
-            public IList<PhaseState> Convert(stateType[] source, IList<PhaseState> destination, ResolutionContext context)
-            {
-                return new List<PhaseState>(mapper.Map<stateType[], ICollection<PhaseState>>(source));
-            }
-
-        }
-
         class PhasesConverter : ITypeConverter<phaseType[], IDictionary<string, Phase>>
         {
 
@@ -133,34 +123,16 @@ namespace Sif.Framework.Service.Mapper
 
         }
 
-        class DeleteIdsConverter : ITypeConverter<deleteIdType[], ICollection<string>>
-        {
-
-            public ICollection<string> Convert(deleteIdType[] source, ICollection<string> destination, ResolutionContext context)
-            {
-                ICollection<string> deleteIds = new List<string>();
-
-                foreach (deleteIdType deleteId in source)
-                {
-                    deleteIds.Add(deleteId.id);
-                }
-
-                return deleteIds;
-            }
-
-        }
-
         static MapperFactory()
         {
 
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ApplicationInfo, applicationInfoType>();
-                cfg.CreateMap<applicationInfoType, ApplicationInfo>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore());
+                cfg.CreateMap<ApplicationInfo, applicationInfoType>()
+                    .ReverseMap();
 
                 cfg.CreateMap<InfrastructureService, infrastructureServiceType>()
-                    .ForMember(dest => dest.nameSpecified, opt => opt.UseValue<bool>(true))
+                    .ForMember(dest => dest.nameSpecified, opt => opt.UseValue(true))
                     .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
                 cfg.CreateMap<infrastructureServiceType, InfrastructureService>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -171,17 +143,15 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<Environment, environmentType>()
                     .ForMember(dest => dest.infrastructureServices, opt => opt.MapFrom(src => src.InfrastructureServices.Values))
                     .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values))
-                    .ForMember(dest => dest.typeSpecified, opt => opt.UseValue<bool>(true))
+                    .ForMember(dest => dest.typeSpecified, opt => opt.UseValue(true))
                     .ForMember(dest => dest.fingerprint, opt => opt.Ignore());
                 cfg.CreateMap<environmentType, Environment>();
 
-                cfg.CreateMap<ProductIdentity, productIdentityType>();
-                cfg.CreateMap<productIdentityType, ProductIdentity>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore());
+                cfg.CreateMap<ProductIdentity, productIdentityType>()
+                    .ReverseMap();
 
-                cfg.CreateMap<Property, propertyType>();
-                cfg.CreateMap<propertyType, Property>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore());
+                cfg.CreateMap<Property, propertyType>()
+                    .ReverseMap();
                 cfg.CreateMap<propertyType[], IDictionary<string, Property>>()
                     .ConvertUsing<PropertiesConverter>();
 
@@ -193,9 +163,8 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<provisionedZoneType[], IDictionary<string, ProvisionedZone>>()
                     .ConvertUsing<ProvisionedZonesConverter>();
 
-                cfg.CreateMap<Right, rightType>();
-                cfg.CreateMap<rightType, Right>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore());
+                cfg.CreateMap<Right, rightType>()
+                    .ReverseMap();
                 cfg.CreateMap<rightType[], IDictionary<string, Right>>()
                     .ConvertUsing<RightsConverter>();
 
@@ -216,8 +185,6 @@ namespace Sif.Framework.Service.Mapper
                     .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null));
                 cfg.CreateMap<stateType, PhaseState>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
-                cfg.CreateMap<stateType[], IList<PhaseState>>()
-                    .ConvertUsing<StatesConverter>();
 
                 cfg.CreateMap<Phase, phaseType>()
                     .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights.Values))
@@ -227,8 +194,8 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<phaseType[], IDictionary<string, Phase>>()
                     .ConvertUsing<PhasesConverter>();
 
-                cfg.CreateMap<Initialization, initializationType>();
-                cfg.CreateMap<initializationType, Initialization>();
+                cfg.CreateMap<Initialization, initializationType>()
+                    .ReverseMap();
 
                 cfg.CreateMap<Job, jobType>()
                     .ForMember(dest => dest.phases, opt => opt.MapFrom(src => src.Phases.Values))
@@ -239,17 +206,17 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<jobType, Job>()
                     .ForMember(dest => dest.Timeout, opt => opt.MapFrom(src => XmlConvert.ToTimeSpan(src.timeout)));
 
-                cfg.CreateMap<ResponseError, errorType>();
-                cfg.CreateMap<errorType, ResponseError>();
+                cfg.CreateMap<ResponseError, errorType>()
+                    .ReverseMap();
 
-                cfg.CreateMap<CreateStatus, createType>();
-                cfg.CreateMap<createType, CreateStatus>();
+                cfg.CreateMap<CreateStatus, createType>()
+                    .ReverseMap();
 
-                cfg.CreateMap<DeleteStatus, deleteStatus>();
-                cfg.CreateMap<deleteStatus, DeleteStatus>();
+                cfg.CreateMap<DeleteStatus, deleteStatus>()
+                    .ReverseMap();
 
-                cfg.CreateMap<UpdateStatus, updateType>();
-                cfg.CreateMap<updateType, UpdateStatus>();
+                cfg.CreateMap<UpdateStatus, updateType>()
+                    .ReverseMap();
 
                 cfg.CreateMap<MultipleCreateResponse, createResponseType>()
                     .ForMember(dest => dest.creates, opt => opt.MapFrom(src => src.StatusRecords));
@@ -267,7 +234,7 @@ namespace Sif.Framework.Service.Mapper
                     .ForMember(dest => dest.StatusRecords, opt => opt.MapFrom(src => src.updates));
 
                 cfg.CreateMap<deleteIdType[], ICollection<string>>()
-                    .ConvertUsing<DeleteIdsConverter>();
+                    .ReverseMap();
 
                 cfg.CreateMap<deleteRequestType, MultipleDeleteRequest>()
                     .ForMember(dest => dest.RefIds, opt => opt.MapFrom(src => src.deletes));
