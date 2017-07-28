@@ -326,3 +326,12 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **June 15, 2017 - 3.2.1.2 Updated to use strict version of AU Data Model 3.4.1**
 
 - Updated the SIF Framework to use the "strict" version of the SIF AU Data Model (3.4.1).
+
+**July 28, 2017 - 3.2.1.3 Resolve issues with mustUseAdvisory implementation**
+
+- Incorporate slf4net into the framework to enable the ability to choose different logging libraries.
+- Fix an issue with the SIF Specification 3.2.1 namespace in unit testing.
+- Updated to the latest version of AutoMapper.
+- Fix demo Provider run scripts to take into consideration pre-Visual Studio 2015 development environments.
+- Update the logic associated with the mustUseAdvisory flag in Providers.
+- Added a mustUseAdvisory parameter to the Create() methods for Consumers.
