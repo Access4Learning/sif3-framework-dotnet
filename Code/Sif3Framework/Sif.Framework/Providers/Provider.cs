@@ -108,10 +108,10 @@ namespace Sif.Framework.Providers
                 bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
                 bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
-                if (hasAdvisoryId)
+                if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                 {
 
-                    if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                    if (hasAdvisoryId)
                     {
                         TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
@@ -119,24 +119,15 @@ namespace Sif.Framework.Providers
                     }
                     else
                     {
-                        result = BadRequest("Request failed for object " + typeof(TSingle).Name + " as object ID provided (" + obj.RefId + "), but mustUseAdvisory is not specified or is false.");
+                        result = BadRequest("Request failed for object " + typeof(TSingle).Name + " as object ID is not provided, but mustUseAdvisory is true.");
                     }
 
                 }
                 else
                 {
-
-                    if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
-                    {
-                        result = BadRequest("Request failed for object " + typeof(TSingle).Name + " as object ID is not provided, but mustUseAdvisory is true.");
-                    }
-                    else
-                    {
-                        TSingle createdObject = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
-                        string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
-                        result = Created(uri, createdObject);
-                    }
-
+                    TSingle createdObject = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                    string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
+                    result = Created(uri, createdObject);
                 }
 
             }

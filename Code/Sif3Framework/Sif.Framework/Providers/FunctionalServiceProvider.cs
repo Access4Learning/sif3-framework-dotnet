@@ -91,12 +91,6 @@ namespace Sif.Framework.Providers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Service " + serviceName + " does not handle jobs named " + jobName);
                 }
 
-                if (hasAdvisoryId && !mustUseAdvisory)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request failed for creating job for " + serviceName + " as object ID provided (" + item.id + "), but mustUseAdvisory is not specified or is false.\n" +
-                        !Guid.Empty.ToString().Equals(item.id));
-                }
-
                 if (!hasAdvisoryId && mustUseAdvisory)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request requires use of advisory id, but none has been supplied.");
