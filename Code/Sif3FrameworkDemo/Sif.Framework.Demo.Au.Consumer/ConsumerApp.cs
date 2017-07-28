@@ -93,9 +93,10 @@ namespace Sif.Framework.Demo.Au.Consumer
                 SIF_ExtendedElementsTypeSIF_ExtendedElement[] extendedElements = new SIF_ExtendedElementsTypeSIF_ExtendedElement[] { extendedElement };
                 NameOfRecordType newStudentName = new NameOfRecordType { FamilyName = "Wayne", GivenName = "Bruce", Type = NameOfRecordTypeType.LGL };
                 PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
-                StudentPersonal newStudent = new StudentPersonal { LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
-                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent);
-                if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.PersonInfo.Name.GivenName + " " + newStudent.PersonInfo.Name.FamilyName);
+                string studentID = Guid.NewGuid().ToString();
+                StudentPersonal newStudent = new StudentPersonal { RefId = studentID, LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
+                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
+                if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
 
                 // Create multiple new students.
                 if (log.IsInfoEnabled) log.Info("*** Create multiple new students.");

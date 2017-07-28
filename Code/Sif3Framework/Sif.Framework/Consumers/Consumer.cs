@@ -174,9 +174,9 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TSingle, string, string)">Create</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TSingle, bool?, string, string)">Create</see>
         /// </summary>
-        public virtual TSingle Create(TSingle obj, string zoneId = null, string contextId = null)
+        public virtual TSingle Create(TSingle obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
 
             if (!RegistrationService.Registered)
@@ -186,7 +186,7 @@ namespace Sif.Framework.Consumers
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + "/" + TypeName + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiseSingle(obj);
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
+            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, mustUseAdvisory: mustUseAdvisory);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
@@ -194,9 +194,9 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TMultiple, string, string)">Create</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Create(TMultiple, bool?, string, string)">Create</see>
         /// </summary>
-        public virtual MultipleCreateResponse Create(TMultiple obj, string zoneId = null, string contextId = null)
+        public virtual MultipleCreateResponse Create(TMultiple obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
 
             if (!RegistrationService.Registered)
@@ -206,7 +206,7 @@ namespace Sif.Framework.Consumers
 
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate) + "/" + TypeName + "s" + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiseMultiple(obj);
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
+            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, mustUseAdvisory: mustUseAdvisory);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
             createResponseType createResponseType = SerialiserFactory.GetXmlSerialiser<createResponseType>().Deserialise(xml);

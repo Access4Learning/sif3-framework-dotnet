@@ -58,20 +58,22 @@ namespace Sif.Framework.Consumers
         /// <para>POST /StudentPersonals/StudentPersonal</para>
         /// </summary>
         /// <param name="obj">Object to create.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Created object.</returns>
-        TSingle Create(TSingle obj, string zoneId = null, string contextId = null);
+        TSingle Create(TSingle obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Create multiple objects.
         /// <para>POST /StudentPersonals</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to create.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object created.</returns>
-        MultipleCreateResponse Create(TMultiple obj, string zoneId = null, string contextId = null);
+        MultipleCreateResponse Create(TMultiple obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Retrieve a single object.

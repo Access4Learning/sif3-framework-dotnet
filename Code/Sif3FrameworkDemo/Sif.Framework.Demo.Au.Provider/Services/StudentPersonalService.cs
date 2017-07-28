@@ -115,9 +115,14 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
-            string refId = Guid.NewGuid().ToString();
-            obj.RefId = refId;
-            studentsCache.Add(refId, obj);
+
+            if (!mustUseAdvisory.HasValue || !mustUseAdvisory.Value)
+            {
+                string refId = Guid.NewGuid().ToString();
+                obj.RefId = refId;
+            }
+
+            studentsCache.Add(obj.RefId, obj);
 
             return obj;
         }
