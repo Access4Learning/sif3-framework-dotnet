@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence.NHibernate;
@@ -25,7 +24,6 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Job = Sif.Framework.Model.Infrastructure.Job;
 
 namespace Sif.Framework.Service.Functional
@@ -35,7 +33,8 @@ namespace Sif.Framework.Service.Functional
     /// </summary>
     public abstract class FunctionalService : SifService<jobType, Job>, IFunctionalService
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private GenericRepository<SifObjectBinding, long> bindings;
 
         /// <summary>

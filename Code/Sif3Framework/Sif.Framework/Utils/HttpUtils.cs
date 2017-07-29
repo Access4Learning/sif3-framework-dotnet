@@ -65,6 +65,7 @@ namespace Sif.Framework.Utils
         /// <param name="methodOverride">Overrides the method of the request, e.g. to implement a GET with a payload over a POST request.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <returns>HTTP web request.</returns>
         private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod,
             string url,
@@ -74,7 +75,8 @@ namespace Sif.Framework.Utils
             int? navigationPageSize = null,
             string methodOverride = null,
             string contentTypeOverride = null,
-            string acceptOverride = null)
+            string acceptOverride = null,
+            bool? mustUseAdvisory = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
@@ -123,6 +125,11 @@ namespace Sif.Framework.Utils
             if (!string.IsNullOrWhiteSpace(contentTypeOverride))
             {
                 request.ContentType = contentTypeOverride.Trim();
+            }
+
+            if (mustUseAdvisory.HasValue)
+            {
+                request.Headers.Add(RequestHeader.mustUseAdvisory.ToDescription(), mustUseAdvisory.Value.ToString());
             }
 
             return request;
@@ -224,6 +231,7 @@ namespace Sif.Framework.Utils
         /// <param name="methodOverride">Overrides the method of the request, e.g. to implement a GET with a payload over a POST request.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <returns>Response.</returns>
         private static string RequestWithPayload(RequestMethod requestMethod,
             string url,
@@ -232,9 +240,10 @@ namespace Sif.Framework.Utils
             ServiceType? serviceType = null,
             string methodOverride = null,
             string contentTypeOverride = null,
-            string acceptOverride = null)
+            string acceptOverride = null,
+            bool? mustUseAdvisory = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -377,6 +386,7 @@ namespace Sif.Framework.Utils
         /// <param name="methodOverride">The method that can be used to override the POST, e.g. to issue a GET with a payload.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <returns>Response.</returns>
         public static string PostRequest(string url,
             AuthorisationToken authorisationToken,
@@ -384,9 +394,10 @@ namespace Sif.Framework.Utils
             ServiceType serviceType = ServiceType.OBJECT,
             string methodOverride = null,
             string contentTypeOverride = null,
-            string acceptOverride = null)
+            string acceptOverride = null,
+            bool? mustUseAdvisory = null)
         {
-            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride);
+            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory);
         }
 
         /// <summary>

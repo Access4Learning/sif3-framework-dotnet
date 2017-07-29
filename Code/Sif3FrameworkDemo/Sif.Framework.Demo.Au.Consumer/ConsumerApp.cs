@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Demo.Au.Consumer.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Demo.Au.Consumer.Utils;
@@ -25,14 +24,14 @@ using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
 
     class ConsumerApp
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static Random random = new Random();
 
         private static StudentPersonal CreateStudent()
@@ -94,9 +93,10 @@ namespace Sif.Framework.Demo.Au.Consumer
                 SIF_ExtendedElementsTypeSIF_ExtendedElement[] extendedElements = new SIF_ExtendedElementsTypeSIF_ExtendedElement[] { extendedElement };
                 NameOfRecordType newStudentName = new NameOfRecordType { FamilyName = "Wayne", GivenName = "Bruce", Type = NameOfRecordTypeType.LGL };
                 PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
-                StudentPersonal newStudent = new StudentPersonal { LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
-                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent);
-                if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.PersonInfo.Name.GivenName + " " + newStudent.PersonInfo.Name.FamilyName);
+                string studentID = Guid.NewGuid().ToString();
+                StudentPersonal newStudent = new StudentPersonal { RefId = studentID, LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
+                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
+                if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
 
                 // Create multiple new students.
                 if (log.IsInfoEnabled) log.Info("*** Create multiple new students.");
@@ -271,9 +271,9 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                if (log.IsErrorEnabled) log.Error("Error running the StudentPersonal Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
             finally
             {
@@ -293,7 +293,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the " + SettingsManager.ConsumerSettings.ApplicationKey + "  Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
 
             Console.WriteLine("Press any key to continue ...");

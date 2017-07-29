@@ -70,6 +70,7 @@ namespace Sif.Framework.Providers
 
             try
             {
+                bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
                 foreach (T obj in objs)
                 {
@@ -79,37 +80,26 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
-                        if (hasAdvisoryId)
+                        if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                         {
 
-                            if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                            if (hasAdvisoryId)
                             {
                                 status.id = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                             else
                             {
-                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID provided (" + obj.RefId + "), but mustUseAdvisory is not specified or is false.");
+                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
                                 status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
 
                         }
                         else
                         {
-
-                            if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
-                            {
-                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
-                                status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
-                            }
-                            else
-                            {
-                                status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
-                                status.statusCode = ((int)HttpStatusCode.Created).ToString();
-                            }
-
+                            status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
+                            status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
 
                     }

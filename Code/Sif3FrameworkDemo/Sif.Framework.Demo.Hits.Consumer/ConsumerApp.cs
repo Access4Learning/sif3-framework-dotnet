@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Demo.Hits.Consumer.Consumers;
 using Sif.Framework.Demo.Hits.Consumer.Models;
 using Sif.Framework.Model.Query;
@@ -23,14 +22,13 @@ using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Sif.Framework.Demo.Hits.Consumer
 {
 
     class ConsumerApp
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private List<SchoolInfo> CreateSchools()
         {
@@ -49,7 +47,7 @@ namespace Sif.Framework.Demo.Hits.Consumer
             try
             {
                 // Query all schools.
-                IEnumerable<SchoolInfo> allSchools = schoolInfoConsumer.Query();
+                IEnumerable<SchoolInfo> allSchools = schoolInfoConsumer.Query(1, 10);
 
                 if (log.IsInfoEnabled) log.Info("School count is " + (allSchools == null ? 0 : allSchools.Count()));
 
@@ -116,6 +114,10 @@ namespace Sif.Framework.Demo.Hits.Consumer
                 }
 
             }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the SchoolInfo Consumer against HITS.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
             finally
             {
                 schoolInfoConsumer.Unregister();
@@ -148,9 +150,46 @@ namespace Sif.Framework.Demo.Hits.Consumer
                 }
 
             }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the StaffPersonal Consumer against HITS.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
             finally
             {
                 staffPersonalConsumer.Unregister();
+            }
+
+        }
+
+        void RunStudentPersonalConsumer()
+        {
+            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
+            studentPersonalConsumer.Register();
+
+            try
+            {
+                IEnumerable<StudentPersonal> studentPersonals = studentPersonalConsumer.Query(1, 2);
+
+                if (log.IsInfoEnabled) log.Info("Student count is " + (studentPersonals == null ? 0 : studentPersonals.Count()));
+
+                if (studentPersonals != null)
+                {
+
+                    foreach (StudentPersonal studentPersonal in studentPersonals)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + studentPersonal.PersonInfo.Name.GivenName + " " + studentPersonal.PersonInfo.Name.FamilyName);
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the StudentPersonal Consumer against HITS.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
+            finally
+            {
+                studentPersonalConsumer.Unregister();
             }
 
         }
@@ -163,10 +202,11 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 app.RunSchoolInfoConsumer();
                 app.RunStaffPersonalConsumer();
+                app.RunStudentPersonalConsumer();
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the " + SettingsManager.ConsumerSettings.ApplicationKey + "  Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
 
             Console.WriteLine("Press any key to continue ...");

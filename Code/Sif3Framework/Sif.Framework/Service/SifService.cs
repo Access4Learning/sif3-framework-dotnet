@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Sif.Framework.Service
 {
@@ -30,7 +28,6 @@ namespace Sif.Framework.Service
     /// </summary>
     public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Generic repository.

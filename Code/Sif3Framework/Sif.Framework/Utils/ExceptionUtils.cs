@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ namespace Sif.Framework.Utils
         /// <returns>An appropriate error message.</returns>
         public static string InferErrorResponseMessage(Exception exception)
         {
-            string message = "";
+            string message = exception.GetBaseException().Message;
 
             if (exception != null && exception is WebException)
             {

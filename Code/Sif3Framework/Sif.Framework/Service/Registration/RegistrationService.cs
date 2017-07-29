@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
@@ -25,7 +24,6 @@ using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
-using System.Reflection;
 using System.Xml;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -37,7 +35,7 @@ namespace Sif.Framework.Service.Registration
     /// </summary>
     class RegistrationService : IRegistrationService
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private IAuthorisationTokenService authorisationTokenService;
         private string environmentUrl;
