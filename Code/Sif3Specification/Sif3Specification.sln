@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v1_3", "Sif.Specification.DataModel.Au.v1_3\Sif.Specification.DataModel.Au.v1_3.csproj", "{8AC0406A-EA20-4283-BB4D-36A2182DE2AF}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.Infrastructure.v3_2_1", "Sif.Specification.Infrastructure.v3_2_1\Sif.Specification.Infrastructure.v3_2_1.csproj", "{05A203B1-00FE-4E01-840B-EBCC90AA2B54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v3_4_1", "Sif.Specification.DataModel.Au.v3_4_1\Sif.Specification.DataModel.Au.v3_4_1.csproj", "{AADB3C43-6D91-4DD0-8C21-8989EF6C254B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v3_4_2", "Sif.Specification.DataModel.Au.v3_4_2\Sif.Specification.DataModel.Au.v3_4_2.csproj", "{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{AADB3C43-6D91-4DD0-8C21-8989EF6C254B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AADB3C43-6D91-4DD0-8C21-8989EF6C254B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AADB3C43-6D91-4DD0-8C21-8989EF6C254B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
