@@ -26,17 +26,17 @@ namespace Sif.Framework.Model.Responses
         /// <summary>
         /// Response error (if unsuccessful).
         /// </summary>
-        public ResponseError Error { get; internal set; }
+        public ResponseError Error { get; set; }
 
         /// <summary>
         /// Allocated SIF identifier.
         /// </summary>
-        public string Id { get; internal set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// HTTP status code.
         /// </summary>
-        public string StatusCode { get; internal set; }
+        public string StatusCode { get; set; }
 
     }
 
