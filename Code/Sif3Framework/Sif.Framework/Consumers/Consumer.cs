@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Sif.Framework.Model.Infrastructure;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
@@ -339,11 +340,11 @@ namespace Sif.Framework.Consumers
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.SERVICEPATH, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
             }
             else
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.SERVICEPATH);
             }
 
             return DeserialiseMultiple(xml);

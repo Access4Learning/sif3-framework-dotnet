@@ -28,7 +28,7 @@ namespace Sif.Framework.Model.Responses
         /// <summary>
         /// Status response records.
         /// </summary>
-        public ICollection<TStatus> StatusRecords { get; internal set; }
+        public ICollection<TStatus> StatusRecords { get; set; }
 
     }
 
