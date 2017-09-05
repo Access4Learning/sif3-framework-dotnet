@@ -26,7 +26,7 @@ namespace Sif.Framework.Model.Responses
         /// <summary>
         /// The advisory SIF identifier provided with the create request.
         /// </summary>
-        public string AdvisoryId { get; internal set; }
+        public string AdvisoryId { get; set; }
 
     }
 
