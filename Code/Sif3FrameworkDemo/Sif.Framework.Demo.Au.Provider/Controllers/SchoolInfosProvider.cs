@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Providers;
+using System.Web.Http;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
@@ -27,6 +28,12 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
         public SchoolInfosProvider()
             : base(new SchoolInfoService())
         {
+        }
+
+        [NonAction]
+        public override IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
+        {
+            return base.BroadcastEvents(zoneId, contextId);
         }
 
     }

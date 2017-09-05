@@ -4,7 +4,7 @@
   <authenticationMethod>Basic</authenticationMethod>
   <instanceId></instanceId>
   <userToken></userToken>
-  <consumerName>TemplateDemoProvider</consumerName>
+  <consumerName>TemplateEventsConnector</consumerName>
   <applicationInfo>
     <applicationKey>Sif3DemoEventsConnector</applicationKey>
     <supportedInfrastructureVersion>3.2.1</supportedInfrastructureVersion>

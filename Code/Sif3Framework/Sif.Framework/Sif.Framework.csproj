@@ -290,7 +290,7 @@
       <Minor Include="$(Minor)" />
       <Revision Include="$(Revision)" />
       <Build Include="$(Build)" />
-      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision)\" />
+      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision).$(Build)\" />
     </ItemGroup>
   </Target>
   <PropertyGroup>

@@ -40,9 +40,9 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sif.Framework, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Framework, Version=3.2.1.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 3.2.1\Sif.Framework.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 3.2.1.4\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,9 +85,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="SifFramework-TLS.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="SifFramework.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -37,6 +37,12 @@ namespace Sif.Framework.Demo.Us.Provider.Controllers
             return base.Post(obj);
         }
 
+        [NonAction]
+        public override IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
+        {
+            return base.BroadcastEvents(zoneId, contextId);
+        }
+
     }
 
 }
