@@ -15,7 +15,9 @@
  */
 
 using Sif.Framework.Extensions;
+using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.DataModels;
+using Sif.Framework.Model.Events;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
@@ -25,14 +27,18 @@ using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Providers;
+using Sif.Framework.Service.Registration;
+using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Providers
 {
@@ -42,7 +48,7 @@ namespace Sif.Framework.Providers
     /// </summary>
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
-    public abstract class Provider<TSingle, TMultiple> : ApiController, IProvider<TSingle, TMultiple, string> where TSingle : ISifRefId<string>
+    public abstract class Provider<TSingle, TMultiple> : ApiController, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple> where TSingle : ISifRefId<string>
     {
 
         /// <summary>
@@ -54,6 +60,19 @@ namespace Sif.Framework.Providers
         /// Object service associated with this Provider.
         /// </summary>
         protected IObjectService<TSingle, TMultiple, string> service;
+
+        /// <summary>
+        /// Name of the SIF data model that the Provider is based on, e.g. SchoolInfo, StudentPersonal, etc.
+        /// </summary>
+        protected virtual string TypeName
+        {
+
+            get
+            {
+                return typeof(TSingle).Name;
+            }
+
+        }
 
         /// <summary>
         /// Default constructor that is only available to derived instances of
@@ -783,6 +802,103 @@ namespace Sif.Framework.Providers
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.BroadcastEvents(string, string)">BroadcastEvents</see>
+        /// </summary>
+        [HttpGet]
+        public virtual IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
+        {
+            IEventService<TMultiple> eventService = service as IEventService<TMultiple>;
+            bool eventsSupported = (eventService != null);
+
+            if (!eventsSupported)
+            {
+                return BadRequest("Support for SIF Events has not been implemented.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                IRegistrationService registrationService = RegistrationManager.ProviderRegistrationService;
+
+                if (registrationService is NoRegistrationService)
+                {
+                    result = BadRequest("SIF Events are only supported in a BROKERED environment.");
+                }
+                else
+                {
+                    IEventIterator<TMultiple> eventIterator = eventService.GetEventIterator(zoneId, contextId);
+
+                    if (eventIterator == null)
+                    {
+                        result = BadRequest("SIF Events implementation is not valid.");
+                    }
+                    else
+                    {
+                        // Retrieve the current Authorisation Token.
+                        registrationService.Register();
+                        AuthorisationToken token = registrationService.AuthorisationToken;
+
+                        // Retrieve the EventsConnector endpoint URL.
+                        Environment environmentTemplate = EnvironmentUtils.LoadFromSettings(SettingsManager.ProviderSettings);
+                        string storedSessionToken = SessionsManager.ProviderSessionService.RetrieveSessionToken(
+                            environmentTemplate.ApplicationInfo.ApplicationKey,
+                            environmentTemplate.SolutionId,
+                            environmentTemplate.UserToken,
+                            environmentTemplate.InstanceId);
+                        Environment environment = authService.GetEnvironmentBySessionToken(storedSessionToken);
+                        string url = EnvironmentUtils.ParseServiceUrl(environment, ServiceType.UTILITY, InfrastructureServiceNames.eventsConnector) + "/" + TypeName + "s";
+
+                        while (eventIterator.HasNext())
+                        {
+                            SifEvent<TMultiple> sifEvent = eventIterator.GetNext();
+
+                            NameValueCollection headerFields = new NameValueCollection()
+                            {
+                                { HttpUtils.RequestHeader.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
+                                { HttpUtils.RequestHeader.messageId.ToDescription(), sifEvent.Id.ToString() },
+                                { HttpUtils.RequestHeader.messageType.ToDescription(), "EVENT" },
+                                { HttpUtils.RequestHeader.serviceName.ToDescription(), $"{TypeName}s" }
+                            };
+
+                            switch (sifEvent.EventAction)
+                            {
+                                case EventAction.UPDATE_FULL:
+                                    headerFields.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "FULL");
+                                    break;
+                                case EventAction.UPDATE_PARTIAL:
+                                    headerFields.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "PARTIAL");
+                                    break;
+                            }
+
+                            string body = SerialiseEvents(sifEvent.SifObjects);
+                            string xml = HttpUtils.PostRequest(url, token, body, headerFields: headerFields);
+                        }
+
+                    }
+
+                    result = Ok();
+                }
+
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// <see cref="IEventPayloadSerialisable{TMultiple}.SerialiseEvents(TMultiple)"/>
+        /// </summary>
+        [NonAction]
+        public virtual string SerialiseEvents(TMultiple obj)
+        {
+            return SerialiserFactory.GetXmlSerialiser<TMultiple>().Serialise(obj);
         }
 
     }

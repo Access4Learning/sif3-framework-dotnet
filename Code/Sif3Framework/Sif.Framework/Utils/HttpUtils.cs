@@ -19,6 +19,7 @@ using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -40,7 +41,11 @@ namespace Sif.Framework.Utils
 
         internal enum RequestHeader
         {
+            applicationKey,
             changesSinceMarker,
+            eventAction,
+            messageId,
+            messageType,
             [Description("X-HTTP-Method-Override")]
             methodOverride,
             [Description("methodOverride")]
@@ -48,7 +53,9 @@ namespace Sif.Framework.Utils
             mustUseAdvisory,
             navigationPage,
             navigationPageSize,
-            applicationKey,
+            Replacement,
+            serviceName,
+            serviceType,
             sourceName,
             timestamp
         }
@@ -66,6 +73,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="headerFields">Other header fields that need to be included.</param>
         /// <returns>HTTP web request.</returns>
         private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod,
             string url,
@@ -76,15 +84,17 @@ namespace Sif.Framework.Utils
             string methodOverride = null,
             string contentTypeOverride = null,
             string acceptOverride = null,
-            bool? mustUseAdvisory = null)
+            bool? mustUseAdvisory = null,
+            NameValueCollection headerFields = null)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "application/xml";
             request.Method = requestMethod.ToString();
             request.KeepAlive = false;
             request.Accept = "application/xml";
             request.Headers.Add("Authorization", authorisationToken.Token);
-            request.Headers.Add("timestamp", authorisationToken.Timestamp);
+            request.Headers.Add("timestamp", authorisationToken.Timestamp ?? DateTime.UtcNow.ToString("o"));
 
             if (SettingsManager.ConsumerSettings.CompressPayload)
             {
@@ -130,6 +140,27 @@ namespace Sif.Framework.Utils
             if (mustUseAdvisory.HasValue)
             {
                 request.Headers.Add(RequestHeader.mustUseAdvisory.ToDescription(), mustUseAdvisory.Value.ToString());
+            }
+
+            if (headerFields != null)
+            {
+
+                foreach (string name in headerFields)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        string value = headerFields[name];
+
+                        if (!string.IsNullOrWhiteSpace(value))
+                        {
+                            request.Headers.Add(name.Trim(), value.Trim());
+                        }
+
+                    }
+
+                }
+
             }
 
             return request;
@@ -232,6 +263,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="headerFields">Other header fields that need to be included.</param>
         /// <returns>Response.</returns>
         private static string RequestWithPayload(RequestMethod requestMethod,
             string url,
@@ -241,9 +273,10 @@ namespace Sif.Framework.Utils
             string methodOverride = null,
             string contentTypeOverride = null,
             string acceptOverride = null,
-            bool? mustUseAdvisory = null)
+            bool? mustUseAdvisory = null,
+            NameValueCollection headerFields = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory, headerFields);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -387,6 +420,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="headerFields">Other header fields that need to be included.</param>
         /// <returns>Response.</returns>
         public static string PostRequest(string url,
             AuthorisationToken authorisationToken,
@@ -395,9 +429,10 @@ namespace Sif.Framework.Utils
             string methodOverride = null,
             string contentTypeOverride = null,
             string acceptOverride = null,
-            bool? mustUseAdvisory = null)
+            bool? mustUseAdvisory = null,
+            NameValueCollection headerFields = null)
         {
-            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory);
+            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory, headerFields);
         }
 
         /// <summary>

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.Au.Provider.Models;
-using Sif.Framework.Demo.Au.Provider.Services;
+using Sif.Framework.Demo.EventsConnector.Models;
+using Sif.Framework.Demo.EventsConnector.Services;
 using Sif.Framework.Providers;
 using Sif.Framework.WebApi.ModelBinders;
 using System.Web.Http;
+using System.Collections.Generic;
 
-namespace Sif.Framework.Demo.Au.Provider.Controllers
+namespace Sif.Framework.Demo.EventsConnector.Controllers
 {
 
     public class StudentPersonalsProvider : BasicProvider<StudentPersonal>
     {
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public StudentPersonalsProvider()
             : base(new StudentPersonalService())
@@ -37,10 +39,15 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
             return base.Post(obj, zoneId, contextId);
         }
 
-        [Route("~/api/StudentPersonals/BroadcastEvents")]
-        public override IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
+        public override IHttpActionResult Post(List<StudentPersonal> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            return base.BroadcastEvents(zoneId, contextId);
+
+            foreach (KeyValuePair<string, IEnumerable<string>> nameValues in Request.Headers)
+            {
+                if (log.IsDebugEnabled) log.Debug($"*** Header field is [{nameValues.Key}:{string.Join(",", nameValues.Value)}]");
+            }
+
+            return base.Post(objs, zoneId, contextId);
         }
 
     }

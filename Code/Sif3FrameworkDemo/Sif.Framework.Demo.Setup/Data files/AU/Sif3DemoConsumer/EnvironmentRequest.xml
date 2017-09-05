@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0"?>
 <environment xmlns="http://www.sifassociation.org/infrastructure/3.2.1">
-  <solutionId>Sif3DemoSolution</solutionId>
+  <solutionId>Sif3Framework</solutionId>
   <authenticationMethod>Basic</authenticationMethod>
   <instanceId></instanceId>
   <userToken></userToken>
-  <consumerName>Sif3DemoStudentPersonalConsumer</consumerName>
+  <consumerName>TemplateDemoConsumer</consumerName>
   <applicationInfo>
-    <applicationKey>Sif3DemoApp</applicationKey>
+    <applicationKey>Sif3DemoConsumer</applicationKey>
     <supportedInfrastructureVersion>3.2.1</supportedInfrastructureVersion>
     <dataModelNamespace>http://www.sifassociation.org/datamodel/au/3.4</dataModelNamespace>
     <transport>REST</transport>
