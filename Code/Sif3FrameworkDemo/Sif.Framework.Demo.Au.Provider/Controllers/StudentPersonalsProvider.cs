@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,13 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
         [Route("~/api/StudentPersonals/StudentPersonal")]
         public override IHttpActionResult Post(StudentPersonal obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            return base.Post(obj);
+            return base.Post(obj, zoneId, contextId);
+        }
+
+        [Route("~/api/StudentPersonals/BroadcastEvents")]
+        public override IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
+        {
+            return base.BroadcastEvents(zoneId, contextId);
         }
 
     }

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2.1">
+  <solutionId>Sif3Framework</solutionId>
+  <authenticationMethod>Basic</authenticationMethod>
+  <instanceId></instanceId>
+  <userToken></userToken>
+  <consumerName>TemplateEventsConnector</consumerName>
+  <applicationInfo>
+    <applicationKey>Sif3DemoEventsConnector</applicationKey>
+    <supportedInfrastructureVersion>3.2.1</supportedInfrastructureVersion>
+    <dataModelNamespace>http://www.sifassociation.org/datamodel/au/3.4</dataModelNamespace>
+    <transport>REST</transport>
+  </applicationInfo>
+</environment>

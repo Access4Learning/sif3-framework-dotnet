@@ -335,3 +335,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fix demo Provider run scripts to take into consideration pre-Visual Studio 2015 development environments.
 - Update the logic associated with the mustUseAdvisory flag in Providers.
 - Added a mustUseAdvisory parameter to the Create() methods for Consumers.
+
+**Sept 05, 2017 - 3.2.1.4 Implement Provider SIF Events**
+
+- Added a draft version of SIF AU Data Model 3.4.2.
+- Implemented the broadcasting of SIF Events from a Provider.
+- Enhanced the SIF Framework to work with TLS 1.2.

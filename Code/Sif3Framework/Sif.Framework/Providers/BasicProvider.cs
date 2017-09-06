@@ -17,6 +17,7 @@
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Service.Providers;
+using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -25,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Xml.Serialization;
 
 namespace Sif.Framework.Providers
 {
@@ -212,6 +214,22 @@ namespace Sif.Framework.Providers
             result = Ok(updateResponse);
 
             return result;
+        }
+
+        /// <summary>
+        /// <see cref="Provider{TSingle, TMultiple}.SerialiseEvents(TMultiple)">SerialiseEvents</see>
+        /// </summary>
+        [NonAction]
+        public override string SerialiseEvents(List<T> obj)
+        {
+
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            {
+                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                IsNullable = false
+            };
+
+            return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Serialise(obj);
         }
 
     }

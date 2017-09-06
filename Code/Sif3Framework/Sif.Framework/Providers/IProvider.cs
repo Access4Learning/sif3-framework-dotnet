@@ -214,6 +214,19 @@ namespace Sif.Framework.Providers
         /// <returns>No objects, just message header information (void).</returns>
         IHttpActionResult Head(string[] zoneId = null, string[] contextId = null);
 
+        /// <summary>
+        /// Broadcast SIF Events.
+        /// <para/>
+        /// <para>200 - Success, ok</para>
+        /// <para>400 - Failue, bad request</para>
+        /// <para>401 - Failure, unauthorised</para>
+        /// <para>500 - Failure, internal service error</para>
+        /// </summary>
+        /// <param name="zoneId">Zone associated with the SIF Events.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <returns>Ok</returns>
+        IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null);
+
     }
 
 }

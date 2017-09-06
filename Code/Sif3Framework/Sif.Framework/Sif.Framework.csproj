@@ -86,6 +86,11 @@
     <Compile Include="Consumers\IBasicConsumer.cs" />
     <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
     <Compile Include="Model\Authentication\AuthorisationToken.cs" />
+    <Compile Include="Model\Events\SifEvent.cs" />
+    <Compile Include="Model\Events\EventAction.cs" />
+    <Compile Include="Model\Events\IEventIterator.cs" />
+    <Compile Include="Model\Events\IEventPayloadSerialisable.cs" />
+    <Compile Include="Model\Exceptions\EventException.cs" />
     <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
     <Compile Include="Model\Infrastructure\Initialization.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
@@ -179,6 +184,7 @@
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
+    <Compile Include="Service\Providers\IEventService.cs" />
     <Compile Include="Service\Providers\IChangesSinceService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
     <Compile Include="Service\IObjectService.cs" />
@@ -284,7 +290,7 @@
       <Minor Include="$(Minor)" />
       <Revision Include="$(Revision)" />
       <Build Include="$(Build)" />
-      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision)\" />
+      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision).$(Build)\" />
     </ItemGroup>
   </Target>
   <PropertyGroup>

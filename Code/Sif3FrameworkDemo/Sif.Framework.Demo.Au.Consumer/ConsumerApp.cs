@@ -57,7 +57,11 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         void RunStudentPersonalConsumer()
         {
-            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
+            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(
+                SettingsManager.ConsumerSettings.ApplicationKey,
+                SettingsManager.ConsumerSettings.InstanceId,
+                SettingsManager.ConsumerSettings.UserToken,
+                SettingsManager.ConsumerSettings.SolutionId);
             studentPersonalConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
