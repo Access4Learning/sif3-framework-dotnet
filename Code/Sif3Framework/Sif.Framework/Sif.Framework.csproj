@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Consumers\ISupportsEvents.cs" />
     <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
     <Compile Include="Model\Authentication\AuthorisationToken.cs" />
     <Compile Include="Model\Events\SifEvent.cs" />

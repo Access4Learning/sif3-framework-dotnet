@@ -126,6 +126,16 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
+        /// Serialise a queueType object.
+        /// </summary>
+        /// <param name="obj">queueType object.</param>
+        /// <returns>XML string representation of the queueType object.</returns>
+        public virtual string SerialiseQueue(queueType obj)
+        {
+            return SerialiserFactory.GetXmlSerialiser<queueType>().Serialise(obj);
+        }
+
+        /// <summary>
         /// <see cref="IPayloadSerialisable{TSingle,TMultiple}.DeserialiseSingle(string)">DeserialiseSingle</see>
         /// </summary>
         public virtual TSingle DeserialiseSingle(string payload)
@@ -139,6 +149,16 @@ namespace Sif.Framework.Consumers
         public virtual TMultiple DeserialiseMultiple(string payload)
         {
             return SerialiserFactory.GetXmlSerialiser<TMultiple>().Deserialise(payload);
+        }
+
+        /// <summary>
+        /// Deserialise an XML string representation of a queueType object.
+        /// </summary>
+        /// <param name="xml">XML string representation of a queueType object.</param>
+        /// <returns>queueType object.</returns>
+        private queueType DeserialiseQueue(string xml)
+        {
+            return SerialiserFactory.GetXmlSerialiser<queueType>().Deserialise(xml);
         }
 
         /// <summary>
@@ -214,6 +234,23 @@ namespace Sif.Framework.Consumers
             MultipleCreateResponse createResponse = MapperFactory.CreateInstance<createResponseType, MultipleCreateResponse>(createResponseType);
 
             return createResponse;
+        }
+
+        private queueType CreateQueue(queueType obj, string zoneId = null, string contextId = null)
+        {
+
+            if (!RegistrationService.Registered)
+            {
+                throw new InvalidOperationException("Consumer has not registered.");
+            }
+
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.queues);
+            string body = SerialiseQueue(obj);
+            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
+            if (log.IsDebugEnabled) log.Debug($"XML from POST {url} request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+
+            return DeserialiseQueue(xml);
         }
 
         /// <summary>

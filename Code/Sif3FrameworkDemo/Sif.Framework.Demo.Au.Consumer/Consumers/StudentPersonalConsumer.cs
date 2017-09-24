@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,15 @@
 
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
+using System.Collections.Generic;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
 
-    class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
+    class StudentPersonalConsumer : BasicConsumer<StudentPersonal>, ISupportsEvents<List<StudentPersonal>>
     {
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public StudentPersonalConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
             : base(applicationKey, instanceId, userToken, solutionId)
@@ -32,6 +34,58 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
         public StudentPersonalConsumer(Environment environment)
             : base(environment)
         {
+        }
+
+        public void OnCreateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        {
+            if (log.IsDebugEnabled) log.Debug($"*** OnCreateEvent handler called ...");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+
+            foreach (StudentPersonal student in objs)
+            {
+                if (log.IsDebugEnabled) log.Debug($"*** >>> Student created is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
+            }
+
+        }
+
+        public void OnDeleteEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        {
+            if (log.IsDebugEnabled) log.Debug($"*** OnDeleteEvent handler called ...");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+
+            foreach (StudentPersonal student in objs)
+            {
+                if (log.IsDebugEnabled) log.Debug($"*** >>> Student deleted is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
+            }
+
+        }
+
+        public void OnErrorEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        {
+            if (log.IsDebugEnabled) log.Debug($"*** OnErrorEvent handler called ...");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+
+            foreach (StudentPersonal student in objs)
+            {
+                if (log.IsDebugEnabled) log.Debug($"*** >>> Error with student {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
+            }
+
+        }
+
+        public void OnUpdateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        {
+            if (log.IsDebugEnabled) log.Debug($"*** OnUpdateEvent handler called ...");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+
+            foreach (StudentPersonal student in objs)
+            {
+                if (log.IsDebugEnabled) log.Debug($"*** >>> Student updated is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
+            }
+
         }
 
     }

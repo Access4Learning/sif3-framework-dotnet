@@ -14,21 +14,33 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Model.Infrastructure
+using Sif.Framework.Model.DataModels;
+using Sif.Specification.Infrastructure;
+using System.Xml.Serialization;
+
+namespace Sif.Framework.Demo.Broker.Models
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public enum InfrastructureServiceNames
+    [XmlRoot("subscription", Namespace = "http://www.sifassociation.org/infrastructure/3.2.1", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/infrastructure/3.2.1")]
+    public class Subscription : subscriptionType, IDataModel
     {
-        environment,
-        provisionRequests,
-        requestsConnector,
-        servicesConnector,
-        eventsConnector,
-        queues,
-        subscriptions
+
+        public string RefId
+        {
+
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+            }
+
+        }
+
     }
 
 }

@@ -14,52 +14,51 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.EventsConnector.Models;
+using Sif.Framework.Demo.Broker.Models;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using System;
 using System.Collections.Generic;
 
-namespace Sif.Framework.Demo.EventsConnector.Services
+namespace Sif.Framework.Demo.Broker.Services
 {
 
-    public class StudentPersonalService : IBasicProviderService<StudentPersonal>
+    public class QueueService : IBasicProviderService<Queue>
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public Queue Create(Queue obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
-            if (log.IsDebugEnabled) log.Debug($"*** Student name is {obj.PersonInfo.Name.GivenName} {obj.PersonInfo.Name.FamilyName}");
-
+            if (log.IsDebugEnabled) log.Debug($"*** Queue name is {obj.name}");
             return obj;
         }
 
-        public void Delete(string refId, string zoneId = null, string contextId = null)
+        public void Delete(string id, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public StudentPersonal Retrieve(string refId, string zoneId = null, string contextId = null)
+        public Queue Retrieve(string id, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<StudentPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<Queue> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<Queue> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<Queue> Retrieve(Queue obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(StudentPersonal obj, string zoneId = null, string contextId = null)
+        public void Update(Queue obj, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
