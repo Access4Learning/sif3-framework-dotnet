@@ -16,6 +16,7 @@
 
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service.Mapper;
@@ -27,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using Sif.Framework.Model.Infrastructure;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
@@ -44,7 +44,6 @@ namespace Sif.Framework.Consumers
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Environment environmentTemplate;
-        private IRegistrationService registrationService;
 
         /// <summary>
         /// Consumer environment.
@@ -60,17 +59,19 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
+        /// Queue associated with Consumer SIF Events.
+        /// </summary>
+        protected queueType Queue { get; private set; }
+
+        /// <summary>
         /// Service for Consumer registration.
         /// </summary>
-        protected IRegistrationService RegistrationService
-        {
+        protected IRegistrationService RegistrationService { get; private set; }
 
-            get
-            {
-                return registrationService;
-            }
-
-        }
+        /// <summary>
+        /// Subscription associated with Consumer SIF Events.
+        /// </summary>
+        protected subscriptionType Subscription { get; private set; }
 
         /// <summary>
         /// Name of the SIF data model that the Consumer is based on, e.g. SchoolInfo, StudentPersonal, etc.
@@ -92,7 +93,7 @@ namespace Sif.Framework.Consumers
         public Consumer(Environment environment)
         {
             environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            registrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace Sif.Framework.Consumers
         {
             Environment environment = new Environment(applicationKey, instanceId, userToken, solutionId);
             environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            registrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -136,6 +137,16 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
+        /// Serialise a subscriptionType object.
+        /// </summary>
+        /// <param name="obj">subscriptionType object.</param>
+        /// <returns>XML string representation of the subscriptionType object.</returns>
+        public virtual string SerialiseSubscription(subscriptionType obj)
+        {
+            return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Serialise(obj);
+        }
+
+        /// <summary>
         /// <see cref="IPayloadSerialisable{TSingle,TMultiple}.DeserialiseSingle(string)">DeserialiseSingle</see>
         /// </summary>
         public virtual TSingle DeserialiseSingle(string payload)
@@ -162,11 +173,23 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
+        /// Deserialise an XML string representation of a subscriptionType object.
+        /// </summary>
+        /// <param name="xml">XML string representation of a subscriptionType object.</param>
+        /// <returns>subscriptionType object.</returns>
+        private subscriptionType DeserialiseSubscription(string xml)
+        {
+            return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Deserialise(xml);
+        }
+
+        /// <summary>
         /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Register()">Register</see>
         /// </summary>
         public void Register()
         {
-            registrationService.Register(ref environmentTemplate);
+            RegistrationService.Register(ref environmentTemplate);
+            queueType newQueue = new queueType();
+            Queue = CreateQueue(newQueue);
         }
 
         /// <summary>
@@ -174,7 +197,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         public void Unregister(bool? deleteOnUnregister = null)
         {
-            registrationService.Unregister(deleteOnUnregister);
+            RegistrationService.Unregister(deleteOnUnregister);
         }
 
         /// <summary>
@@ -238,19 +261,24 @@ namespace Sif.Framework.Consumers
 
         private queueType CreateQueue(queueType obj, string zoneId = null, string contextId = null)
         {
-
-            if (!RegistrationService.Registered)
-            {
-                throw new InvalidOperationException("Consumer has not registered.");
-            }
-
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.queues);
             string body = SerialiseQueue(obj);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
-            if (log.IsDebugEnabled) log.Debug($"XML from POST {url} request ...");
+            if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
             return DeserialiseQueue(xml);
+        }
+
+        private subscriptionType CreateSubscription(subscriptionType obj, string zoneId = null, string contextId = null)
+        {
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.queues);
+            string body = SerialiseSubscription(obj);
+            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
+            if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+
+            return DeserialiseSubscription(xml);
         }
 
         /// <summary>
