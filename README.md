@@ -341,3 +341,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Added a draft version of SIF AU Data Model 3.4.2.
 - Implemented the broadcasting of SIF Events from a Provider.
 - Enhanced the SIF Framework to work with TLS 1.2.
+
+**Nov 06, 2017 - 3.2.1.4 Applied updates to AU Data Model 3.4.2**
+
+- Updated the SIF Framework to use the officially approved version of the SIF AU Data Model 3.4.2 (no SIF Framework version update).

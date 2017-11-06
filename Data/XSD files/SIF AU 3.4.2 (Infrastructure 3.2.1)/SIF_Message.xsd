@@ -1,7 +1,7 @@
 <!--
-		SIF Implementation Specification (Australia) 3.4.2 Initial Draft (July 20, 2017) Infrastructure Version: v3
+		SIF Implementation Specification (Australia) 3.4.2 (October 26, 2017) Infrastructure Version: v3
 	-->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sifassociation.org/datamodel/au/3.4" targetNamespace="http://www.sifassociation.org/datamodel/au/3.4" elementFormDefault="qualified"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sifassociation.org/datamodel/au/3.4" targetNamespace="http://www.sifassociation.org/datamodel/au/3.4" elementFormDefault="qualified" version="3.4.2"
 >
   <!--SIFAU-->
 
@@ -811,11 +811,6 @@
           <xs:documentation>Type of room, for use in timetabling.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="AvailableToTimeTable" minOccurs="0" nillable="true" type="AUCodeSetsYesOrNoCategoryType">
-        <xs:annotation>
-          <xs:documentation>Optional information if available and current that identifies whether or not this entity can be timetabled.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
       <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="SIF_MetadataType" />
       <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="SIF_ExtendedElementsType" />
     </xs:sequence>
@@ -945,11 +940,6 @@
       <xs:element name="CalendarSummaryList" minOccurs="0" nillable="true" type="CalendarSummaryListType">
         <xs:annotation>
           <xs:documentation>The ID (GUID) of a calendar summary to which this Staff Member is associated with.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="AvailableToTimeTable" minOccurs="0" nillable="true" type="AUCodeSetsYesOrNoCategoryType">
-        <xs:annotation>
-          <xs:documentation>Optional information if available and current that identifies whether or not this entity can be timetabled.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="SIF_MetadataType" />
@@ -2955,11 +2945,6 @@
           <xs:documentation>Any other codes this subject is known by; eg VASS code for VCE in Vic.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="AvailableToTimeTable" minOccurs="0" nillable="true" type="AUCodeSetsYesOrNoCategoryType">
-        <xs:annotation>
-          <xs:documentation>Optional information if available and current that identifies whether or not this entity can be timetabled.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
       <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="SIF_MetadataType" />
       <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="SIF_ExtendedElementsType" />
     </xs:sequence>
@@ -3234,7 +3219,7 @@
           <xs:documentation>The GUID of the TimeTable to which this Cell belongs</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="TimeTableSubjectRefId" minOccurs="0" type="IdRefType">
+      <xs:element name="TimeTableSubjectRefId" minOccurs="0" nillable="true" type="IdRefType">
         <xs:annotation>
           <xs:documentation>The GUID of the Subject that this Cell is scheduling</xs:documentation>
         </xs:annotation>
@@ -3708,6 +3693,11 @@
       <xs:element name="ContactSequenceSource" minOccurs="0" nillable="true" type="AUCodeSetsSourceCodeTypeType">
         <xs:annotation>
           <xs:documentation>Indicates the source who provided the contact sequence order. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SchoolInfoRefId" minOccurs="0" nillable="true" type="IdRefType">
+        <xs:annotation>
+          <xs:documentation>GUID that identifies a school associated with the relationship.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="SIF_MetadataType" />
@@ -5513,6 +5503,11 @@
           <xs:documentation>Breakdown of times that the student entered or returned to school.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="PeriodAttendances" minOccurs="0" nillable="true" type="PeriodAttendancesType">
+        <xs:annotation>
+          <xs:documentation>List of any period attendances that need to be captured as part of a full list of student attendance types.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="SIF_Metadata" minOccurs="0" nillable="true" type="SIF_MetadataType" />
       <xs:element name="SIF_ExtendedElements" minOccurs="0" nillable="true" type="SIF_ExtendedElementsType" />
     </xs:sequence>
@@ -6217,6 +6212,11 @@
           <xs:documentation>Text relating to the particular WellbeingResponse.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="PersonInvolvementList" minOccurs="0" nillable="true" type="PersonInvolvementListType">
+        <xs:annotation>
+          <xs:documentation>&gt;A person (additional to the student) involved in a  Wellbeing event/response where required to be known.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="Suspension" minOccurs="0" nillable="true" type="SuspensionContainerType">
         <xs:annotation>
           <xs:documentation>Container for details of a Suspension or Explusion.</xs:documentation>
@@ -6229,7 +6229,7 @@
       </xs:element>
       <xs:element name="PlanRequired" minOccurs="0" nillable="true" type="PlanRequiredContainerType">
         <xs:annotation>
-          <xs:documentation>Container for Information to define the need for an Plan..</xs:documentation>
+          <xs:documentation>Container for Information to define the need for an Plan.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="Award" minOccurs="0" nillable="true" type="AwardContainerType">
@@ -6440,7 +6440,7 @@
 
   <xs:complexType name="WellbeingEventType">
     <xs:annotation>
-      <xs:documentation>Event that impacts on a student’s duty of care.  This has been modelled by Sentral as an Incident, by CEOM as a behaviour support incident and by WA previously as an "Incident Report" but looking to move to terminology such as a “Wellbeing Event”.  There is an emphasis that this ‘event’ was needed to track both ‘positive’ and ‘negative’ behaviours and it not just the recording of a discipline incident or an accident.  This event is specific to a student, and is not global (e.g. a pandemic): where an event involves more than one student, they can be listed in the person’s involved.  Where the event has an impact on a student’s wellbeing an individual record for each student should be generated.  E.g. where a student is reporting that another student fell off his bike, then the reporting student is listed as a person involved.</xs:documentation>
+      <xs:documentation>Event that impacts on a student’s duty of care.  This has been modelled by Sentral as an Incident, by CEOM as a behaviour support incident and by WA previously as an "Incident Report" but looking to move to terminology such as a “Wellbeing Event”.  There is an emphasis that this ‘event’ was needed to track both ‘positive’ and ‘negative’ behaviours and it not just the recording of a discipline incident or an accident.  This event is specific to a student, and is not global (e.g. a pandemic). Where an event involves more than one student, they can be listed in the person’s involved.  Where the event has an impact on a student’s wellbeing an individual record for each student should be generated.  E.g. where a student is reporting that another student fell off his bike, then the reporting student is listed as a person involved.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="StudentPersonalRefId" minOccurs="0" type="IdRefType">
@@ -6468,19 +6468,14 @@
           <xs:documentation>Category of WellbeingEvent.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="WellbeingEventCategory" minOccurs="0" nillable="true" type="xs:string">
+      <xs:element name="WellbeingEventCategoryList" minOccurs="0" nillable="true" type="WellbeingEventCategoryListType">
         <xs:annotation>
-          <xs:documentation>Category of WellbeingEvent.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="WellbeingEventSubCategoryList" minOccurs="0" nillable="true" type="WellbeingEventSubCategoryListType">
-        <xs:annotation>
-          <xs:documentation>List of sub-categories of the WellbeingEvent. Most likely to be locally defined.</xs:documentation>
+          <xs:documentation>List of Categories of WellbeingEvent.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="ReportingStaffRefId" minOccurs="0" nillable="true" type="IdRefType">
         <xs:annotation>
-          <xs:documentation>The ID (GUID) of the staff member who logged the Wellbeing Event record..</xs:documentation>
+          <xs:documentation>The ID (GUID) of the staff member who logged the Wellbeing Event record.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="WellbeingEventLocationDetails" minOccurs="0" nillable="true" type="WellbeingEventLocationDetailsType">
@@ -6490,7 +6485,7 @@
       </xs:element>
       <xs:element name="WellbeingEventCreationTimeStamp" minOccurs="0" nillable="true" type="xs:dateTime">
         <xs:annotation>
-          <xs:documentation>Date and time of the WellbeingEvent record creation..</xs:documentation>
+          <xs:documentation>Date and time of the WellbeingEvent record creation.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="WellbeingEventDate" minOccurs="0" type="xs:date">
@@ -6510,7 +6505,7 @@
       </xs:element>
       <xs:element name="WellbeingEventTimePeriod" minOccurs="0" type="AUCodeSetsWellbeingEventTimePeriodType">
         <xs:annotation>
-          <xs:documentation>Category of WellbeingEvent.</xs:documentation>
+          <xs:documentation>Time period of when the event occurred.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="ConfidentialFlag" minOccurs="0" nillable="true" type="AUCodeSetsYesOrNoCategoryType">
@@ -6520,7 +6515,7 @@
       </xs:element>
       <xs:element name="PersonInvolvementList" minOccurs="0" nillable="true" type="PersonInvolvementListType">
         <xs:annotation>
-          <xs:documentation>List of People involved in the Wellbeing event.  Mandatory if more people than the student to which this event occurs is involved..</xs:documentation>
+          <xs:documentation>List of People involved in the Wellbeing event.  Mandatory if more people than the student to which this event occurs is involved.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="FollowUpActionList" minOccurs="0" nillable="true" type="FollowUpActionListType">
@@ -6682,15 +6677,35 @@
           <xs:documentation>Text relating to the particular WellbeingCharacteristic.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="WellbeingCharacteristicCategory" minOccurs="0" nillable="true" type="xs:string">
+      <xs:element name="WellbeingCharacteristicCategory" minOccurs="0" nillable="true">
         <xs:annotation>
           <xs:documentation>Category of WellbeingCharacteristic.</xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="AUCodeSetsWellbeingCharacteristicCategoryType" />
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string" />
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:element>
-      <xs:element name="WellbeingCharacteristicSubCategory" minOccurs="0" nillable="true" type="xs:string">
+      <xs:element name="WellbeingCharacteristicSubCategory" minOccurs="0" nillable="true">
         <xs:annotation>
           <xs:documentation>Sub category of the WellbeingCharacteristic.</xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="AUCodeSetsWellbeingCharacteristicSubCategoryType" />
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string" />
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:element>
       <xs:element name="LocalCharacteristicCode" minOccurs="0" nillable="true" type="LocalIdType">
         <xs:annotation>
@@ -6766,6 +6781,554 @@
   </xs:complexType>
   <xs:element name="WellbeingCharacteristics" type="WellbeingCharacteristicCollectionType" />
 
+  <xs:simpleType name="AUCodeSetsWellbeingCharacteristicSubCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="MH-1">
+        <xs:annotation>
+          <xs:documentation>Adjustment Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-2">
+        <xs:annotation>
+          <xs:documentation>Anorexia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-3">
+        <xs:annotation>
+          <xs:documentation>Anxiety Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-4">
+        <xs:annotation>
+          <xs:documentation>Attachment Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-5">
+        <xs:annotation>
+          <xs:documentation>Attention Deficit Hyperactivity Disorder (ADHD)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-6">
+        <xs:annotation>
+          <xs:documentation>Bipolar Affective Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-7">
+        <xs:annotation>
+          <xs:documentation>Bulimia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-8">
+        <xs:annotation>
+          <xs:documentation>Depression</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-9">
+        <xs:annotation>
+          <xs:documentation>Mixed Depression and Anxiety</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-10">
+        <xs:annotation>
+          <xs:documentation>Obsessive Compulsive  Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-11">
+        <xs:annotation>
+          <xs:documentation>Oppositional Defiance Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-12">
+        <xs:annotation>
+          <xs:documentation>Paranoia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-13">
+        <xs:annotation>
+          <xs:documentation>Post-Traumatic Stress Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-14">
+        <xs:annotation>
+          <xs:documentation>Reactive Attachment Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-15">
+        <xs:annotation>
+          <xs:documentation>Social Anxiety Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-16">
+        <xs:annotation>
+          <xs:documentation>Tic Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-17">
+        <xs:annotation>
+          <xs:documentation>Tourette’s Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH-18">
+        <xs:annotation>
+          <xs:documentation>Conduct Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS-1">
+        <xs:annotation>
+          <xs:documentation>Absence seizures epilepsy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS-2">
+        <xs:annotation>
+          <xs:documentation>Tonic Clonic epilepsy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS-3">
+        <xs:annotation>
+          <xs:documentation>Myotonic epilepsy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS-4">
+        <xs:annotation>
+          <xs:documentation>Refractory epilepsy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-1">
+        <xs:annotation>
+          <xs:documentation>Antibiotics -specify type(s)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-2">
+        <xs:annotation>
+          <xs:documentation>Dairy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-3">
+        <xs:annotation>
+          <xs:documentation>Egg</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-4">
+        <xs:annotation>
+          <xs:documentation>Fruit (specify)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-5">
+        <xs:annotation>
+          <xs:documentation>Insect bites - nfd</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-6">
+        <xs:annotation>
+          <xs:documentation>Bees</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-7">
+        <xs:annotation>
+          <xs:documentation>Ants</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-8">
+        <xs:annotation>
+          <xs:documentation>Ticks</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-9">
+        <xs:annotation>
+          <xs:documentation>Latex</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-10">
+        <xs:annotation>
+          <xs:documentation>Peanuts</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-11">
+        <xs:annotation>
+          <xs:documentation>Shellfish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-12">
+        <xs:annotation>
+          <xs:documentation>Tree nuts</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-13">
+        <xs:annotation>
+          <xs:documentation>Wheat</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA-14">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAIM-1">
+        <xs:annotation>
+          <xs:documentation>Coeliac Disease - Gluten</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAIM-2">
+        <xs:annotation>
+          <xs:documentation>Enterocolitis Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAIM-3">
+        <xs:annotation>
+          <xs:documentation>Food Protein Induced Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MB-1">
+        <xs:annotation>
+          <xs:documentation>Anaemia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MB-2">
+        <xs:annotation>
+          <xs:documentation>Haemophilia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MB-3">
+        <xs:annotation>
+          <xs:documentation>Thalassemia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MB-4">
+        <xs:annotation>
+          <xs:documentation>Vasculitis</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MB-5">
+        <xs:annotation>
+          <xs:documentation>Von Willebrand's Disease</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-1">
+        <xs:annotation>
+          <xs:documentation>Ehlers Danlos</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-2">
+        <xs:annotation>
+          <xs:documentation>Fibromyalgia  - discuss</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-3">
+        <xs:annotation>
+          <xs:documentation>Hip Dysplasia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-4">
+        <xs:annotation>
+          <xs:documentation>Joint Hypermobility</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-5">
+        <xs:annotation>
+          <xs:documentation>Juvenile Arthritis</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-6">
+        <xs:annotation>
+          <xs:documentation>Kohlers Disease</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-7">
+        <xs:annotation>
+          <xs:documentation>Marfan Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-8">
+        <xs:annotation>
+          <xs:documentation>Meyers Dysplasia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-9">
+        <xs:annotation>
+          <xs:documentation>Neurofibromatosis type 1</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-10">
+        <xs:annotation>
+          <xs:documentation>Osgood Schlatter Condition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-11">
+        <xs:annotation>
+          <xs:documentation>Osteo Imperfecta</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-12">
+        <xs:annotation>
+          <xs:documentation>Scoliosis</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-13">
+        <xs:annotation>
+          <xs:documentation>Severs Disease</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-14">
+        <xs:annotation>
+          <xs:documentation>Talipes</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS-15">
+        <xs:annotation>
+          <xs:documentation>Von Eulenburg Disease</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-1">
+        <xs:annotation>
+          <xs:documentation>Angelman Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-2">
+        <xs:annotation>
+          <xs:documentation>Charcot Marie Tooth</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-3">
+        <xs:annotation>
+          <xs:documentation>Coffin Lowry Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-4">
+        <xs:annotation>
+          <xs:documentation>Coffin-Siris Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-5">
+        <xs:annotation>
+          <xs:documentation>Down Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-6">
+        <xs:annotation>
+          <xs:documentation>Foetal Alcohol Syndrome (FAS)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-7">
+        <xs:annotation>
+          <xs:documentation>Fragile X Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-8">
+        <xs:annotation>
+          <xs:documentation>G6 PD Deficiency</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-9">
+        <xs:annotation>
+          <xs:documentation>Hyperglycemia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-10">
+        <xs:annotation>
+          <xs:documentation>Klinefelter Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-11">
+        <xs:annotation>
+          <xs:documentation>Malignant Hyperthermia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-12">
+        <xs:annotation>
+          <xs:documentation>MCADD - Metabolic disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-13">
+        <xs:annotation>
+          <xs:documentation>Non Ketotic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-14">
+        <xs:annotation>
+          <xs:documentation>Oculocutaneous Albinism</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-15">
+        <xs:annotation>
+          <xs:documentation>Phelan-McDermid Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-16">
+        <xs:annotation>
+          <xs:documentation>Phenylketonuria</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-17">
+        <xs:annotation>
+          <xs:documentation>Pierr Robyn Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-18">
+        <xs:annotation>
+          <xs:documentation>Potocki - Lupski Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-19">
+        <xs:annotation>
+          <xs:documentation>Prader Willi Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-20">
+        <xs:annotation>
+          <xs:documentation>Rubinstein-Taybi Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-21">
+        <xs:annotation>
+          <xs:documentation>ScN2A (Sodium Channel) Gene Mutation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-22">
+        <xs:annotation>
+          <xs:documentation>Trisomy - chromosome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-23">
+        <xs:annotation>
+          <xs:documentation>Trisomy 21/Down Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-24">
+        <xs:annotation>
+          <xs:documentation>Turners Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-25">
+        <xs:annotation>
+          <xs:documentation>Velocardiofacial Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM-26">
+        <xs:annotation>
+          <xs:documentation>Wolf-Hirschhorn Syndrome</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AUCodeSetsWellbeingCharacteristicCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="MAO">
+        <xs:annotation>
+          <xs:documentation>Allergies - other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAIM">
+        <xs:annotation>
+          <xs:documentation>Auto-immune/Immune Disorders</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MRD">
+        <xs:annotation>
+          <xs:documentation>Respiratory Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MB">
+        <xs:annotation>
+          <xs:documentation>Blood disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMD">
+        <xs:annotation>
+          <xs:documentation>Heart Disease/ Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MMS">
+        <xs:annotation>
+          <xs:documentation>Musculo – skeletal conditions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MEM">
+        <xs:annotation>
+          <xs:documentation>Endocrine and Metabolic Disorders</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MC">
+        <xs:annotation>
+          <xs:documentation>Childhood cancer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MAA">
+        <xs:annotation>
+          <xs:documentation>Allergy – Anaphylaxis</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MH">
+        <xs:annotation>
+          <xs:documentation>Mental and behavioural disorders</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MN">
+        <xs:annotation>
+          <xs:documentation>Diseases/conditions of the nervous system</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS">
+        <xs:annotation>
+          <xs:documentation>Seizure disorders</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MCM">
+        <xs:annotation>
+          <xs:documentation>Congenital malformations, deformations and chromosomal abnormalities</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MI">
+        <xs:annotation>
+          <xs:documentation>Infectious Diseases</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MGI">
+        <xs:annotation>
+          <xs:documentation>Gastro Intestinal/Urinary conditions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MND">
+        <xs:annotation>
+          <xs:documentation>Neuro/Developmental Disorders</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MO">
+        <xs:annotation>
+          <xs:documentation>Oral/Phalangeal Disorders</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MD">
+        <xs:annotation>
+          <xs:documentation>Deaf and Hard of Hearing</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MOP">
+        <xs:annotation>
+          <xs:documentation>Optical/ Vision Disorder</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M-Other">
+        <xs:annotation>
+          <xs:documentation>Medical Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D-Other">
+        <xs:annotation>
+          <xs:documentation>Disability Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S-Other">
+        <xs:annotation>
+          <xs:documentation>Special Needs Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Other">
+        <xs:annotation>
+          <xs:documentation>Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="AUCodeSetsAustralianTimeZoneType">
     <xs:restriction base="xs:token">
       <xs:enumeration value="ACDT">
@@ -6836,6 +7399,1004 @@
       <xs:enumeration value="NFT">
         <xs:annotation>
           <xs:documentation>Norfolk Time	UTC +11</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Other">
+        <xs:annotation>
+          <xs:documentation>Other Time Zone not defined</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AUCodeSetsEventCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="B1">
+        <xs:annotation>
+          <xs:documentation>Safe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B2">
+        <xs:annotation>
+          <xs:documentation>Caring</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3">
+        <xs:annotation>
+          <xs:documentation>Respectful</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4">
+        <xs:annotation>
+          <xs:documentation>Responsible</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5">
+        <xs:annotation>
+          <xs:documentation>Enterprising</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6">
+        <xs:annotation>
+          <xs:documentation>Effort</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7">
+        <xs:annotation>
+          <xs:documentation>Citizenship</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8">
+        <xs:annotation>
+          <xs:documentation>Cooperation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9">
+        <xs:annotation>
+          <xs:documentation>Leadership</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1">
+        <xs:annotation>
+          <xs:documentation>Aggressive physical contact against staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2">
+        <xs:annotation>
+          <xs:documentation>Abuse, threats, harassment or intimidation of staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3">
+        <xs:annotation>
+          <xs:documentation>Aggressive physical contact against a student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4">
+        <xs:annotation>
+          <xs:documentation>Abuse, threats, harassment or intimidation of a student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5">
+        <xs:annotation>
+          <xs:documentation>Damage to or theft of property</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6">
+        <xs:annotation>
+          <xs:documentation>Other violation of Code of Conduct (classroom managed)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7">
+        <xs:annotation>
+          <xs:documentation>Possession, use or supply of substances or objects with restricted sale</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8">
+        <xs:annotation>
+          <xs:documentation>Possession, use or supply of illegal substances or objects</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9">
+        <xs:annotation>
+          <xs:documentation>E-breaches</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="99">
+        <xs:annotation>
+          <xs:documentation>Other Behaviour</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AUCodeSetsEventSubCategoryType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="B1a">
+        <xs:annotation>
+          <xs:documentation>Resolves issues peacefully</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1b">
+        <xs:annotation>
+          <xs:documentation>Plays in a friendly way</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1c">
+        <xs:annotation>
+          <xs:documentation>Uses equipment safely</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1d">
+        <xs:annotation>
+          <xs:documentation>Understands the purpose and need for rules</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1e">
+        <xs:annotation>
+          <xs:documentation>Seeks help from a responsible adult</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1f">
+        <xs:annotation>
+          <xs:documentation>Alerts others to risks and dangers</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1g">
+        <xs:annotation>
+          <xs:documentation>Moves away from danger</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1h">
+        <xs:annotation>
+          <xs:documentation>Uses protective interruption with peers</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B1i">
+        <xs:annotation>
+          <xs:documentation>Observes and listens before acting</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B2a">
+        <xs:annotation>
+          <xs:documentation>Helps someone or something in need</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B2b">
+        <xs:annotation>
+          <xs:documentation>Shows empathy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B2c">
+        <xs:annotation>
+          <xs:documentation>Shows compassion</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B2d">
+        <xs:annotation>
+          <xs:documentation>Is forgiving</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B2e">
+        <xs:annotation>
+          <xs:documentation>Talks in a friendly way</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3a">
+        <xs:annotation>
+          <xs:documentation>Shows intercultural understanding</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3b">
+        <xs:annotation>
+          <xs:documentation>Acknowledges authority</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3c">
+        <xs:annotation>
+          <xs:documentation>Shows courtesy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3d">
+        <xs:annotation>
+          <xs:documentation>Is polite</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3e">
+        <xs:annotation>
+          <xs:documentation>Accepts difference</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3f">
+        <xs:annotation>
+          <xs:documentation>Acknowledges the rights of others</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3g">
+        <xs:annotation>
+          <xs:documentation>Uses appropriate language/tone</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3h">
+        <xs:annotation>
+          <xs:documentation>Gives value to others’ opinions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3i">
+        <xs:annotation>
+          <xs:documentation>Maintains appropriate personal space</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B3j">
+        <xs:annotation>
+          <xs:documentation>Shows consideration of impact of actions on others</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4a">
+        <xs:annotation>
+          <xs:documentation>Is honest</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4b">
+        <xs:annotation>
+          <xs:documentation>Acts with integrity</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4c">
+        <xs:annotation>
+          <xs:documentation>Self regulates</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4d">
+        <xs:annotation>
+          <xs:documentation>Co-regulates</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4e">
+        <xs:annotation>
+          <xs:documentation>Helps others to regulate</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4f">
+        <xs:annotation>
+          <xs:documentation>Is trustworthy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4g">
+        <xs:annotation>
+          <xs:documentation>Copes with frustration</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4h">
+        <xs:annotation>
+          <xs:documentation>Accepts accountability</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4i">
+        <xs:annotation>
+          <xs:documentation>Owns consequences of actions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B4j">
+        <xs:annotation>
+          <xs:documentation>Is organised</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5a">
+        <xs:annotation>
+          <xs:documentation>Thinks critically</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5b">
+        <xs:annotation>
+          <xs:documentation>Is creative</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5c">
+        <xs:annotation>
+          <xs:documentation>Is timely</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5d">
+        <xs:annotation>
+          <xs:documentation>Takes considered risks</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5e">
+        <xs:annotation>
+          <xs:documentation>Takes a problem solving approach</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5f">
+        <xs:annotation>
+          <xs:documentation>Is adaptable</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5g">
+        <xs:annotation>
+          <xs:documentation>Shows independence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5h">
+        <xs:annotation>
+          <xs:documentation>Takes initiative</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5i">
+        <xs:annotation>
+          <xs:documentation>Shows persistence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5j">
+        <xs:annotation>
+          <xs:documentation>Shows courage</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5k">
+        <xs:annotation>
+          <xs:documentation>Negotiates</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5l">
+        <xs:annotation>
+          <xs:documentation>Is persuasive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5m">
+        <xs:annotation>
+          <xs:documentation>Builds social support (networks)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5n">
+        <xs:annotation>
+          <xs:documentation>Innovates</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B5o">
+        <xs:annotation>
+          <xs:documentation>Shows determination</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6a">
+        <xs:annotation>
+          <xs:documentation>Pays attention</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6b">
+        <xs:annotation>
+          <xs:documentation>Tries hard</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6c">
+        <xs:annotation>
+          <xs:documentation>Completes work</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6d">
+        <xs:annotation>
+          <xs:documentation>Perseveres</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6e">
+        <xs:annotation>
+          <xs:documentation>Asks questions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6f">
+        <xs:annotation>
+          <xs:documentation>Shows desire to learn</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6g">
+        <xs:annotation>
+          <xs:documentation>Stays on task</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6h">
+        <xs:annotation>
+          <xs:documentation>Participates constructively</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B6i">
+        <xs:annotation>
+          <xs:documentation>Shows commitment to identified goals</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7a">
+        <xs:annotation>
+          <xs:documentation>Promotes justice</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7b">
+        <xs:annotation>
+          <xs:documentation>Follows rules and laws</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7c">
+        <xs:annotation>
+          <xs:documentation>Stands up for others appropriately</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7d">
+        <xs:annotation>
+          <xs:documentation>Puts others’ needs before own</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7e">
+        <xs:annotation>
+          <xs:documentation>Contributes to the school/class</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7f">
+        <xs:annotation>
+          <xs:documentation>Contributes to the community</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7g">
+        <xs:annotation>
+          <xs:documentation>Is involved</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7h">
+        <xs:annotation>
+          <xs:documentation>Belongs</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7i">
+        <xs:annotation>
+          <xs:documentation>Promotes harmony</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7j">
+        <xs:annotation>
+          <xs:documentation>Gives back to the greater good</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7k">
+        <xs:annotation>
+          <xs:documentation>Becomes informed</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7l">
+        <xs:annotation>
+          <xs:documentation>Uses procedures and protocols</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7m">
+        <xs:annotation>
+          <xs:documentation>Participates in democratic decision making</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B7n">
+        <xs:annotation>
+          <xs:documentation>Helps others to reach their goals</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8a">
+        <xs:annotation>
+          <xs:documentation>Is fair</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8b">
+        <xs:annotation>
+          <xs:documentation>Shows mutuality (sharing a feeling, action or relationship)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8c">
+        <xs:annotation>
+          <xs:documentation>Shows reciprocity (“I scratch your back, you scratch mine)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8d">
+        <xs:annotation>
+          <xs:documentation>Shows goodwill</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8e">
+        <xs:annotation>
+          <xs:documentation>Is attentive to others’ reactions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8f">
+        <xs:annotation>
+          <xs:documentation>Is open to dialogue/discussion</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8g">
+        <xs:annotation>
+          <xs:documentation>Works to be a valued member of a team</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B8h">
+        <xs:annotation>
+          <xs:documentation>Offers others choices</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9a">
+        <xs:annotation>
+          <xs:documentation>Inspires others</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9b">
+        <xs:annotation>
+          <xs:documentation>Represents others</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9c">
+        <xs:annotation>
+          <xs:documentation>Delegates to others</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9d">
+        <xs:annotation>
+          <xs:documentation>Shows self confidence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9e">
+        <xs:annotation>
+          <xs:documentation>Shows assertiveness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9f">
+        <xs:annotation>
+          <xs:documentation>Stays positive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9g">
+        <xs:annotation>
+          <xs:documentation>Shoulders blame</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9h">
+        <xs:annotation>
+          <xs:documentation>Sets an example</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9i">
+        <xs:annotation>
+          <xs:documentation>Communicates effectively</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B9j">
+        <xs:annotation>
+          <xs:documentation>Shows wisdom</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1a">
+        <xs:annotation>
+          <xs:documentation>Striking - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1b">
+        <xs:annotation>
+          <xs:documentation>Pushing or barging - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1c">
+        <xs:annotation>
+          <xs:documentation>Use of a weapon or object - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1d">
+        <xs:annotation>
+          <xs:documentation>Projectile - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1e">
+        <xs:annotation>
+          <xs:documentation>Struggling to be free of a physical restraint - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M1f">
+        <xs:annotation>
+          <xs:documentation>Unintentional but negligent contact - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2a">
+        <xs:annotation>
+          <xs:documentation>Verbal abuse - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2b">
+        <xs:annotation>
+          <xs:documentation>Non-Verbal abuse - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2c">
+        <xs:annotation>
+          <xs:documentation>Verbal threat - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2d">
+        <xs:annotation>
+          <xs:documentation>Threatening gesture - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2e">
+        <xs:annotation>
+          <xs:documentation>Disrespectful or challenging language - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2f">
+        <xs:annotation>
+          <xs:documentation>Malicious gossip - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M2g">
+        <xs:annotation>
+          <xs:documentation>Sexual harassment - Staff</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3a">
+        <xs:annotation>
+          <xs:documentation>Striking - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3b">
+        <xs:annotation>
+          <xs:documentation>Pushing or barging - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3c">
+        <xs:annotation>
+          <xs:documentation>Use of a weapon or object - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3d">
+        <xs:annotation>
+          <xs:documentation>Projectile - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3e">
+        <xs:annotation>
+          <xs:documentation>Struggling to be free of violation of personal space or deprivation of liberty - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M3f">
+        <xs:annotation>
+          <xs:documentation>Unintentional but negligent contact - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4a">
+        <xs:annotation>
+          <xs:documentation>Verbal abuse - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4b">
+        <xs:annotation>
+          <xs:documentation>Non-Verbal abuse - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4c">
+        <xs:annotation>
+          <xs:documentation>Verbal threat - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4d">
+        <xs:annotation>
+          <xs:documentation>Threatening gesture - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4e">
+        <xs:annotation>
+          <xs:documentation>Malicious gossip - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4f">
+        <xs:annotation>
+          <xs:documentation>Exclusion of peer - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4g">
+        <xs:annotation>
+          <xs:documentation>Teasing - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4h">
+        <xs:annotation>
+          <xs:documentation>Unhelpful bystander actions - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M4i">
+        <xs:annotation>
+          <xs:documentation>Sexual harassment - Student</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5a">
+        <xs:annotation>
+          <xs:documentation>Theft of personal property</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5b">
+        <xs:annotation>
+          <xs:documentation>Theft of school property</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5c">
+        <xs:annotation>
+          <xs:documentation>Deliberate damage to personal property</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5d">
+        <xs:annotation>
+          <xs:documentation>Incidental damage through negligence</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5e">
+        <xs:annotation>
+          <xs:documentation>Graffiti</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5f">
+        <xs:annotation>
+          <xs:documentation>Buildings and glass</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5g">
+        <xs:annotation>
+          <xs:documentation>Fittings and fixtures</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5h">
+        <xs:annotation>
+          <xs:documentation>Furniture</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5i">
+        <xs:annotation>
+          <xs:documentation>Equipment</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5j">
+        <xs:annotation>
+          <xs:documentation>Vehicles</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M5k">
+        <xs:annotation>
+          <xs:documentation>Garden and plants</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6a">
+        <xs:annotation>
+          <xs:documentation>Active refusal to follow reasonable instructions</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6b">
+        <xs:annotation>
+          <xs:documentation>Passive non-compliance</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6c">
+        <xs:annotation>
+          <xs:documentation>Disruptive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6d">
+        <xs:annotation>
+          <xs:documentation>Defiant</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6e">
+        <xs:annotation>
+          <xs:documentation>Unclear boundaries</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6f">
+        <xs:annotation>
+          <xs:documentation>Erratic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6g">
+        <xs:annotation>
+          <xs:documentation>Impulsive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6h">
+        <xs:annotation>
+          <xs:documentation>Uninterested</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6i">
+        <xs:annotation>
+          <xs:documentation>Inattentive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6j">
+        <xs:annotation>
+          <xs:documentation>Unresponsive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6k">
+        <xs:annotation>
+          <xs:documentation>Unprepared</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6l">
+        <xs:annotation>
+          <xs:documentation>Out of bounds</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6n">
+        <xs:annotation>
+          <xs:documentation>Dress code breach without reasonable explanation</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6o">
+        <xs:annotation>
+          <xs:documentation>Lateness</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6p">
+        <xs:annotation>
+          <xs:documentation>Class-work avoidance</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6q">
+        <xs:annotation>
+          <xs:documentation>Unsafe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6r">
+        <xs:annotation>
+          <xs:documentation>Out of class without permission</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6s">
+        <xs:annotation>
+          <xs:documentation>Annoying</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6t">
+        <xs:annotation>
+          <xs:documentation>Inappropriate language</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6u">
+        <xs:annotation>
+          <xs:documentation>Academic dishonesty</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6v">
+        <xs:annotation>
+          <xs:documentation>Loud</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6w">
+        <xs:annotation>
+          <xs:documentation>Out of seat</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6x">
+        <xs:annotation>
+          <xs:documentation>Failure to use manners</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6y">
+        <xs:annotation>
+          <xs:documentation>Littering</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M6z">
+        <xs:annotation>
+          <xs:documentation>Disorderly</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7a">
+        <xs:annotation>
+          <xs:documentation>Cigarette</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7b">
+        <xs:annotation>
+          <xs:documentation>Alcohol</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7c">
+        <xs:annotation>
+          <xs:documentation>Over-the-counter medication</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7d">
+        <xs:annotation>
+          <xs:documentation>ADHD medication</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7e">
+        <xs:annotation>
+          <xs:documentation>Other prescription medication</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7f">
+        <xs:annotation>
+          <xs:documentation>Aerosol</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7g">
+        <xs:annotation>
+          <xs:documentation>Solvents</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M7h">
+        <xs:annotation>
+          <xs:documentation>Inappropriate sexual material</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8a">
+        <xs:annotation>
+          <xs:documentation>Knife or blade</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8b">
+        <xs:annotation>
+          <xs:documentation>Firearm</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8c">
+        <xs:annotation>
+          <xs:documentation>Amphetamines</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8d">
+        <xs:annotation>
+          <xs:documentation>Marijuana</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8e">
+        <xs:annotation>
+          <xs:documentation>Drug implement or paraphernalia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8f">
+        <xs:annotation>
+          <xs:documentation>Other illegal drug</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M8g">
+        <xs:annotation>
+          <xs:documentation>Other illegal weapon</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9a">
+        <xs:annotation>
+          <xs:documentation>Cyberbullying</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9b">
+        <xs:annotation>
+          <xs:documentation>Hacking</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9c">
+        <xs:annotation>
+          <xs:documentation>Breach of Department acceptable use agreement</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9d">
+        <xs:annotation>
+          <xs:documentation>Breach of Students Online policy</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9e">
+        <xs:annotation>
+          <xs:documentation>Persistent personal use of a MED when not permitted</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9f">
+        <xs:annotation>
+          <xs:documentation>Inappropriate audio or video recording</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9g">
+        <xs:annotation>
+          <xs:documentation>Inappropriate uploading of text, images or audio</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9h">
+        <xs:annotation>
+          <xs:documentation>Public posting of messages that bring the school or Department into disrepute</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M9i">
+        <xs:annotation>
+          <xs:documentation>Copyright infringement or plagiarism</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -7327,14 +8888,14 @@
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsNAPTestItemTypeType">
     <xs:restriction base="xs:token">
-      <xs:enumeration value="CO">
-        <xs:annotation>
-          <xs:documentation>Composite</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
       <xs:enumeration value="ET">
         <xs:annotation>
           <xs:documentation>Extended text</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CO">
+        <xs:annotation>
+          <xs:documentation>Composite</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
       <xs:enumeration value="HS">
@@ -7910,11 +9471,6 @@
       <xs:enumeration value="999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -11015,11 +12571,6 @@
           <xs:documentation>Other general activity</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsEmailTypeType">
@@ -11057,11 +12608,6 @@
       <xs:enumeration value="07">
         <xs:annotation>
           <xs:documentation>Personal</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -11178,11 +12724,6 @@
           <xs:documentation>Unknown</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSchoolFocusCodeType">
@@ -11215,11 +12756,6 @@
       <xs:enumeration value="99">
         <xs:annotation>
           <xs:documentation>Not Provided</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -11271,11 +12807,6 @@
           <xs:documentation>Alternate Other address</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsAddressRoleType">
@@ -11323,11 +12854,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other Address</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -11382,11 +12908,6 @@
       <xs:enumeration value="OTH">
         <xs:annotation>
           <xs:documentation>Other Territories</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -13187,11 +14708,6 @@
           <xs:documentation>Home Mobile</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSessionTypeType">
@@ -13236,11 +14752,6 @@
           <xs:documentation>Other</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsOperationalStatusType">
@@ -13273,11 +14784,6 @@
       <xs:enumeration value="U">
         <xs:annotation>
           <xs:documentation>Unstaffed</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -14099,11 +15605,6 @@
           <xs:documentation>Not Applicable</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSchoolSectorCodeType">
@@ -14118,11 +15619,6 @@
           <xs:documentation>Non-Government School</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSystemicStatusType">
@@ -14135,11 +15631,6 @@
       <xs:enumeration value="S">
         <xs:annotation>
           <xs:documentation>Systemic</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -14169,11 +15660,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -14863,11 +16349,6 @@
       <xs:enumeration value="7014">
         <xs:annotation>
           <xs:documentation>Rationalism</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -22217,11 +23698,6 @@
           <xs:documentation>Male</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsNameUsageTypeType">
@@ -22274,11 +23750,6 @@
       <xs:enumeration value="TRB">
         <xs:annotation>
           <xs:documentation>Tribal Name</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -22350,11 +23821,6 @@
           <xs:documentation>Documentation Sighted, type not recorded</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsAustralianCitizenshipStatusType">
@@ -22394,11 +23860,6 @@
           <xs:documentation>Not Provided</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsEnglishProficiencyType">
@@ -22431,11 +23892,6 @@
       <xs:enumeration value="9">
         <xs:annotation>
           <xs:documentation>Not Applicable - English is 'first language spoken' and do not 'speak a language other than English at home'.</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -25001,11 +26457,6 @@
           <xs:documentation>Other</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsDwellingArrangementType">
@@ -25105,11 +26556,6 @@
           <xs:documentation>Other</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsIndigenousStatusType">
@@ -25139,11 +26585,6 @@
           <xs:documentation>Not Stated/Unknown</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsPermanentResidentStatusType">
@@ -25166,11 +26607,6 @@
       <xs:enumeration value="T">
         <xs:annotation>
           <xs:documentation>Temporary Resident</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -26332,11 +27768,6 @@
           <xs:documentation>Declaratory (No longer issued)</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsImmunisationCertificateStatusType">
@@ -26376,11 +27807,6 @@
           <xs:documentation>Not Sighted or Not Provided</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsProgressLevelType">
@@ -26398,11 +27824,6 @@
       <xs:enumeration value="Above">
         <xs:annotation>
           <xs:documentation>Above level</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -26429,11 +27850,6 @@
           <xs:documentation>Other</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSchoolEnrollmentTypeType">
@@ -26451,11 +27867,6 @@
       <xs:enumeration value="03">
         <xs:annotation>
           <xs:documentation>Concurrent Enrolment</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -26557,18 +27968,13 @@
           <xs:documentation>Not provided</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsEmploymentTypeType">
     <xs:restriction base="xs:token">
       <xs:enumeration value="1">
         <xs:annotation>
-          <xs:documentation>Senior management in large business organisation, government administration and defence and qualified professionals.</xs:documentation>
+          <xs:documentation>Senior management in large business organisation, government administration and defence and qualified professionals</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
       <xs:enumeration value="2">
@@ -26588,17 +27994,12 @@
       </xs:enumeration>
       <xs:enumeration value="8">
         <xs:annotation>
-          <xs:documentation>Out of employed work for 12 months or more (If less use previous occupational group.)</xs:documentation>
+          <xs:documentation>Out of employed work for 12 months or more (If less use previous occupational group)</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
       <xs:enumeration value="9">
         <xs:annotation>
           <xs:documentation>Unknown</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -26630,11 +28031,6 @@
           <xs:documentation>Year 12 or equivalent</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsNonSchoolEducationType">
@@ -26664,11 +28060,6 @@
           <xs:documentation>No non-school qualification</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsYesOrNoCategoryType">
@@ -26691,11 +28082,6 @@
       <xs:enumeration value="Y">
         <xs:annotation>
           <xs:documentation>Yes</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -26947,11 +28333,6 @@
           <xs:documentation>Other</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSourceCodeTypeType">
@@ -26979,11 +28360,6 @@
       <xs:enumeration value="T">
         <xs:annotation>
           <xs:documentation>Ascribed by a previous school</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27020,11 +28396,6 @@
           <xs:documentation>Other</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsEnrollmentTimeFrameType">
@@ -27042,11 +28413,6 @@
       <xs:enumeration value="H">
         <xs:annotation>
           <xs:documentation>Historical</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27148,6 +28514,11 @@
           <xs:documentation>Original entry into an Australian school from a foreign country with an interruption in schooling</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+      <xs:enumeration value="1841">
+        <xs:annotation>
+          <xs:documentation>Entry into Intensive English Centre</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
       <xs:enumeration value="0998">
         <xs:annotation>
           <xs:documentation>Temporary enrolment</xs:documentation>
@@ -27156,11 +28527,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27192,11 +28558,6 @@
           <xs:documentation>Afternoon</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsExitWithdrawalStatusType">
@@ -27214,11 +28575,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Unknown</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27312,7 +28668,7 @@
       </xs:enumeration>
       <xs:enumeration value="1925">
         <xs:annotation>
-          <xs:documentation>Expelled or involuntarily withdrawn</xs:documentation>
+          <xs:documentation>Expelled, Excluded or involuntarily withdrawn</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
       <xs:enumeration value="1926">
@@ -27385,19 +28741,9 @@
           <xs:documentation>Transferred to a different campus of the same school</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="2000">
-        <xs:annotation>
-          <xs:documentation>Excluded</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27412,11 +28758,6 @@
       <xs:enumeration value="02">
         <xs:annotation>
           <xs:documentation>Part Time</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27438,11 +28779,6 @@
           <xs:documentation>Not stated/Unknown</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsPublicSchoolCatchmentStatusType">
@@ -27460,11 +28796,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Unknown</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27509,11 +28840,6 @@
       <xs:enumeration value="10">
         <xs:annotation>
           <xs:documentation>MIME</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27585,11 +28911,6 @@
           <xs:documentation>Industrial Award</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsElectronicIdTypeType">
@@ -27614,11 +28935,6 @@
           <xs:documentation>RFID</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsSexCodeType">
@@ -27641,11 +28957,6 @@
       <xs:enumeration value="9">
         <xs:annotation>
           <xs:documentation>Not Stated/Inadequately Described</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27782,11 +29093,6 @@
           <xs:documentation>Ungraded Senior Secondary</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsAttendanceStatusType">
@@ -27811,11 +29117,6 @@
           <xs:documentation>Not Applicable</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsActivityTypeType">
@@ -27833,11 +29134,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27872,11 +29168,6 @@
       <xs:enumeration value="6">
         <xs:annotation>
           <xs:documentation>Not stated/inadequately described</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27916,11 +29207,6 @@
       <xs:enumeration value="2153">
         <xs:annotation>
           <xs:documentation>Teacher referral</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -27970,11 +29256,6 @@
       <xs:enumeration value="0234">
         <xs:annotation>
           <xs:documentation>Weekend</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -28921,11 +30202,6 @@
           <xs:documentation>Recruitment Officer</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsAssessmentTypeType">
@@ -29030,11 +30306,6 @@
           <xs:documentation>Reading readiness test</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsLearningStandardItemRelationshipTypesType">
@@ -29052,11 +30323,6 @@
       <xs:enumeration value="State">
         <xs:annotation>
           <xs:documentation>A link to a standard from another state. The purpose of this is to express relationships between state standards.</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -29136,11 +30402,6 @@
       <xs:enumeration value="W">
         <xs:annotation>
           <xs:documentation>Work Studies</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -29257,11 +30518,6 @@
           <xs:documentation>Workplace readiness score</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsResourceUsageContentTypeType">
@@ -29274,11 +30530,6 @@
       <xs:enumeration value="09">
         <xs:annotation>
           <xs:documentation>Other Usage</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -29305,11 +30556,6 @@
           <xs:documentation>On Leave</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsTeacherCoverCreditType">
@@ -29334,11 +30580,6 @@
           <xs:documentation>The event is supervised by a casual teacher</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsTeacherCoverSupervisionType">
@@ -29356,11 +30597,6 @@
       <xs:enumeration value="MergedClass">
         <xs:annotation>
           <xs:documentation>The event is a merged class</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -29422,11 +30658,6 @@
           <xs:documentation>Anything else (one-off)</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AUCodeSetsEquipmentTypeType">
@@ -29464,11 +30695,6 @@
       <xs:enumeration value="Other">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -29513,11 +30739,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -29572,11 +30793,6 @@
       <xs:enumeration value="9999">
         <xs:annotation>
           <xs:documentation>Other</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ZZREDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -30524,14 +31740,68 @@
   </xs:complexType>
 
 
+  <!--WellbeingEventCategoryListType-->
+
+  <xs:complexType name="WellbeingEventCategoryListType">
+    <xs:annotation>
+      <xs:documentation>List of Categories of WellbeingEvent.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WellbeingEventCategory" minOccurs="0" maxOccurs="unbounded" type="WellbeingEventCategoryType" />
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!--WellbeingEventCategoryType-->
+
+  <xs:complexType name="WellbeingEventCategoryType">
+    <xs:annotation>
+      <xs:documentation>Category of event.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="EventCategory" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Category of event.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="AUCodeSetsEventCategoryType" />
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string" />
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="WellbeingEventSubCategoryList" minOccurs="0" nillable="true" type="WellbeingEventSubCategoryListType">
+        <xs:annotation>
+          <xs:documentation>List of sub-categories of the WellbeingEvent. Most likely to be locally defined.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
   <!--WellbeingEventSubCategoryListType-->
 
   <xs:complexType name="WellbeingEventSubCategoryListType">
     <xs:annotation>
-      <xs:documentation>Optional List of SubTypes associated with a Category.</xs:documentation>
+      <xs:documentation>List of SubTypes associated with a Category.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="WellbeingEventSubCategory" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+      <xs:element name="WellbeingEventSubCategory" minOccurs="0" maxOccurs="unbounded">
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="AUCodeSetsEventSubCategoryType" />
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string" />
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -30604,7 +31874,7 @@
 
   <xs:complexType name="PersonInvolvementListType">
     <xs:annotation>
-      <xs:documentation>List of People involved in the Wellbeing event.  Mandatory if more people than the student to which this event occurs is involved.</xs:documentation>
+      <xs:documentation>List of People involved in the Wellbeing event/response.  Mandatory if more people than the student to which this event/response occurs is involved.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="PersonInvolvement" minOccurs="0" maxOccurs="unbounded" type="PersonInvolvementType" />
@@ -30616,7 +31886,7 @@
 
   <xs:complexType name="PersonInvolvementType">
     <xs:annotation>
-      <xs:documentation>A person (additional to the student) involved in a  Wellbeing event where required to be known.</xs:documentation>
+      <xs:documentation>A person (additional to the student) involved in a  Wellbeing event/response where required to be known.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="PersonRefId" minOccurs="0" nillable="true">
@@ -33099,6 +34369,11 @@
       <xs:documentation>Time span that the student entered or returned to school</xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="AttendanceType" minOccurs="0" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Nature of the attendance e.g. 'Taken at Roll Call'</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="AttendanceCode" minOccurs="0" type="AttendanceCodeType">
         <xs:annotation>
           <xs:documentation>Locally defined code for attendance.</xs:documentation>
@@ -33130,9 +34405,106 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element name="Source" minOccurs="0" nillable="true" type="xs:string">
+      <xs:element name="TimeTableSubjectRefId" minOccurs="0" nillable="true" type="RefIdType">
         <xs:annotation>
-          <xs:documentation>Source of information about attendance.</xs:documentation>
+          <xs:documentation>RefId of TimeTableSubject</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttendanceNote" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Note related to this particular time span.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!--PeriodAttendancesType-->
+
+  <xs:complexType name="PeriodAttendancesType">
+    <xs:annotation>
+      <xs:documentation>Breakdown of grouped period attendance.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PeriodAttendance" minOccurs="0" maxOccurs="unbounded" type="PeriodAttendanceType">
+        <xs:annotation>
+          <xs:documentation />
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!--PeriodAttendanceType-->
+
+  <xs:complexType name="PeriodAttendanceType">
+    <xs:annotation>
+      <xs:documentation>This container type allows recording of period level attendance for a student.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AttendanceType" minOccurs="0" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Nature of the attendance e.g. 'Taken at Roll Call'</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttendanceCode" minOccurs="0" type="AttendanceCodeType">
+        <xs:annotation>
+          <xs:documentation>Locally defined code for attendance.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AttendanceStatus" minOccurs="0" type="AUCodeSetsAttendanceStatusType">
+        <xs:annotation>
+          <xs:documentation>Approved or Unapproved status of this attendance code.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Date" minOccurs="0" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>The date of the attendance event.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SessionInfoRefId" minOccurs="0" nillable="true" type="IdRefType">
+        <xs:annotation>
+          <xs:documentation>The GUID of the session that this attendance applies to.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ScheduledActivityRefId" minOccurs="0" nillable="true" type="IdRefType">
+        <xs:annotation>
+          <xs:documentation>The GUID of the ScheduledActivity Object attendance applies to.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimetablePeriod" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>The period within which attendance is being reported, e.g. "4D".</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DayId" minOccurs="0" nillable="true" type="LocalIdType">
+        <xs:annotation>
+          <xs:documentation>Day Id.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StartTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>Optional Start Time of Curriculum Session</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EndTime" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>Optional End Time of Curriculum Session</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeIn" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>The time the student entered or returned to this class.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeOut" minOccurs="0" nillable="true" type="xs:time">
+        <xs:annotation>
+          <xs:documentation>The time the student left this class.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeTableCellRefId" minOccurs="0" nillable="true" type="IdRefType">
+        <xs:annotation>
+          <xs:documentation>The (GUID) of the piece of Curriculum (TT Grid) scheduled</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="TimeTableSubjectRefId" minOccurs="0" nillable="true" type="RefIdType">
@@ -33152,7 +34524,7 @@
       </xs:element>
       <xs:element name="AttendanceNote" minOccurs="0" nillable="true" type="xs:normalizedString">
         <xs:annotation>
-          <xs:documentation>Note related to this particular time span.</xs:documentation>
+          <xs:documentation>Note related to this particular attendance.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
@@ -35780,6 +37152,11 @@
       <xs:element name="MaritalStatus" minOccurs="0" nillable="true" type="AUCodeSetsMaritalStatusAIHWType">
         <xs:annotation>
           <xs:documentation>The person's marital status.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MedicareNumber" minOccurs="0" nillable="true" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>Person's Medicare number. Exchange only with permission to do so.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
