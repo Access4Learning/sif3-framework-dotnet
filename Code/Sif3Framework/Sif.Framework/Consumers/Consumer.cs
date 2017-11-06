@@ -28,6 +28,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
@@ -182,14 +184,69 @@ namespace Sif.Framework.Consumers
             return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Deserialise(xml);
         }
 
+        private void ProcessEvents(CancellationToken cancellationToken)
+        {
+            
+            while (true)
+            {
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    //cancellationToken.ThrowIfCancellationRequested();
+                    break;
+                }
+
+                // Check the message queue.
+
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+            }
+
+        }
+
         /// <summary>
         /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Register()">Register</see>
         /// </summary>
         public void Register()
         {
             RegistrationService.Register(ref environmentTemplate);
-            queueType newQueue = new queueType();
-            Queue = CreateQueue(newQueue);
+
+            if (this is ISupportsEvents<TMultiple>)
+            {
+                queueType queue = new queueType();
+                Queue = CreateQueue(queue);
+
+                subscriptionType subscription = new subscriptionType()
+                {
+                    queueId = Queue.id,
+                    serviceName = $"{TypeName}s",
+                    serviceType = ServiceType.OBJECT.ToDescription()
+                };
+
+                Subscription = CreateSubscription(subscription);
+
+                // Manage SIF Events using background tasks.
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken cancellationToken = cancellationTokenSource.Token;
+                Task listener = Task.Factory.StartNew(
+                    () => ProcessEvents(cancellationToken),
+                    cancellationToken,
+                    TaskCreationOptions.LongRunning,
+                    TaskScheduler.Default);
+                //cancellationTokenSource.Cancel();
+                //try
+                //{
+                //    listener.Wait();
+                //}
+                //catch (AggregateException e)
+                //{
+
+                //}
+                //catch (Exception e)
+                //{
+
+                //}
+            }
+
         }
 
         /// <summary>
@@ -259,7 +316,7 @@ namespace Sif.Framework.Consumers
             return createResponse;
         }
 
-        private queueType CreateQueue(queueType obj, string zoneId = null, string contextId = null)
+        private queueType CreateQueue(queueType obj)
         {
             string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.queues);
             string body = SerialiseQueue(obj);
@@ -270,9 +327,9 @@ namespace Sif.Framework.Consumers
             return DeserialiseQueue(xml);
         }
 
-        private subscriptionType CreateSubscription(subscriptionType obj, string zoneId = null, string contextId = null)
+        private subscriptionType CreateSubscription(subscriptionType obj)
         {
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.queues);
+            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.subscriptions);
             string body = SerialiseSubscription(obj);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
