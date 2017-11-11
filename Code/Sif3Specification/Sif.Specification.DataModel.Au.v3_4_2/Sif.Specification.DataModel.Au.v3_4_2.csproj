@@ -45,8 +45,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.1" mkdir "$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.1"
-copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.1\$(TargetFileName)" /Y /V</PostBuildEvent>
+    <PostBuildEvent>if not exist "$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.2" mkdir "$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.2"
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.2\$(TargetFileName)" /Y /V</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
