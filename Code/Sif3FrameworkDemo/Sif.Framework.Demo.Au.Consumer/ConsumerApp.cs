@@ -55,6 +55,24 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
+        private static Boolean RunDemo(string demoName)
+        {
+            Console.WriteLine();
+            Console.Write("Would you like run the " + demoName + " demo (Y/N)? - ");
+            ConsoleKeyInfo info = new ConsoleKeyInfo();
+
+            do
+            {
+                info = Console.ReadKey();
+            }
+            while (info.Key != ConsoleKey.N && info.Key != ConsoleKey.Y && info.Key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            return (info.Key == ConsoleKey.Y);
+        }
+
         void RunStudentPersonalConsumer()
         {
             StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(
@@ -291,13 +309,35 @@ namespace Sif.Framework.Demo.Au.Consumer
         {
             ConsumerApp app = new ConsumerApp();
 
-            try
+            if (RunDemo("Student Personal CRUD Consumer"))
             {
-                app.RunStudentPersonalConsumer();
+
+                try
+                {
+                    app.RunStudentPersonalConsumer();
+                }
+                catch (Exception e)
+                {
+                    if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                }
+
             }
-            catch (Exception e)
+
+            if (RunDemo("Student Personal Event Consumer"))
             {
-                if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                StudentPersonalEventConsumer studentPersonalConsumer = new StudentPersonalEventConsumer(
+                    SettingsManager.ConsumerSettings.ApplicationKey,
+                    SettingsManager.ConsumerSettings.InstanceId,
+                    SettingsManager.ConsumerSettings.UserToken,
+                    SettingsManager.ConsumerSettings.SolutionId);
+                studentPersonalConsumer.Start();
+                if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
+
+                Console.WriteLine("Press any key to stop the Event Consumer ...");
+                Console.ReadKey();
+
+                studentPersonalConsumer.Stop();
+                if (log.IsInfoEnabled) log.Info("Stopped the Event Consumer.");
             }
 
             Console.WriteLine("Press any key to continue ...");

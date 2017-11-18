@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsumerApp.cs" />
+    <Compile Include="Consumers\StudentPersonalEventConsumer.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Consumers\StudentPersonalConsumer.cs" />
