@@ -5,7 +5,7 @@
   </defaultZone>
   <infrastructureServices>
     <!-- The presence of the following two Services are mandatory for any Consumer Environment. -->
-    <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
+    <infrastructureService name="environment">http://localhost:59586/api/environments</infrastructureService>
     <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>
     <!-- These two Services support the reception of delayed Responses and asynchronous Events. They are mandatory for all Brokered Architectures. -->
     <infrastructureService name="queues">http://localhost:62921/api/queues</infrastructureService>

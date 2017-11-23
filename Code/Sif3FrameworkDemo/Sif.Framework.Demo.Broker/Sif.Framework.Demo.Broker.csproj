@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\EnvironmentsProvider.cs" />
     <Compile Include="Controllers\QueuesProvider.cs" />
     <Compile Include="Controllers\SubscriptionsProvider.cs" />
     <Compile Include="Global.asax.cs">
