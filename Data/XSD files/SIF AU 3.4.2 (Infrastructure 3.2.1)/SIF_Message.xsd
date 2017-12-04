@@ -1,7 +1,7 @@
 <!--
-		SIF Implementation Specification (Australia) 3.4.2 (October 26, 2017) Infrastructure Version: v3
+		SIF Implementation Specification (Australia) 3.4.2 (November 14, 2017) Infrastructure Version: v3
 	-->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sifassociation.org/datamodel/au/3.4" targetNamespace="http://www.sifassociation.org/datamodel/au/3.4" elementFormDefault="qualified" version="3.4.2"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sifassociation.org/datamodel/au/3.4" targetNamespace="http://www.sifassociation.org/datamodel/au/3.4" elementFormDefault="qualified"
 >
   <!--SIFAU-->
 
@@ -6219,7 +6219,7 @@
       </xs:element>
       <xs:element name="Suspension" minOccurs="0" nillable="true" type="SuspensionContainerType">
         <xs:annotation>
-          <xs:documentation>Container for details of a Suspension or Explusion.</xs:documentation>
+          <xs:documentation>Container for details of a Suspension or Expulsion.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="Detention" minOccurs="0" nillable="true" type="DetentionContainerType">
@@ -30919,9 +30919,9 @@
           <xs:documentation>Pula</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="BYR">
+      <xs:enumeration value="BYN">
         <xs:annotation>
-          <xs:documentation>Belarussian Ruble</xs:documentation>
+          <xs:documentation>Belarusian Ruble</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
       <xs:enumeration value="BZD">
@@ -31232,11 +31232,6 @@
       <xs:enumeration value="LSL">
         <xs:annotation>
           <xs:documentation>Loti</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="LTL">
-        <xs:annotation>
-          <xs:documentation>Lithuanian Litas</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
       <xs:enumeration value="LYD">
@@ -31554,6 +31549,11 @@
           <xs:documentation>US Dollar (Next day)</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+      <xs:enumeration value="UYI">
+        <xs:annotation>
+          <xs:documentation>Uruguay Peso en Unidades Indexadas (URUIURUI)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
       <xs:enumeration value="UYU">
         <xs:annotation>
           <xs:documentation>Peso Uruguayo</xs:documentation>
@@ -31679,19 +31679,14 @@
           <xs:documentation>Rand</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZMK">
+      <xs:enumeration value="ZMW">
         <xs:annotation>
           <xs:documentation>Kwacha</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="ZWN">
+      <xs:enumeration value="ZWL">
         <xs:annotation>
           <xs:documentation>Zimbabwe Dollar</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="REDACTED">
-        <xs:annotation>
-          <xs:documentation>Redacted for privacy</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -31726,9 +31721,9 @@
           <xs:documentation>Frequency of Administration.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="AdmistrationInformation" minOccurs="0" nillable="true" type="xs:string">
+      <xs:element name="AdministrationInformation" minOccurs="0" nillable="true" type="xs:string">
         <xs:annotation>
-          <xs:documentation>Information about how the medication is to be adminstered.</xs:documentation>
+          <xs:documentation>Information about how the medication is to be administered.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="Method" minOccurs="0" nillable="true" type="xs:string">
@@ -31818,7 +31813,7 @@
           <xs:documentation>Categorisation of location of Wellbeing event.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Class" minOccurs="0" nillable="true" type="xs:date">
+      <xs:element name="Class" minOccurs="0" nillable="true" type="xs:string">
         <xs:annotation>
           <xs:documentation>If the event happened during a class, - Subject or Class the event occurred in. Free text for additional info if required.</xs:documentation>
         </xs:annotation>
@@ -32167,7 +32162,7 @@
       <xs:documentation>Container for details of any other response that can not be classifed by previous types.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="OtherResonseDate" minOccurs="0" nillable="true" type="xs:date">
+      <xs:element name="OtherResponseDate" minOccurs="0" nillable="true" type="xs:date">
         <xs:annotation>
           <xs:documentation>Date of the other response</xs:documentation>
         </xs:annotation>

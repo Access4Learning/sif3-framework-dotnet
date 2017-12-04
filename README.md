@@ -345,3 +345,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **Nov 06, 2017 - 3.2.1.4 Applied updates to AU Data Model 3.4.2**
 
 - Updated the SIF Framework to use the officially approved version of the SIF AU Data Model 3.4.2 (no SIF Framework version update).
+
+**Nov 23, 2017 - 3.2.1.4 Applied updates to AU Data Model 3.4.2**
+
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.2 (no SIF Framework version update).

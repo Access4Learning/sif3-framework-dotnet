@@ -953,7 +953,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private string frequencyField;
         
-        private string admistrationInformationField;
+        private string administrationInformationField;
         
         private string methodField;
         
@@ -981,12 +981,12 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string AdmistrationInformation {
+        public string AdministrationInformation {
             get {
-                return this.admistrationInformationField;
+                return this.administrationInformationField;
             }
             set {
-                this.admistrationInformationField = value;
+                this.administrationInformationField = value;
             }
         }
         
@@ -1062,9 +1062,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool eventLocationFieldSpecified;
         
-        private System.Nullable<System.DateTime> classField;
-        
-        private bool classFieldSpecified;
+        private string classField;
         
         private string furtherLocationNotesField;
         
@@ -1090,24 +1088,13 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date", IsNullable=true)]
-        public System.Nullable<System.DateTime> Class {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string Class {
             get {
                 return this.classField;
             }
             set {
                 this.classField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ClassSpecified {
-            get {
-                return this.classFieldSpecified;
-            }
-            set {
-                this.classFieldSpecified = value;
             }
         }
         
@@ -1299,9 +1286,9 @@ namespace Sif.Specification.DataModel.Au {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class OtherWellbeingResponseContainerType {
         
-        private System.Nullable<System.DateTime> otherResonseDateField;
+        private System.Nullable<System.DateTime> otherResponseDateField;
         
-        private bool otherResonseDateFieldSpecified;
+        private bool otherResponseDateFieldSpecified;
         
         private string otherResponseTypeField;
         
@@ -1315,23 +1302,23 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date", IsNullable=true)]
-        public System.Nullable<System.DateTime> OtherResonseDate {
+        public System.Nullable<System.DateTime> OtherResponseDate {
             get {
-                return this.otherResonseDateField;
+                return this.otherResponseDateField;
             }
             set {
-                this.otherResonseDateField = value;
+                this.otherResponseDateField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool OtherResonseDateSpecified {
+        public bool OtherResponseDateSpecified {
             get {
-                return this.otherResonseDateFieldSpecified;
+                return this.otherResponseDateFieldSpecified;
             }
             set {
-                this.otherResonseDateFieldSpecified = value;
+                this.otherResponseDateFieldSpecified = value;
             }
         }
         
@@ -6101,7 +6088,7 @@ namespace Sif.Specification.DataModel.Au {
         BWP,
         
         /// <remarks/>
-        BYR,
+        BYN,
         
         /// <remarks/>
         BZD,
@@ -6288,9 +6275,6 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         LSL,
-        
-        /// <remarks/>
-        LTL,
         
         /// <remarks/>
         LYD,
@@ -6482,6 +6466,9 @@ namespace Sif.Specification.DataModel.Au {
         USN,
         
         /// <remarks/>
+        UYI,
+        
+        /// <remarks/>
         UYU,
         
         /// <remarks/>
@@ -6557,13 +6544,10 @@ namespace Sif.Specification.DataModel.Au {
         ZAR,
         
         /// <remarks/>
-        ZMK,
+        ZMW,
         
         /// <remarks/>
-        ZWN,
-        
-        /// <remarks/>
-        REDACTED,
+        ZWL,
     }
     
     /// <remarks/>
