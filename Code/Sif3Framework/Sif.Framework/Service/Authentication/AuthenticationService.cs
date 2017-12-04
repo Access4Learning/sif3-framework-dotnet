@@ -15,10 +15,10 @@
  */
 
 using Sif.Framework.Model.Authentication;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Utils;
 using System;
 using System.Net.Http.Headers;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Authentication
 {
@@ -32,7 +32,7 @@ namespace Sif.Framework.Service.Authentication
         /// <summary>
         /// <see cref="IAuthenticationService.GetEnvironmentBySessionToken(string)">GetEnvironmentBySessionToken</see>
         /// </summary>
-        public abstract Environment GetEnvironmentBySessionToken(string sessionToken);
+        public abstract Model.Infrastructure.Environment GetEnvironmentBySessionToken(string sessionToken);
 
         /// <summary>
         /// Retrieve the shared secret value associated with the passed in application key.
@@ -46,6 +46,7 @@ namespace Sif.Framework.Service.Authentication
         /// </summary>
         /// <param name="sessionToken">Session token associated with the shared secret.</param>
         /// <returns>Shared secret value.</returns>
+        /// <exception cref="InvalidSessionException">sessionToken is invalid.</exception>
         protected abstract string SharedSecret(string sessionToken);
 
         /// <summary>
@@ -73,18 +74,27 @@ namespace Sif.Framework.Service.Authentication
                     sharedSecret = SharedSecret;
                 }
 
-                if (AuthenticationMethod.Basic.ToString().Equals(headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    AuthorisationToken authorisationToken = new AuthorisationToken { Token = headers.Authorization.ToString() };
-                    IAuthorisationTokenService authorisationTokenService = new BasicAuthorisationTokenService();
-                    verified = authorisationTokenService.Verify(authorisationToken, sharedSecret, out sessionTokenChecked);
+
+                    if (AuthenticationMethod.Basic.ToString().Equals(headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+                    {
+                        AuthorisationToken authorisationToken = new AuthorisationToken { Token = headers.Authorization.ToString() };
+                        IAuthorisationTokenService authorisationTokenService = new BasicAuthorisationTokenService();
+                        verified = authorisationTokenService.Verify(authorisationToken, sharedSecret, out sessionTokenChecked);
+                    }
+                    else if (AuthenticationMethod.SIF_HMACSHA256.ToString().Equals(headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+                    {
+                        string timestamp = HttpUtils.GetTimestamp(headers);
+                        AuthorisationToken authorisationToken = new AuthorisationToken { Token = headers.Authorization.ToString(), Timestamp = timestamp };
+                        IAuthorisationTokenService authorisationTokenService = new HmacShaAuthorisationTokenService();
+                        verified = authorisationTokenService.Verify(authorisationToken, sharedSecret, out sessionTokenChecked);
+                    }
+
                 }
-                else if (AuthenticationMethod.SIF_HMACSHA256.ToString().Equals(headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+                catch (InvalidSessionException)
                 {
-                    string timestamp = HttpUtils.GetTimestamp(headers);
-                    AuthorisationToken authorisationToken = new AuthorisationToken { Token = headers.Authorization.ToString(), Timestamp = timestamp };
-                    IAuthorisationTokenService authorisationTokenService = new HmacShaAuthorisationTokenService();
-                    verified = authorisationTokenService.Verify(authorisationToken, sharedSecret, out sessionTokenChecked);
+                    verified = false;
                 }
 
             }
