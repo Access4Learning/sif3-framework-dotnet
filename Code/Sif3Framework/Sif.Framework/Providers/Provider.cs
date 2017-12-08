@@ -505,6 +505,11 @@ namespace Sif.Framework.Providers
 
             try
             {
+                uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
+                uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
+                string requestedZone = (zoneId == null ? null : zoneId[0]);
+                string requestedContext = (contextId == null ? null : contextId[0]);
+
                 IList<EqualCondition> conditions = new List<EqualCondition>() { new EqualCondition() { Left = object1, Right = refId1 } };
 
                 if (!string.IsNullOrWhiteSpace(object2))
@@ -518,7 +523,7 @@ namespace Sif.Framework.Providers
 
                 }
 
-                TMultiple objs = service.Retrieve(conditions, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                TMultiple objs = service.Retrieve(conditions, navigationPage, navigationPageSize, requestedZone, requestedContext);
 
                 if (objs == null)
                 {

@@ -349,3 +349,9 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **Nov 23, 2017 - 3.2.1.4 Applied updates to AU Data Model 3.4.2**
 
 - Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.2 (no SIF Framework version update).
+
+**Dec 04, 2017 - 3.2.1.5 Minor code changes highlighted during training**
+
+- Enable paging of results from a Query By Service Path call.
+- Fixed an issue in the authentication service so that the correct HTTP status code is returned.
+- Updated and improved documentation after feedback from a training course.
