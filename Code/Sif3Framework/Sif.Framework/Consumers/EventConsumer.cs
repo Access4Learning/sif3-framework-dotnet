@@ -114,7 +114,7 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Queue.</returns>
         private queueType CreateQueue(queueType queue)
         {
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.queues);
+            string url = $"{EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/queue";
             string body = SerialiseQueue(queue);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
@@ -130,7 +130,7 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Subscription.</returns>
         private subscriptionType CreateSubscription(subscriptionType subscription)
         {
-            string url = EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, connector: InfrastructureServiceNames.subscriptions);
+            string url = $"{EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}/subscription";
             string body = SerialiseSubscription(subscription);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");

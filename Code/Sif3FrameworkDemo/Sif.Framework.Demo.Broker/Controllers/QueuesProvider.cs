@@ -48,6 +48,7 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return base.Post(objs, zoneId, contextId);
         }
 
+        [Route("~/api/Queues/Queue")]
         public override IHttpActionResult Post(Queue obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);
