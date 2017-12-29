@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public interface IConsumer<TSingle, TMultiple, TPrimaryKey> : IPayloadSerialisable<TSingle, TMultiple>
+    public interface IConsumer<TSingle, TMultiple, TPrimaryKey>
     {
 
         /// <summary>

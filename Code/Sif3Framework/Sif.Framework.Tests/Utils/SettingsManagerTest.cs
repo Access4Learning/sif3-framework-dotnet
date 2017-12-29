@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,13 @@ namespace Sif.Framework.Utils
     [TestClass]
     public class SettingsManagerTest
     {
+        private const string applicationKey = "Sif3DemoApp";
 
         [TestMethod]
         public void TestRetrieveAppSettings()
         {
             IFrameworkSettings settings = SettingsManager.ConsumerSettings;
-            Assert.AreEqual(settings.ApplicationKey, "Sif3DemoApp");
+            Assert.AreEqual(settings.ApplicationKey, applicationKey);
             Assert.AreEqual(settings.AuthenticationMethod, "Basic");
             Assert.AreEqual(settings.ConsumerName, "DemoConsumer");
             Assert.AreEqual(settings.DataModelNamespace, "http://www.sifassociation.org/au/datamodel/1.4");
@@ -49,17 +50,30 @@ namespace Sif.Framework.Utils
         [TestMethod]
         public void TestSessionTokens()
         {
+            string queueId = Guid.NewGuid().ToString();
             string sessionToken = Guid.NewGuid().ToString();
+            string subscriptionId = Guid.NewGuid().ToString();
             ISessionService sessionService = SessionsManager.ConsumerSessionService;
+
+            // Check session.
             Assert.IsFalse(sessionService.HasSession(sessionToken: "NonExistantSessionToken"));
-            Assert.IsFalse(sessionService.HasSession(applicationKey: "Sif3DemoApp"));
-            sessionService.StoreSession("Sif3DemoApp", sessionToken, "http://www.news.com.au");
+            Assert.IsFalse(sessionService.HasSession(applicationKey: applicationKey));
+
+            // Create session.
+            sessionService.StoreSession(applicationKey, sessionToken, "http://www.news.com.au");
             Assert.IsTrue(sessionService.HasSession(sessionToken: sessionToken));
-            Assert.IsTrue(sessionService.HasSession(applicationKey: "Sif3DemoApp"));
-            Assert.AreEqual(sessionService.RetrieveSessionToken("Sif3DemoApp"), sessionToken);
+            Assert.IsTrue(sessionService.HasSession(applicationKey: applicationKey));
+            Assert.AreEqual(sessionService.RetrieveSessionToken(applicationKey), sessionToken);
+
+            // Update session with a Queue ID.
+            Assert.IsNull(sessionService.RetrieveQueueId(applicationKey));
+            sessionService.UpdateQueueId(queueId, applicationKey);
+            Assert.AreEqual(queueId, sessionService.RetrieveQueueId(applicationKey));
+
+            // Delete session.
             sessionService.RemoveSession(sessionToken);
             Assert.IsFalse(sessionService.HasSession(sessionToken: sessionToken));
-            Assert.IsFalse(sessionService.HasSession(applicationKey: "Sif3DemoApp"));
+            Assert.IsFalse(sessionService.HasSession(applicationKey: applicationKey));
         }
 
     }

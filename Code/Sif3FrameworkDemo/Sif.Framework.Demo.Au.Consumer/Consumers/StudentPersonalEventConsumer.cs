@@ -21,21 +21,21 @@ using System.Collections.Generic;
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
 
-    class StudentPersonalEventConsumer : EventConsumer<StudentPersonal, List<StudentPersonal>, string>, ISupportsEvents<List<StudentPersonal>>
+    class StudentPersonalEventConsumer : BasicEventConsumer<StudentPersonal>
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        public StudentPersonalEventConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
-            : base(applicationKey, instanceId, userToken, solutionId)
-        {
-        }
 
         public StudentPersonalEventConsumer(Model.Infrastructure.Environment environment)
             : base(environment)
         {
         }
 
-        public void OnCreateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        public StudentPersonalEventConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+            : base(applicationKey, instanceId, userToken, solutionId)
+        {
+        }
+
+        public override void OnCreateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnCreateEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
@@ -48,7 +48,7 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
 
         }
 
-        public void OnDeleteEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        public override void OnDeleteEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnDeleteEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
@@ -61,7 +61,7 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
 
         }
 
-        public void OnErrorEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        public override void OnErrorEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnErrorEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
@@ -74,7 +74,7 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
 
         }
 
-        public void OnUpdateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        public override void OnUpdateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnUpdateEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");

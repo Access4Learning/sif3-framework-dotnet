@@ -34,7 +34,7 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public class EventConsumer<TSingle, TMultiple, TPrimaryKey> where TSingle : ISifRefId<TPrimaryKey>
+    public abstract class EventConsumer<TSingle, TMultiple, TPrimaryKey> : IEventConsumer where TSingle : ISifRefId<TPrimaryKey>
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -159,6 +159,42 @@ namespace Sif.Framework.Consumers
             return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Deserialise(xml);
         }
 
+        /// <summary>
+        /// Handler to be called on a create event.
+        /// </summary>
+        /// <param name="objs">Collection of SIF data model objects associated with the create event.</param>
+        /// <param name="zoneId">Zone associated with the create event.</param>
+        /// <param name="contextId">Zone context.</param>
+        public abstract void OnCreateEvent(TMultiple objs, string zoneId = null, string contextId = null);
+
+        /// <summary>
+        /// Handler to be called on a delete event.
+        /// </summary>
+        /// <param name="objs">Collection of SIF data model objects associated with the delete event.</param>
+        /// <param name="zoneId">Zone associated with the delete event.</param>
+        /// <param name="contextId">Zone context.</param>
+        public abstract void OnDeleteEvent(TMultiple objs, string zoneId = null, string contextId = null);
+
+        /// <summary>
+        /// Handler to be called on a error event.
+        /// </summary>
+        /// <param name="objs">Collection of SIF data model objects associated with the error event.</param>
+        /// <param name="zoneId">Zone associated with the error event.</param>
+        /// <param name="contextId">Zone context.</param>
+        public abstract void OnErrorEvent(TMultiple objs, string zoneId = null, string contextId = null);
+
+        /// <summary>
+        /// Handler to be called on a update event.
+        /// </summary>
+        /// <param name="objs">Collection of SIF data model objects associated with the update event.</param>
+        /// <param name="zoneId">Zone associated with the update event.</param>
+        /// <param name="contextId">Zone context.</param>
+        public abstract void OnUpdateEvent(TMultiple objs, string zoneId = null, string contextId = null);
+
+        /// <summary>
+        /// Periodically process SIF Events.
+        /// </summary>
+        /// <param name="cancellationToken">Notification that processing should be cancelled.</param>
         private void ProcessEvents(CancellationToken cancellationToken)
         {
 
@@ -183,7 +219,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="queue">queueType object.</param>
         /// <returns>XML string representation of the queueType object.</returns>
-        public virtual string SerialiseQueue(queueType queue)
+        private string SerialiseQueue(queueType queue)
         {
             return SerialiserFactory.GetXmlSerialiser<queueType>().Serialise(queue);
         }
@@ -193,17 +229,21 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="subscription">subscriptionType object.</param>
         /// <returns>XML string representation of the subscriptionType object.</returns>
-        public virtual string SerialiseSubscription(subscriptionType subscription)
+        private string SerialiseSubscription(subscriptionType subscription)
         {
             return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Serialise(subscription);
         }
 
+        /// <summary>
+        /// <see cref="IEventConsumer.Start()">Start</see>
+        /// </summary>
         public void Start()
         {
-
             if (log.IsDebugEnabled) log.Debug($"Started Consumer to wait for SIF Events of type {TypeName}.");
 
             RegistrationService.Register(ref environmentTemplate);
+
+            string queueId = SessionsManager.ConsumerSessionService.RetrieveQueueId(environmentTemplate.ApplicationInfo.ApplicationKey, environmentTemplate.SolutionId, environmentTemplate.UserToken, environmentTemplate.InstanceId);
 
             queueType queue = new queueType();
             Queue = CreateQueue(queue);
@@ -227,7 +267,10 @@ namespace Sif.Framework.Consumers
                 TaskScheduler.Default);
         }
 
-        public void Stop(bool? deleteOnUnregister = null)
+        /// <summary>
+        /// <see cref="IEventConsumer.Stop(bool?)">Stop</see>
+        /// </summary>
+        public void Stop(bool? deleteOnStop = null)
         {
             cancellationTokenSource.Cancel();
 
@@ -248,10 +291,9 @@ namespace Sif.Framework.Consumers
                 cancellationTokenSource.Dispose();
             }
 
-            RegistrationService.Unregister(deleteOnUnregister);
+            RegistrationService.Unregister(deleteOnStop);
 
             if (log.IsDebugEnabled) log.Debug($"Stopped Consumer that was waiting for SIF Events of type {TypeName}.");
-
         }
 
     }

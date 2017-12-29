@@ -82,10 +82,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consumers\BasicEventConsumer.cs" />
     <Compile Include="Consumers\EventConsumer.cs" />
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
-    <Compile Include="Consumers\ISupportsEvents.cs" />
+    <Compile Include="Consumers\IEventConsumer.cs" />
     <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
     <Compile Include="Model\Authentication\AuthorisationToken.cs" />
     <Compile Include="Model\Events\SifEvent.cs" />
@@ -100,7 +101,6 @@
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
     <Compile Include="Model\Infrastructure\PhaseState.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
-    <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />
     <Compile Include="Consumers\Consumer.cs" />
     <Compile Include="Consumers\IConsumer.cs" />

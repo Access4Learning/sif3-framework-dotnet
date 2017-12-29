@@ -20,7 +20,11 @@ using Sif.Framework.Providers;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.WebApi.ModelBinders;
 using System.Collections.Generic;
+using System.Net;
 using System.Web.Http;
+using Sif.Specification.Infrastructure;
+using Sif.Specification.DataModel.Au;
+using System;
 
 namespace Sif.Framework.Demo.Broker.Controllers
 {
@@ -39,19 +43,55 @@ namespace Sif.Framework.Demo.Broker.Controllers
         [NonAction]
         public override IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
         {
-            return base.BroadcastEvents(zoneId, contextId);
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
+        }
+
+        public override IHttpActionResult Delete(deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        {
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
+        }
+
+        public override IHttpActionResult Get(string object1, [FromUri(Name = "id1")] string refId1, string object2 = null, [FromUri(Name = "id2")] string refId2 = null, string object3 = null, [FromUri(Name = "id3")] string refId3 = null, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        {
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
+        }
+
+        public override IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        {
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
         }
 
         [NonAction]
         public override IHttpActionResult Post(List<Queue> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            return base.Post(objs, zoneId, contextId);
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
         }
 
         [Route("~/api/Queues/Queue")]
         public override IHttpActionResult Post(Queue obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);
+        }
+
+        public override IHttpActionResult Put(List<Queue> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        {
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
+        }
+
+        public override IHttpActionResult Put([FromUri(Name = "id")] string refId, Queue obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        {
+            return StatusCode(HttpStatusCode.MethodNotAllowed);
+        }
+
+        [Route("~/api/Queues/{queueId}/messages")]
+        public IHttpActionResult Get(string queueId)
+        {
+            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
+            PersonInfoType personInfo = new PersonInfoType { Name = name };
+            StudentPersonalType student = new StudentPersonalType { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo };
+            ICollection<StudentPersonalType> students = new List<StudentPersonalType>() { student };
+
+            return Ok(students);
         }
 
     }

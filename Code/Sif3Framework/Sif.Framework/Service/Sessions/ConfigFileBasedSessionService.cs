@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.Model.Settings;
-using System;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
@@ -77,7 +76,7 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public bool HasSession(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
         {
-            return (RetrieveSessionToken(applicationKey, solutionId, userToken, instanceId) == null ? false : true);
+            return (RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId) == null ? false : true);
         }
 
         /// <summary>
@@ -108,7 +107,32 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public string RetrieveEnvironmentUrl(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
         {
-            string environmentUrl = null;
+            string environmentUrl = RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId)?.EnvironmentUrl;
+
+            return (string.IsNullOrWhiteSpace(environmentUrl) ? null : environmentUrl);
+        }
+
+        /// <summary>
+        /// <see cref="ISessionService.RetrieveQueueId(string, string, string, string)"/>
+        /// </summary>
+        public string RetrieveQueueId(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
+        {
+            string queueId = RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId)?.QueueId;
+
+            return (string.IsNullOrWhiteSpace(queueId) ? null : queueId);
+        }
+
+        /// <summary>
+        /// Retrieve the session entry that matches the specified parameters.
+        /// </summary>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="userToken">User token.</param>
+        /// <param name="instanceId">Instance ID.</param>
+        /// <returns>Session entry if found; null otherwise.</returns>
+        private SessionElement RetrieveSessionEntry(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
+        {
+            SessionElement sessionElement = null;
 
             foreach (SessionElement session in SessionsSection.Sessions)
             {
@@ -118,13 +142,13 @@ namespace Sif.Framework.Service.Sessions
                     (userToken == null ? string.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
                     (instanceId == null ? string.IsNullOrWhiteSpace(session.InstanceId) : instanceId.Equals(session.InstanceId)))
                 {
-                    environmentUrl = session.EnvironmentUrl;
+                    sessionElement = session;
                     break;
                 }
 
             }
 
-            return environmentUrl;
+            return sessionElement;
         }
 
         /// <summary>
@@ -132,23 +156,19 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public string RetrieveSessionToken(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
         {
-            string sessionToken = null;
+            string sessionToken = RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId)?.SessionToken;
 
-            foreach (SessionElement session in SessionsSection.Sessions)
-            {
+            return (string.IsNullOrWhiteSpace(sessionToken) ? null : sessionToken);
+        }
 
-                if (string.Equals(applicationKey, session.ApplicationKey) &&
-                    (solutionId == null ? string.IsNullOrWhiteSpace(session.SolutionId) : solutionId.Equals(session.SolutionId)) &&
-                    (userToken == null ? string.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
-                    (instanceId == null ? string.IsNullOrWhiteSpace(session.InstanceId) : instanceId.Equals(session.InstanceId)))
-                {
-                    sessionToken = session.SessionToken;
-                    break;
-                }
+        /// <summary>
+        /// <see cref="ISessionService.RetrieveSubscriptionId(string, string, string, string)"/>
+        /// </summary>
+        public string RetrieveSubscriptionId(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
+        {
+            string subscriptionId = RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId)?.SubscriptionId;
 
-            }
-
-            return sessionToken;
+            return (string.IsNullOrWhiteSpace(subscriptionId) ? null : subscriptionId);
         }
 
         /// <summary>
@@ -177,6 +197,38 @@ namespace Sif.Framework.Service.Sessions
             SessionsSection.Sessions.Add(sessionElement);
             Configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection(SifFrameworkSectionGroup.SectionGroupReference);
+        }
+
+        /// <summary>
+        /// <see cref="ISessionService.UpdateQueueId(string, string, string, string, string)"/>
+        /// </summary>
+        public void UpdateQueueId(string queueId, string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
+        {
+            SessionElement sessionElement = RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId);
+
+            if (sessionElement != null)
+            {
+                sessionElement.QueueId = queueId;
+                Configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(SifFrameworkSectionGroup.SectionGroupReference);
+            }
+
+        }
+
+        /// <summary>
+        /// <see cref="ISessionService.UpdateSubscriptionId(string, string, string, string, string)"/>
+        /// </summary>
+        public void UpdateSubscriptionId(string subscriptionId, string applicationKey, string solutionId = null, string userToken = null, string instanceId = null)
+        {
+            SessionElement sessionElement = RetrieveSessionEntry(applicationKey, solutionId, userToken, instanceId);
+
+            if (sessionElement != null)
+            {
+                sessionElement.SubscriptionId = subscriptionId;
+                Configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(SifFrameworkSectionGroup.SectionGroupReference);
+            }
+
         }
 
     }

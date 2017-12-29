@@ -333,7 +333,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 studentPersonalConsumer.Start();
                 if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
 
-                Console.WriteLine("Press any key to stop the Event Consumer ...");
+                Console.WriteLine("Press any key to stop the Event Consumer (may take several seconds to complete) ...");
                 Console.ReadKey();
 
                 studentPersonalConsumer.Stop();

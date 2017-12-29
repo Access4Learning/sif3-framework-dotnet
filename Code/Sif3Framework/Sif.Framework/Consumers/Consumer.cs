@@ -100,33 +100,41 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IPayloadSerialisable{TSingle,TMultiple}.SerialiseSingle(TSingle)">SerialiseSingle</see>
+        /// Serialise a single object entity.
         /// </summary>
-        public virtual string SerialiseSingle(TSingle obj)
+        /// <param name="obj">Payload of a single object.</param>
+        /// <returns>XML string representation of the single object.</returns>
+        protected virtual string SerialiseSingle(TSingle obj)
         {
             return SerialiserFactory.GetXmlSerialiser<TSingle>().Serialise(obj);
         }
 
         /// <summary>
-        /// <see cref="IPayloadSerialisable{TSingle,TMultiple}.SerialiseMultiple(TMultiple)">SerialiseMultiple</see>
+        /// Serialise an entity of multiple objects.
         /// </summary>
-        public virtual string SerialiseMultiple(TMultiple obj)
+        /// <param name="obj">Payload of multiple objects.</param>
+        /// <returns>XML string representation of the multiple objects.</returns>
+        protected virtual string SerialiseMultiple(TMultiple obj)
         {
             return SerialiserFactory.GetXmlSerialiser<TMultiple>().Serialise(obj);
         }
 
         /// <summary>
-        /// <see cref="IPayloadSerialisable{TSingle,TMultiple}.DeserialiseSingle(string)">DeserialiseSingle</see>
+        /// Deserialise a single object entity.
         /// </summary>
-        public virtual TSingle DeserialiseSingle(string payload)
+        /// <param name="payload">Payload of a single object.</param>
+        /// <returns>Entity representing the single object.</returns>
+        protected virtual TSingle DeserialiseSingle(string payload)
         {
             return SerialiserFactory.GetXmlSerialiser<TSingle>().Deserialise(payload);
         }
 
         /// <summary>
-        /// <see cref="IPayloadSerialisable{TSingle,TMultiple}.DeserialiseMultiple(string)">DeserialiseMultiple</see>
+        /// Deserialise an entity of multiple objects.
         /// </summary>
-        public virtual TMultiple DeserialiseMultiple(string payload)
+        /// <param name="payload">Payload of multiple objects.</param>
+        /// <returns>Entity representing the multiple objects.</returns>
+        protected virtual TMultiple DeserialiseMultiple(string payload)
         {
             return SerialiserFactory.GetXmlSerialiser<TMultiple>().Deserialise(payload);
         }
@@ -150,7 +158,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.GetChangesSinceMarker(string, string)">GetChangesSinceMarker</see>
         /// </summary>
-        public string GetChangesSinceMarker(string zoneId = null, string contextId = null)
+        public virtual string GetChangesSinceMarker(string zoneId = null, string contextId = null)
         {
 
             if (!RegistrationService.Registered)
@@ -343,7 +351,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryChangesSince(string, out string, uint?, uint?, string, string)">QueryChangesSince</see>
         /// </summary>
-        public TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null)
+        public virtual TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null)
         {
 
             if (!RegistrationService.Registered)
