@@ -39,19 +39,18 @@ namespace Sif.Framework.Consumers
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private CancellationTokenSource cancellationTokenSource;
-        private Model.Infrastructure.Environment environmentTemplate;
+        private Model.Infrastructure.Environment environment;
         private Task task;
 
         /// <summary>
         /// Consumer environment.
         /// </summary>
-        protected Model.Infrastructure.Environment EnvironmentTemplate
+        protected Model.Infrastructure.Environment Environment
         {
 
-            get
-            {
-                return environmentTemplate;
-            }
+            get { return environment; }
+
+            private set { environment = value; }
 
         }
 
@@ -89,7 +88,7 @@ namespace Sif.Framework.Consumers
         /// <param name="environment">Environment object.</param>
         public EventConsumer(Model.Infrastructure.Environment environment)
         {
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
+            Environment = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
             RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
@@ -103,7 +102,7 @@ namespace Sif.Framework.Consumers
         public EventConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
         {
             Model.Infrastructure.Environment environment = new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId);
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
+            Environment = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
             RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
@@ -114,10 +113,20 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Queue.</returns>
         private queueType CreateQueue(queueType queue)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/queue";
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/queue";
             string body = SerialiseQueue(queue);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+
+            return DeserialiseQueue(xml);
+        }
+
+        private queueType RetrieveQueue(string queueId)
+        {
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{queueId}";
+            string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+            if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
             return DeserialiseQueue(xml);
@@ -130,7 +139,7 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Subscription.</returns>
         private subscriptionType CreateSubscription(subscriptionType subscription)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}/subscription";
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}/subscription";
             string body = SerialiseSubscription(subscription);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
@@ -241,21 +250,28 @@ namespace Sif.Framework.Consumers
         {
             if (log.IsDebugEnabled) log.Debug($"Started Consumer to wait for SIF Events of type {TypeName}.");
 
-            RegistrationService.Register(ref environmentTemplate);
+            RegistrationService.Register(ref environment);
 
-            string queueId = SessionsManager.ConsumerSessionService.RetrieveQueueId(environmentTemplate.ApplicationInfo.ApplicationKey, environmentTemplate.SolutionId, environmentTemplate.UserToken, environmentTemplate.InstanceId);
+            string subscriptionId = SessionsManager.ConsumerSessionService.RetrieveSubscriptionId(
+                Environment.ApplicationInfo.ApplicationKey,
+                Environment.SolutionId,
+                Environment.UserToken,
+                Environment.InstanceId);
 
-            queueType queue = new queueType();
-            Queue = CreateQueue(queue);
-
-            subscriptionType subscription = new subscriptionType()
+            if (subscriptionId == null)
             {
-                queueId = Queue.id,
-                serviceName = $"{TypeName}s",
-                serviceType = ServiceType.OBJECT.ToDescription()
-            };
+                queueType queue = new queueType();
+                Queue = CreateQueue(queue);
 
-            Subscription = CreateSubscription(subscription);
+                subscriptionType subscription = new subscriptionType()
+                {
+                    queueId = Queue.id,
+                    serviceName = $"{TypeName}s",
+                    serviceType = ServiceType.OBJECT.ToDescription()
+                };
+
+                Subscription = CreateSubscription(subscription);
+            }
 
             // Manage SIF Events using background tasks.
             cancellationTokenSource = new CancellationTokenSource();

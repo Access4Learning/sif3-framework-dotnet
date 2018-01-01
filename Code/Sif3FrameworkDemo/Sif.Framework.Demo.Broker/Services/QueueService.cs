@@ -42,7 +42,7 @@ namespace Sif.Framework.Demo.Broker.Services
             obj.id = Guid.NewGuid().ToString();
             obj.polling = queueTypePolling.IMMEDIATE;
             obj.pollingSpecified = true;
-            obj.queueUri = $@"http://localhost:59586/api/queues{obj.id}/messages";
+            obj.queueUri = $@"http://localhost:59586/api/queues/{obj.id}/messages";
             obj.idleTimeout = 0;
             obj.idleTimeoutSpecified = true;
             obj.created = DateTime.UtcNow;
