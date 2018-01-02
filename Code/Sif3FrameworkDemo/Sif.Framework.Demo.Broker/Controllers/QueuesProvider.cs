@@ -25,6 +25,7 @@ using System.Web.Http;
 using Sif.Specification.Infrastructure;
 using Sif.Specification.DataModel.Au;
 using System;
+using Sif.Framework.WebApi.ActionResults;
 
 namespace Sif.Framework.Demo.Broker.Controllers
 {
@@ -83,17 +84,44 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return StatusCode(HttpStatusCode.MethodNotAllowed);
         }
 
+        private static int availableMessageBatches = 3;
+
         [Route("~/api/Queues/{queueId}/messages")]
         public IHttpActionResult Get(string queueId)
         {
+            if (availableMessageBatches == 0)
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            // Decrementing counter
+            availableMessageBatches--;
+
             NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
             PersonInfoType personInfo = new PersonInfoType { Name = name };
             StudentPersonalType student = new StudentPersonalType { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo };
             ICollection<StudentPersonalType> students = new List<StudentPersonalType>() { student };
 
-            return Ok(students);
+            // temp kludge
+            string[] resultTypes = new[] { "CREATE", "DELETE", "UPDATE_FULL", "UPDATE_PARTIAL" };
+            Random r = new Random();
+            string resultType = resultTypes[r.Next(0, 3)];
+            // temp kludge
+
+            // creating result
+            return CreateCustomActionResult(Ok(students), "eventAction", resultType);
         }
 
+        /// <summary>
+        /// Adda a custom header to an action result and returns it.
+        /// </summary>
+        /// <param name="actionResult">Action result.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <param name="headerValue">Value associated with the header.</param>
+        /// <returns>Action result with a custom header.</returns>
+        private IHttpActionResult CreateCustomActionResult(IHttpActionResult result, string headerName, string headerValue)
+        {
+            return new CustomHeaderResult(result, headerName, new[] { headerValue });
+        }
     }
 
 }
