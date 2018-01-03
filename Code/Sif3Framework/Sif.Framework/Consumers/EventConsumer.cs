@@ -25,6 +25,7 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Sif.Framework.Consumers
 {
@@ -146,9 +147,10 @@ namespace Sif.Framework.Consumers
         /// <returns>Entity representing the multiple objects.</returns>
         protected virtual TMultiple DeserialiseMultiple(string payload)
         {
-            return SerialiserFactory.GetXmlSerialiser<TMultiple>().Deserialise(payload);
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+            return SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Deserialise(payload);
         }
-
+        
         /// <summary>
         /// Deserialise an XML string representation of a queueType object.
         /// </summary>
@@ -307,7 +309,8 @@ namespace Sif.Framework.Consumers
         /// <returns>XML string representation of the multiple objects.</returns>
         protected virtual string SerialiseMultiple(TMultiple obj)
         {
-            return SerialiserFactory.GetXmlSerialiser<TMultiple>().Serialise(obj);
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+            return SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Serialise(obj);
         }
 
         /// <summary>

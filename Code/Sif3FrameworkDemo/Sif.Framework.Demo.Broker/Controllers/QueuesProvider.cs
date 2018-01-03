@@ -84,7 +84,7 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return StatusCode(HttpStatusCode.MethodNotAllowed);
         }
 
-        private static int availableMessageBatches = 3;
+        private static int availableMessageBatches = 5;
 
         [Route("~/api/Queues/{queueId}/messages")]
         public IHttpActionResult Get(string queueId)
@@ -98,8 +98,8 @@ namespace Sif.Framework.Demo.Broker.Controllers
 
             NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
             PersonInfoType personInfo = new PersonInfoType { Name = name };
-            StudentPersonalType student = new StudentPersonalType { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo };
-            ICollection<StudentPersonalType> students = new List<StudentPersonalType>() { student };
+            StudentPersonal student = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo };
+            List<StudentPersonal> students = new List<StudentPersonal>() { student };
 
             // temp kludge
             string[] resultTypes = new[] { "CREATE", "DELETE", "UPDATE_FULL", "UPDATE_PARTIAL" };
