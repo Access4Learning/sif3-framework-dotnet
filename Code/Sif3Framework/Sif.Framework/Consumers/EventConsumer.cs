@@ -23,6 +23,8 @@ using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
+using System.Net;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -111,7 +113,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Create a Queue that will be used by the Consumer.
         /// </summary>
-        /// <param name="queue">Information related to the Queue.</param>
+        /// <param name="queue">Queue to create.</param>
         /// <returns>Instance of the created Queue.</returns>
         private queueType CreateQueue(queueType queue)
         {
@@ -127,7 +129,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Create a Subscription that will be associated to the Consumer.
         /// </summary>
-        /// <param name="subscription">Information related to the Subscription.</param>
+        /// <param name="subscription">Subscription to create.</param>
         /// <returns>Instance of the created Subscription.</returns>
         private subscriptionType CreateSubscription(subscriptionType subscription)
         {
@@ -145,12 +147,24 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="payload">Payload of multiple objects.</param>
         /// <returns>Entity representing the multiple objects.</returns>
+        /// <exception cref="SerializationException">Error deserialising the payload of multiple objects.</exception>
         protected virtual TMultiple DeserialiseMultiple(string payload)
         {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Deserialise(payload);
+            TMultiple obj = default(TMultiple);
+
+            try
+            {
+                XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+                obj = SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Deserialise(payload);
+            }
+            catch (Exception e)
+            {
+                throw new SerializationException($"Error deserialising the following payload of multiple objects:\n{payload}", e);
+            }
+
+            return obj;
         }
-        
+
         /// <summary>
         /// Deserialise an XML string representation of a queueType object.
         /// </summary>
@@ -174,18 +188,18 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Handler to be called on a create event.
         /// </summary>
-        /// <param name="objs">Collection of SIF data model objects associated with the create event.</param>
+        /// <param name="obj">Collection of SIF data model objects associated with the create event.</param>
         /// <param name="zoneId">Zone associated with the create event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnCreateEvent(TMultiple objs, string zoneId = null, string contextId = null);
+        public abstract void OnCreateEvent(TMultiple obj, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Handler to be called on a delete event.
         /// </summary>
-        /// <param name="objs">Collection of SIF data model objects associated with the delete event.</param>
+        /// <param name="obj">Collection of SIF data model objects associated with the delete event.</param>
         /// <param name="zoneId">Zone associated with the delete event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnDeleteEvent(TMultiple objs, string zoneId = null, string contextId = null);
+        public abstract void OnDeleteEvent(TMultiple obj, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Handler to be called on a error event.
@@ -198,10 +212,11 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Handler to be called on a update event.
         /// </summary>
-        /// <param name="objs">Collection of SIF data model objects associated with the update event.</param>
+        /// <param name="obj">Collection of SIF data model objects associated with the update event.</param>
+        /// <param name="partialUpdate">True if the objects associated with the update event only contained updated fields; false if the objects contain all fields (regardless of if they were changed).</param>
         /// <param name="zoneId">Zone associated with the update event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnUpdateEvent(TMultiple objs, string zoneId = null, string contextId = null);
+        public abstract void OnUpdateEvent(TMultiple obj, bool partialUpdate, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Periodically process SIF Events.
@@ -218,56 +233,105 @@ namespace Sif.Framework.Consumers
                     break;
                 }
 
-                // Check the message queue.
-                if (log.IsDebugEnabled) log.Debug("Checking the Queue!");
-
-                System.Net.WebHeaderCollection responseHeaders;
-
+                bool getEvents = true;
+                TimeSpan waitTime = TimeSpan.FromSeconds(10);
                 string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
-                string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
 
-                // if there's content available, keep reading the batches, 
-                // otherwise sleep and give time to the server recompose itself
-                if (!string.IsNullOrWhiteSpace(xml))
+                // Read from the message queue until no more messages are found.
+                do
                 {
-                    TMultiple objects = default(TMultiple);
+
                     try
                     {
-                        // deserializing collection
-                        objects = DeserialiseMultiple(xml);
+                        WebHeaderCollection responseHeaders;
+                        string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
+                        string minWaitTimeValue = responseHeaders?[HttpUtils.RequestHeader.minWaitTime.ToDescription()];
 
-                        string messageType = responseHeaders?[HttpUtils.RequestHeader.eventAction.ToDescription()];
-                        if (!string.IsNullOrWhiteSpace(messageType))
+                        if (!string.IsNullOrWhiteSpace(minWaitTimeValue))
                         {
-                            if (messageType.Equals(EventAction.CREATE.ToDescription()))
+                            double minWaitTime;
+
+                            if (double.TryParse(minWaitTimeValue, out minWaitTime))
                             {
-                                if (log.IsDebugEnabled) log.Debug("CREATE Message received.");
-                                OnCreateEvent(objects);
+                                waitTime = TimeSpan.FromSeconds(minWaitTime);
                             }
-                            else if (messageType.Equals(EventAction.DELETE.ToDescription()))
-                            {
-                                if (log.IsDebugEnabled) log.Debug("DELETE Message received.");
-                                OnDeleteEvent(objects);
-                            }
-                            else if (messageType.Equals(EventAction.UPDATE_FULL.ToDescription()) || messageType.Equals(EventAction.CREATE.ToDescription()))
-                            {
-                                if (log.IsDebugEnabled) log.Debug("UPDATE Message received.");
-                                OnUpdateEvent(objects);
-                                break;
-                            }
+
                         }
+
+                        // Call the appropriate event handler for messages read.
+                        if (!string.IsNullOrWhiteSpace(xml))
+                        {
+
+                            try
+                            {
+                                TMultiple obj = DeserialiseMultiple(xml);
+                                string eventAction = responseHeaders?[HttpUtils.RequestHeader.eventAction.ToDescription()];
+
+                                if (EventAction.CREATE.ToDescription().Equals(eventAction))
+                                {
+                                    if (log.IsDebugEnabled) log.Debug($"Create event message received from {url}.");
+                                    OnCreateEvent(obj);
+                                }
+                                else if (EventAction.DELETE.ToDescription().Equals(eventAction))
+                                {
+                                    if (log.IsDebugEnabled) log.Debug($"Delete event message received from {url}.");
+                                    OnDeleteEvent(obj);
+                                }
+                                else if ("UPDATE".Equals(eventAction))
+                                {
+                                    string replacement = responseHeaders?[HttpUtils.RequestHeader.Replacement.ToDescription()];
+
+                                    if ("FULL".Equals(replacement))
+                                    {
+                                        if (log.IsDebugEnabled) log.Debug($"Update (full) event message received from {url}.");
+                                        OnUpdateEvent(obj, false);
+                                    }
+                                    else if ("PARTIAL".Equals(replacement))
+                                    {
+                                        if (log.IsDebugEnabled) log.Debug($"Update (partial) event message received from {url}.");
+                                        OnUpdateEvent(obj, true);
+                                    }
+                                    else
+                                    {
+                                        if (log.IsDebugEnabled) log.Debug($"Update (partial) event message received from {url}.");
+                                        OnUpdateEvent(obj, true);
+                                    }
+
+                                }
+                                else
+                                {
+                                    string errorMessage = $"Event action {eventAction} not recognised for message received from {url}.";
+                                    if (log.IsWarnEnabled) log.Warn($"{errorMessage}");
+                                    OnErrorEvent(errorMessage);
+                                }
+
+                            }
+                            catch (SerializationException e)
+                            {
+                                string errorMessage = $"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.";
+                                if (log.IsWarnEnabled) log.Warn($"{errorMessage}\n{e.StackTrace}");
+                                OnErrorEvent(errorMessage);
+                            }
+
+                        }
+                        else
+                        {
+                            if (log.IsDebugEnabled) log.Debug($"No event messages for {url}.");
+                            getEvents = false;
+                        }
+
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        string message = $"Could not notify consumers. {ex.Message}.";
-                        if (log.IsDebugEnabled) log.Debug($"{message}\n{ex.StackTrace}");
-                        OnErrorEvent(message);
+                        string errorMessage = $"Error processing event messages from {url} due to the following error:\n{e.GetBaseException().Message}.";
+                        if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
+                        getEvents = false;
                     }
-                }
-                else
-                {
-                    Thread.Sleep(TimeSpan.FromSeconds(10));
-                }
+
+                } while (getEvents);
+
+                // Wait an appropriate amount of time before reading from the message queue again.
+                Thread.Sleep(waitTime);
             }
 
         }
@@ -300,17 +364,6 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug(xml);
 
             return DeserialiseSubscription(xml);
-        }
-
-        /// <summary>
-        /// Serialise an entity of multiple objects.
-        /// </summary>
-        /// <param name="obj">Payload of multiple objects.</param>
-        /// <returns>XML string representation of the multiple objects.</returns>
-        protected virtual string SerialiseMultiple(TMultiple obj)
-        {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Serialise(obj);
         }
 
         /// <summary>
@@ -362,13 +415,17 @@ namespace Sif.Framework.Consumers
 
                 Subscription = CreateSubscription(subscription);
 
-                // Attempting to save subscription and queue info
-                SessionsManager.ConsumerSessionService.UpdateQueueId(Queue.id, Environment.ApplicationInfo.ApplicationKey,
+                // Store Queue and Subscription identifiers.
+                SessionsManager.ConsumerSessionService.UpdateQueueId(
+                    Queue.id,
+                    Environment.ApplicationInfo.ApplicationKey,
                     Environment.SolutionId,
                     Environment.UserToken,
                     Environment.InstanceId);
 
-                SessionsManager.ConsumerSessionService.UpdateSubscriptionId(Subscription.id, Environment.ApplicationInfo.ApplicationKey,
+                SessionsManager.ConsumerSessionService.UpdateSubscriptionId(
+                    Subscription.id,
+                    Environment.ApplicationInfo.ApplicationKey,
                     Environment.SolutionId,
                     Environment.UserToken,
                     Environment.InstanceId);
@@ -376,10 +433,12 @@ namespace Sif.Framework.Consumers
             else
             {
                 Subscription = RetrieveSubscription(subscriptionId);
+
                 if (Subscription != null)
                 {
                     Queue = RetrieveQueue(Subscription.queueId);
                 }
+
             }
 
             // Manage SIF Events using background tasks.

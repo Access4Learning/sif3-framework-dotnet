@@ -50,6 +50,7 @@ namespace Sif.Framework.Utils
             methodOverride,
             [Description("methodOverride")]
             methodOverrideSif,
+            minWaitTime,
             mustUseAdvisory,
             navigationPage,
             navigationPageSize,

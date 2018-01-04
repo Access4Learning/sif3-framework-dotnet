@@ -16,22 +16,26 @@
 
 using Sif.Framework.Demo.Broker.Models;
 using Sif.Framework.Demo.Broker.Services;
+using Sif.Framework.Demo.Broker.Utils;
 using Sif.Framework.Providers;
 using Sif.Framework.Service.Providers;
+using Sif.Framework.WebApi.ActionResults;
 using Sif.Framework.WebApi.ModelBinders;
+using Sif.Specification.DataModel.Au;
+using Sif.Specification.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
-using Sif.Specification.Infrastructure;
-using Sif.Specification.DataModel.Au;
-using System;
-using Sif.Framework.WebApi.ActionResults;
 
 namespace Sif.Framework.Demo.Broker.Controllers
 {
 
     public class QueuesProvider : BasicProvider<Queue>
     {
+        private static int availableMessageBatches = 5;
+        private static string[] eventActionTypes = { "CREATE", "DELETE", "UPDATE" };
+        private static Random random = new Random();
 
         public QueuesProvider() : this(new QueueService())
         {
@@ -47,6 +51,53 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return StatusCode(HttpStatusCode.MethodNotAllowed);
         }
 
+        /// <summary>
+        /// Add a custom header to an action result and return it.
+        /// </summary>
+        /// <param name="actionResult">Action result.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <param name="headerValue">Value associated with the header.</param>
+        /// <returns>Action result with a custom header.</returns>
+        private IHttpActionResult CreateCustomActionResult(IHttpActionResult result, string headerName, string headerValue)
+        {
+            return new CustomHeaderResult(result, headerName, new[] { headerValue });
+        }
+
+        private static StudentPersonal CreateStudent()
+        {
+
+            NameOfRecordType name = new NameOfRecordType
+            {
+                Type = NameOfRecordTypeType.LGL,
+                FamilyName = RandomNameGenerator.FamilyName,
+                GivenName = RandomNameGenerator.GivenName
+            };
+
+            PersonInfoType personInfo = new PersonInfoType { Name = name };
+
+            StudentPersonal studentPersonal = new StudentPersonal
+            {
+                RefId = Guid.NewGuid().ToString(),
+                LocalId = random.Next(10000, 99999).ToString(),
+                PersonInfo = personInfo
+            };
+
+            return studentPersonal;
+        }
+
+        private static List<StudentPersonal> CreateStudents(int count)
+        {
+            List<StudentPersonal> students = new List<StudentPersonal>();
+
+            for (int i = 0; i < count; i++)
+            {
+                StudentPersonal studentPersonal = CreateStudent();
+                students.Add(studentPersonal);
+            }
+
+            return students;
+        }
+
         public override IHttpActionResult Delete(deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return StatusCode(HttpStatusCode.MethodNotAllowed);
@@ -55,6 +106,24 @@ namespace Sif.Framework.Demo.Broker.Controllers
         public override IHttpActionResult Get(string object1, [FromUri(Name = "id1")] string refId1, string object2 = null, [FromUri(Name = "id2")] string refId2 = null, string object3 = null, [FromUri(Name = "id3")] string refId3 = null, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return StatusCode(HttpStatusCode.MethodNotAllowed);
+        }
+
+        [Route("~/api/Queues/{queueId}/messages")]
+        public IHttpActionResult Get(string queueId)
+        {
+
+            if (availableMessageBatches == 0)
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+
+            availableMessageBatches--;
+            List<StudentPersonal> students = CreateStudents(random.Next(1, 5));
+            IHttpActionResult studentsResult = Ok(students);
+            string eventActionValue = eventActionTypes[random.Next(eventActionTypes.Length)];
+            IHttpActionResult result = CreateCustomActionResult(studentsResult, "eventAction", eventActionValue);
+
+            return result;
         }
 
         public override IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
@@ -84,44 +153,6 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return StatusCode(HttpStatusCode.MethodNotAllowed);
         }
 
-        private static int availableMessageBatches = 5;
-
-        [Route("~/api/Queues/{queueId}/messages")]
-        public IHttpActionResult Get(string queueId)
-        {
-            if (availableMessageBatches == 0)
-            {
-                return StatusCode(HttpStatusCode.NoContent);
-            }
-            // Decrementing counter
-            availableMessageBatches--;
-
-            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
-            PersonInfoType personInfo = new PersonInfoType { Name = name };
-            StudentPersonal student = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo };
-            List<StudentPersonal> students = new List<StudentPersonal>() { student };
-
-            // temp kludge
-            string[] resultTypes = new[] { "CREATE", "DELETE", "UPDATE_FULL", "UPDATE_PARTIAL" };
-            Random r = new Random();
-            string resultType = resultTypes[r.Next(0, 3)];
-            // temp kludge
-
-            // creating result
-            return CreateCustomActionResult(Ok(students), "eventAction", resultType);
-        }
-
-        /// <summary>
-        /// Adda a custom header to an action result and returns it.
-        /// </summary>
-        /// <param name="actionResult">Action result.</param>
-        /// <param name="headerName">Name of the header.</param>
-        /// <param name="headerValue">Value associated with the header.</param>
-        /// <returns>Action result with a custom header.</returns>
-        private IHttpActionResult CreateCustomActionResult(IHttpActionResult result, string headerName, string headerValue)
-        {
-            return new CustomHeaderResult(result, headerName, new[] { headerValue });
-        }
     }
 
 }

@@ -3,7 +3,6 @@ using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
-using Sif.Specification.DataModel.Au;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Formatting;
@@ -42,11 +41,11 @@ namespace Sif.Framework.Demo.Broker
             XmlRootAttribute subscriptionsXmlRootAttribute = new XmlRootAttribute("Subscriptions") { Namespace = SettingsManager.ProviderSettings.InfrastructureNamespace, IsNullable = false };
             ISerialiser<List<Queue>> subscriptionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<Queue>>(subscriptionsXmlRootAttribute);
             formatter.SetSerializer<List<Queue>>((XmlSerializer)subscriptionsSerialiser);
-            
+
             XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
             formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
-            
+
             // Configure global exception loggers for unexpected errors.
             GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
 
