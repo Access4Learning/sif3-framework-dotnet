@@ -61,20 +61,21 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
 
         }
 
-        public override void OnErrorEvent(string error, string zoneId = null, string contextId = null)
+        public override void OnErrorEvent(string errorMessage, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnErrorEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
 
             
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Error: {error}.");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Error: {errorMessage}.");
 
         }
 
-        public override void OnUpdateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        public override void OnUpdateEvent(List<StudentPersonal> objs, bool partialUpdate, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnUpdateEvent handler called ...");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Partial update is {partialUpdate}.");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
 
