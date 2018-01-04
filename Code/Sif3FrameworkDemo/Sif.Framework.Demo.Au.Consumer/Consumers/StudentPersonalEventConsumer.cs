@@ -61,16 +61,14 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
 
         }
 
-        public override void OnErrorEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        public override void OnErrorEvent(string error, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnErrorEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
 
-            foreach (StudentPersonal student in objs)
-            {
-                if (log.IsDebugEnabled) log.Debug($"*** >>> Error with student {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
-            }
+            
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Error: {error}.");
 
         }
 

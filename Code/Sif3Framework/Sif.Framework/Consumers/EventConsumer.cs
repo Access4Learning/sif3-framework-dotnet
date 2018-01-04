@@ -16,6 +16,7 @@
 
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
+using Sif.Framework.Model.Events;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
@@ -24,6 +25,7 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Sif.Framework.Consumers
 {
@@ -122,16 +124,6 @@ namespace Sif.Framework.Consumers
             return DeserialiseQueue(xml);
         }
 
-        private queueType RetrieveQueue(string queueId)
-        {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{queueId}";
-            string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
-            if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
-
-            return DeserialiseQueue(xml);
-        }
-
         /// <summary>
         /// Create a Subscription that will be associated to the Consumer.
         /// </summary>
@@ -148,6 +140,17 @@ namespace Sif.Framework.Consumers
             return DeserialiseSubscription(xml);
         }
 
+        /// <summary>
+        /// Deserialise an entity of multiple objects.
+        /// </summary>
+        /// <param name="payload">Payload of multiple objects.</param>
+        /// <returns>Entity representing the multiple objects.</returns>
+        protected virtual TMultiple DeserialiseMultiple(string payload)
+        {
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+            return SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Deserialise(payload);
+        }
+        
         /// <summary>
         /// Deserialise an XML string representation of a queueType object.
         /// </summary>
@@ -187,10 +190,10 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Handler to be called on a error event.
         /// </summary>
-        /// <param name="objs">Collection of SIF data model objects associated with the error event.</param>
+        /// <param name="errorMessage">The error message associated with the error event.</param>
         /// <param name="zoneId">Zone associated with the error event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnErrorEvent(TMultiple objs, string zoneId = null, string contextId = null);
+        public abstract void OnErrorEvent(string errorMessage, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Handler to be called on a update event.
@@ -218,9 +221,96 @@ namespace Sif.Framework.Consumers
                 // Check the message queue.
                 if (log.IsDebugEnabled) log.Debug("Checking the Queue!");
 
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                System.Net.WebHeaderCollection responseHeaders;
+
+                string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
+                string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
+
+                // if there's content available, keep reading the batches, 
+                // otherwise sleep and give time to the server recompose itself
+                if (!string.IsNullOrWhiteSpace(xml))
+                {
+                    TMultiple objects = default(TMultiple);
+                    try
+                    {
+                        // deserializing collection
+                        objects = DeserialiseMultiple(xml);
+
+                        string messageType = responseHeaders?[HttpUtils.RequestHeader.eventAction.ToDescription()];
+                        if (!string.IsNullOrWhiteSpace(messageType))
+                        {
+                            if (messageType.Equals(EventAction.CREATE.ToDescription()))
+                            {
+                                if (log.IsDebugEnabled) log.Debug("CREATE Message received.");
+                                OnCreateEvent(objects);
+                            }
+                            else if (messageType.Equals(EventAction.DELETE.ToDescription()))
+                            {
+                                if (log.IsDebugEnabled) log.Debug("DELETE Message received.");
+                                OnDeleteEvent(objects);
+                            }
+                            else if (messageType.Equals(EventAction.UPDATE_FULL.ToDescription()) || messageType.Equals(EventAction.CREATE.ToDescription()))
+                            {
+                                if (log.IsDebugEnabled) log.Debug("UPDATE Message received.");
+                                OnUpdateEvent(objects);
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string message = $"Could not notify consumers. {ex.Message}.";
+                        if (log.IsDebugEnabled) log.Debug($"{message}\n{ex.StackTrace}");
+                        OnErrorEvent(message);
+                    }
+                }
+                else
+                {
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                }
             }
 
+        }
+
+        /// <summary>
+        /// Retrieves a Queue that will be used by the Consumer using the queue id.
+        /// </summary>
+        /// <param name="queueId">The Queue identifier.</param>
+        /// <returns>Instance of the Queue if id is valid and queue is found, null otherwise.</returns>
+        private queueType RetrieveQueue(string queueId)
+        {
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{queueId}";
+            string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+            if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+
+            return DeserialiseQueue(xml);
+        }
+
+        /// <summary>
+        /// Retrieves a Queue that will be used by the Consumer using the subscription id.
+        /// </summary>
+        /// <param name="subscriptionId">The subscription's identifier.</param>
+        /// <returns>Instance of the Subscription if id is valid and subscription is found, null otherwise.</returns>
+        private subscriptionType RetrieveSubscription(string subscriptionId)
+        {
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}/{subscriptionId}";
+            string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+            if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
+            if (log.IsDebugEnabled) log.Debug(xml);
+
+            return DeserialiseSubscription(xml);
+        }
+
+        /// <summary>
+        /// Serialise an entity of multiple objects.
+        /// </summary>
+        /// <param name="obj">Payload of multiple objects.</param>
+        /// <returns>XML string representation of the multiple objects.</returns>
+        protected virtual string SerialiseMultiple(TMultiple obj)
+        {
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+            return SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Serialise(obj);
         }
 
         /// <summary>
@@ -271,6 +361,25 @@ namespace Sif.Framework.Consumers
                 };
 
                 Subscription = CreateSubscription(subscription);
+
+                // Attempting to save subscription and queue info
+                SessionsManager.ConsumerSessionService.UpdateQueueId(Queue.id, Environment.ApplicationInfo.ApplicationKey,
+                    Environment.SolutionId,
+                    Environment.UserToken,
+                    Environment.InstanceId);
+
+                SessionsManager.ConsumerSessionService.UpdateSubscriptionId(Subscription.id, Environment.ApplicationInfo.ApplicationKey,
+                    Environment.SolutionId,
+                    Environment.UserToken,
+                    Environment.InstanceId);
+            }
+            else
+            {
+                Subscription = RetrieveSubscription(subscriptionId);
+                if (Subscription != null)
+                {
+                    Queue = RetrieveQueue(Subscription.queueId);
+                }
             }
 
             // Manage SIF Events using background tasks.
