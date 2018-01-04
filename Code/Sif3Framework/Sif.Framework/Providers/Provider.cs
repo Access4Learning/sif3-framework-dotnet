@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Extensions;
+using Sif.Framework.Filters;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Events;
@@ -24,6 +25,7 @@ using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
+using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Providers;
@@ -55,6 +57,11 @@ namespace Sif.Framework.Providers
         /// Service used for request authentication.
         /// </summary>
         protected IAuthenticationService authService;
+
+        /// <summary>
+        /// Service used for request authorisation.
+        /// </summary>
+        protected IOperationAuthorisationService authorisationService;
 
         /// <summary>
         /// Object service associated with this Provider.
@@ -90,8 +97,9 @@ namespace Sif.Framework.Providers
                 authService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
 
+            authorisationService = new OperationAuthorisationService(authService);
         }
-
+        
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
@@ -107,17 +115,18 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Post(TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-
-            if (!authService.VerifyAuthenticationHeader(Request.Headers))
+            try
             {
-                return Unauthorized();
+                // Verifying ACL authorisation
+                authorisationService.IsAuthorised(ActionContext, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED);
             }
-
-            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-
-            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            catch (RejectedException e)
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return Unauthorized();                
+            }
+            catch (InvalidRequestException e)
+            {
+                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
 
             IHttpActionResult result;
@@ -133,12 +142,12 @@ namespace Sif.Framework.Providers
                     if (hasAdvisoryId)
                     {
                         TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
-                        string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
+                        string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                         result = Created(uri, createdObject);
                     }
                     else
                     {
-                        result = BadRequest("Request failed for object " + typeof(TSingle).Name + " as object ID is not provided, but mustUseAdvisory is true.");
+                        result = BadRequest($"Request failed for object {TypeName} as object ID is not provided, but mustUseAdvisory is true.");
                     }
 
                 }
