@@ -89,19 +89,23 @@ namespace Sif.Framework.Filters
 
             try
             {
-                if (!this.authorisationService.IsAuthorised(actionContext, serviceName, permission, privilege))
+                if (!this.authorisationService.IsAuthorised(actionContext.Request.Headers, serviceName, permission, privilege))
                 {
                     // it shouldn't happen, because by design the IsAuthorised method throws an exception if request is unauthorised.
                     throw new RejectedException("Request is not authorized.");
                 }
             }
-            catch (RejectedException e)
-            {
-                throw new HttpResponseException(actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, e.Message, e));
-            }
             catch (InvalidRequestException e)
             {
                 throw new HttpResponseException(actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message, e));
+            }
+            catch (UnauthorisedRequestException e)
+            {
+                throw new HttpResponseException(actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, e.Message, e));
+            }
+            catch (RejectedException e)
+            {
+                throw new HttpResponseException(actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, e.Message, e));
             }
         }
     }

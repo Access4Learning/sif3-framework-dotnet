@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using System.Net.Http.Headers;
 using System.Web.Http.Controllers;
 
 namespace Sif.Framework.Service.Authorisation
@@ -34,9 +35,10 @@ namespace Sif.Framework.Service.Authorisation
         /// <param name="serviceName">The service name to check access rights.</param>
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>
+        /// <param name="zoneId">The zone of the request.</param>
         /// <exception cref="Sif.Framework.Model.Exceptions.InvalidRequestException"></exception>
         /// <exception cref="Sif.Framework.Model.Exceptions.RejectedException"></exception>
-        bool IsAuthorised(HttpActionContext actionContext, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED);
+        bool IsAuthorised(HttpRequestHeaders headers, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED, string zoneId = null);
 
     }
 
