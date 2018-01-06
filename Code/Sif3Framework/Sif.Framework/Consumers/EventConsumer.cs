@@ -234,7 +234,7 @@ namespace Sif.Framework.Consumers
                 }
 
                 bool getEvents = true;
-                TimeSpan waitTime = TimeSpan.FromSeconds(10);
+                TimeSpan waitTime = TimeSpan.FromSeconds(SettingsManager.ConsumerSettings.EventProcessingWaitTime);
                 string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
 
                 // Read from the message queue until no more messages are found.
