@@ -43,6 +43,7 @@ namespace Sif.Framework.Utils
         {
             applicationKey,
             changesSinceMarker,
+            deleteMessageId,
             eventAction,
             messageId,
             messageType,
@@ -74,6 +75,7 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="deleteMessageId">Unique identifier of the SIF Event message to delete.</param>
         /// <param name="headerFields">Other header fields that need to be included.</param>
         /// <returns>HTTP web request.</returns>
         private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod,
@@ -86,6 +88,7 @@ namespace Sif.Framework.Utils
             string contentTypeOverride = null,
             string acceptOverride = null,
             bool? mustUseAdvisory = null,
+            string deleteMessageId = null,
             NameValueCollection headerFields = null)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -126,6 +129,11 @@ namespace Sif.Framework.Utils
             if (!string.IsNullOrWhiteSpace(methodOverride))
             {
                 request.Headers.Add("methodOverride", methodOverride.Trim());
+            }
+
+            if (!string.IsNullOrWhiteSpace(deleteMessageId))
+            {
+                request.Headers.Add(RequestHeader.deleteMessageId.ToDescription(), deleteMessageId.Trim());
             }
 
             if (!string.IsNullOrWhiteSpace(acceptOverride))
@@ -178,6 +186,7 @@ namespace Sif.Framework.Utils
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <param name="deleteMessageId">Unique identifier of the SIF Event message to delete.</param>
         /// <returns>Response (with headers).</returns>
         private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod,
             string url,
@@ -186,9 +195,10 @@ namespace Sif.Framework.Utils
             int? navigationPage = null,
             int? navigationPageSize = null,
             string contentTypeOverride = null,
-            string acceptOverride = null)
+            string acceptOverride = null,
+            string deleteMessageId = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, null, navigationPage, navigationPageSize, null, contentTypeOverride, acceptOverride);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, null, navigationPage, navigationPageSize, null, contentTypeOverride, acceptOverride, null, deleteMessageId);
 
             using (WebResponse response = request.GetResponse())
             {
@@ -277,7 +287,7 @@ namespace Sif.Framework.Utils
             bool? mustUseAdvisory = null,
             NameValueCollection headerFields = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory, headerFields);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory, null, headerFields);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -357,6 +367,7 @@ namespace Sif.Framework.Utils
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <param name="deleteMessageId">Unique identifier of the SIF Event message to delete.</param>
         /// <returns>Response (with headers).</returns>
         public static string GetRequestAndHeaders(string url,
             AuthorisationToken authorisationToken,
@@ -364,9 +375,10 @@ namespace Sif.Framework.Utils
             int? navigationPage = null,
             int? navigationPageSize = null,
             string contentTypeOverride = null,
-            string acceptOverride = null)
+            string acceptOverride = null,
+            string deleteMessageId = null)
         {
-            return RequestAndHeadersWithoutPayload(RequestMethod.GET, url, authorisationToken, out responseHeaders, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
+            return RequestAndHeadersWithoutPayload(RequestMethod.GET, url, authorisationToken, out responseHeaders, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride, deleteMessageId);
         }
 
         /// <summary>

@@ -236,6 +236,7 @@ namespace Sif.Framework.Consumers
                 bool getEvents = true;
                 TimeSpan waitTime = TimeSpan.FromSeconds(10);
                 string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
+                string deleteMessageId = null;
 
                 // Read from the message queue until no more messages are found.
                 do
@@ -244,7 +245,9 @@ namespace Sif.Framework.Consumers
                     try
                     {
                         WebHeaderCollection responseHeaders;
-                        string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
+                        if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url} with deleteMessageId of [{deleteMessageId}].");
+                        string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, deleteMessageId: deleteMessageId);
+                        deleteMessageId = responseHeaders?[HttpUtils.RequestHeader.messageId.ToDescription()];
                         string minWaitTimeValue = responseHeaders?[HttpUtils.RequestHeader.minWaitTime.ToDescription()];
 
                         if (!string.IsNullOrWhiteSpace(minWaitTimeValue))
@@ -269,12 +272,12 @@ namespace Sif.Framework.Consumers
 
                                 if (EventAction.CREATE.ToDescription().Equals(eventAction))
                                 {
-                                    if (log.IsDebugEnabled) log.Debug($"Create event message received from {url}.");
+                                    if (log.IsDebugEnabled) log.Debug($"Received create event message.");
                                     OnCreateEvent(obj);
                                 }
                                 else if (EventAction.DELETE.ToDescription().Equals(eventAction))
                                 {
-                                    if (log.IsDebugEnabled) log.Debug($"Delete event message received from {url}.");
+                                    if (log.IsDebugEnabled) log.Debug($"Received delete event message.");
                                     OnDeleteEvent(obj);
                                 }
                                 else if ("UPDATE".Equals(eventAction))
@@ -283,24 +286,24 @@ namespace Sif.Framework.Consumers
 
                                     if ("FULL".Equals(replacement))
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Update (full) event message received from {url}.");
+                                        if (log.IsDebugEnabled) log.Debug($"Received update (full) event message.");
                                         OnUpdateEvent(obj, false);
                                     }
                                     else if ("PARTIAL".Equals(replacement))
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Update (partial) event message received from {url}.");
+                                        if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
                                         OnUpdateEvent(obj, true);
                                     }
                                     else
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Update (partial) event message received from {url}.");
+                                        if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
                                         OnUpdateEvent(obj, true);
                                     }
 
                                 }
                                 else
                                 {
-                                    string errorMessage = $"Event action {eventAction} not recognised for message received from {url}.";
+                                    string errorMessage = $"Event action {eventAction} not recognised for message received.";
                                     if (log.IsWarnEnabled) log.Warn($"{errorMessage}");
                                     OnErrorEvent(errorMessage);
                                 }
@@ -316,14 +319,14 @@ namespace Sif.Framework.Consumers
                         }
                         else
                         {
-                            if (log.IsDebugEnabled) log.Debug($"No event messages for {url}.");
+                            if (log.IsDebugEnabled) log.Debug($"No event messages.");
                             getEvents = false;
                         }
 
                     }
                     catch (Exception e)
                     {
-                        string errorMessage = $"Error processing event messages from {url} due to the following error:\n{e.GetBaseException().Message}.";
+                        string errorMessage = $"Error processing event messages due to the following error:\n{e.GetBaseException().Message}.";
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
                         getEvents = false;
                     }
