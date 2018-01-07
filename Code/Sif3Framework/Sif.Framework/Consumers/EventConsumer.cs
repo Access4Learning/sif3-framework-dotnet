@@ -234,7 +234,7 @@ namespace Sif.Framework.Consumers
                 }
 
                 bool getEvents = true;
-                TimeSpan waitTime = TimeSpan.FromSeconds(10);
+                TimeSpan waitTime = TimeSpan.FromSeconds(30);
                 string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
                 string deleteMessageId = null;
 
@@ -254,7 +254,7 @@ namespace Sif.Framework.Consumers
                         {
                             double minWaitTime;
 
-                            if (double.TryParse(minWaitTimeValue, out minWaitTime))
+                            if (double.TryParse(minWaitTimeValue, out minWaitTime) && (TimeSpan.FromSeconds(minWaitTime) > waitTime))
                             {
                                 waitTime = TimeSpan.FromSeconds(minWaitTime);
                             }
@@ -332,6 +332,8 @@ namespace Sif.Framework.Consumers
                     }
 
                 } while (getEvents);
+
+                if (log.IsDebugEnabled) log.Debug($"Wait time is {waitTime.Seconds} seconds.");
 
                 // Wait an appropriate amount of time before reading from the message queue again.
                 Thread.Sleep(waitTime);

@@ -124,6 +124,7 @@ namespace Sif.Framework.Demo.Broker.Controllers
             string eventActionValue = eventActionType[random.Next(eventActionType.Length)];
             result = CreateCustomActionResult(result, "eventAction", eventActionValue);
             result = CreateCustomActionResult(result, "messageId", Guid.NewGuid().ToString());
+            result = CreateCustomActionResult(result, "minWaitTime", "10");
 
             if ("UPDATE".Equals(eventActionValue))
             {
