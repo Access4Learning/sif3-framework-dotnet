@@ -34,8 +34,9 @@ namespace Sif.Framework.Demo.Broker.Controllers
     public class QueuesProvider : BasicProvider<Queue>
     {
         private static int availableMessageBatches = 5;
-        private static string[] eventActionTypes = { "CREATE", "DELETE", "UPDATE" };
+        private static string[] eventActionType = { "CREATE", "DELETE", "UPDATE" };
         private static Random random = new Random();
+        private static string[] replacementType = { "FULL", "PARTIAL" };
 
         public QueuesProvider() : this(new QueueService())
         {
@@ -119,9 +120,17 @@ namespace Sif.Framework.Demo.Broker.Controllers
 
             availableMessageBatches--;
             List<StudentPersonal> students = CreateStudents(random.Next(1, 5));
-            IHttpActionResult studentsResult = Ok(students);
-            string eventActionValue = eventActionTypes[random.Next(eventActionTypes.Length)];
-            IHttpActionResult result = CreateCustomActionResult(studentsResult, "eventAction", eventActionValue);
+            IHttpActionResult result = Ok(students);
+            string eventActionValue = eventActionType[random.Next(eventActionType.Length)];
+            result = CreateCustomActionResult(result, "eventAction", eventActionValue);
+            result = CreateCustomActionResult(result, "messageId", Guid.NewGuid().ToString());
+            result = CreateCustomActionResult(result, "minWaitTime", "10");
+
+            if ("UPDATE".Equals(eventActionValue))
+            {
+                string replacementValue = replacementType[random.Next(replacementType.Length)];
+                result = CreateCustomActionResult(result, "Replacement", replacementValue);
+            }
 
             return result;
         }

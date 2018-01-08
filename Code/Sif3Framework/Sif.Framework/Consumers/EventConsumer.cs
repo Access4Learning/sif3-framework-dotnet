@@ -17,7 +17,9 @@
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Events;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Responses;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
@@ -204,10 +206,10 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Handler to be called on a error event.
         /// </summary>
-        /// <param name="errorMessage">The error message associated with the error event.</param>
+        /// <param name="error">The error associated with the error event.</param>
         /// <param name="zoneId">Zone associated with the error event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnErrorEvent(string errorMessage, string zoneId = null, string contextId = null);
+        public abstract void OnErrorEvent(ResponseError error, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Handler to be called on a update event.
@@ -236,6 +238,7 @@ namespace Sif.Framework.Consumers
                 bool getEvents = true;
                 TimeSpan waitTime = TimeSpan.FromSeconds(SettingsManager.ConsumerSettings.EventProcessingWaitTime);
                 string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
+                string deleteMessageId = null;
 
                 // Read from the message queue until no more messages are found.
                 do
@@ -244,14 +247,16 @@ namespace Sif.Framework.Consumers
                     try
                     {
                         WebHeaderCollection responseHeaders;
-                        string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
+                        if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url} with deleteMessageId of [{deleteMessageId}].");
+                        string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, deleteMessageId: deleteMessageId);
+                        deleteMessageId = responseHeaders?[HttpUtils.RequestHeader.messageId.ToDescription()];
                         string minWaitTimeValue = responseHeaders?[HttpUtils.RequestHeader.minWaitTime.ToDescription()];
 
                         if (!string.IsNullOrWhiteSpace(minWaitTimeValue))
                         {
                             double minWaitTime;
 
-                            if (double.TryParse(minWaitTimeValue, out minWaitTime))
+                            if (double.TryParse(minWaitTimeValue, out minWaitTime) && (TimeSpan.FromSeconds(minWaitTime) > waitTime))
                             {
                                 waitTime = TimeSpan.FromSeconds(minWaitTime);
                             }
@@ -269,12 +274,12 @@ namespace Sif.Framework.Consumers
 
                                 if (EventAction.CREATE.ToDescription().Equals(eventAction))
                                 {
-                                    if (log.IsDebugEnabled) log.Debug($"Create event message received from {url}.");
+                                    if (log.IsDebugEnabled) log.Debug($"Received create event message.");
                                     OnCreateEvent(obj);
                                 }
                                 else if (EventAction.DELETE.ToDescription().Equals(eventAction))
                                 {
-                                    if (log.IsDebugEnabled) log.Debug($"Delete event message received from {url}.");
+                                    if (log.IsDebugEnabled) log.Debug($"Received delete event message.");
                                     OnDeleteEvent(obj);
                                 }
                                 else if ("UPDATE".Equals(eventAction))
@@ -283,52 +288,56 @@ namespace Sif.Framework.Consumers
 
                                     if ("FULL".Equals(replacement))
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Update (full) event message received from {url}.");
+                                        if (log.IsDebugEnabled) log.Debug($"Received update (full) event message.");
                                         OnUpdateEvent(obj, false);
                                     }
                                     else if ("PARTIAL".Equals(replacement))
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Update (partial) event message received from {url}.");
+                                        if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
                                         OnUpdateEvent(obj, true);
                                     }
                                     else
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Update (partial) event message received from {url}.");
+                                        if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
                                         OnUpdateEvent(obj, true);
                                     }
 
                                 }
                                 else
                                 {
-                                    string errorMessage = $"Event action {eventAction} not recognised for message received from {url}.";
-                                    if (log.IsWarnEnabled) log.Warn($"{errorMessage}");
-                                    OnErrorEvent(errorMessage);
+                                    BaseException eventException = new EventException($"Event action {eventAction} not recognised for message received from {url}.");
+                                    if (log.IsWarnEnabled) log.Warn(eventException.Message);
+                                    ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = eventException.Message, Description = xml, Scope = TypeName };
+                                    OnErrorEvent(error);
                                 }
 
                             }
                             catch (SerializationException e)
                             {
-                                string errorMessage = $"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.";
-                                if (log.IsWarnEnabled) log.Warn($"{errorMessage}\n{e.StackTrace}");
-                                OnErrorEvent(errorMessage);
+                                BaseException eventException = new EventException($"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.", e);
+                                if (log.IsWarnEnabled) log.Warn(e.Message);
+                                ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = e.Message, Description = xml, Scope = TypeName };
+                                OnErrorEvent(error);
                             }
 
                         }
                         else
                         {
-                            if (log.IsDebugEnabled) log.Debug($"No event messages for {url}.");
+                            if (log.IsDebugEnabled) log.Debug($"No event messages.");
                             getEvents = false;
                         }
 
                     }
                     catch (Exception e)
                     {
-                        string errorMessage = $"Error processing event messages from {url} due to the following error:\n{e.GetBaseException().Message}.";
+                        string errorMessage = $"Error processing event messages due to the following error:\n{e.GetBaseException().Message}.";
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
                         getEvents = false;
                     }
 
                 } while (getEvents);
+
+                if (log.IsDebugEnabled) log.Debug($"Wait time is {waitTime.Seconds} seconds.");
 
                 // Wait an appropriate amount of time before reading from the message queue again.
                 Thread.Sleep(waitTime);

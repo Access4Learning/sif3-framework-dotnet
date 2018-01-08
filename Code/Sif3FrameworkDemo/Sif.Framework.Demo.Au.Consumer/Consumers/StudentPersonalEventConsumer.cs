@@ -16,6 +16,7 @@
 
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
+using Sif.Framework.Model.Responses;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
@@ -61,14 +62,14 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
 
         }
 
-        public override void OnErrorEvent(string errorMessage, string zoneId = null, string contextId = null)
+        public override void OnErrorEvent(ResponseError error, string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"*** OnErrorEvent handler called ...");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
             if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
 
             
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Error: {errorMessage}.");
+            if (log.IsDebugEnabled) log.Debug($"*** >>> Error: {error.Message}.");
 
         }
 
