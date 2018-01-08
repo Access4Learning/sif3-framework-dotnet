@@ -17,7 +17,9 @@
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Events;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Responses;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
@@ -204,10 +206,10 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Handler to be called on a error event.
         /// </summary>
-        /// <param name="errorMessage">The error message associated with the error event.</param>
+        /// <param name="error">The error associated with the error event.</param>
         /// <param name="zoneId">Zone associated with the error event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnErrorEvent(string errorMessage, string zoneId = null, string contextId = null);
+        public abstract void OnErrorEvent(ResponseError error, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Handler to be called on a update event.
@@ -303,17 +305,19 @@ namespace Sif.Framework.Consumers
                                 }
                                 else
                                 {
-                                    string errorMessage = $"Event action {eventAction} not recognised for message received.";
-                                    if (log.IsWarnEnabled) log.Warn($"{errorMessage}");
-                                    OnErrorEvent(errorMessage);
+                                    BaseException eventException = new EventException($"Event action {eventAction} not recognised for message received from {url}.");
+                                    if (log.IsWarnEnabled) log.Warn(eventException.Message);
+                                    ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = eventException.Message, Description = xml, Scope = TypeName };
+                                    OnErrorEvent(error);
                                 }
 
                             }
                             catch (SerializationException e)
                             {
-                                string errorMessage = $"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.";
-                                if (log.IsWarnEnabled) log.Warn($"{errorMessage}\n{e.StackTrace}");
-                                OnErrorEvent(errorMessage);
+                                BaseException eventException = new EventException($"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.", e);
+                                if (log.IsWarnEnabled) log.Warn(e.Message);
+                                ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = e.Message, Description = xml, Scope = TypeName };
+                                OnErrorEvent(error);
                             }
 
                         }
