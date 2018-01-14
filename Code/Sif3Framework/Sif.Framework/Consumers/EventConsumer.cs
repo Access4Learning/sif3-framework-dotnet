@@ -236,7 +236,7 @@ namespace Sif.Framework.Consumers
                 }
 
                 bool getEvents = true;
-                TimeSpan waitTime = TimeSpan.FromSeconds(30);
+                TimeSpan waitTime = TimeSpan.FromSeconds(SettingsManager.ConsumerSettings.EventProcessingWaitTime);
                 string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
                 string deleteMessageId = null;
 
@@ -410,7 +410,39 @@ namespace Sif.Framework.Consumers
                 Environment.UserToken,
                 Environment.InstanceId);
 
-            if (subscriptionId == null)
+            bool requiresNewSubscription = true;
+
+            if (!string.IsNullOrWhiteSpace(subscriptionId))
+            {
+                try
+                {
+                    // retirving subscription
+                    Subscription = RetrieveSubscription(subscriptionId);
+                    try
+                    {
+                        Queue = RetrieveQueue(Subscription.queueId);
+                    }
+                    catch (Exception ex)
+                    {
+                        string errorMessage = $"Could not retrieve Queue details due to the following error:\n{ex.GetBaseException().Message}.";
+                        if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{ex.StackTrace}");
+                    }
+
+                    if (Subscription != null && Queue != null)
+                    {
+                        requiresNewSubscription = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Could not retrieve Subscription details due to the following error:\n{ex.GetBaseException().Message}.";
+                    if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{ex.StackTrace}");
+                }
+
+            }
+
+            // If the subscription could not be loaded, then start over
+            if (requiresNewSubscription)
             {
                 queueType queue = new queueType();
                 Queue = CreateQueue(queue);
@@ -438,16 +470,6 @@ namespace Sif.Framework.Consumers
                     Environment.SolutionId,
                     Environment.UserToken,
                     Environment.InstanceId);
-            }
-            else
-            {
-                Subscription = RetrieveSubscription(subscriptionId);
-
-                if (Subscription != null)
-                {
-                    Queue = RetrieveQueue(Subscription.queueId);
-                }
-
             }
 
             // Manage SIF Events using background tasks.

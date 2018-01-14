@@ -69,6 +69,11 @@ namespace Sif.Framework.Model.Settings
         /// Environment URL if it exists; null otherwise.
         /// </summary>
         string EnvironmentUrl { get; }
+        
+        /// <summary>
+        /// How long in seconds to wait before processing events on Service operations. Default 10.
+        /// </summary>
+        int EventProcessingWaitTime{ get; }
 
         /// <summary>
         /// Instance ID if it exists; null otherwise.
