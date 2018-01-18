@@ -19,7 +19,7 @@ namespace Sif.Framework.Filters
         /// <summary>
         /// Service used for request authorisation.
         /// </summary>
-        private readonly IOperationAuthorisationService authorisationService;
+        private readonly IAuthorisationService authorisationService;
 
         /// <summary>
         /// Service name to check request permissions - it is defined in the ACL.
@@ -52,26 +52,26 @@ namespace Sif.Framework.Filters
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>
         public OperationAuthorisationFilter(string serviceName, RightType permission, RightValue privilege)
-            : this(new OperationAuthorisationService(), serviceName, permission, privilege) { }
+            : this(new AuthorisationService(), serviceName, permission, privilege) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sif.Framework.Filters.OperationAuthorisationFilter" /> class with the given permission
         /// and the privilege defaulted to APPROVED.
         /// </summary>
-        /// <param name="authService">An instance of either the <see cref="Sif.Framework.Service.Authorisation.IOperationAuthorisationService" /> class.</param>
+        /// <param name="authService">An instance of either the <see cref="Sif.Framework.Service.Authorisation.IAuthorisationService" /> class.</param>
         /// <param name="serviceName">The service name to check permissions.</param>
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
-        public OperationAuthorisationFilter(IOperationAuthorisationService authService, string serviceName, RightType permission)
+        public OperationAuthorisationFilter(IAuthorisationService authService, string serviceName, RightType permission)
             : this(authService, serviceName, permission, RightValue.APPROVED) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sif.Framework.Filters.OperationAuthorisationFilter" /> class.
         /// </summary>
-        /// <param name="authService">An instance of either the <see cref="Sif.Framework.Service.Authorisation.IOperationAuthorisationService" /> class.</param>
+        /// <param name="authService">An instance of either the <see cref="Sif.Framework.Service.Authorisation.IAuthorisationService" /> class.</param>
         /// <param name="serviceName">The service name to check permissions.</param>
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>
-        public OperationAuthorisationFilter(IOperationAuthorisationService authService, string serviceName, RightType permission, RightValue privilege)
+        public OperationAuthorisationFilter(IAuthorisationService authService, string serviceName, RightType permission, RightValue privilege)
         {
             this.authorisationService = authService;
             this.serviceName = serviceName;
@@ -99,7 +99,7 @@ namespace Sif.Framework.Filters
             {
                 throw new HttpResponseException(actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message, e));
             }
-            catch (UnauthorisedRequestException e)
+            catch (UnauthorizedAccessException e)
             {
                 throw new HttpResponseException(actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, e.Message, e));
             }

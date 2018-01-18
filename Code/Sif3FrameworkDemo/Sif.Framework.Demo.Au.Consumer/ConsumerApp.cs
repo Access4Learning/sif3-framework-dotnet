@@ -117,49 +117,82 @@ namespace Sif.Framework.Demo.Au.Consumer
                 PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
                 string studentID = Guid.NewGuid().ToString();
                 StudentPersonal newStudent = new StudentPersonal { RefId = studentID, LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
-                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
-                if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
+
+                try
+                {
+                    StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
+                    if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (log.IsInfoEnabled) log.Info($"Access to create a new student is rejected.");
+                }
 
                 // Create multiple new students.
                 if (log.IsInfoEnabled) log.Info("*** Create multiple new students.");
                 List<StudentPersonal> newStudents = CreateStudents(5);
-                MultipleCreateResponse multipleCreateResponse = studentPersonalConsumer.Create(newStudents);
-                int count = 0;
 
-                foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                try
                 {
-                    if (log.IsInfoEnabled) log.Info("Create status code is " + status.StatusCode);
-                    newStudents[count++].RefId = status.Id;
+                    MultipleCreateResponse multipleCreateResponse = studentPersonalConsumer.Create(newStudents);
+                    int count = 0;
+
+                    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Create status code is " + status.StatusCode);
+                        newStudents[count++].RefId = status.Id;
+                    }
+
+                    // Update multiple students.
+                    if (log.IsInfoEnabled) log.Info("*** Update multiple students.");
+                    foreach (StudentPersonal student in newStudents)
+                    {
+                        student.PersonInfo.Name.GivenName += "o";
+                    }
+
+                    try
+                    {
+                        MultipleUpdateResponse multipleUpdateResponse = studentPersonalConsumer.Update(newStudents);
+
+                        foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
+                        {
+                            if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
+                        }
+
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Access to update multiple students is rejected.");
+                    }
+
+                    // Delete multiple students.
+                    if (log.IsInfoEnabled) log.Info("*** Delete multiple students.");
+                    ICollection<string> refIds = new List<string>();
+
+                    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                    {
+                        refIds.Add(status.Id);
+                    }
+
+                    try
+                    {
+                        MultipleDeleteResponse multipleDeleteResponse = studentPersonalConsumer.Delete(refIds);
+
+                        foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
+                        {
+                            if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
+                        }
+
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Access to delete multiple students is rejected.");
+                    }
+
                 }
-
-                // Update multiple students.
-                if (log.IsInfoEnabled) log.Info("*** Update multiple students.");
-                foreach (StudentPersonal student in newStudents)
+                catch (UnauthorizedAccessException)
                 {
-                    student.PersonInfo.Name.GivenName += "o";
-                }
-
-                MultipleUpdateResponse multipleUpdateResponse = studentPersonalConsumer.Update(newStudents);
-
-                foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
-                {
-                    if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
-                }
-
-                // Delete multiple students.
-                if (log.IsInfoEnabled) log.Info("*** Delete multiple students.");
-                ICollection<string> refIds = new List<string>();
-
-                foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
-                {
-                    refIds.Add(status.Id);
-                }
-
-                MultipleDeleteResponse multipleDeleteResponse = studentPersonalConsumer.Delete(refIds);
-
-                foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
-                {
-                    if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
+                    if (log.IsInfoEnabled) log.Info($"Access to create multiple new students is rejected.");
                 }
 
                 // Retrieve all students from zone "Gov" and context "Curr".
@@ -184,23 +217,40 @@ namespace Sif.Framework.Demo.Au.Consumer
                     if (log.IsInfoEnabled) log.Info("*** Update that student and confirm.");
                     secondStudent.PersonInfo.Name.GivenName = "Homer";
                     secondStudent.PersonInfo.Name.FamilyName = "Simpson";
-                    studentPersonalConsumer.Update(secondStudent);
-                    secondStudent = studentPersonalConsumer.Query(studentId);
-                    if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+
+                    try
+                    {
+                        studentPersonalConsumer.Update(secondStudent);
+                        secondStudent = studentPersonalConsumer.Query(studentId);
+                        if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Access to update a student is rejected.");
+                    }
 
                     // Delete that student and confirm.
                     if (log.IsInfoEnabled) log.Info("*** Delete that student and confirm.");
-                    studentPersonalConsumer.Delete(studentId);
-                    StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
-                    bool studentDeleted = (deletedStudent == null ? true : false);
 
-                    if (studentDeleted)
+                    try
                     {
-                        if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                        studentPersonalConsumer.Delete(studentId);
+                        StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
+                        bool studentDeleted = (deletedStudent == null ? true : false);
+
+                        if (studentDeleted)
+                        {
+                            if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                        }
+                        else
+                        {
+                            if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                        }
+
                     }
-                    else
+                    catch (UnauthorizedAccessException)
                     {
-                        if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                        if (log.IsInfoEnabled) log.Info($"Access to delete a student is rejected.");
                     }
 
                 }

@@ -50,6 +50,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Changes Since marker.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         string GetChangesSinceMarker(string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Created object.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         TSingle Create(TSingle obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -72,6 +74,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object created.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         MultipleCreateResponse Create(TMultiple obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -82,6 +85,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved object.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         TSingle Query(TPrimaryKey refId, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -93,6 +97,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         TMultiple Query(uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -105,6 +110,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -119,6 +125,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -132,6 +139,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -141,6 +149,7 @@ namespace Sif.Framework.Consumers
         /// <param name="obj">Object to update.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         void Update(TSingle obj, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -151,6 +160,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object updated.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         MultipleUpdateResponse Update(TMultiple obj, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -160,6 +170,7 @@ namespace Sif.Framework.Consumers
         /// <param name="refId">SIF identifier of the object.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         void Delete(TPrimaryKey refId, string zoneId = null, string contextId = null);
 
         /// <summary>
@@ -170,6 +181,7 @@ namespace Sif.Framework.Consumers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object deleted.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         MultipleDeleteResponse Delete(IEnumerable<TPrimaryKey> refIds, string zoneId = null, string contextId = null);
 
     }

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Text;
 
 namespace Sif.Framework.Utils
@@ -276,6 +277,8 @@ namespace Sif.Framework.Utils
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <param name="headerFields">Other header fields that need to be included.</param>
         /// <returns>Response.</returns>
+        /// <exception cref="UnauthorizedAccessException">Request is unauthorised.</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         private static string RequestWithPayload(RequestMethod requestMethod,
             string url,
             AuthorisationToken authorisationToken,
@@ -298,21 +301,46 @@ namespace Sif.Framework.Utils
                     requestStream.Write(payload, 0, payload.Length);
                 }
 
-                using (WebResponse response = request.GetResponse())
+                try
                 {
-                    string responseString = null;
 
-                    if (response != null)
+                    using (WebResponse response = request.GetResponse())
                     {
+                        string responseString = null;
 
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        if (response != null)
                         {
-                            responseString = reader.ReadToEnd().Trim();
+
+                            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                            {
+                                responseString = reader.ReadToEnd().Trim();
+                            }
+
+                        }
+
+                        return responseString;
+                    }
+
+                }
+                catch (Exception e)
+                {
+
+                    if ((e is WebException) && ((WebException)e).Response is HttpWebResponse)
+                    {
+                        HttpWebResponse httpWebResponse = ((WebException)e).Response as HttpWebResponse;
+
+                        if (httpWebResponse.StatusCode.Equals(HttpStatusCode.Unauthorized))
+                        {
+                            throw new AuthenticationException("Request is not authorised (authentication failed).", e);
+                        }
+                        else if (httpWebResponse.StatusCode.Equals(HttpStatusCode.Forbidden))
+                        {
+                            throw new UnauthorizedAccessException("Request is forbidden (access denied).", e);
                         }
 
                     }
 
-                    return responseString;
+                    throw e;
                 }
 
             }

@@ -16,7 +16,6 @@
 
 using Sif.Framework.Model.Infrastructure;
 using System.Net.Http.Headers;
-using System.Web.Http.Controllers;
 
 namespace Sif.Framework.Service.Authorisation
 {
@@ -24,14 +23,14 @@ namespace Sif.Framework.Service.Authorisation
     /// <summary>
     /// This class contains operations for service authorisation.
     /// </summary>
-    public interface IOperationAuthorisationService
+    public interface IAuthorisationService
     {
 
         /// <summary>
         /// Verifies if the request is authorised. It takes in consideration the permissions and privilegies defined
         /// in the ACL list for the consumer.
         /// </summary>
-        /// <param name="actionContext">The action context, which encapsulates request information.</param>
+        /// <param name="headers">HTTP request headers.</param>
         /// <param name="serviceName">The service name to check access rights.</param>
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>

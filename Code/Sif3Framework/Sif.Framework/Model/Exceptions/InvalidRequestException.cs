@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ namespace Sif.Framework.Model.Exceptions
 {
 
     /// <summary>
-    /// This exception represents the situation where a requested action or operation is rejected due to a bad formatted request.
+    /// This exception represents the situation where a requested action or operation is rejected due to a badly
+    /// formatted request.
     /// </summary>
     [Serializable]
     public class InvalidRequestException : BaseException
@@ -30,32 +31,28 @@ namespace Sif.Framework.Model.Exceptions
         /// <summary>
         /// <see cref="BaseException()"/>
         /// </summary>
-        public InvalidRequestException()
-            : base()
-        {
-        }
-
-        /// <summary>
-        /// <see cref="BaseException(string)"/>
-        /// </summary>
-        public InvalidRequestException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>
-        /// <see cref="BaseException(string, Exception)"/>
-        /// </summary>
-        public InvalidRequestException(string message, Exception innerException)
-            : base(message, innerException)
+        public InvalidRequestException() : base("Request is not valid.")
         {
         }
 
         /// <summary>
         /// <see cref="BaseException(SerializationInfo, StreamingContext)"/>
         /// </summary>
-        protected InvalidRequestException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        protected InvalidRequestException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+        /// <summary>
+        /// <see cref="BaseException(string)"/>
+        /// </summary>
+        public InvalidRequestException(string message) : base(message)
+        {
+        }
+
+        /// <summary>
+        /// <see cref="BaseException(string, Exception)"/>
+        /// </summary>
+        public InvalidRequestException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

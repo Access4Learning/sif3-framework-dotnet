@@ -96,7 +96,7 @@
     <Compile Include="Model\Events\IEventPayloadSerialisable.cs" />
     <Compile Include="Model\Exceptions\EventException.cs" />
     <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
-    <Compile Include="Model\Exceptions\UnauthourisedRequestException.cs" />
+    <Compile Include="Model\Exceptions\ConsumerException.cs" />
     <Compile Include="Model\Exceptions\InvalidRequestException.cs" />
     <Compile Include="Model\Infrastructure\Initialization.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
@@ -167,12 +167,12 @@
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
     <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
-    <Compile Include="Service\Authorisation\OperationAuthorisationService.cs" />
+    <Compile Include="Service\Authorisation\AuthorisationService.cs" />
     <Compile Include="Service\Authentication\BasicAuthorisationTokenService.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
     <Compile Include="Service\Authentication\HmacShaAuthorisationTokenService.cs" />
-    <Compile Include="Service\Authorisation\IOperationAuthorisationService.cs" />
+    <Compile Include="Service\Authorisation\IAuthorisationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
     <Compile Include="Service\Authentication\DirectAuthenticationService.cs" />
     <Compile Include="Model\Settings\ConsumerSection.cs" />

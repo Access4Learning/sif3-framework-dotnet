@@ -19,6 +19,7 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -27,44 +28,45 @@ namespace Sif.Framework.Service.Authorisation
 {
 
     /// <summary>
-    /// <see cref="IOperationAuthorisationService">IOperationAuthorisationService</see>
+    /// <see cref="IAuthorisationService">IAuthorisationService</see>
     /// </summary>
-    public class OperationAuthorisationService : IOperationAuthorisationService
+    public class AuthorisationService : IAuthorisationService
     {
+
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
-        protected IAuthenticationService authService;
+        protected IAuthenticationService authenticationService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OperationAuthorisationService" /> class.
+        /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
         /// </summary>
-        public OperationAuthorisationService()
+        public AuthorisationService()
         {
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                this.authService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                this.authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
             else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                this.authService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                this.authenticationService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OperationAuthorisationService" /> class.
+        /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
         /// </summary>
         /// <param name="authService">An instance of either the <see cref="Sif.Framework.Service.Authentication.BrokeredAuthenticationService" /> or the 
         ///  <see cref="Sif.Framework.Service.Authentication.DirectAuthenticationService" /> classes.</param>
-        public OperationAuthorisationService(IAuthenticationService authService)
+        public AuthorisationService(IAuthenticationService authService)
         {
-            this.authService = authService;
+            this.authenticationService = authService;
         }
 
         /// <summary>
-        /// <see cref="IOperationAuthorisationService.IsAuthorised(HttpRequestHeaders, string, RightType, RightValue, string)">IsAuthorised</see>
+        /// <see cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, RightType, RightValue, string)">IsAuthorised</see>
         /// </summary>
-        /// <exception cref="UnauthorisedRequestException">Thrown when the request not authorised.</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the request not authorised.</exception>
         /// <exception cref="InvalidRequestException">Thrown when the request is invalid. eg: Zone and context configuration is incorrect.</exception>
         /// <exception cref="RejectedException">When the access in unauthorised.</exception>
         public virtual bool IsAuthorised(HttpRequestHeaders headers, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED, string zoneId = null)
@@ -72,12 +74,12 @@ namespace Sif.Framework.Service.Authorisation
             bool isAuthorised = true; // if something goes wrong, an exception will be thrown
 
             string sessionToken = "";
-            if (!authService.VerifyAuthenticationHeader(headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(headers, out sessionToken))
             {
-                throw new UnauthorisedRequestException();
+                throw new UnauthorizedAccessException();
             }
 
-            Model.Infrastructure.Environment environment = authService.GetEnvironmentBySessionToken(sessionToken);
+            Model.Infrastructure.Environment environment = authenticationService.GetEnvironmentBySessionToken(sessionToken);
 
             if (environment == null)
             {
@@ -116,6 +118,7 @@ namespace Sif.Framework.Service.Authorisation
 
             return service.Rights;
         }
+
     }
 
 }

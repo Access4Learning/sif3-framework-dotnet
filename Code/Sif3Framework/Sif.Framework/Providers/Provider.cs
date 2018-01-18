@@ -61,7 +61,7 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Service used for request authorisation.
         /// </summary>
-        protected IOperationAuthorisationService aclService;
+        protected IAuthorisationService aclService;
 
         /// <summary>
         /// Object service associated with this Provider.
@@ -97,15 +97,14 @@ namespace Sif.Framework.Providers
                 authService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
 
-            aclService = new OperationAuthorisationService(authService);
+            aclService = new AuthorisationService(authService);
         }
         
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        public Provider(IProviderService<TSingle, TMultiple> service)
-            : base()
+        public Provider(IProviderService<TSingle, TMultiple> service) : base()
         {
             this.service = service;
         }
@@ -124,7 +123,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -210,7 +209,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -246,7 +245,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -444,7 +443,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -534,7 +533,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -622,7 +621,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -681,7 +680,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -717,7 +716,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -771,7 +770,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }
@@ -851,7 +850,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
             }
-            catch (UnauthorisedRequestException)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized();
             }

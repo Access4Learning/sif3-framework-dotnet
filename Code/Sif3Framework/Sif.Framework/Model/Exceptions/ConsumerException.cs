@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,41 +21,37 @@ namespace Sif.Framework.Model.Exceptions
 {
 
     /// <summary>
-    /// This exception represents the situation where a requested action or operation is rejected due to an unathenticated request.
+    /// This exception represents an error from a Consumer service call.
     /// </summary>
     [Serializable]
-    public class UnauthorisedRequestException : BaseException
+    public class ConsumerException : BaseException
     {
 
         /// <summary>
         /// <see cref="BaseException()"/>
         /// </summary>
-        public UnauthorisedRequestException()
-            : base("Request is not authorized")
-        {
-        }
-
-        /// <summary>
-        /// <see cref="BaseException(string)"/>
-        /// </summary>
-        public UnauthorisedRequestException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>
-        /// <see cref="BaseException(string, Exception)"/>
-        /// </summary>
-        public UnauthorisedRequestException(string message, Exception innerException)
-            : base(message, innerException)
+        public ConsumerException() : base()
         {
         }
 
         /// <summary>
         /// <see cref="BaseException(SerializationInfo, StreamingContext)"/>
         /// </summary>
-        protected UnauthorisedRequestException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        protected ConsumerException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+        /// <summary>
+        /// <see cref="BaseException(string)"/>
+        /// </summary>
+        public ConsumerException(string message) : base(message)
+        {
+        }
+
+        /// <summary>
+        /// <see cref="BaseException(string, Exception)"/>
+        /// </summary>
+        public ConsumerException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
