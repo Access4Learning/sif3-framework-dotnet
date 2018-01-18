@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Filters;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Events;
@@ -40,7 +39,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Providers
 {
@@ -56,12 +54,12 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
-        protected IAuthenticationService authService;
+        protected IAuthenticationService authenticationService;
 
         /// <summary>
         /// Service used for request authorisation.
         /// </summary>
-        protected IAuthorisationService aclService;
+        protected IAuthorisationService authorisationService;
 
         /// <summary>
         /// Object service associated with this Provider.
@@ -90,14 +88,14 @@ namespace Sif.Framework.Providers
 
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                authService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
             else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                authService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                authenticationService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
 
-            aclService = new AuthorisationService(authService);
+            authorisationService = new AuthorisationService(authenticationService);
         }
         
         /// <summary>
@@ -114,20 +112,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Post(TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -200,20 +193,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Post(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -222,6 +210,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
+
             bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
             MultipleCreateResponse multipleCreateResponse =
                 ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
@@ -236,20 +225,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Get([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.QUERY, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -263,6 +247,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
+
             IHttpActionResult result;
 
             try
@@ -434,20 +419,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.QUERY, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -524,20 +504,15 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.QUERY, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -553,6 +528,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
+
             IHttpActionResult result;
 
             try
@@ -612,20 +588,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Put([FromUri(Name = "id")] string refId, TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.UPDATE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.UPDATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -639,6 +610,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
+
             IHttpActionResult result;
 
             try
@@ -671,20 +643,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Put(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.UPDATE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.UPDATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -707,20 +674,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Delete([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.DELETE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -729,6 +691,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
+
             IHttpActionResult result;
 
             try
@@ -761,20 +724,15 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Delete(deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.DELETE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -783,6 +741,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
+
             IHttpActionResult result;
             ICollection<deleteStatus> deleteStatuses = new List<deleteStatus>();
 
@@ -841,20 +800,15 @@ namespace Sif.Framework.Providers
         [HttpHead]
         public virtual IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            try
-            {
-                // Verifying ACL authorisation
-                aclService.IsAuthorised(Request.Headers, $"{TypeName}s", RightType.PROVIDE, RightValue.APPROVED);
-            }
-            catch (InvalidRequestException e)
-            {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
-            }
-            catch (UnauthorizedAccessException)
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
-            catch (RejectedException)
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -947,20 +901,20 @@ namespace Sif.Framework.Providers
                         AuthorisationToken token = registrationService.AuthorisationToken;
 
                         // Retrieve the EventsConnector endpoint URL.
-                        Environment environmentTemplate = EnvironmentUtils.LoadFromSettings(SettingsManager.ProviderSettings);
+                        Model.Infrastructure.Environment environmentTemplate = EnvironmentUtils.LoadFromSettings(SettingsManager.ProviderSettings);
                         string storedSessionToken = SessionsManager.ProviderSessionService.RetrieveSessionToken(
                             environmentTemplate.ApplicationInfo.ApplicationKey,
                             environmentTemplate.SolutionId,
                             environmentTemplate.UserToken,
                             environmentTemplate.InstanceId);
-                        Environment environment = authService.GetEnvironmentBySessionToken(storedSessionToken);
+                        Model.Infrastructure.Environment environment = authenticationService.GetEnvironmentBySessionToken(storedSessionToken);
                         string url = EnvironmentUtils.ParseServiceUrl(environment, ServiceType.UTILITY, InfrastructureServiceNames.eventsConnector) + "/" + TypeName + "s";
 
                         while (eventIterator.HasNext())
                         {
                             SifEvent<TMultiple> sifEvent = eventIterator.GetNext();
 
-                            NameValueCollection headerFields = new NameValueCollection()
+                            NameValueCollection requestHeaders = new NameValueCollection()
                             {
                                 { HttpUtils.RequestHeader.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
                                 { HttpUtils.RequestHeader.messageId.ToDescription(), sifEvent.Id.ToString() },
@@ -971,15 +925,15 @@ namespace Sif.Framework.Providers
                             switch (sifEvent.EventAction)
                             {
                                 case EventAction.UPDATE_FULL:
-                                    headerFields.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "FULL");
+                                    requestHeaders.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "FULL");
                                     break;
                                 case EventAction.UPDATE_PARTIAL:
-                                    headerFields.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "PARTIAL");
+                                    requestHeaders.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "PARTIAL");
                                     break;
                             }
 
                             string body = SerialiseEvents(sifEvent.SifObjects);
-                            string xml = HttpUtils.PostRequest(url, token, body, headerFields: headerFields);
+                            string xml = HttpUtils.PostRequest(url, token, body, requestHeaders: requestHeaders);
                         }
 
                     }

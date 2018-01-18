@@ -260,27 +260,36 @@ namespace Sif.Framework.Demo.Au.Consumer
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
                 IList<EqualCondition> conditions = new List<EqualCondition>();
                 conditions.Add(condition);
-                IEnumerable<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.QueryByServicePath(conditions);
 
-                foreach (StudentPersonal student in teachingGroupStudents)
+                try
                 {
-                    if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    IEnumerable<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.QueryByServicePath(conditions);
 
-                    if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
+                    foreach (StudentPersonal student in teachingGroupStudents)
                     {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
 
-                        foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
+                        if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
                         {
 
-                            foreach (string content in element.Text)
+                            foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
                             {
-                                if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
+
+                                foreach (string content in element.Text)
+                                {
+                                    if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
+                                }
+
                             }
 
                         }
 
                     }
 
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (log.IsInfoEnabled) log.Info("Access to query students by Service Path /TeachingGroups/{}/StudentPersonals is rejected.");
                 }
 
                 // Retrieve student changes since a particular point as defined by the Changes Since marker.
@@ -342,6 +351,10 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 }
 
+            }
+            catch (UnauthorizedAccessException)
+            {
+                if (log.IsInfoEnabled) log.Info($"Access to query students is rejected.");
             }
             catch (Exception e)
             {

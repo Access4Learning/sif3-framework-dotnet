@@ -64,26 +64,16 @@ namespace Sif.Framework.Service.Authorisation
         }
 
         /// <summary>
-        /// <see cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, RightType, RightValue, string)">IsAuthorised</see>
+        /// <see cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, string, RightType, RightValue, string)">IsAuthorised</see>
         /// </summary>
-        /// <exception cref="UnauthorizedAccessException">Thrown when the request not authorised.</exception>
-        /// <exception cref="InvalidRequestException">Thrown when the request is invalid. eg: Zone and context configuration is incorrect.</exception>
-        /// <exception cref="RejectedException">When the access in unauthorised.</exception>
-        public virtual bool IsAuthorised(HttpRequestHeaders headers, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED, string zoneId = null)
+        public virtual bool IsAuthorised(HttpRequestHeaders headers, string sessionToken, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED, string zoneId = null)
         {
-            bool isAuthorised = true; // if something goes wrong, an exception will be thrown
-
-            string sessionToken = "";
-            if (!authenticationService.VerifyAuthenticationHeader(headers, out sessionToken))
-            {
-                throw new UnauthorizedAccessException();
-            }
-
+            bool isAuthorised = true;
             Model.Infrastructure.Environment environment = authenticationService.GetEnvironmentBySessionToken(sessionToken);
 
             if (environment == null)
             {
-                throw new InvalidRequestException("Request failed as could not retrieve environment XML.");
+                throw new InvalidSessionException("Session token does not have an associated environment definition.");
             }
 
             Right operationPolicy = new Right(permission, privilege);
@@ -92,8 +82,24 @@ namespace Sif.Framework.Service.Authorisation
             // retireving permissions for requester
             IDictionary<string, Right> requesterPermissions = GetRightsForService(serviceType, serviceName, EnvironmentUtils.GetTargetZone(environment, zoneId));
 
-            // Checking the appropriate rights
-            RightsUtils.CheckRight(requesterPermissions, operationPolicy);
+            if (requesterPermissions == null)
+            {
+                isAuthorised = false;
+            }
+            else
+            {
+
+                // Checking the appropriate rights
+                try
+                {
+                    RightsUtils.CheckRight(requesterPermissions, operationPolicy);
+                }
+                catch (RejectedException)
+                {
+                    isAuthorised = false;
+                }
+
+            }
 
             return isAuthorised;
         }
@@ -101,22 +107,18 @@ namespace Sif.Framework.Service.Authorisation
         /// <summary>
         /// Retrieve the rights for a service in a given zone.
         /// </summary>
-        /// <param name="serviceType">The service type used for the request <see cref="Sif.Framework.Model.Infrastructure.ServiceType"/> for valid types.</param>
+        /// <param name="serviceType">The service type used for the request <see cref="ServiceType"/> for valid types.</param>
         /// <param name="serviceName">The service name.</param>
         /// <param name="zone">The zone to retrieve the rights for.</param>
         /// <returns>An array of declared rights</returns>
         private IDictionary<string, Right> GetRightsForService(string serviceType, string serviceName, ProvisionedZone zone)
         {
-            Model.Infrastructure.Service service = (from Model.Infrastructure.Service s in zone.Services
-                                                    where s.Type.Equals(serviceType) && s.Name.Equals(serviceName)
-                                                    select s).FirstOrDefault();
+            Model.Infrastructure.Service service =
+                (from Model.Infrastructure.Service s in zone.Services
+                 where s.Type.Equals(serviceType) && s.Name.Equals(serviceName)
+                 select s).FirstOrDefault();
 
-            if (service == null)
-            {
-                throw new InvalidRequestException($"No Service called {serviceName} found in Environment.");
-            }
-
-            return service.Rights;
+            return service?.Rights;
         }
 
     }

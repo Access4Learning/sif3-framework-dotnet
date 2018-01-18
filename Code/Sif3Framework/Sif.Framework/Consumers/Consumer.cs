@@ -366,7 +366,7 @@ namespace Sif.Framework.Consumers
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, (int)navigationPage, (int)navigationPageSize);
+                xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
             }
             else
             {

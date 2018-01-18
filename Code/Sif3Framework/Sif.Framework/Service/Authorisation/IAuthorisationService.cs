@@ -31,13 +31,18 @@ namespace Sif.Framework.Service.Authorisation
         /// in the ACL list for the consumer.
         /// </summary>
         /// <param name="headers">HTTP request headers.</param>
+        /// <param name="sessionToken">Session token.</param>
         /// <param name="serviceName">The service name to check access rights.</param>
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>
         /// <param name="zoneId">The zone of the request.</param>
-        /// <exception cref="Sif.Framework.Model.Exceptions.InvalidRequestException"></exception>
-        /// <exception cref="Sif.Framework.Model.Exceptions.RejectedException"></exception>
-        bool IsAuthorised(HttpRequestHeaders headers, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED, string zoneId = null);
+        /// <exception cref="Model.Exceptions.InvalidSessionException">Session token does not have an associated environment definition.</exception>
+        bool IsAuthorised(HttpRequestHeaders headers,
+            string sessionToken,
+            string serviceName,
+            RightType permission,
+            RightValue privilege = RightValue.APPROVED,
+            string zoneId = null);
 
     }
 
