@@ -445,6 +445,9 @@ namespace Sif.Framework.Utils
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="serviceType">Service type.</param>
         /// <returns>Web response headers.</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static WebHeaderCollection HeadRequest(string url, AuthorisationToken authorisationToken, ServiceType serviceType = ServiceType.OBJECT)
         {
             HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, serviceType);
@@ -665,7 +668,7 @@ namespace Sif.Framework.Utils
         /// <exception cref="FormatException">Header value was not a boolean.</exception>
         /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
         /// <returns>Must use advisory value if found; null otherwise.</returns>
-        internal static bool? GetMustUseAdvisory(HttpHeaders headers)
+        public static bool? GetMustUseAdvisory(HttpHeaders headers)
         {
             return GetBoolHeaderValue(headers, RequestHeader.mustUseAdvisory.ToDescription());
         }
@@ -724,7 +727,7 @@ namespace Sif.Framework.Utils
         /// <param name="headers">Request headers.</param>
         /// <exception cref="ArgumentNullException">Parameter is null.</exception>
         /// <returns>True if paging parameters have been found; false otherwise.</returns>
-        internal static bool HasPagingHeaders(HttpHeaders headers)
+        public static bool HasPagingHeaders(HttpHeaders headers)
         {
 
             if (headers == null)

@@ -17,8 +17,10 @@
 using Sif.Framework.Demo.Broker.Models;
 using Sif.Framework.Demo.Broker.Services;
 using Sif.Framework.Demo.Broker.Utils;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Providers;
 using Sif.Framework.Service.Providers;
+using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ActionResults;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.DataModel.Au;
@@ -135,6 +137,57 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return result;
         }
 
+        public override IHttpActionResult Get([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        {
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            if (HttpUtils.HasPagingHeaders(Request.Headers))
+            {
+                return StatusCode(HttpStatusCode.MethodNotAllowed);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest("Request failed for object " + typeof(Queue).Name + " as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                Queue obj = service.Retrieve(refId, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+
+                if (obj == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(obj);
+                }
+
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest("Invalid argument: id=" + refId + ".\n" + e.Message);
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest("Request failed for object " + typeof(Queue).Name + " with ID of " + refId + ".\n " + e.Message);
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
         public override IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return StatusCode(HttpStatusCode.MethodNotAllowed);
@@ -149,7 +202,74 @@ namespace Sif.Framework.Demo.Broker.Controllers
         [Route("~/api/Queues/Queue")]
         public override IHttpActionResult Post(Queue obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            return base.Post(obj, zoneId, contextId);
+            string sessionToken;
+
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest("Request failed for object " + typeof(Queue).Name + " as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
+                bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
+
+                if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                {
+
+                    if (hasAdvisoryId)
+                    {
+                        Queue createdObject = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                        string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
+                        result = Created(uri, createdObject);
+                    }
+                    else
+                    {
+                        result = BadRequest($"Request failed for object {TypeName} as object ID is not provided, but mustUseAdvisory is true.");
+                    }
+
+                }
+                else
+                {
+                    Queue createdObject = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                    string uri = Url.Link("DefaultApi", new { controller = typeof(Queue).Name, id = createdObject.RefId });
+                    result = Created(uri, createdObject);
+                }
+
+            }
+            catch (AlreadyExistsException)
+            {
+                result = Conflict();
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest("Object to create of type " + typeof(Queue).Name + " is invalid.\n " + e.Message);
+            }
+            catch (CreateException e)
+            {
+                result = BadRequest("Request failed for object " + typeof(Queue).Name + ".\n " + e.Message);
+            }
+            catch (RejectedException)
+            {
+                result = NotFound();
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest("Request failed for object " + typeof(Queue).Name + ".\n " + e.Message);
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
         }
 
         public override IHttpActionResult Put(List<Queue> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)

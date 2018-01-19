@@ -416,32 +416,33 @@ namespace Sif.Framework.Consumers
             {
                 try
                 {
-                    // retirving subscription
                     Subscription = RetrieveSubscription(subscriptionId);
+
                     try
                     {
                         Queue = RetrieveQueue(Subscription.queueId);
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        string errorMessage = $"Could not retrieve Queue details due to the following error:\n{ex.GetBaseException().Message}.";
-                        if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{ex.StackTrace}");
+                        string errorMessage = $"Could not retrieve Queue details due to the following error:\n{e.GetBaseException().Message}.";
+                        if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
                     }
 
                     if (Subscription != null && Queue != null)
                     {
                         requiresNewSubscription = false;
                     }
+
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    string errorMessage = $"Could not retrieve Subscription details due to the following error:\n{ex.GetBaseException().Message}.";
-                    if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{ex.StackTrace}");
+                    string errorMessage = $"Could not retrieve Subscription details due to the following error:\n{e.GetBaseException().Message}.";
+                    if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
                 }
 
             }
 
-            // If the subscription could not be loaded, then start over
+            // If the subscription could not be loaded, then start over.
             if (requiresNewSubscription)
             {
                 queueType queue = new queueType();

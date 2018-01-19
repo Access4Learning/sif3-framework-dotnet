@@ -44,8 +44,7 @@ namespace Sif.Framework.Providers
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        public BasicProvider(IBasicProviderService<T> service)
-            : base()
+        public BasicProvider(IBasicProviderService<T> service) : base()
         {
             this.service = service;
         }

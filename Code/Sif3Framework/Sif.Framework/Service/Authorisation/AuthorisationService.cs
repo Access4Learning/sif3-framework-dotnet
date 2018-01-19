@@ -19,7 +19,6 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -45,31 +44,36 @@ namespace Sif.Framework.Service.Authorisation
         {
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                this.authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
             else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                this.authenticationService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                authenticationService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
         /// </summary>
-        /// <param name="authService">An instance of either the <see cref="Sif.Framework.Service.Authentication.BrokeredAuthenticationService" /> or the 
-        ///  <see cref="Sif.Framework.Service.Authentication.DirectAuthenticationService" /> classes.</param>
-        public AuthorisationService(IAuthenticationService authService)
+        /// <param name="authenticationService">An instance of either the <see cref="BrokeredAuthenticationService" /> or the 
+        ///  <see cref="DirectAuthenticationService" /> classes.</param>
+        public AuthorisationService(IAuthenticationService authenticationService)
         {
-            this.authenticationService = authService;
+            this.authenticationService = authenticationService;
         }
 
         /// <summary>
         /// <see cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, string, RightType, RightValue, string)">IsAuthorised</see>
         /// </summary>
-        public virtual bool IsAuthorised(HttpRequestHeaders headers, string sessionToken, string serviceName, RightType permission, RightValue privilege = RightValue.APPROVED, string zoneId = null)
+        public virtual bool IsAuthorised(HttpRequestHeaders headers,
+            string sessionToken,
+            string serviceName,
+            RightType permission,
+            RightValue privilege = RightValue.APPROVED,
+            string zoneId = null)
         {
             bool isAuthorised = true;
-            Model.Infrastructure.Environment environment = authenticationService.GetEnvironmentBySessionToken(sessionToken);
+            Environment environment = authenticationService.GetEnvironmentBySessionToken(sessionToken);
 
             if (environment == null)
             {
@@ -79,7 +83,7 @@ namespace Sif.Framework.Service.Authorisation
             Right operationPolicy = new Right(permission, privilege);
             string serviceType = HttpUtils.GetHeaderValue(headers, "serviceType");
 
-            // retireving permissions for requester
+            // Retrieving permissions for requester.
             IDictionary<string, Right> requesterPermissions = GetRightsForService(serviceType, serviceName, EnvironmentUtils.GetTargetZone(environment, zoneId));
 
             if (requesterPermissions == null)
@@ -89,7 +93,7 @@ namespace Sif.Framework.Service.Authorisation
             else
             {
 
-                // Checking the appropriate rights
+                // Checking the appropriate rights.
                 try
                 {
                     RightsUtils.CheckRight(requesterPermissions, operationPolicy);

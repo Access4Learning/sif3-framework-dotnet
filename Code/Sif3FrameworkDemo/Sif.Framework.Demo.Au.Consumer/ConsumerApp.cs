@@ -55,7 +55,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
-        private static Boolean RunDemo(string demoName)
+        private static bool RunDemo(string demoName)
         {
             Console.WriteLine();
             Console.Write("Would you like run the " + demoName + " demo (Y/N)? - ");
@@ -385,6 +385,16 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
             }
+
+            Console.WriteLine();
+            Console.WriteLine("********************************************************************************");
+            Console.WriteLine();
+            Console.WriteLine("To run the following Event Consumer demo, the following is required:");
+            Console.WriteLine();
+            Console.WriteLine("  1) The consumer.environment.url app setting in the SifFramework.config file needs to reference the BROKERED environment endpoint.");
+            Console.WriteLine("  2) The Sif.Framework.Demo.Broker needs to be run instead of the Sif.Framework.EnvironmentProvider.");
+            Console.WriteLine();
+            Console.WriteLine("********************************************************************************");
 
             if (RunDemo("Student Personal Event Consumer"))
             {

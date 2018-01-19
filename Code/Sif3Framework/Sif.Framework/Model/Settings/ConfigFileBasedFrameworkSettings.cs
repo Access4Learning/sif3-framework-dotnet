@@ -296,7 +296,7 @@ namespace Sif.Framework.Model.Settings
 
             get
             {
-                return GetIntegerSetting(SettingsPrefix + ".processing.waitTime", 10);
+                return GetIntegerSetting(SettingsPrefix + ".events.minWaitTimeSeconds", 60);
             }
 
         }
