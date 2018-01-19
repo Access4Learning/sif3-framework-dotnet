@@ -289,7 +289,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    if (log.IsInfoEnabled) log.Info("Access to query students by Service Path /TeachingGroups/{}/StudentPersonals is rejected.");
+                    if (log.IsInfoEnabled) log.Info("Access to query students by Service Path TeachingGroups/{}/StudentPersonals is rejected.");
                 }
 
                 // Retrieve student changes since a particular point as defined by the Changes Since marker.

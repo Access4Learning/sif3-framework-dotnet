@@ -511,8 +511,23 @@ namespace Sif.Framework.Providers
                 return Unauthorized();
             }
 
+            string serviceName;
+
+            if (object3 != null)
+            {
+                serviceName = $"{object1}/{{}}/{object2}/{{}}/{object3}/{{}}/{TypeName}s";
+            }
+            else if (object2 != null)
+            {
+                serviceName = $"{object1}/{{}}/{object2}/{{}}/{TypeName}s";
+            }
+            else
+            {
+                serviceName = $"{object1}/{{}}/{TypeName}s";
+            }
+
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, serviceName, RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
