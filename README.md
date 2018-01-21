@@ -355,3 +355,8 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Enable paging of results from a Query By Service Path call.
 - Fixed an issue in the authentication service so that the correct HTTP status code is returned.
 - Updated and improved documentation after feedback from a training course.
+
+**Jan 21, 2018 - 3.2.1.6 Implement Consumer SIF Events**
+
+- Implemented the subscribing of SIF Events from an Event Consumer.
+- Provided a correct implementation of ACL validation in Providers..

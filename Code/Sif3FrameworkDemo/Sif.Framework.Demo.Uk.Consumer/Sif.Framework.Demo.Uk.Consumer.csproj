@@ -46,9 +46,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework, Version=3.2.1.4, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sif.Framework, Version=3.2.1.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Framework 3.2.1.5\Sif.Framework.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Framework 3.2.1.6\Sif.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Uk">
       <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Uk 2.0\Sif.Specification.DataModel.Uk.dll</HintPath>
