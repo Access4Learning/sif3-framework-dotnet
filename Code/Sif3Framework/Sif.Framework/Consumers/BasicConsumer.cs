@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
@@ -33,9 +32,9 @@ namespace Sif.Framework.Consumers
     {
 
         /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.Consumer(Environment)">Consumer</see>
+        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.Consumer(Model.Infrastructure.Environment)">Consumer</see>
         /// </summary>
-        public BasicConsumer(Environment environment)
+        public BasicConsumer(Model.Infrastructure.Environment environment)
             : base(environment)
         {
         }
@@ -51,7 +50,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.SerialiseMultiple(TMultiple)">SerialiseMultiple</see>
         /// </summary>
-        public override string SerialiseMultiple(List<T> obj)
+        protected override string SerialiseMultiple(List<T> obj)
         {
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
             return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Serialise(obj);
@@ -60,7 +59,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.DeserialiseMultiple(string)">DeserialiseMultiple</see>
         /// </summary>
-        public override List<T> DeserialiseMultiple(string payload)
+        protected override List<T> DeserialiseMultiple(string payload)
         {
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
             return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Deserialise(payload);

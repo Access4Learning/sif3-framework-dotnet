@@ -22,7 +22,7 @@ namespace Sif.Framework.Service.Providers
     /// <summary>
     /// This interface defines operations associated with SIF Events.
     /// </summary>
-    /// <typeparam name="TMultiple">Type that defines a SIF data model object.</typeparam>
+    /// <typeparam name="TMultiple">Type that defines a collection of SIF data model objects.</typeparam>
     public interface IEventService<TMultiple> 
     {
 

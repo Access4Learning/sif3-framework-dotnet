@@ -289,6 +289,19 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
+        /// <see cref="IFrameworkSettings.EventProcessingWaitTime"/>
+        /// </summary>
+        public int EventProcessingWaitTime
+        {
+
+            get
+            {
+                return GetIntegerSetting(SettingsPrefix + ".events.minWaitTimeSeconds", 60);
+            }
+
+        }
+
+        /// <summary>
         /// <see cref="IFrameworkSettings.InstanceId"/>
         /// </summary>
         public string InstanceId
@@ -400,7 +413,6 @@ namespace Sif.Framework.Model.Settings
         {
             get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
         }
-
     }
 
 }

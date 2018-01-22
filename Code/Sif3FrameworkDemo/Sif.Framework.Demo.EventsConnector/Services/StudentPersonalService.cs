@@ -29,7 +29,7 @@ namespace Sif.Framework.Demo.EventsConnector.Services
 
         public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
-            if (log.IsDebugEnabled) log.Debug("*** Student name is " + obj.PersonInfo.Name.GivenName + " " + obj.PersonInfo.Name.FamilyName);
+            if (log.IsDebugEnabled) log.Debug($"*** Student name is {obj.PersonInfo.Name.GivenName} {obj.PersonInfo.Name.FamilyName}");
 
             return obj;
         }

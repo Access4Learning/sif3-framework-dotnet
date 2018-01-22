@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
@@ -29,7 +28,7 @@ namespace Sif.Framework.Demo.Au.Consumer.Consumers
         {
         }
 
-        public StudentPersonalConsumer(Environment environment)
+        public StudentPersonalConsumer(Model.Infrastructure.Environment environment)
             : base(environment)
         {
         }

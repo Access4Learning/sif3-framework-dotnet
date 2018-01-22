@@ -55,6 +55,24 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
+        private static bool RunDemo(string demoName)
+        {
+            Console.WriteLine();
+            Console.Write("Would you like run the " + demoName + " demo (Y/N)? - ");
+            ConsoleKeyInfo info = new ConsoleKeyInfo();
+
+            do
+            {
+                info = Console.ReadKey();
+            }
+            while (info.Key != ConsoleKey.N && info.Key != ConsoleKey.Y && info.Key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            return (info.Key == ConsoleKey.Y);
+        }
+
         void RunStudentPersonalConsumer()
         {
             StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(
@@ -99,49 +117,82 @@ namespace Sif.Framework.Demo.Au.Consumer
                 PersonInfoType newStudentInfo = new PersonInfoType { Name = newStudentName };
                 string studentID = Guid.NewGuid().ToString();
                 StudentPersonal newStudent = new StudentPersonal { RefId = studentID, LocalId = "555", PersonInfo = newStudentInfo, SIF_ExtendedElements = extendedElements };
-                StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
-                if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
+
+                try
+                {
+                    StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
+                    if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (log.IsInfoEnabled) log.Info($"Access to create a new student is rejected.");
+                }
 
                 // Create multiple new students.
                 if (log.IsInfoEnabled) log.Info("*** Create multiple new students.");
                 List<StudentPersonal> newStudents = CreateStudents(5);
-                MultipleCreateResponse multipleCreateResponse = studentPersonalConsumer.Create(newStudents);
-                int count = 0;
 
-                foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                try
                 {
-                    if (log.IsInfoEnabled) log.Info("Create status code is " + status.StatusCode);
-                    newStudents[count++].RefId = status.Id;
+                    MultipleCreateResponse multipleCreateResponse = studentPersonalConsumer.Create(newStudents);
+                    int count = 0;
+
+                    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                    {
+                        if (log.IsInfoEnabled) log.Info("Create status code is " + status.StatusCode);
+                        newStudents[count++].RefId = status.Id;
+                    }
+
+                    // Update multiple students.
+                    if (log.IsInfoEnabled) log.Info("*** Update multiple students.");
+                    foreach (StudentPersonal student in newStudents)
+                    {
+                        student.PersonInfo.Name.GivenName += "o";
+                    }
+
+                    try
+                    {
+                        MultipleUpdateResponse multipleUpdateResponse = studentPersonalConsumer.Update(newStudents);
+
+                        foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
+                        {
+                            if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
+                        }
+
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Access to update multiple students is rejected.");
+                    }
+
+                    // Delete multiple students.
+                    if (log.IsInfoEnabled) log.Info("*** Delete multiple students.");
+                    ICollection<string> refIds = new List<string>();
+
+                    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                    {
+                        refIds.Add(status.Id);
+                    }
+
+                    try
+                    {
+                        MultipleDeleteResponse multipleDeleteResponse = studentPersonalConsumer.Delete(refIds);
+
+                        foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
+                        {
+                            if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
+                        }
+
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Access to delete multiple students is rejected.");
+                    }
+
                 }
-
-                // Update multiple students.
-                if (log.IsInfoEnabled) log.Info("*** Update multiple students.");
-                foreach (StudentPersonal student in newStudents)
+                catch (UnauthorizedAccessException)
                 {
-                    student.PersonInfo.Name.GivenName += "o";
-                }
-
-                MultipleUpdateResponse multipleUpdateResponse = studentPersonalConsumer.Update(newStudents);
-
-                foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
-                {
-                    if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
-                }
-
-                // Delete multiple students.
-                if (log.IsInfoEnabled) log.Info("*** Delete multiple students.");
-                ICollection<string> refIds = new List<string>();
-
-                foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
-                {
-                    refIds.Add(status.Id);
-                }
-
-                MultipleDeleteResponse multipleDeleteResponse = studentPersonalConsumer.Delete(refIds);
-
-                foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
-                {
-                    if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
+                    if (log.IsInfoEnabled) log.Info($"Access to create multiple new students is rejected.");
                 }
 
                 // Retrieve all students from zone "Gov" and context "Curr".
@@ -166,23 +217,40 @@ namespace Sif.Framework.Demo.Au.Consumer
                     if (log.IsInfoEnabled) log.Info("*** Update that student and confirm.");
                     secondStudent.PersonInfo.Name.GivenName = "Homer";
                     secondStudent.PersonInfo.Name.FamilyName = "Simpson";
-                    studentPersonalConsumer.Update(secondStudent);
-                    secondStudent = studentPersonalConsumer.Query(studentId);
-                    if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+
+                    try
+                    {
+                        studentPersonalConsumer.Update(secondStudent);
+                        secondStudent = studentPersonalConsumer.Query(studentId);
+                        if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Access to update a student is rejected.");
+                    }
 
                     // Delete that student and confirm.
                     if (log.IsInfoEnabled) log.Info("*** Delete that student and confirm.");
-                    studentPersonalConsumer.Delete(studentId);
-                    StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
-                    bool studentDeleted = (deletedStudent == null ? true : false);
 
-                    if (studentDeleted)
+                    try
                     {
-                        if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                        studentPersonalConsumer.Delete(studentId);
+                        StudentPersonal deletedStudent = studentPersonalConsumer.Query(studentId);
+                        bool studentDeleted = (deletedStudent == null ? true : false);
+
+                        if (studentDeleted)
+                        {
+                            if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                        }
+                        else
+                        {
+                            if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                        }
+
                     }
-                    else
+                    catch (UnauthorizedAccessException)
                     {
-                        if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                        if (log.IsInfoEnabled) log.Info($"Access to delete a student is rejected.");
                     }
 
                 }
@@ -192,27 +260,36 @@ namespace Sif.Framework.Demo.Au.Consumer
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
                 IList<EqualCondition> conditions = new List<EqualCondition>();
                 conditions.Add(condition);
-                IEnumerable<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.QueryByServicePath(conditions);
 
-                foreach (StudentPersonal student in teachingGroupStudents)
+                try
                 {
-                    if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    IEnumerable<StudentPersonal> teachingGroupStudents = studentPersonalConsumer.QueryByServicePath(conditions);
 
-                    if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
+                    foreach (StudentPersonal student in teachingGroupStudents)
                     {
+                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
 
-                        foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
+                        if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
                         {
 
-                            foreach (string content in element.Text)
+                            foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
                             {
-                                if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
+
+                                foreach (string content in element.Text)
+                                {
+                                    if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
+                                }
+
                             }
 
                         }
 
                     }
 
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (log.IsInfoEnabled) log.Info("Access to query students by Service Path TeachingGroups/{}/StudentPersonals is rejected.");
                 }
 
                 // Retrieve student changes since a particular point as defined by the Changes Since marker.
@@ -275,6 +352,10 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
 
             }
+            catch (UnauthorizedAccessException)
+            {
+                if (log.IsInfoEnabled) log.Info($"Access to query students is rejected.");
+            }
             catch (Exception e)
             {
                 if (log.IsErrorEnabled) log.Error("Error running the StudentPersonal Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
@@ -291,13 +372,45 @@ namespace Sif.Framework.Demo.Au.Consumer
         {
             ConsumerApp app = new ConsumerApp();
 
-            try
+            if (RunDemo("Student Personal CRUD Consumer"))
             {
-                app.RunStudentPersonalConsumer();
+
+                try
+                {
+                    app.RunStudentPersonalConsumer();
+                }
+                catch (Exception e)
+                {
+                    if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                }
+
             }
-            catch (Exception e)
+
+            Console.WriteLine();
+            Console.WriteLine("********************************************************************************");
+            Console.WriteLine();
+            Console.WriteLine("To run the following Event Consumer demo, the following is required:");
+            Console.WriteLine();
+            Console.WriteLine("  1) The consumer.environment.url app setting in the SifFramework.config file needs to reference the BROKERED environment endpoint.");
+            Console.WriteLine("  2) The Sif.Framework.Demo.Broker needs to be run instead of the Sif.Framework.EnvironmentProvider.");
+            Console.WriteLine();
+            Console.WriteLine("********************************************************************************");
+
+            if (RunDemo("Student Personal Event Consumer"))
             {
-                if (log.IsErrorEnabled) log.Error("Error running the ConsumerApp.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                StudentPersonalEventConsumer studentPersonalConsumer = new StudentPersonalEventConsumer(
+                    SettingsManager.ConsumerSettings.ApplicationKey,
+                    SettingsManager.ConsumerSettings.InstanceId,
+                    SettingsManager.ConsumerSettings.UserToken,
+                    SettingsManager.ConsumerSettings.SolutionId);
+                studentPersonalConsumer.Start();
+                if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
+
+                Console.WriteLine("Press any key to stop the Event Consumer (may take several seconds to complete) ...");
+                Console.ReadKey();
+
+                studentPersonalConsumer.Stop();
+                if (log.IsInfoEnabled) log.Info("Stopped the Event Consumer.");
             }
 
             Console.WriteLine("Press any key to continue ...");

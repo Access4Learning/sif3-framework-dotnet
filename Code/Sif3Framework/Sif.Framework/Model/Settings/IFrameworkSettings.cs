@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,11 @@ namespace Sif.Framework.Model.Settings
         string EnvironmentUrl { get; }
 
         /// <summary>
+        /// How long in seconds to wait before processing events on Service operations. Default 60.
+        /// </summary>
+        int EventProcessingWaitTime { get; }
+
+        /// <summary>
         /// Instance ID if it exists; null otherwise.
         /// </summary>
         string InstanceId { get; }
@@ -124,5 +129,7 @@ namespace Sif.Framework.Model.Settings
         /// How often to check for timedout jobs in seconds. Default 60.
         /// </summary>
         int JobTimeoutFrequency { get; }
+
     }
+
 }

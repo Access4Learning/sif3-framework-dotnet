@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,11 @@ namespace Sif.Framework.Model.Exceptions
     [Serializable]
     public abstract class BaseException : Exception
     {
-        private string exceptionReference;
+
+        /// <summary>
+        /// Unique identifier associated with this exception.
+        /// </summary>
+        public string ExceptionReference { get; private set; }
 
         /// <summary>
         /// <see cref="System.Exception()"/>
@@ -34,7 +38,7 @@ namespace Sif.Framework.Model.Exceptions
         public BaseException()
             : base()
         {
-            exceptionReference = GenerateUniqueReference();
+            ExceptionReference = GenerateUniqueReference();
         }
 
         /// <summary>
@@ -43,7 +47,7 @@ namespace Sif.Framework.Model.Exceptions
         public BaseException(string message)
             : base(message)
         {
-            exceptionReference = GenerateUniqueReference();
+            ExceptionReference = GenerateUniqueReference();
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace Sif.Framework.Model.Exceptions
         public BaseException(string message, Exception inner)
             : base(message, inner)
         {
-            exceptionReference = GenerateUniqueReference();
+            ExceptionReference = GenerateUniqueReference();
         }
 
         /// <summary>
@@ -61,7 +65,7 @@ namespace Sif.Framework.Model.Exceptions
         protected BaseException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            exceptionReference = GenerateUniqueReference();
+            ExceptionReference = GenerateUniqueReference();
         }
 
         /// <summary>
@@ -70,7 +74,7 @@ namespace Sif.Framework.Model.Exceptions
         /// <returns>A unique reference.</returns>
         private string GenerateUniqueReference()
         {
-            return "[EXCEPTION_REF=" + Math.Abs(Guid.NewGuid().GetHashCode()) + "]";
+            return Math.Abs(Guid.NewGuid().GetHashCode()).ToString();
         }
 
         /// <summary>
@@ -81,7 +85,7 @@ namespace Sif.Framework.Model.Exceptions
 
             get
             {
-                return exceptionReference + " " + base.Message;
+                return "[EXCEPTION_REF=" + GenerateUniqueReference() + "]" + " " + base.Message;
             }
 
         }

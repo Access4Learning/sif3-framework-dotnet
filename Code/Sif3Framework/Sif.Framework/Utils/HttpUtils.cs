@@ -26,6 +26,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Text;
 
 namespace Sif.Framework.Utils
@@ -43,6 +44,7 @@ namespace Sif.Framework.Utils
         {
             applicationKey,
             changesSinceMarker,
+            deleteMessageId,
             eventAction,
             messageId,
             messageType,
@@ -50,6 +52,7 @@ namespace Sif.Framework.Utils
             methodOverride,
             [Description("methodOverride")]
             methodOverrideSif,
+            minWaitTime,
             mustUseAdvisory,
             navigationPage,
             navigationPageSize,
@@ -73,7 +76,8 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
-        /// <param name="headerFields">Other header fields that need to be included.</param>
+        /// <param name="deleteMessageId">Unique identifier of the SIF Event message to delete.</param>
+        /// <param name="requestHeaders">Other header fields that need to be included.</param>
         /// <returns>HTTP web request.</returns>
         private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod,
             string url,
@@ -85,7 +89,8 @@ namespace Sif.Framework.Utils
             string contentTypeOverride = null,
             string acceptOverride = null,
             bool? mustUseAdvisory = null,
-            NameValueCollection headerFields = null)
+            string deleteMessageId = null,
+            NameValueCollection requestHeaders = null)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -127,6 +132,11 @@ namespace Sif.Framework.Utils
                 request.Headers.Add("methodOverride", methodOverride.Trim());
             }
 
+            if (!string.IsNullOrWhiteSpace(deleteMessageId))
+            {
+                request.Headers.Add(RequestHeader.deleteMessageId.ToDescription(), deleteMessageId.Trim());
+            }
+
             if (!string.IsNullOrWhiteSpace(acceptOverride))
             {
                 request.Accept = acceptOverride.Trim();
@@ -142,15 +152,15 @@ namespace Sif.Framework.Utils
                 request.Headers.Add(RequestHeader.mustUseAdvisory.ToDescription(), mustUseAdvisory.Value.ToString());
             }
 
-            if (headerFields != null)
+            if (requestHeaders != null)
             {
 
-                foreach (string name in headerFields)
+                foreach (string name in requestHeaders)
                 {
 
                     if (!string.IsNullOrWhiteSpace(name))
                     {
-                        string value = headerFields[name];
+                        string value = requestHeaders[name];
 
                         if (!string.IsNullOrWhiteSpace(value))
                         {
@@ -167,143 +177,129 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// Make a HTTP request without a payload.
+        /// Make a HTTP request (with or without a payload).
         /// </summary>
         /// <param name="requestMethod">Request method, e.g. GET.</param>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="responseHeaders">Response headers returned.</param>
-        /// <param name="navigationPage">Current paging index.</param>
-        /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
-        /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns>Response (with headers).</returns>
-        private static string RequestAndHeadersWithoutPayload(RequestMethod requestMethod,
-            string url,
-            AuthorisationToken authorisationToken,
-            out WebHeaderCollection responseHeaders,
-            int? navigationPage = null,
-            int? navigationPageSize = null,
-            string contentTypeOverride = null,
-            string acceptOverride = null)
-        {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, null, navigationPage, navigationPageSize, null, contentTypeOverride, acceptOverride);
-
-            using (WebResponse response = request.GetResponse())
-            {
-                responseHeaders = response.Headers;
-                string responseString = null;
-
-                if (response != null)
-                {
-
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        responseString = reader.ReadToEnd().Trim();
-                    }
-
-                }
-
-                return responseString;
-            }
-
-        }
-
-        /// <summary>
-        /// Make a HTTP request without a payload.
-        /// </summary>
-        /// <param name="requestMethod">Request method, e.g. GET.</param>
-        /// <param name="url">Request endpoint.</param>
-        /// <param name="authorisationToken">The authorization token.</param>
-        /// <param name="serviceType">Service type.</param>
-        /// <param name="navigationPage">Current paging index.</param>
-        /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
-        /// <param name="acceptOverride">Overrides the Accept header.</param>
-        /// <returns>Response.</returns>
-        private static string RequestWithoutPayload(RequestMethod requestMethod,
-            string url,
-            AuthorisationToken authorisationToken,
-            ServiceType? serviceType = null,
-            int? navigationPage = null,
-            int? navigationPageSize = null,
-            string contentTypeOverride = null,
-            string acceptOverride = null)
-        {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, navigationPage, navigationPageSize, null, contentTypeOverride, acceptOverride);
-
-            using (WebResponse response = request.GetResponse())
-            {
-                string responseString = null;
-
-                if (response != null)
-                {
-
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        responseString = reader.ReadToEnd().Trim();
-                    }
-
-                }
-
-                return responseString;
-            }
-
-        }
-
-        /// <summary>
-        /// Make a HTTP request with a payload.
-        /// </summary>
-        /// <param name="requestMethod">Request method, e.g. GET.</param>
-        /// <param name="url">Request endpoint.</param>
-        /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="body">The data payload to send.</param>
         /// <param name="serviceType">Service type.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
         /// <param name="methodOverride">Overrides the method of the request, e.g. to implement a GET with a payload over a POST request.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
-        /// <param name="headerFields">Other header fields that need to be included.</param>
-        /// <returns>Response.</returns>
-        private static string RequestWithPayload(RequestMethod requestMethod,
+        /// <param name="deleteMessageId">Unique identifier of the SIF Event message to delete.</param>
+        /// <param name="requestHeaders">Other header fields that need to be included.</param>
+        /// <returns>Response (with headers).</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
+        private static string MakeRequest(RequestMethod requestMethod,
             string url,
             AuthorisationToken authorisationToken,
-            string body,
+            out WebHeaderCollection responseHeaders,
+            string body = null,
             ServiceType? serviceType = null,
+            int? navigationPage = null,
+            int? navigationPageSize = null,
             string methodOverride = null,
             string contentTypeOverride = null,
             string acceptOverride = null,
             bool? mustUseAdvisory = null,
-            NameValueCollection headerFields = null)
+            string deleteMessageId = null,
+            NameValueCollection requestHeaders = null)
         {
-            HttpWebRequest request = CreateHttpWebRequest(requestMethod, url, authorisationToken, serviceType, null, null, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory, headerFields);
+            HttpWebRequest request = CreateHttpWebRequest(requestMethod,
+                url,
+                authorisationToken,
+                serviceType,
+                navigationPage,
+                navigationPageSize,
+                methodOverride,
+                contentTypeOverride,
+                acceptOverride,
+                mustUseAdvisory,
+                deleteMessageId,
+                requestHeaders);
 
-            using (Stream requestStream = request.GetRequestStream())
+            try
             {
 
-                if (body != null)
+                if (body == null)
                 {
-                    byte[] payload = Encoding.UTF8.GetBytes(body);
-                    requestStream.Write(payload, 0, payload.Length);
-                }
 
-                using (WebResponse response = request.GetResponse())
-                {
-                    string responseString = null;
-
-                    if (response != null)
+                    using (WebResponse response = request.GetResponse())
                     {
+                        responseHeaders = response.Headers;
+                        string responseString = null;
 
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        if (response != null)
                         {
-                            responseString = reader.ReadToEnd().Trim();
+
+                            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                            {
+                                responseString = reader.ReadToEnd().Trim();
+                            }
+
+                        }
+
+                        return responseString;
+                    }
+
+                }
+                else
+                {
+
+                    using (Stream requestStream = request.GetRequestStream())
+                    {
+                        byte[] payload = Encoding.UTF8.GetBytes(body);
+                        requestStream.Write(payload, 0, payload.Length);
+
+                        using (WebResponse response = request.GetResponse())
+                        {
+                            responseHeaders = response.Headers;
+                            string responseString = null;
+
+                            if (response != null)
+                            {
+
+                                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                                {
+                                    responseString = reader.ReadToEnd().Trim();
+                                }
+
+                            }
+
+                            return responseString;
                         }
 
                     }
 
-                    return responseString;
                 }
 
+            }
+            catch (Exception e)
+            {
+
+                if ((e is WebException) && ((WebException)e).Response is HttpWebResponse)
+                {
+                    HttpWebResponse httpWebResponse = ((WebException)e).Response as HttpWebResponse;
+
+                    if (httpWebResponse.StatusCode.Equals(HttpStatusCode.Unauthorized))
+                    {
+                        throw new AuthenticationException("Request is not authorised (authentication failed).", e);
+                    }
+                    else if (httpWebResponse.StatusCode.Equals(HttpStatusCode.Forbidden))
+                    {
+                        throw new UnauthorizedAccessException("Request is forbidden (access denied).", e);
+                    }
+
+                }
+
+                throw e;
             }
 
         }
@@ -317,13 +313,24 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns>Response.</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string DeleteRequest(string url,
             AuthorisationToken authorisationToken,
             ServiceType serviceType = ServiceType.OBJECT,
             string contentTypeOverride = null,
             string acceptOverride = null)
         {
-            return RequestWithoutPayload(RequestMethod.DELETE, url, authorisationToken, serviceType, null, null, contentTypeOverride, acceptOverride);
+            WebHeaderCollection responseHeaders;
+
+            return MakeRequest(RequestMethod.DELETE,
+                url,
+                authorisationToken,
+                out responseHeaders,
+                serviceType: serviceType,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride);
         }
 
         /// <summary>
@@ -336,6 +343,9 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns>Response.</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string DeleteRequest(string url,
             AuthorisationToken authorisationToken,
             string body,
@@ -343,7 +353,16 @@ namespace Sif.Framework.Utils
             string contentTypeOverride = null,
             string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.DELETE, url, authorisationToken, body, serviceType, null, contentTypeOverride, acceptOverride);
+            WebHeaderCollection responseHeaders;
+
+            return MakeRequest(RequestMethod.DELETE,
+                url,
+                authorisationToken,
+                out responseHeaders,
+                body: body,
+                serviceType: serviceType,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride);
         }
 
         /// <summary>
@@ -352,20 +371,36 @@ namespace Sif.Framework.Utils
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="responseHeaders">Response headers returned.</param>
+        /// <param name="serviceType">Service type.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
+        /// <param name="deleteMessageId">Unique identifier of the SIF Event message to delete.</param>
         /// <returns>Response (with headers).</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string GetRequestAndHeaders(string url,
             AuthorisationToken authorisationToken,
             out WebHeaderCollection responseHeaders,
+            ServiceType serviceType = ServiceType.OBJECT,
             int? navigationPage = null,
             int? navigationPageSize = null,
             string contentTypeOverride = null,
-            string acceptOverride = null)
+            string acceptOverride = null,
+            string deleteMessageId = null)
         {
-            return RequestAndHeadersWithoutPayload(RequestMethod.GET, url, authorisationToken, out responseHeaders, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
+            return MakeRequest(RequestMethod.GET,
+                url,
+                authorisationToken,
+                out responseHeaders,
+                serviceType: serviceType,
+                navigationPage: navigationPage,
+                navigationPageSize: navigationPageSize,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride,
+                deleteMessageId: deleteMessageId);
         }
 
         /// <summary>
@@ -379,6 +414,9 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns>Response.</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string GetRequest(string url,
             AuthorisationToken authorisationToken,
             ServiceType serviceType = ServiceType.OBJECT,
@@ -387,7 +425,17 @@ namespace Sif.Framework.Utils
             string contentTypeOverride = null,
             string acceptOverride = null)
         {
-            return RequestWithoutPayload(RequestMethod.GET, url, authorisationToken, serviceType, navigationPage, navigationPageSize, contentTypeOverride, acceptOverride);
+            WebHeaderCollection responseHeaders;
+
+            return MakeRequest(RequestMethod.GET,
+                url,
+                authorisationToken,
+                out responseHeaders,
+                serviceType: serviceType,
+                navigationPage: navigationPage,
+                navigationPageSize: navigationPageSize,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride);
         }
 
         /// <summary>
@@ -395,15 +443,43 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="serviceType">Service type.</param>
         /// <returns>Web response headers.</returns>
-        public static WebHeaderCollection HeadRequest(string url, AuthorisationToken authorisationToken)
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
+        public static WebHeaderCollection HeadRequest(string url, AuthorisationToken authorisationToken, ServiceType serviceType = ServiceType.OBJECT)
         {
-            HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken);
+            HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, serviceType);
             WebHeaderCollection responseHeaders = new WebHeaderCollection();
 
-            using (WebResponse response = request.GetResponse())
+            try
             {
-                responseHeaders = response.Headers;
+                using (WebResponse response = request.GetResponse())
+                {
+                    responseHeaders = response.Headers;
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                if ((e is WebException) && ((WebException)e).Response is HttpWebResponse)
+                {
+                    HttpWebResponse httpWebResponse = ((WebException)e).Response as HttpWebResponse;
+
+                    if (httpWebResponse.StatusCode.Equals(HttpStatusCode.Unauthorized))
+                    {
+                        throw new AuthenticationException("Request is not authorised (authentication failed).", e);
+                    }
+                    else if (httpWebResponse.StatusCode.Equals(HttpStatusCode.Forbidden))
+                    {
+                        throw new UnauthorizedAccessException("Request is forbidden (access denied).", e);
+                    }
+
+                }
+
+                throw e;
             }
 
             return responseHeaders;
@@ -420,8 +496,11 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
-        /// <param name="headerFields">Other header fields that need to be included.</param>
+        /// <param name="requestHeaders">Other header fields that need to be included.</param>
         /// <returns>Response.</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string PostRequest(string url,
             AuthorisationToken authorisationToken,
             string body,
@@ -430,9 +509,21 @@ namespace Sif.Framework.Utils
             string contentTypeOverride = null,
             string acceptOverride = null,
             bool? mustUseAdvisory = null,
-            NameValueCollection headerFields = null)
+            NameValueCollection requestHeaders = null)
         {
-            return RequestWithPayload(RequestMethod.POST, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride, mustUseAdvisory, headerFields);
+            WebHeaderCollection responseHeaders;
+
+            return MakeRequest(RequestMethod.POST,
+                url,
+                authorisationToken,
+                out responseHeaders,
+                body: body,
+                serviceType: serviceType,
+                methodOverride: methodOverride,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride,
+                mustUseAdvisory: mustUseAdvisory,
+                requestHeaders: requestHeaders);
         }
 
         /// <summary>
@@ -446,6 +537,9 @@ namespace Sif.Framework.Utils
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
         /// <returns>Response.</returns>
+        /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
+        /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
+        /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string PutRequest(string url,
             AuthorisationToken authorisationToken,
             string body,
@@ -454,7 +548,17 @@ namespace Sif.Framework.Utils
             string contentTypeOverride = null,
             string acceptOverride = null)
         {
-            return RequestWithPayload(RequestMethod.PUT, url, authorisationToken, body, serviceType, methodOverride, contentTypeOverride, acceptOverride);
+            WebHeaderCollection responseHeaders;
+
+            return MakeRequest(RequestMethod.PUT,
+                url,
+                authorisationToken,
+                out responseHeaders,
+                body: body,
+                serviceType: serviceType,
+                methodOverride: methodOverride,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride);
         }
 
         /// <summary>
@@ -564,7 +668,7 @@ namespace Sif.Framework.Utils
         /// <exception cref="FormatException">Header value was not a boolean.</exception>
         /// <exception cref="InvalidOperationException">Duplicate headers were found.</exception>
         /// <returns>Must use advisory value if found; null otherwise.</returns>
-        internal static bool? GetMustUseAdvisory(HttpHeaders headers)
+        public static bool? GetMustUseAdvisory(HttpHeaders headers)
         {
             return GetBoolHeaderValue(headers, RequestHeader.mustUseAdvisory.ToDescription());
         }
@@ -623,7 +727,7 @@ namespace Sif.Framework.Utils
         /// <param name="headers">Request headers.</param>
         /// <exception cref="ArgumentNullException">Parameter is null.</exception>
         /// <returns>True if paging parameters have been found; false otherwise.</returns>
-        internal static bool HasPagingHeaders(HttpHeaders headers)
+        public static bool HasPagingHeaders(HttpHeaders headers)
         {
 
             if (headers == null)

@@ -82,8 +82,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\OperationAuthorisationFilter.cs" />
+    <Compile Include="Consumers\BasicEventConsumer.cs" />
+    <Compile Include="Consumers\EventConsumer.cs" />
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Consumers\IEventConsumer.cs" />
     <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
     <Compile Include="Model\Authentication\AuthorisationToken.cs" />
     <Compile Include="Model\Events\SifEvent.cs" />
@@ -92,13 +96,13 @@
     <Compile Include="Model\Events\IEventPayloadSerialisable.cs" />
     <Compile Include="Model\Exceptions\EventException.cs" />
     <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
+    <Compile Include="Model\Exceptions\ConsumerException.cs" />
     <Compile Include="Model\Infrastructure\Initialization.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
     <Compile Include="Model\Infrastructure\PhaseState.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
-    <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />
     <Compile Include="Consumers\Consumer.cs" />
     <Compile Include="Consumers\IConsumer.cs" />
@@ -162,10 +166,12 @@
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
     <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
+    <Compile Include="Service\Authorisation\AuthorisationService.cs" />
     <Compile Include="Service\Authentication\BasicAuthorisationTokenService.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
     <Compile Include="Service\Authentication\HmacShaAuthorisationTokenService.cs" />
+    <Compile Include="Service\Authorisation\IAuthorisationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
     <Compile Include="Service\Authentication\DirectAuthenticationService.cs" />
     <Compile Include="Model\Settings\ConsumerSection.cs" />
