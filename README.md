@@ -1,4 +1,4 @@
-> Copyright 2017 Systemic Pty Ltd
+> Copyright 2018 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -359,4 +359,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **Jan 21, 2018 - 3.2.1.6 Implement Consumer SIF Events**
 
 - Implemented the subscribing of SIF Events from an Event Consumer.
-- Provided a correct implementation of ACL validation in Providers..
+- Provided a correct implementation of ACL validation in Providers.
+
+**Feb 19, 2018 - 3.2.1.7 Resolve issues with Event Consumer**
+
+- Fix issues with Event Consumer start up.
+- Improve exception management with the registration process.
+- Fix ACL issues with the UK and US Demo projects.

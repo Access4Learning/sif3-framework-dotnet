@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
 [assembly: AssemblyProduct("Sif.Framework.Demo.Hits.Consumer")]
-[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2017")]
+[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.2.1.6")]
-[assembly: AssemblyFileVersion("3.2.1.6")]
+[assembly: AssemblyVersion("3.2.1.7")]
+[assembly: AssemblyFileVersion("3.2.1.7")]

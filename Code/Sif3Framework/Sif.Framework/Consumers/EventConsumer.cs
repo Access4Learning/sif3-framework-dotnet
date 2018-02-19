@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Queue.</returns>
         private queueType CreateQueue(queueType queue)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/queue";
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}";
             string body = SerialiseQueue(queue);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
@@ -135,7 +135,7 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Subscription.</returns>
         private subscriptionType CreateSubscription(subscriptionType subscription)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}/subscription";
+            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}";
             string body = SerialiseSubscription(subscription);
             string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body);
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
@@ -249,8 +249,10 @@ namespace Sif.Framework.Consumers
                         WebHeaderCollection responseHeaders;
                         if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url} with deleteMessageId of [{deleteMessageId}].");
                         string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, deleteMessageId: deleteMessageId);
+                        string contextId = responseHeaders?[HttpUtils.RequestHeader.contextId.ToDescription()];
                         deleteMessageId = responseHeaders?[HttpUtils.RequestHeader.messageId.ToDescription()];
                         string minWaitTimeValue = responseHeaders?[HttpUtils.RequestHeader.minWaitTime.ToDescription()];
+                        string zoneId = responseHeaders?[HttpUtils.RequestHeader.zoneId.ToDescription()];
 
                         if (!string.IsNullOrWhiteSpace(minWaitTimeValue))
                         {
@@ -275,12 +277,12 @@ namespace Sif.Framework.Consumers
                                 if (EventAction.CREATE.ToDescription().Equals(eventAction))
                                 {
                                     if (log.IsDebugEnabled) log.Debug($"Received create event message.");
-                                    OnCreateEvent(obj);
+                                    OnCreateEvent(obj, zoneId, contextId);
                                 }
                                 else if (EventAction.DELETE.ToDescription().Equals(eventAction))
                                 {
                                     if (log.IsDebugEnabled) log.Debug($"Received delete event message.");
-                                    OnDeleteEvent(obj);
+                                    OnDeleteEvent(obj, zoneId, contextId);
                                 }
                                 else if ("UPDATE".Equals(eventAction))
                                 {
@@ -289,17 +291,17 @@ namespace Sif.Framework.Consumers
                                     if ("FULL".Equals(replacement))
                                     {
                                         if (log.IsDebugEnabled) log.Debug($"Received update (full) event message.");
-                                        OnUpdateEvent(obj, false);
+                                        OnUpdateEvent(obj, false, zoneId, contextId);
                                     }
                                     else if ("PARTIAL".Equals(replacement))
                                     {
                                         if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
-                                        OnUpdateEvent(obj, true);
+                                        OnUpdateEvent(obj, true, zoneId, contextId);
                                     }
                                     else
                                     {
                                         if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
-                                        OnUpdateEvent(obj, true);
+                                        OnUpdateEvent(obj, true, zoneId, contextId);
                                     }
 
                                 }
@@ -396,91 +398,107 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IEventConsumer.Start()">Start</see>
+        /// <see cref="IEventConsumer.Start(string, string)">Start</see>
         /// </summary>
-        public void Start()
+        public void Start(string zoneId = null, string contextId = null)
         {
             if (log.IsDebugEnabled) log.Debug($"Started Consumer to wait for SIF Events of type {TypeName}.");
 
-            RegistrationService.Register(ref environment);
-
-            string subscriptionId = SessionsManager.ConsumerSessionService.RetrieveSubscriptionId(
-                Environment.ApplicationInfo.ApplicationKey,
-                Environment.SolutionId,
-                Environment.UserToken,
-                Environment.InstanceId);
-
-            bool requiresNewSubscription = true;
-
-            if (!string.IsNullOrWhiteSpace(subscriptionId))
+            try
             {
-                try
+                // Register the Event Consumer with the SIF Broker.
+                RegistrationService.Register(ref environment);
+
+                // Retrieve the Subscription identifier (if exist).
+                string subscriptionId = SessionsManager.ConsumerSessionService.RetrieveSubscriptionId(
+                    Environment.ApplicationInfo.ApplicationKey,
+                    Environment.SolutionId,
+                    Environment.UserToken,
+                    Environment.InstanceId);
+
+                // If the Subscription identifier does NOT exist, create a Subscription and associated Queue.
+                if (string.IsNullOrWhiteSpace(subscriptionId))
                 {
-                    Subscription = RetrieveSubscription(subscriptionId);
+
+                    // For the SIF Broker, the name property is a mandatory.
+                    queueType queue = new queueType
+                    {
+                        name = $"{TypeName}-event-consumer"
+                    };
+
+                    Queue = CreateQueue(queue);
+
+                    subscriptionType subscription = new subscriptionType()
+                    {
+                        contextId = contextId,
+                        queueId = Queue.id,
+                        serviceName = $"{TypeName}s",
+                        serviceType = ServiceType.OBJECT.ToDescription(),
+                        zoneId = zoneId
+                    };
+
+                    Subscription = CreateSubscription(subscription);
+
+                    // Store Queue and Subscription identifiers.
+                    SessionsManager.ConsumerSessionService.UpdateQueueId(
+                        Queue.id,
+                        Environment.ApplicationInfo.ApplicationKey,
+                        Environment.SolutionId,
+                        Environment.UserToken,
+                        Environment.InstanceId);
+
+                    SessionsManager.ConsumerSessionService.UpdateSubscriptionId(
+                        Subscription.id,
+                        Environment.ApplicationInfo.ApplicationKey,
+                        Environment.SolutionId,
+                        Environment.UserToken,
+                        Environment.InstanceId);
+                }
+                // If the Subscription identifier does exist, retrieve the Queue.
+                else
+                {
 
                     try
                     {
-                        Queue = RetrieveQueue(Subscription.queueId);
+                        string queueId = SessionsManager.ConsumerSessionService.RetrieveQueueId(
+                            Environment.ApplicationInfo.ApplicationKey,
+                            Environment.SolutionId,
+                            Environment.UserToken,
+                            Environment.InstanceId);
+
+                        Queue = RetrieveQueue(queueId);
                     }
                     catch (Exception e)
                     {
                         string errorMessage = $"Could not retrieve Queue details due to the following error:\n{e.GetBaseException().Message}.";
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
-                    }
-
-                    if (Subscription != null && Queue != null)
-                    {
-                        requiresNewSubscription = false;
+                        throw e;
                     }
 
                 }
-                catch (Exception e)
-                {
-                    string errorMessage = $"Could not retrieve Subscription details due to the following error:\n{e.GetBaseException().Message}.";
-                    if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
-                }
 
+                // Manage SIF Events using background tasks.
+                cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken cancellationToken = cancellationTokenSource.Token;
+                task = Task.Factory.StartNew(
+                    () => ProcessEvents(cancellationToken),
+                    cancellationToken,
+                    TaskCreationOptions.LongRunning,
+                    TaskScheduler.Default);
             }
-
-            // If the subscription could not be loaded, then start over.
-            if (requiresNewSubscription)
+            catch (RegistrationException e)
             {
-                queueType queue = new queueType();
-                Queue = CreateQueue(queue);
-
-                subscriptionType subscription = new subscriptionType()
-                {
-                    queueId = Queue.id,
-                    serviceName = $"{TypeName}s",
-                    serviceType = ServiceType.OBJECT.ToDescription()
-                };
-
-                Subscription = CreateSubscription(subscription);
-
-                // Store Queue and Subscription identifiers.
-                SessionsManager.ConsumerSessionService.UpdateQueueId(
-                    Queue.id,
-                    Environment.ApplicationInfo.ApplicationKey,
-                    Environment.SolutionId,
-                    Environment.UserToken,
-                    Environment.InstanceId);
-
-                SessionsManager.ConsumerSessionService.UpdateSubscriptionId(
-                    Subscription.id,
-                    Environment.ApplicationInfo.ApplicationKey,
-                    Environment.SolutionId,
-                    Environment.UserToken,
-                    Environment.InstanceId);
+                string errorMessage = $"Error registering the Event Consumer:\n{e.GetBaseException().Message}.\n{e.StackTrace}";
+                if (log.IsErrorEnabled) log.Error(e, errorMessage);
+                throw e;
+            }
+            catch (Exception e)
+            {
+                string errorMessage = $"Error starting the Event Consumer:\n{e.GetBaseException().Message}.\n{e.StackTrace}";
+                if (log.IsErrorEnabled) log.Error(e, errorMessage);
+                throw e;
             }
 
-            // Manage SIF Events using background tasks.
-            cancellationTokenSource = new CancellationTokenSource();
-            CancellationToken cancellationToken = cancellationTokenSource.Token;
-            task = Task.Factory.StartNew(
-                () => ProcessEvents(cancellationToken),
-                cancellationToken,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
         }
 
         /// <summary>

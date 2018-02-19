@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace Sif.Framework.Demo.Us.Consumer.Models
     [XmlInclude(typeof(xSreType))]
     [XmlRoot("xStudent", Namespace = "http://www.sifassociation.org/datamodel/na/3.3", IsNullable = false)]
     [XmlType(Namespace = "http://www.sifassociation.org/datamodel/na/3.3")]
-    public class XStudent : xStudentType, IDataModel
+    public class xStudent : xStudentType, IDataModel
     {
 
         public string RefId
