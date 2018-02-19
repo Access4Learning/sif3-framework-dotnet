@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,26 +25,26 @@ using System.Collections.Generic;
 namespace Sif.Framework.Demo.Us.Provider.Services
 {
 
-    public class XStudentService : IBasicProviderService<XStudent>
+    public class XStudentService : IBasicProviderService<xStudent>
     {
-        private static IDictionary<string, XStudent> studentsCache = new Dictionary<string, XStudent>();
+        private static IDictionary<string, xStudent> studentsCache = new Dictionary<string, xStudent>();
         private static Random random = new Random();
 
-        private static XStudent CreateStudent()
+        private static xStudent CreateStudent()
         {
             xPersonNameType name = new xPersonNameType { familyName = RandomNameGenerator.GivenName, givenName = RandomNameGenerator.FamilyName };
-            XStudent student = new XStudent { refId = Guid.NewGuid().ToString(), localId = random.Next(10000, 99999).ToString(), name = name };
+            xStudent student = new xStudent { refId = Guid.NewGuid().ToString(), localId = random.Next(10000, 99999).ToString(), name = name };
 
             return student;
         }
 
-        private static IDictionary<string, XStudent> CreateStudents(int count)
+        private static IDictionary<string, xStudent> CreateStudents(int count)
         {
-            IDictionary<string, XStudent> studentsCache = new Dictionary<string, XStudent>();
+            IDictionary<string, xStudent> studentsCache = new Dictionary<string, xStudent>();
 
             for (int i = 1; i <= count; i++)
             {
-                XStudent student = CreateStudent();
+                xStudent student = CreateStudent();
                 studentsCache.Add(student.refId, student);
             }
 
@@ -56,7 +56,7 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             studentsCache = CreateStudents(10);
         }
 
-        public XStudent Create(XStudent obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public xStudent Create(xStudent obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -70,9 +70,9 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             studentsCache.Remove(refId);
         }
 
-        public XStudent Retrieve(string refId, string zoneId = null, string contextId = null)
+        public xStudent Retrieve(string refId, string zoneId = null, string contextId = null)
         {
-            XStudent student;
+            xStudent student;
 
             if (!studentsCache.TryGetValue(refId, out student))
             {
@@ -82,11 +82,11 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return student;
         }
 
-        public List<XStudent> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<xStudent> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
-            List<XStudent> allStudents = new List<XStudent>();
+            List<xStudent> allStudents = new List<xStudent>();
             allStudents.AddRange(studentsCache.Values);
-            List<XStudent> retrievedStudents = new List<XStudent>();
+            List<xStudent> retrievedStudents = new List<xStudent>();
 
             if (pageIndex.HasValue && pageSize.HasValue)
             {
@@ -116,17 +116,17 @@ namespace Sif.Framework.Demo.Us.Provider.Services
             return retrievedStudents;
         }
 
-        public List<XStudent> Retrieve(XStudent obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<xStudent> Retrieve(xStudent obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<XStudent> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<xStudent> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(XStudent obj, string zoneId = null, string contextId = null)
+        public void Update(xStudent obj, string zoneId = null, string contextId = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))

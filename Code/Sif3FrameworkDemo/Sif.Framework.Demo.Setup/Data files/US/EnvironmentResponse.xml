@@ -14,12 +14,12 @@
   <provisionedZones>
     <provisionedZone id="Sif3UsDemoZone1">
       <services>
-        <service name="K12Students" contextId="DEFAULT" type="OBJECT">
+        <service name="xStudents" contextId="DEFAULT" type="OBJECT">
           <rights>
             <right type="QUERY">APPROVED</right>
-            <right type="CREATE">REJECTED</right>
-            <right type="UPDATE">REJECTED</right>
-            <right type="DELETE">REJECTED</right>
+            <right type="CREATE">APPROVED</right>
+            <right type="UPDATE">APPROVED</right>
+            <right type="DELETE">APPROVED</right>
             <right type="PROVIDE">REJECTED</right>
             <right type="SUBSCRIBE">SUPPORTED</right>
             <right type="ADMIN">REJECTED</right>

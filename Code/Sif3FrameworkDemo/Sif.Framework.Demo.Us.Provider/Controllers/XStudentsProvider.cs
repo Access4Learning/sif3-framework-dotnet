@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ using System.Web.Http;
 namespace Sif.Framework.Demo.Us.Provider.Controllers
 {
 
-    public class XStudentsProvider : BasicProvider<XStudent>
+    public class XStudentsProvider : BasicProvider<xStudent>
     {
 
         public XStudentsProvider()
@@ -32,7 +32,7 @@ namespace Sif.Framework.Demo.Us.Provider.Controllers
         }
 
         [Route("~/api/XStudents/XStudent")]
-        public override IHttpActionResult Post(XStudent obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public override IHttpActionResult Post(xStudent obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj);
         }

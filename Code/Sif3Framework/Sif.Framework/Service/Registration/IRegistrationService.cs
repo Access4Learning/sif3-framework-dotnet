@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ namespace Sif.Framework.Service.Registration
         /// Register service with an Environment service (Broker or Environment Provider). This must be the first
         /// method called, and only once. Subsequent calls are ignored.
         /// </summary>
+        /// <exception cref="Model.Exceptions.RegistrationException">Error occurred during registration.</exception>
         Environment Register();
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace Sif.Framework.Service.Registration
         /// method called, and only once. Subsequent calls are ignored.
         /// </summary>
         /// <param name="environment">Environment used for registration.</param>
+        /// <exception cref="Model.Exceptions.RegistrationException">Error occurred during registration.</exception>
         Environment Register(ref Environment environment);
 
         /// <summary>

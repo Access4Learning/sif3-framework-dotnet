@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Authentication;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Authentication;
@@ -65,6 +66,12 @@ namespace Sif.Framework.Service.Registration
         /// <returns>URL of the Environment infrastructure service.</returns>
         private string TryParseEnvironmentUrl(string environmentXml)
         {
+
+            if (string.IsNullOrWhiteSpace(environmentXml))
+            {
+                return null;
+            }
+
             XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
             xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0.1");
 
@@ -156,16 +163,18 @@ namespace Sif.Framework.Service.Registration
             {
                 if (log.IsDebugEnabled) log.Debug("Session token does not exist for this object service (Consumer/Provider).");
 
-                AuthorisationToken initialToken = authorisationTokenService.Generate(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
-                environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
-                string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
-                string environmentXml = HttpUtils.PostRequest(settings.EnvironmentUrl, initialToken, body);
-
-                if (log.IsDebugEnabled) log.Debug("Environment XML from POST request ...");
-                if (log.IsDebugEnabled) log.Debug(environmentXml);
+                string environmentXml = null;
 
                 try
                 {
+                    AuthorisationToken initialToken = authorisationTokenService.Generate(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
+                    environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
+                    string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
+                    environmentXml = HttpUtils.PostRequest(settings.EnvironmentUrl, initialToken, body);
+
+                    if (log.IsDebugEnabled) log.Debug("Environment XML from POST request ...");
+                    if (log.IsDebugEnabled) log.Debug(environmentXml);
+
                     environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
                     Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
 
@@ -178,7 +187,7 @@ namespace Sif.Framework.Service.Registration
                     sessionService.StoreSession(environment.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
                     environment = environmentResponse;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
 
                     if (environmentUrl != null)
@@ -190,7 +199,7 @@ namespace Sif.Framework.Service.Registration
                         HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentXml), AuthorisationToken);
                     }
 
-                    throw;
+                    throw new RegistrationException("Registration failed.", e);
                 }
 
             }

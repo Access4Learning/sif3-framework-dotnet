@@ -94,6 +94,7 @@
     <Compile Include="Model\Events\EventAction.cs" />
     <Compile Include="Model\Events\IEventIterator.cs" />
     <Compile Include="Model\Events\IEventPayloadSerialisable.cs" />
+    <Compile Include="Model\Exceptions\RegistrationException.cs" />
     <Compile Include="Model\Exceptions\EventException.cs" />
     <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
     <Compile Include="Model\Exceptions\ConsumerException.cs" />
@@ -248,10 +249,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="SifFramework.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

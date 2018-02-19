@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,22 +38,22 @@ namespace Sif.Framework.Demo.Us.Consumer
             try
             {
                 // Retrieve all students.
-                ICollection<XStudent> students = studentConsumer.Query();
+                ICollection<xStudent> students = studentConsumer.Query();
 
-                foreach (XStudent student in students)
+                foreach (xStudent student in students)
                 {
                     if (log.IsInfoEnabled) log.Info("Student name is " + student.name.givenName + " " + student.name.familyName);
                 }
 
                 // Retrieve a single student.
                 string studentId = students.ElementAt(0).RefId;
-                XStudent firstStudent = studentConsumer.Query(studentId);
+                xStudent firstStudent = studentConsumer.Query(studentId);
                 if (log.IsInfoEnabled) log.Info("Name of first student is " + firstStudent.name.givenName + " " + firstStudent.name.familyName);
 
                 // Create and then retrieve a new student.
                 xPersonNameType newStudentName = new xPersonNameType() { familyName = "Wayne", givenName = "Bruce" };
-                XStudent newStudent = new XStudent() { localId = "555", name = newStudentName };
-                XStudent retrievedNewStudent = studentConsumer.Create(newStudent);
+                xStudent newStudent = new xStudent() { localId = "555", name = newStudentName };
+                xStudent retrievedNewStudent = studentConsumer.Create(newStudent);
                 if (log.IsInfoEnabled) log.Info("Created new student " + newStudent.name.givenName + " " + newStudent.name.familyName);
 
                 // Update that student and confirm.
@@ -65,7 +65,7 @@ namespace Sif.Framework.Demo.Us.Consumer
 
                 // Delete that student and confirm.
                 studentConsumer.Delete(studentId);
-                XStudent deletedStudent = studentConsumer.Query(studentId);
+                xStudent deletedStudent = studentConsumer.Query(studentId);
                 bool studentDeleted = (deletedStudent == null ? true : false);
 
                 if (studentDeleted)
