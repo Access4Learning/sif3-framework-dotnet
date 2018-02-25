@@ -137,6 +137,32 @@ namespace Sif.Framework.Demo.Broker.Controllers
             return result;
         }
 
+        [Route("~/api/Queues/{queueId}/messages;deleteMessageId={deleteMessageId}")]
+        public IHttpActionResult Get(string queueId, string deleteMessageId)
+        {
+
+            if (availableMessageBatches == 0)
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+
+            availableMessageBatches--;
+            List<StudentPersonal> students = CreateStudents(random.Next(1, 5));
+            IHttpActionResult result = Ok(students);
+            string eventActionValue = eventActionType[random.Next(eventActionType.Length)];
+            result = CreateCustomActionResult(result, "eventAction", eventActionValue);
+            result = CreateCustomActionResult(result, "messageId", Guid.NewGuid().ToString());
+            result = CreateCustomActionResult(result, "minWaitTime", "10");
+
+            if ("UPDATE".Equals(eventActionValue))
+            {
+                string replacementValue = replacementType[random.Next(replacementType.Length)];
+                result = CreateCustomActionResult(result, "Replacement", replacementValue);
+            }
+
+            return result;
+        }
+
         public override IHttpActionResult Get([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             string sessionToken;

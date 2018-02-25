@@ -12,7 +12,7 @@ using System.Web.Http.Controllers;
 namespace Sif.Framework.Utils
 {
 
-    class ProviderUtils
+    public class ProviderUtils
     {
 
         /// <summary>
