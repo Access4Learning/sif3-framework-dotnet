@@ -247,8 +247,9 @@ namespace Sif.Framework.Consumers
                     try
                     {
                         WebHeaderCollection responseHeaders;
-                        if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url} with deleteMessageId of [{deleteMessageId}].");
-                        string xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, deleteMessageId: deleteMessageId);
+                        string deleteMessageIdMatrixParameter = (deleteMessageId == null ? "" : $";deleteMessageId={deleteMessageId.Trim()}");
+                        if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url}{deleteMessageIdMatrixParameter}.");
+                        string xml = HttpUtils.GetRequestAndHeaders($"{url}{deleteMessageIdMatrixParameter}", RegistrationService.AuthorisationToken, out responseHeaders, deleteMessageId: deleteMessageId);
                         string contextId = responseHeaders?[HttpUtils.RequestHeader.contextId.ToDescription()];
                         deleteMessageId = responseHeaders?[HttpUtils.RequestHeader.messageId.ToDescription()];
                         string minWaitTimeValue = responseHeaders?[HttpUtils.RequestHeader.minWaitTime.ToDescription()];

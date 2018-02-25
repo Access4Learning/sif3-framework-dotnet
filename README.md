@@ -366,3 +366,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Fix issues with Event Consumer start up.
 - Improve exception management with the registration process.
 - Fix ACL issues with the UK and US Demo projects.
+
+**Feb 25, 2018 - 3.2.1.8 Resolve issues with SIF Events**
+
+- Fix issues with SIF Events for both Providers and Consumers.

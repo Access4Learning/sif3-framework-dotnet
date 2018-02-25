@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,21 @@ namespace Sif.Framework.Utils
             else
             {
                 merged.ApplicationInfo.ApplicationKey = settings.ApplicationKey;
+            }
+
+            if (!string.IsNullOrWhiteSpace(settings.SolutionId))
+            {
+                merged.SolutionId = settings.SolutionId;
+            }
+
+            if (!string.IsNullOrWhiteSpace(settings.UserToken))
+            {
+                merged.UserToken = settings.UserToken;
+            }
+
+            if (!string.IsNullOrWhiteSpace(settings.InstanceId))
+            {
+                merged.InstanceId = settings.InstanceId;
             }
 
             if (!string.IsNullOrWhiteSpace(settings.AuthenticationMethod))

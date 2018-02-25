@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ namespace Sif.Framework.Providers
 
             authorisationService = new AuthorisationService(authenticationService);
         }
-        
+
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
@@ -438,7 +438,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest(errorMessage);
             }
-            
+
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
@@ -538,7 +538,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest(errorMessage);
             }
-            
+
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
@@ -676,7 +676,7 @@ namespace Sif.Framework.Providers
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
 
-            MultipleUpdateResponse multipleUpdateResponse = 
+            MultipleUpdateResponse multipleUpdateResponse =
                 ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
             updateResponseType updateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
             IHttpActionResult result = Ok(updateResponse);
@@ -834,7 +834,7 @@ namespace Sif.Framework.Providers
             {
                 return BadRequest(errorMessage);
             }
-            
+
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
@@ -911,19 +911,13 @@ namespace Sif.Framework.Providers
                     }
                     else
                     {
+                        Model.Infrastructure.Environment environment = registrationService.Register();
+
                         // Retrieve the current Authorisation Token.
-                        registrationService.Register();
                         AuthorisationToken token = registrationService.AuthorisationToken;
 
                         // Retrieve the EventsConnector endpoint URL.
-                        Model.Infrastructure.Environment environmentTemplate = EnvironmentUtils.LoadFromSettings(SettingsManager.ProviderSettings);
-                        string storedSessionToken = SessionsManager.ProviderSessionService.RetrieveSessionToken(
-                            environmentTemplate.ApplicationInfo.ApplicationKey,
-                            environmentTemplate.SolutionId,
-                            environmentTemplate.UserToken,
-                            environmentTemplate.InstanceId);
-                        Model.Infrastructure.Environment environment = authenticationService.GetEnvironmentBySessionToken(storedSessionToken);
-                        string url = EnvironmentUtils.ParseServiceUrl(environment, ServiceType.UTILITY, InfrastructureServiceNames.eventsConnector) + "/" + TypeName + "s";
+                        string url = EnvironmentUtils.ParseServiceUrl(environment, ServiceType.UTILITY, InfrastructureServiceNames.eventsConnector);
 
                         while (eventIterator.HasNext())
                         {
