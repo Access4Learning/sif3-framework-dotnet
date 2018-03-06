@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Exceptions;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Providers;
+using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -25,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Xml.Serialization;
 
 namespace Sif.Framework.Providers
 {
@@ -41,8 +44,7 @@ namespace Sif.Framework.Providers
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        public BasicProvider(IBasicProviderService<T> service)
-            : base()
+        public BasicProvider(IBasicProviderService<T> service) : base()
         {
             this.service = service;
         }
@@ -50,17 +52,22 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
-        public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
+            string sessionToken;
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
 
-            if ((zone != null && zone.Length != 1) || (context != null && context.Length != 1))
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
             }
@@ -70,6 +77,7 @@ namespace Sif.Framework.Providers
 
             try
             {
+                bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
                 foreach (T obj in objs)
                 {
@@ -79,37 +87,26 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
-                        if (hasAdvisoryId)
+                        if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                         {
 
-                            if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                            if (hasAdvisoryId)
                             {
-                                status.id = service.Create(obj, mustUseAdvisory, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0])).RefId;
+                                status.id = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                             else
                             {
-                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID provided (" + obj.RefId + "), but mustUseAdvisory is not specified or is false.");
+                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
                                 status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
 
                         }
                         else
                         {
-
-                            if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
-                            {
-                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
-                                status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
-                            }
-                            else
-                            {
-                                status.id = service.Create(obj, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0])).RefId;
-                                status.statusCode = ((int)HttpStatusCode.Created).ToString();
-                            }
-
+                            status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
+                            status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
 
                     }
@@ -157,17 +154,22 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
-        public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
+            string sessionToken;
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
 
-            if ((zone != null && zone.Length != 1) || (context != null && context.Length != 1))
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
                 return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
             }
@@ -185,7 +187,7 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        service.Update(obj, zone: (zone == null ? null : zone[0]), context: (context == null ? null : context[0]));
+                        service.Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
@@ -222,6 +224,22 @@ namespace Sif.Framework.Providers
             result = Ok(updateResponse);
 
             return result;
+        }
+
+        /// <summary>
+        /// <see cref="Provider{TSingle, TMultiple}.SerialiseEvents(TMultiple)">SerialiseEvents</see>
+        /// </summary>
+        [NonAction]
+        public override string SerialiseEvents(List<T> obj)
+        {
+
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            {
+                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                IsNullable = false
+            };
+
+            return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Serialise(obj);
         }
 
     }

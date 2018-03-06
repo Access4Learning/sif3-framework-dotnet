@@ -30,21 +30,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoMapper.Net4, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,8 +50,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.Infrastructure">
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.0\Sif.Specification.Infrastructure.dll</HintPath>
+    <Reference Include="Sif.Specification.Infrastructure, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.1\Sif.Specification.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="slf4net, Version=0.1.32.1, Culture=neutral, PublicKeyToken=592edb3b6b36b5ba, processorArchitecture=MSIL">
+      <HintPath>..\packages\slf4net.0.1.32.1\lib\net35\slf4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -81,14 +82,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\OperationAuthorisationFilter.cs" />
+    <Compile Include="Consumers\BasicEventConsumer.cs" />
+    <Compile Include="Consumers\EventConsumer.cs" />
     <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
     <Compile Include="Consumers\IBasicConsumer.cs" />
+    <Compile Include="Consumers\IEventConsumer.cs" />
+    <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
+    <Compile Include="Model\Authentication\AuthorisationToken.cs" />
+    <Compile Include="Model\Events\SifEvent.cs" />
+    <Compile Include="Model\Events\EventAction.cs" />
+    <Compile Include="Model\Events\IEventIterator.cs" />
+    <Compile Include="Model\Events\IEventPayloadSerialisable.cs" />
+    <Compile Include="Model\Exceptions\RegistrationException.cs" />
+    <Compile Include="Model\Exceptions\EventException.cs" />
+    <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
+    <Compile Include="Model\Exceptions\ConsumerException.cs" />
+    <Compile Include="Model\Infrastructure\Initialization.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
     <Compile Include="Model\Infrastructure\PhaseState.cs" />
     <Compile Include="Controllers\EnvironmentsController.cs" />
-    <Compile Include="Model\DataModels\IPayloadSerialisable.cs" />
     <Compile Include="Consumers\BasicConsumer.cs" />
     <Compile Include="Consumers\Consumer.cs" />
     <Compile Include="Consumers\IConsumer.cs" />
@@ -152,8 +167,12 @@
     <Compile Include="Providers\BasicProvider.cs" />
     <Compile Include="Providers\Provider.cs" />
     <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
+    <Compile Include="Service\Authorisation\AuthorisationService.cs" />
+    <Compile Include="Service\Authentication\BasicAuthorisationTokenService.cs" />
     <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
     <Compile Include="Service\Authentication\AuthenticationService.cs" />
+    <Compile Include="Service\Authentication\HmacShaAuthorisationTokenService.cs" />
+    <Compile Include="Service\Authorisation\IAuthorisationService.cs" />
     <Compile Include="Service\Authentication\IAuthenticationService.cs" />
     <Compile Include="Service\Authentication\DirectAuthenticationService.cs" />
     <Compile Include="Model\Settings\ConsumerSection.cs" />
@@ -162,6 +181,7 @@
     <Compile Include="Model\Settings\ProviderSection.cs" />
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
+    <Compile Include="Service\Authentication\IAuthorisationTokenService.cs" />
     <Compile Include="Service\Functional\FunctionalService.cs" />
     <Compile Include="Service\Functional\PhaseActions.cs" />
     <Compile Include="Service\Functional\IPhaseActions.cs" />
@@ -171,8 +191,11 @@
     <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Providers\IBasicProviderService.cs" />
+    <Compile Include="Service\Providers\IEventService.cs" />
+    <Compile Include="Service\Providers\IChangesSinceService.cs" />
     <Compile Include="Service\Providers\IProviderService.cs" />
     <Compile Include="Service\IObjectService.cs" />
+    <Compile Include="Service\Providers\ISupportsChangesSince.cs" />
     <Compile Include="Service\Registration\IRegistrationService.cs" />
     <Compile Include="Service\Registration\NoRegistrationService.cs" />
     <Compile Include="Service\Registration\RegistrationService.cs" />
@@ -184,6 +207,8 @@
     <Compile Include="Utils\RightsUtils.cs" />
     <Compile Include="Utils\ZoneUtils.cs" />
     <Compile Include="Utils\ProviderUtils.cs" />
+    <Compile Include="WebApi\ActionResults\CustomHeaderResult.cs" />
+    <Compile Include="WebApi\ActionResults\EmptyContentResult.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
@@ -224,19 +249,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="SifFramework.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
-      <Link>AutoMapper.Net4.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
@@ -276,7 +293,7 @@
       <Minor Include="$(Minor)" />
       <Revision Include="$(Revision)" />
       <Build Include="$(Build)" />
-      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision)\" />
+      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision).$(Build)\" />
     </ItemGroup>
   </Target>
   <PropertyGroup>

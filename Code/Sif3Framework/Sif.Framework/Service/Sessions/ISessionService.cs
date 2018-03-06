@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2018 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,8 +53,18 @@ namespace Sif.Framework.Service.Sessions
         /// <param name="solutionId">Solution ID.</param>
         /// <param name="userToken">User token.</param>
         /// <param name="instanceId">Instance ID.</param>
-        /// <returns>Session token of the matched session entry; null if no match found.</returns>
+        /// <returns>Environment URL of the matched session entry; null if no match found.</returns>
         string RetrieveEnvironmentUrl(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null);
+
+        /// <summary>
+        /// Retrieve the Queue unique identifier of a session entry that matches the passed criteria parameters.
+        /// </summary>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="userToken">User token.</param>
+        /// <param name="instanceId">Instance ID.</param>
+        /// <returns>Queue unique identifier of the matched session entry; null if no match found.</returns>
+        string RetrieveQueueId(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null);
 
         /// <summary>
         /// Retrieve the session token of a session entry that matches the passed criteria parameters.
@@ -67,6 +77,16 @@ namespace Sif.Framework.Service.Sessions
         string RetrieveSessionToken(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null);
 
         /// <summary>
+        /// Retrieve the Subscription unique identifier of a session entry that matches the passed criteria parameters.
+        /// </summary>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="userToken">User token.</param>
+        /// <param name="instanceId">Instance ID.</param>
+        /// <returns>Subscription unique identifier of the matched session entry; null if no match found.</returns>
+        string RetrieveSubscriptionId(string applicationKey, string solutionId = null, string userToken = null, string instanceId = null);
+
+        /// <summary>
         /// Store a session entry associated with Consumer/Provider registration.
         /// </summary>
         /// <param name="applicationKey">Application key.</param>
@@ -76,6 +96,26 @@ namespace Sif.Framework.Service.Sessions
         /// <param name="userToken">User token.</param>
         /// <param name="instanceId">Instance ID.</param>
         void StoreSession(string applicationKey, string sessionToken, string environmentUrl, string solutionId = null, string userToken = null, string instanceId = null);
+
+        /// <summary>
+        /// Update the Queue unique identifier associated with a session entry.
+        /// </summary>
+        /// <param name="queueId">Queue unique identifier.</param>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="userToken">User token.</param>
+        /// <param name="instanceId">Instance ID.</param>
+        void UpdateQueueId(string queueId, string applicationKey, string solutionId = null, string userToken = null, string instanceId = null);
+
+        /// <summary>
+        /// Update the Subscription unique identifier associated with a session entry.
+        /// </summary>
+        /// <param name="subscriptionId">Subscription unique identifier.</param>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="solutionId">Solution ID.</param>
+        /// <param name="userToken">User token.</param>
+        /// <param name="instanceId">Instance ID.</param>
+        void UpdateSubscriptionId(string subscriptionId, string applicationKey, string solutionId = null, string userToken = null, string instanceId = null);
 
     }
 

@@ -1114,7 +1114,7 @@ namespace Sif.Specification.Infrastructure {
         
         private string contextIdField;
         
-        private serviceTypeType typeField;
+        private string typeField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("right", IsNullable=false)]
@@ -1150,8 +1150,8 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public serviceTypeType type {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string type {
             get {
                 return this.typeField;
             }
@@ -1169,13 +1169,13 @@ namespace Sif.Specification.Infrastructure {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
     public partial class rightType {
         
-        private rightTypeType typeField;
+        private string typeField;
         
-        private rightValueType valueField;
+        private string valueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public rightTypeType type {
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string type {
             get {
                 return this.typeField;
             }
@@ -1185,8 +1185,8 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public rightValueType Value {
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
+        public string Value {
             get {
                 return this.valueField;
             }
@@ -1194,78 +1194,6 @@ namespace Sif.Specification.Infrastructure {
                 this.valueField = value;
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public enum rightTypeType {
-        
-        /// <remarks/>
-        QUERY,
-        
-        /// <remarks/>
-        CREATE,
-        
-        /// <remarks/>
-        UPDATE,
-        
-        /// <remarks/>
-        DELETE,
-        
-        /// <remarks/>
-        PROVIDE,
-        
-        /// <remarks/>
-        SUBSCRIBE,
-        
-        /// <remarks/>
-        ADMIN,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public enum rightValueType {
-        
-        /// <remarks/>
-        APPROVED,
-        
-        /// <remarks/>
-        SUPPORTED,
-        
-        /// <remarks/>
-        UNSUPPORTED,
-        
-        /// <remarks/>
-        REJECTED,
-        
-        /// <remarks/>
-        REQUESTED,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/infrastructure/3.2")]
-    public enum serviceTypeType {
-        
-        /// <remarks/>
-        UTILITY,
-        
-        /// <remarks/>
-        OBJECT,
-        
-        /// <remarks/>
-        FUNCTIONAL,
-        
-        /// <remarks/>
-        SERVICEPATH,
-        
-        /// <remarks/>
-        XQUERYTEMPLATE,
     }
     
     /// <remarks/>
@@ -1582,7 +1510,7 @@ namespace Sif.Specification.Infrastructure {
         
         private string contextIdField;
         
-        private serviceTypeType serviceTypeField;
+        private string serviceTypeField;
         
         private string serviceNameField;
         
@@ -1613,7 +1541,8 @@ namespace Sif.Specification.Infrastructure {
         }
         
         /// <remarks/>
-        public serviceTypeType serviceType {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string serviceType {
             get {
                 return this.serviceTypeField;
             }
@@ -1727,7 +1656,7 @@ namespace Sif.Specification.Infrastructure {
     [System.Xml.Serialization.XmlRootAttribute("provider", Namespace="http://www.sifassociation.org/infrastructure/3.2", IsNullable=false)]
     public partial class providerType {
         
-        private serviceTypeType serviceTypeField;
+        private string serviceTypeField;
         
         private string serviceNameField;
         
@@ -1746,7 +1675,8 @@ namespace Sif.Specification.Infrastructure {
         private string idField;
         
         /// <remarks/>
-        public serviceTypeType serviceType {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string serviceType {
             get {
                 return this.serviceTypeField;
             }

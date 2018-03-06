@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 using NHibernate.Tool.hbm2ddl;
+using System;
 using System.Collections.Generic;
 using Configuration = NHibernate.Cfg.Configuration;
 
@@ -39,26 +40,29 @@ namespace Sif.Framework.Model.Infrastructure
             schemaExport.Create(true, true);
         }
 
+        /// <summary>
+        /// Create an Environment request populated with dummy data.
+        /// </summary>
+        /// <returns>Environment request.</returns>
         public static Environment CreateEnvironmentRequest()
         {
             ProductIdentity adapterProduct = new ProductIdentity { IconURI = "icon url 1", ProductName = "product name 1", ProductVersion = "3.4.1", VendorName = "Systemic" };
             ProductIdentity applicationProduct = new ProductIdentity { IconURI = "icon url 2", ProductName = "product name 2", ProductVersion = "9.80", VendorName = "Systemic" };
             Property zoneCharge = new Property { Name = "charge", Value = "Negative" };
             Property zoneMaster = new Property { Name = "master", Value = "Annihilus" };
-            IDictionary<string, Property> zoneProperties =
-                new Dictionary<string, Property> { { zoneCharge.Name, zoneCharge }, { zoneMaster.Name, zoneMaster } };
-            Zone theNegativeZone = new Zone
+            IDictionary<string, Property> zoneProperties = new Dictionary<string, Property>
             {
-                Description = "The Negative Zone",
-                Properties = zoneProperties
+                { zoneCharge.Name, zoneCharge },
+                { zoneMaster.Name, zoneMaster }
             };
+            Zone theNegativeZone = new Zone { Description = "The Negative Zone", Properties = zoneProperties };
             ApplicationInfo applicationInfo = new ApplicationInfo
             {
                 AdapterProduct = adapterProduct,
                 ApplicationKey = "UnitTesting",
                 ApplicationProduct = applicationProduct,
-                DataModelNamespace = "http://www.sifassociation.org/au/datamodel/1.4",
-                SupportedInfrastructureVersion = "3.0",
+                DataModelNamespace = "http://www.sifassociation.org/datamodel/au/3.4",
+                SupportedInfrastructureVersion = "3.2",
                 Transport = "REST"
             };
             Environment environmentRequest = new Environment
@@ -68,15 +72,19 @@ namespace Sif.Framework.Model.Infrastructure
                 ConsumerName = "UnitTestConsumer",
                 DefaultZone = theNegativeZone,
                 InstanceId = "ThisInstance01",
-                SessionToken = "2e5dd3ca282fc8ddb3d08dcacc407e8a",
+                SessionToken = Guid.NewGuid().ToString(),
                 SolutionId = "auTestSolution",
-                Type = Model.Infrastructure.EnvironmentType.DIRECT,
+                Type = EnvironmentType.DIRECT,
                 UserToken = "UserToken01"
             };
 
             return environmentRequest;
         }
 
+        /// <summary>
+        /// Create an Environment response populated with dummy data.
+        /// </summary>
+        /// <returns>Environment response.</returns>
         public static Environment CreateEnvironmentResponse()
         {
             InfrastructureService environmentURL = new InfrastructureService { Name = InfrastructureServiceNames.environment, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/environments/5b72f2d4-7a83-4297-a71f-8b5fb26cbf14" };
@@ -95,31 +103,25 @@ namespace Sif.Framework.Model.Infrastructure
 
             Right adminRight = new Right() { Type = RightType.ADMIN.ToString(), Value = RightValue.APPROVED.ToString() };
             Right createRight = new Right() { Type = RightType.CREATE.ToString(), Value = RightValue.APPROVED.ToString() };
-            IDictionary<string, Right> rights = new Dictionary<string, Right> { { adminRight.Type, adminRight } };
-
-            Infrastructure.Service studentPersonalsService = new Infrastructure.Service
+            IDictionary<string, Right> rights = new Dictionary<string, Right>
             {
-                ContextId = "DEFAULT",
-                Name = "StudentPersonals",
-                Rights = rights,
-                Type = "OBJECT"
+                { adminRight.Type, adminRight }
             };
-            Infrastructure.Service schoolInfosService = new Infrastructure.Service
+            Service studentPersonalsService = new Service { ContextId = "DEFAULT", Name = "StudentPersonals", Rights = rights, Type = "OBJECT" };
+            Service schoolInfosService = new Service { ContextId = "DEFAULT", Name = "SchoolInfos", Rights = rights, Type = "OBJECT" };
+            ICollection<Service> services = new SortedSet<Service>
             {
-                ContextId = "DEFAULT",
-                Name = "SchoolInfos",
-                Rights = rights,
-                Type = "OBJECT"
-            };
-            ICollection<Infrastructure.Service> services = new SortedSet<Infrastructure.Service>
-            {
-                studentPersonalsService, schoolInfosService
+                studentPersonalsService,
+                schoolInfosService
             };
 
             ProvisionedZone schoolZone = new ProvisionedZone { SifId = "auSchoolTestingZone", Services = services };
             ProvisionedZone studentZone = new ProvisionedZone { SifId = "auStudentTestingZone", Services = services };
-
-            IDictionary<string, ProvisionedZone> provisionedZones = new SortedDictionary<string, ProvisionedZone> { { schoolZone.SifId, schoolZone }, { studentZone.SifId, studentZone } };
+            IDictionary<string, ProvisionedZone> provisionedZones = new SortedDictionary<string, ProvisionedZone>
+            {
+                { schoolZone.SifId, schoolZone },
+                { studentZone.SifId, studentZone }
+            };
 
             Environment environmentResponse = CreateEnvironmentRequest();
             environmentResponse.InfrastructureServices = infrastructureServices;

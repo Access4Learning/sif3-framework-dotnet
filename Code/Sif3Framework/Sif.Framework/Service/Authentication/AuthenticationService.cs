@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Authentication;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Utils;
+using System;
 using System.Net.Http.Headers;
 
 namespace Sif.Framework.Service.Authentication
 {
 
     /// <summary>
-    /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService">IAuthenticationService</see>
+    /// <see cref="IAuthenticationService">IAuthenticationService</see>
     /// </summary>
     abstract class AuthenticationService : IAuthenticationService
     {
+
+        /// <summary>
+        /// <see cref="IAuthenticationService.GetEnvironmentBySessionToken(string)">GetEnvironmentBySessionToken</see>
+        /// </summary>
+        public abstract Model.Infrastructure.Environment GetEnvironmentBySessionToken(string sessionToken);
 
         /// <summary>
         /// Retrieve the shared secret value associated with the passed in application key.
@@ -39,23 +46,24 @@ namespace Sif.Framework.Service.Authentication
         /// </summary>
         /// <param name="sessionToken">Session token associated with the shared secret.</param>
         /// <returns>Shared secret value.</returns>
+        /// <exception cref="InvalidSessionException">sessionToken is invalid.</exception>
         protected abstract string SharedSecret(string sessionToken);
 
         /// <summary>
         /// Verify the authentication header.
         /// </summary>
-        /// <param name="header">Authentication header.</param>
+        /// <param name="headers">HTTP request headers.</param>
         /// <param name="initial">Flag to indicate whether this is the initial verification call.</param>
         /// <param name="sessionToken">Session token associated with the authentication header.</param>
         /// <returns>True if the initial authentication header is valid; false otherwise.</returns>
-        protected bool VerifyAuthenticationHeader(AuthenticationHeaderValue header, bool initial, out string sessionToken)
+        protected bool VerifyAuthenticationHeader(HttpRequestHeaders headers, bool initial, out string sessionToken)
         {
             bool verified = false;
             string sessionTokenChecked = null;
 
-            if (header != null)
+            if (headers != null && headers.Authorization != null)
             {
-                AuthenticationUtils.GetSharedSecret sharedSecret;
+                GetSharedSecret sharedSecret;
 
                 if (initial)
                 {
@@ -66,13 +74,27 @@ namespace Sif.Framework.Service.Authentication
                     sharedSecret = SharedSecret;
                 }
 
-                if ("Basic".Equals(header.Scheme))
+                try
                 {
-                    verified = AuthenticationUtils.VerifyBasicAuthorisationToken(header.ToString(), sharedSecret, out sessionTokenChecked);
+
+                    if (AuthenticationMethod.Basic.ToString().Equals(headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+                    {
+                        AuthorisationToken authorisationToken = new AuthorisationToken { Token = headers.Authorization.ToString() };
+                        IAuthorisationTokenService authorisationTokenService = new BasicAuthorisationTokenService();
+                        verified = authorisationTokenService.Verify(authorisationToken, sharedSecret, out sessionTokenChecked);
+                    }
+                    else if (AuthenticationMethod.SIF_HMACSHA256.ToString().Equals(headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+                    {
+                        string timestamp = HttpUtils.GetTimestamp(headers);
+                        AuthorisationToken authorisationToken = new AuthorisationToken { Token = headers.Authorization.ToString(), Timestamp = timestamp };
+                        IAuthorisationTokenService authorisationTokenService = new HmacShaAuthorisationTokenService();
+                        verified = authorisationTokenService.Verify(authorisationToken, sharedSecret, out sessionTokenChecked);
+                    }
+
                 }
-                else if ("SIF_HMACSHA256".Equals(header.Scheme))
+                catch (InvalidSessionException)
                 {
-                    verified = true;
+                    verified = false;
                 }
 
             }
@@ -83,31 +105,29 @@ namespace Sif.Framework.Service.Authentication
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean, System.String)">VerifyAuthenticationHeader</see>
+        /// <see cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders)">VerifyAuthenticationHeader</see>
         /// </summary>
-        public virtual bool VerifyAuthenticationHeader(AuthenticationHeaderValue header)
+        public virtual bool VerifyAuthenticationHeader(HttpRequestHeaders headers)
         {
             string sessionToken;
-            return VerifyAuthenticationHeader(header, false, out sessionToken);
+            return VerifyAuthenticationHeader(headers, false, out sessionToken);
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean, System.String)">VerifyAuthenticationHeader</see>
+        /// <see cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders, out string)">VerifyAuthenticationHeader</see>
         /// </summary>
-        public virtual bool VerifyAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken)
+        public virtual bool VerifyAuthenticationHeader(HttpRequestHeaders headers, out string sessionToken)
         {
-            return VerifyAuthenticationHeader(header, false, out sessionToken);
+            return VerifyAuthenticationHeader(headers, false, out sessionToken);
         }
 
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Authentication.IAuthenticationService.VerifyAuthenticationHeader(System.Net.Http.Headers.AuthenticationHeaderValue, System.Boolean)">VerifyAuthenticationHeader</see>
+        /// <see cref="IAuthenticationService.VerifyInitialAuthenticationHeader(HttpRequestHeaders, out string)">VerifyAuthenticationHeader</see>
         /// </summary>
-        public virtual bool VerifyInitialAuthenticationHeader(AuthenticationHeaderValue header, out string sessionToken)
+        public virtual bool VerifyInitialAuthenticationHeader(HttpRequestHeaders header, out string sessionToken)
         {
             return VerifyAuthenticationHeader(header, true, out sessionToken);
         }
-
-        public abstract Environment GetEnvironmentBySessionToken(string sessionToken);
 
     }
 

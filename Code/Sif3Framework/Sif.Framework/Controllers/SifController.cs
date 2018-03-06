@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 using Sif.Framework.Model.Persistence;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
-using Sif.Framework.WebApi.ModelBinders;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.WebApi.ModelBinders;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -37,7 +37,15 @@ namespace Sif.Framework.Controllers
         where UI : new()
         where DB : IPersistable<Guid>, new()
     {
+
+        /// <summary>
+        /// Authentication service.
+        /// </summary>
         protected IAuthenticationService authService;
+
+        /// <summary>
+        /// Service for SIF Object operations.
+        /// </summary>
         protected ISifService<UI, DB> service;
 
         /// <summary>
@@ -54,12 +62,12 @@ namespace Sif.Framework.Controllers
         /// DELETE api/{controller}/{id}
         /// </summary>
         /// <param name="id">Identifier of the object to delete.</param>
-        /// <param name="zone">The zone in which to perform the request.</param>
-        /// <param name="context">The context in which to perform the request.</param>
-        public virtual void Delete(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
+        public virtual void Delete(Guid id, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -90,13 +98,13 @@ namespace Sif.Framework.Controllers
         /// GET api/{controller}/{id}
         /// </summary>
         /// <param name="id">Identifier of the object to retrieve.</param>
-        /// <param name="zone">The zone in which to perform the request.</param>
-        /// <param name="context">The context in which to perform the request.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
         /// <returns>Object with that identifier.</returns>
-        public virtual UI Get(Guid id, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual UI Get(Guid id, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -125,10 +133,10 @@ namespace Sif.Framework.Controllers
         /// GET api/{controller}
         /// </summary>
         /// <returns>All objects.</returns>
-        public virtual ICollection<UI> Get([MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual ICollection<UI> Get([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -152,13 +160,13 @@ namespace Sif.Framework.Controllers
         /// POST api/{controller}
         /// </summary>
         /// <param name="item">Object to create.</param>
-        /// <param name="zone">The zone in which to perform the request.</param>
-        /// <param name="context">The context in which to perform the request.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
         /// <returns>HTTP response message indicating success or failure.</returns>
-        public virtual HttpResponseMessage Post(UI item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual HttpResponseMessage Post(UI item, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
@@ -186,13 +194,13 @@ namespace Sif.Framework.Controllers
         /// PUT api/{controller}/{id}
         /// </summary>
         /// <param name="id">Identifier for the object to update.</param>
-        /// <param name="zone">The zone in which to perform the request.</param>
-        /// <param name="context">The context in which to perform the request.</param>
+        /// <param name="zoneId">The zone in which to perform the request.</param>
+        /// <param name="contextId">The context in which to perform the request.</param>
         /// <param name="item">Object to update.</param>
-        public virtual void Put(Guid id, UI item, [MatrixParameter] string[] zone = null, [MatrixParameter] string[] context = null)
+        public virtual void Put(Guid id, UI item, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
 
-            if (!authService.VerifyAuthenticationHeader(Request.Headers.Authorization))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }

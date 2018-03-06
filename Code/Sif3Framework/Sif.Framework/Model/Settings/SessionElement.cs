@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public SessionElement()
         {
-
         }
 
         /// <summary>
@@ -111,6 +110,25 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
+        /// Optional queueId attribute.
+        /// </summary>
+        [ConfigurationProperty("queueId")]
+        public string QueueId
+        {
+
+            get
+            {
+                return (string)this["queueId"];
+            }
+
+            set
+            {
+                this["queueId"] = value;
+            }
+
+        }
+
+        /// <summary>
         /// Mandatory sessionToken attribute.
         /// </summary>
         [ConfigurationProperty("sessionToken", IsRequired = true)]
@@ -144,6 +162,25 @@ namespace Sif.Framework.Model.Settings
             set
             {
                 this["solutionId"] = value;
+            }
+
+        }
+
+        /// <summary>
+        /// Optional subscriptionId attribute.
+        /// </summary>
+        [ConfigurationProperty("subscriptionId")]
+        public string SubscriptionId
+        {
+
+            get
+            {
+                return (string)this["subscriptionId"];
+            }
+
+            set
+            {
+                this["subscriptionId"] = value;
             }
 
         }

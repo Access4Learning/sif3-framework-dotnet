@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +15,16 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Persistence.NHibernate;
-using System;
-using Job = Sif.Framework.Model.Infrastructure.Job;
-using System.Collections.Generic;
-using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Exceptions;
-using Sif.Specification.Infrastructure;
+using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
-using log4net;
-using System.Reflection;
+using Sif.Specification.Infrastructure;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using Job = Sif.Framework.Model.Infrastructure.Job;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -34,7 +33,8 @@ namespace Sif.Framework.Service.Functional
     /// </summary>
     public abstract class FunctionalService : SifService<jobType, Job>, IFunctionalService
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private GenericRepository<SifObjectBinding, long> bindings;
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Create(UI, string, string)"/>
-        public override Guid Create(jobType item, string zone = null, string context = null)
+        public override Guid Create(jobType item, string zoneId = null, string contextId = null)
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
 
@@ -172,7 +172,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Create(IEnumerable{UI}, string, string)"/>
-        public override void Create(IEnumerable<jobType> items, string zone = null, string context = null)
+        public override void Create(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
         {
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
             foreach (Job job in jobs)
@@ -189,19 +189,19 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Update(UI, string, string)"/>
-        public override void Update(jobType item, string zone = null, string context = null)
+        public override void Update(jobType item, string zoneId = null, string contextId = null)
         {
             throw new RejectedException();
         }
 
         /// <see cref="ISifService{UI, DB}.Update(IEnumerable{UI}, string, string)"/>
-        public override void Update(IEnumerable<jobType> items, string zone = null, string context = null)
+        public override void Update(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
         {
             throw new RejectedException();
         }
 
         /// <see cref="ISifService{UI, DB}.Retrieve(Guid, string, string)"/>
-        public override jobType Retrieve(Guid id, string zone = null, string context = null)
+        public override jobType Retrieve(Guid id, string zoneId = null, string contextId = null)
         {
             Job job = repository.Retrieve(id);
             AcceptJob(job);
@@ -209,7 +209,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Retrieve(UI, string, string)"/>
-        public override ICollection<jobType> Retrieve(jobType item, string zone = null, string context = null)
+        public override ICollection<jobType> Retrieve(jobType item, string zoneId = null, string contextId = null)
         {
             Job repoItem = MapperFactory.CreateInstance<jobType, Job>(item);
             IList<Job> repoItems = (from Job job in repository.Retrieve(repoItem)
@@ -219,7 +219,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Retrieve(string, string)"/>
-        public override ICollection<jobType> Retrieve(string zone = null, string context = null)
+        public override ICollection<jobType> Retrieve(string zoneId = null, string contextId = null)
         {
             IList<Job> repoItems = (from Job job in repository.Retrieve()
                                     where AcceptJob(job)
@@ -228,7 +228,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Delete(Guid, string, string)"/>
-        public override void Delete(Guid id, string zone = null, string context = null)
+        public override void Delete(Guid id, string zoneId = null, string contextId = null)
         {
             try
             {
@@ -244,7 +244,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Delete(UI, string, string)"/>
-        public override void Delete(jobType item, string zone = null, string context = null)
+        public override void Delete(jobType item, string zoneId = null, string contextId = null)
         {
             try
             {
@@ -260,7 +260,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="ISifService{UI, DB}.Delete(IEnumerable{UI}, string, string)"/>
-        public override void Delete(IEnumerable<jobType> items, string zone = null, string context = null)
+        public override void Delete(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
         {
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
             foreach (Job job in jobs)
@@ -286,7 +286,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.CreateToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
+        public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
         {
             Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
@@ -299,7 +299,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.RetrieveToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
+        public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
         {
             Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
@@ -312,7 +312,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.UpdateToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string UpdateToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
+        public virtual string UpdateToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
         {
             Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
@@ -325,7 +325,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.DeleteToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string DeleteToPhase(Guid id, string phaseName, string body = null, string zone = null, string context = null, string contentType = null, string accept = null)
+        public virtual string DeleteToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
         {
             Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);
@@ -338,7 +338,7 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.CreateToState(Guid, string, stateType, string, string)"/>
-        public virtual stateType CreateToState(Guid id, string phaseName, stateType item = null, string zone = null, string context = null)
+        public virtual stateType CreateToState(Guid id, string phaseName, stateType item = null, string zoneId = null, string contextId = null)
         {
             Job job = repository.Retrieve(id);
             Phase phase = getPhase(job, phaseName);

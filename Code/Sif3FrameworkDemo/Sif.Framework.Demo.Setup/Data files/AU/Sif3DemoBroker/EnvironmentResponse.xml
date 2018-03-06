@@ -1,0 +1,74 @@
+﻿<?xml version="1.0"?>
+<environment xmlns="http://www.sifassociation.org/infrastructure/3.2.1" type="DIRECT">
+  <defaultZone id="Sif3DemoZone1">
+    <description>SIF3 demo default zone</description>
+  </defaultZone>
+  <infrastructureServices>
+    <!-- The presence of the following two Services are mandatory for any Consumer Environment. -->
+    <infrastructureService name="environment">http://localhost:59586/api/environments</infrastructureService>
+    <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>
+    <!-- These two Services support the reception of delayed Responses and asynchronous Events. They are mandatory for all Brokered Architectures. -->
+    <infrastructureService name="queues">http://localhost:59586/api/queues</infrastructureService>
+    <infrastructureService name="subscriptions">http://localhost:59586/api/subscriptions</infrastructureService>
+    <!-- This Service is necessary to support self-configuring Consumers. -->
+    <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
+    <!-- After provisioning itself as a Provider, this service allows a Consumer to post Events. It is mandatory for all Brokered Architectures and never included in a Direct Architecture. -->
+    <infrastructureService name="eventsConnector">http://localhost:62837/api</infrastructureService>
+    <!-- This Service is necessary to support Functional Services. -->
+    <infrastructureService name="servicesConnector">http://localhost:50617/services</infrastructureService>
+  </infrastructureServices>
+  <provisionedZones>
+    <provisionedZone id="Sif3DemoZone1">
+      <services>
+        <service name="StudentPersonals" contextId="DEFAULT" type="OBJECT">
+          <rights>
+            <right type="QUERY">APPROVED</right>
+            <right type="CREATE">REJECTED</right>
+            <right type="UPDATE">REJECTED</right>
+            <right type="DELETE">REJECTED</right>
+            <right type="PROVIDE">REJECTED</right>
+            <right type="SUBSCRIBE">SUPPORTED</right>
+            <right type="ADMIN">REJECTED</right>
+          </rights>
+        </service>
+        <service name="SchoolInfos" contextId="DEFAULT" type="OBJECT">
+          <rights>
+            <right type="QUERY">APPROVED</right>
+            <right type="CREATE">REJECTED</right>
+            <right type="UPDATE">REJECTED</right>
+            <right type="DELETE">REJECTED</right>
+            <right type="PROVIDE">REJECTED</right>
+            <right type="SUBSCRIBE">SUPPORTED</right>
+            <right type="ADMIN">REJECTED</right>
+          </rights>
+        </service>
+        <service name="StudentSchoolEnrollments" contextId="DEFAULT" type="OBJECT">
+          <rights>
+            <right type="QUERY">APPROVED</right>
+            <right type="CREATE">REJECTED</right>
+            <right type="UPDATE">REJECTED</right>
+            <right type="DELETE">REJECTED</right>
+            <right type="PROVIDE">REJECTED</right>
+            <right type="SUBSCRIBE">SUPPORTED</right>
+            <right type="ADMIN">REJECTED</right>
+          </rights>
+        </service>
+      </services>
+    </provisionedZone>
+    <provisionedZone id="Sif3DemoZone2">
+      <services>
+        <service name="StudentPersonals" contextId="DEFAULT" type="OBJECT">
+          <rights>
+            <right type="QUERY">APPROVED</right>
+            <right type="CREATE">REJECTED</right>
+            <right type="UPDATE">REJECTED</right>
+            <right type="DELETE">REJECTED</right>
+            <right type="PROVIDE">REJECTED</right>
+            <right type="SUBSCRIBE">SUPPORTED</right>
+            <right type="ADMIN">REJECTED</right>
+          </rights>
+        </service>
+      </services>
+    </provisionedZone>
+  </provisionedZones>
+</environment>

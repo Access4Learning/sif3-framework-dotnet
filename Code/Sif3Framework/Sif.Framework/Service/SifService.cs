@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,80 +19,120 @@ using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
 using System;
 using System.Collections.Generic;
-using log4net;
-using System.Reflection;
 
 namespace Sif.Framework.Service
 {
 
+    /// <summary>
+    /// <see cref="ISifService{UI, DB}"/>
+    /// </summary>
     public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Generic repository.
+        /// </summary>
         protected IGenericRepository<DB, Guid> repository;
 
+        /// <summary>
+        /// Create an instance based upon the provided repository.
+        /// </summary>
+        /// <param name="repository">Repository associated with the service.</param>
         public SifService(IGenericRepository<DB, Guid> repository)
         {
             this.repository = repository;
         }
 
-        public virtual Guid Create(UI item, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Create(UI, string, string)"/>
+        /// </summary>
+        public virtual Guid Create(UI item, string zoneId = null, string contextId = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             return repository.Save(repoItem);
         }
 
-        public virtual void Create(IEnumerable<UI> items, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Create(IEnumerable{UI}, string, string)"/>
+        /// </summary>
+        public virtual void Create(IEnumerable<UI> items, string zoneId = null, string contextId = null)
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Save(repoItems);
         }
 
-        public virtual void Delete(Guid id, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Delete(Guid, string, string)"/>
+        /// </summary>
+        public virtual void Delete(Guid id, string zoneId = null, string contextId = null)
         {
             repository.Delete(id);
         }
 
-        public virtual void Delete(UI item, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Delete(UI, string, string)"/>
+        /// </summary>
+        public virtual void Delete(UI item, string zoneId = null, string contextId = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             repository.Delete(repoItem);
         }
 
-        public virtual void Delete(IEnumerable<UI> items, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Delete(IEnumerable{UI}, string, string)"/>
+        /// </summary>
+        public virtual void Delete(IEnumerable<UI> items, string zoneId = null, string contextId = null)
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Delete(repoItems);
         }
 
-        public virtual UI Retrieve(Guid id, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Retrieve(Guid, string, string)"/>
+        /// </summary>
+        public virtual UI Retrieve(Guid id, string zoneId = null, string contextId = null)
         {
             DB repoItem = repository.Retrieve(id);
             return MapperFactory.CreateInstance<DB, UI>(repoItem);
         }
 
-        public virtual ICollection<UI> Retrieve(UI item, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Retrieve(UI, string, string)"/>
+        /// </summary>
+        public virtual ICollection<UI> Retrieve(UI item, string zoneId = null, string contextId = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             ICollection<DB> repoItems = repository.Retrieve(repoItem);
             return MapperFactory.CreateInstances<DB, UI>(repoItems);
         }
 
-        public virtual ICollection<UI> Retrieve(string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Retrieve(string, string)"/>
+        /// </summary>
+        public virtual ICollection<UI> Retrieve(string zoneId = null, string contextId = null)
         {
             ICollection<DB> repoItems = repository.Retrieve();
             return MapperFactory.CreateInstances<DB, UI>(repoItems);
         }
 
-        public virtual void Update(UI item, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Update(UI, string, string)"/>
+        /// </summary>
+        public virtual void Update(UI item, string zoneId = null, string contextId = null)
         {
             DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
             repository.Save(repoItem);
         }
 
-        public virtual void Update(IEnumerable<UI> items, string zone = null, string context = null)
+        /// <summary>
+        /// <see cref="ISifService{UI, DB}.Update(IEnumerable{UI}, string, string)"/>
+        /// </summary>
+        public virtual void Update(IEnumerable<UI> items, string zoneId = null, string contextId = null)
         {
             ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
             repository.Save(repoItems);
         }
+
     }
+
 }

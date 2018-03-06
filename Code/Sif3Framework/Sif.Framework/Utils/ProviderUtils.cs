@@ -1,5 +1,4 @@
-﻿using log4net;
-using Sif.Framework.Controllers;
+﻿using Sif.Framework.Controllers;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Providers;
@@ -8,14 +7,13 @@ using Sif.Framework.Service.Functional;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Net;
-using System.Reflection;
 using System.Web.Http.Controllers;
 
 namespace Sif.Framework.Utils
 {
-    class ProviderUtils
+
+    public class ProviderUtils
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Infer the name of the Object/Functional Service type

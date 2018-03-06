@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +17,6 @@
 
 using Sif.Framework.Demo.Uk.Provider.Models;
 using Sif.Framework.Demo.Uk.Provider.Utils;
-using Sif.Framework.Model;
-using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Uk;
@@ -91,7 +90,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             learnerCache = CreateLearner(20);
         }
 
-        public LearnerPersonal Create(LearnerPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
+        public LearnerPersonal Create(LearnerPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -100,7 +99,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return obj;
         }
 
-        public LearnerPersonal Retrieve(string refId, string zone = null, string context = null)
+        public LearnerPersonal Retrieve(string refId, string zoneId = null, string contextId = null)
         {
             LearnerPersonal student;
 
@@ -112,11 +111,11 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return student;
         }
 
-        public List<LearnerPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<LearnerPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<LearnerPersonal> retrievedStudents = new List<LearnerPersonal>();
 
-            if ("Gov".Equals(zone) && "Curr".Equals(context))
+            if ("Gov".Equals(zoneId) && "Curr".Equals(contextId))
             {
                 List<LearnerPersonal> allStudents = new List<LearnerPersonal>();
                 allStudents.AddRange(learnerCache.Values);
@@ -151,7 +150,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return retrievedStudents;
         }
 
-        public List<LearnerPersonal> Retrieve(LearnerPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<LearnerPersonal> Retrieve(LearnerPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<LearnerPersonal> students = new List<LearnerPersonal>();
 
@@ -168,7 +167,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return students;
         }
 
-        public List<LearnerPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<LearnerPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<LearnerPersonal> students = new List<LearnerPersonal>();
             students.Add(CreateBartSimpson());
@@ -176,7 +175,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return students;
         }
 
-        public void Update(LearnerPersonal obj, string zone = null, string context = null)
+        public void Update(LearnerPersonal obj, string zoneId = null, string contextId = null)
         {
 
             if (learnerCache.ContainsKey(obj.RefId))
@@ -187,7 +186,7 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
         }
 
-        public void Delete(string refId, string zone = null, string context = null)
+        public void Delete(string refId, string zoneId = null, string contextId = null)
         {
             learnerCache.Remove(refId);
         }

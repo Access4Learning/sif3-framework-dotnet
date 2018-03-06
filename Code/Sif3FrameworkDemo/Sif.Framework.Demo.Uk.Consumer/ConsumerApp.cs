@@ -1,5 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +15,6 @@
  * limitations under the License.
  */
 
-using log4net;
 using Newtonsoft.Json;
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Uk.Consumer.Consumers;
@@ -29,14 +29,14 @@ using Sif.Specification.DataModel.Uk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Sif.Framework.Demo.Uk.Consumer
 {
 
     class ConsumerApp
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static Random random = new Random();
 
         private static LearnerPersonal CreateBruceWayne()
@@ -128,10 +128,9 @@ namespace Sif.Framework.Demo.Uk.Consumer
             }
         }
 
-
         void RunLearnerPersonalConsumer()
         {
-            LearnerPersonalConsumer learnerPersonalConsumer = new LearnerPersonalConsumer("Sif3DemoApp");
+            LearnerPersonalConsumer learnerPersonalConsumer = new LearnerPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             learnerPersonalConsumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
@@ -206,7 +205,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
                 // Retrieve all learners from zone "Gov" and context "Curr".
                 if (log.IsInfoEnabled) log.Info("*** Retrieve all learners from zone \"Gov\" and context \"Curr\".");
-                IEnumerable<LearnerPersonal> learners = learnerPersonalConsumer.Query(zone: "Gov", context: "Curr");
+                IEnumerable<LearnerPersonal> learners = learnerPersonalConsumer.Query(zoneId: "Gov", contextId: "Curr");
 
                 foreach (LearnerPersonal learner in learners)
                 {
@@ -275,7 +274,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
 
         void RunPayloadConsumer()
         {
-            FunctionalServiceConsumer consumer = new FunctionalServiceConsumer("Sif3DemoApp");
+            FunctionalServiceConsumer consumer = new FunctionalServiceConsumer(SettingsManager.ConsumerSettings.ApplicationKey);
             consumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 
@@ -350,7 +349,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                     xml = SerialiserFactory.GetXmlSerialiser<LearnerPersonal>().Serialise(CreateBruceWayne());
                 } catch (Exception e)
                 {
-                    if (log.IsFatalEnabled) log.Info("***** Error serializing to xml: " + e.Message, e);
+                    if (log.IsErrorEnabled) log.Error("***** Error serializing to xml: " + e.Message, e);
                 }
                 consumer.UpdateToPhase(job, "xml", xml, contentTypeOverride: "application/xml", acceptOverride: "text/plain");
 
@@ -362,7 +361,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
                     json = JsonConvert.SerializeObject(CreateBruceWayne());
                 } catch (Exception e)
                 {
-                    if (log.IsFatalEnabled) log.Info("***** Error serializing to json: " + e.Message, e);
+                    if (log.IsErrorEnabled) log.Error("***** Error serializing to json: " + e.Message, e);
                 }
 
                 consumer.UpdateToPhase(job, "json", json, contentTypeOverride: "application/json", acceptOverride: "text/plain");
@@ -431,7 +430,7 @@ namespace Sif.Framework.Demo.Uk.Consumer
             }
             catch (Exception e)
             {
-                log.Fatal(e.StackTrace);
+                if (log.IsErrorEnabled) log.Error(e.StackTrace);
                 throw new Exception(this.GetType().FullName, e);
             }
             finally

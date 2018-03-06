@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,40 @@ using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
+using Sif.Framework.Model.Events;
 
 namespace Sif.Framework.Demo.Au.Provider.Services
 {
 
-    public class StudentPersonalService : IBasicProviderService<StudentPersonal>
+    public class StudentPersonalService : IBasicProviderService<StudentPersonal>, IChangesSinceService<List<StudentPersonal>>, IEventService<List<StudentPersonal>>
     {
-        private static IDictionary<string, StudentPersonal> studentsCache = new Dictionary<string, StudentPersonal>();
+        private const string changesSincePrefix = "ver.";
+
+        private static int changesSinceNumber = 1;
         private static Random random = new Random();
+        private static IDictionary<string, StudentPersonal> studentsCache = new Dictionary<string, StudentPersonal>();
+        private static IDictionary<string, IDictionary<string, StudentPersonal>> studentsChangedCache = new Dictionary<string, IDictionary<string, StudentPersonal>>();
+
+        public string ChangesSinceMarker
+        {
+
+            get
+            {
+                return string.Format("{0}{1}", changesSincePrefix, changesSinceNumber);
+            }
+
+        }
+
+        public string NextChangesSinceMarker
+        {
+
+            get
+            {
+                changesSinceNumber++;
+                return string.Format("{0}{1}", changesSincePrefix, changesSinceNumber);
+            }
+
+        }
 
         private static StudentPersonal CreateBartSimpson()
         {
@@ -84,18 +110,25 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         static StudentPersonalService()
         {
             studentsCache = CreateStudents(20);
+            studentsChangedCache.Add("ver.1", CreateStudents(10));
+            studentsChangedCache.Add("ver.2", CreateStudents(3));
         }
 
-        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zone = null, string context = null)
+        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
         {
-            string refId = Guid.NewGuid().ToString();
-            obj.RefId = refId;
-            studentsCache.Add(refId, obj);
+
+            if (!mustUseAdvisory.HasValue || !mustUseAdvisory.Value)
+            {
+                string refId = Guid.NewGuid().ToString();
+                obj.RefId = refId;
+            }
+
+            studentsCache.Add(obj.RefId, obj);
 
             return obj;
         }
 
-        public StudentPersonal Retrieve(string refId, string zone = null, string context = null)
+        public StudentPersonal Retrieve(string refId, string zoneId = null, string contextId = null)
         {
             StudentPersonal student;
 
@@ -107,11 +140,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return student;
         }
 
-        public List<StudentPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<StudentPersonal> retrievedStudents = new List<StudentPersonal>();
 
-            if ("Gov".Equals(zone) && "Curr".Equals(context))
+            if ((zoneId == null && contextId == null) || ("Gov".Equals(zoneId) && "Curr".Equals(contextId)))
             {
                 List<StudentPersonal> allStudents = new List<StudentPersonal>();
                 allStudents.AddRange(studentsCache.Values);
@@ -146,7 +179,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return retrievedStudents;
         }
 
-        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> Retrieve(StudentPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<StudentPersonal> students = new List<StudentPersonal>();
 
@@ -163,7 +196,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return students;
         }
 
-        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zone = null, string context = null)
+        public List<StudentPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
         {
             List<StudentPersonal> students = new List<StudentPersonal>();
             students.Add(CreateBartSimpson());
@@ -171,7 +204,25 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return students;
         }
 
-        public void Update(StudentPersonal obj, string zone = null, string context = null)
+        public List<StudentPersonal> RetrieveChangesSince(string changesSinceMarker, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        {
+
+            if (string.IsNullOrEmpty(changesSinceMarker))
+            {
+                throw new ArgumentException("changesSinceMarker");
+            }
+
+            IDictionary<string, StudentPersonal> students;
+
+            if (!studentsChangedCache.TryGetValue(changesSinceMarker, out students))
+            {
+                students = new Dictionary<string, StudentPersonal>();
+            }
+
+            return new List<StudentPersonal>(students.Values);
+        }
+
+        public void Update(StudentPersonal obj, string zoneId = null, string contextId = null)
         {
 
             if (studentsCache.ContainsKey(obj.RefId))
@@ -182,9 +233,16 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         }
 
-        public void Delete(string refId, string zone = null, string context = null)
+        public void Delete(string refId, string zoneId = null, string contextId = null)
         {
             studentsCache.Remove(refId);
         }
+
+        public IEventIterator<List<StudentPersonal>> GetEventIterator(string zoneId = null, string contextId = null)
+        {
+            return new StudentPersonalIterator();
+        }
+
     }
+
 }

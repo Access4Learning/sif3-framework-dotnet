@@ -3,7 +3,6 @@ using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
-using WebApiContrib.Formatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,15 +12,15 @@ using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Routing;
 using System.Xml.Serialization;
-using Sif.Framework.Providers;
-using log4net;
-using System.Reflection;
+using WebApiContrib.Formatting;
 
 namespace Sif.Framework.Demo.Uk.Provider
 {
+
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private IRegistrationService registrationService;
         
         private void Register()
@@ -38,6 +37,7 @@ namespace Sif.Framework.Demo.Uk.Provider
                 registrationService.Register();
             }
         }
+
         private void Unregister()
         {
             log.Info("Unregistering...");
@@ -61,8 +61,6 @@ namespace Sif.Framework.Demo.Uk.Provider
 
         protected void Application_Start()
         {
-            log4net.Config.XmlConfigurator.Configure();
-
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping("json", "application/json");
@@ -85,15 +83,16 @@ namespace Sif.Framework.Demo.Uk.Provider
             // Configure a global exception handler for unexpected errors.
             GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
 
-            Trace.TraceInformation("********** Application_Start **********");
             log.Info("********** Application_Start **********");
             Register();
         }
+
         protected void Application_End(object sender, System.EventArgs e)
         {
-            Trace.TraceInformation("********** Application_End **********");
             log.Info("********** Application_End **********");
             Unregister();
         }
+
     }
+
 }

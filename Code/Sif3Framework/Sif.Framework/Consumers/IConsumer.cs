@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public interface IConsumer<TSingle, TMultiple, TPrimaryKey> : IPayloadSerialisable<TSingle, TMultiple>
+    public interface IConsumer<TSingle, TMultiple, TPrimaryKey>
     {
 
         /// <summary>
@@ -45,34 +44,49 @@ namespace Sif.Framework.Consumers
         void Unregister(bool? deleteOnUnregister = null);
 
         /// <summary>
+        /// Retrieve the current Changes Since marker.
+        /// <para>HEAD /StudentPersonals</para>
+        /// </summary>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <returns>Changes Since marker.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        string GetChangesSinceMarker(string zoneId = null, string contextId = null);
+
+        /// <summary>
         /// Create a single object.
         /// <para>POST /StudentPersonals/StudentPersonal</para>
         /// </summary>
         /// <param name="obj">Object to create.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Created object.</returns>
-        TSingle Create(TSingle obj, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TSingle Create(TSingle obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Create multiple objects.
         /// <para>POST /StudentPersonals</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to create.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object created.</returns>
-        MultipleCreateResponse Create(TMultiple obj, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        MultipleCreateResponse Create(TMultiple obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Retrieve a single object.
         /// <para>GET /StudentPersonals/{id}</para>
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved object.</returns>
-        TSingle Query(TPrimaryKey refId, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TSingle Query(TPrimaryKey refId, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Retrieve all objects.
@@ -80,10 +94,11 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
-        TMultiple Query(uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TMultiple Query(uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Retrieve multiple objects using Query by Example.
@@ -92,10 +107,11 @@ namespace Sif.Framework.Consumers
         /// <param name="obj">Example object.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
-        TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -106,48 +122,67 @@ namespace Sif.Framework.Consumers
         /// <param name="conditions">Service Path conditions.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Retrieved objects.</returns>
-        TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
+
+        /// <summary>
+        /// Retrieve multiple objects based on the Changes Since marker.
+        /// <para>GET /StudentPersonals</para>
+        /// </summary>
+        /// <param name="changesSinceMarker">Changes Since marker.</param>
+        /// <param name="nextChangesSinceMarker">Next Changes Since marker.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Update a single object.
         /// <para>PUT /StudentPersonals/{id}</para>
         /// </summary>
         /// <param name="obj">Object to update.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
-        void Update(TSingle obj, string zone = null, string context = null);
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        void Update(TSingle obj, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Update multiple objects.
         /// <para>PUT /StudentPersonals</para>
         /// </summary>
         /// <param name="obj">Object (multiple object entity) to update.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object updated.</returns>
-        MultipleUpdateResponse Update(TMultiple obj, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        MultipleUpdateResponse Update(TMultiple obj, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Delete a single object.
         /// <para>DELETE /StudentPersonals/{id}</para>
         /// </summary>
         /// <param name="refId">SIF identifier of the object.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
-        void Delete(TPrimaryKey refId, string zone = null, string context = null);
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        void Delete(TPrimaryKey refId, string zoneId = null, string contextId = null);
 
         /// <summary>
         /// Delete multiple objects.
         /// <para>PUT /StudentPersonals (methodOverride: DELETE)</para>
         /// </summary>
         /// <param name="refIds">SIF identifiers of the objects.</param>
-        /// <param name="zone">Zone associated with the request.</param>
-        /// <param name="context">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <returns>Response containing status of each object deleted.</returns>
-        MultipleDeleteResponse Delete(IEnumerable<TPrimaryKey> refIds, string zone = null, string context = null);
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        MultipleDeleteResponse Delete(IEnumerable<TPrimaryKey> refIds, string zoneId = null, string contextId = null);
 
     }
 

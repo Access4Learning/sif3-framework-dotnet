@@ -2,13 +2,13 @@
     <generateClasses language='CS' namespace='Sif.Specification.Infrastructure'>
         <schema>input\alert.xsd</schema>
         <schema>input\codeset.xsd</schema>
-		<schema>input\Collections.xsd</schema>
+        <schema>input\Collections.xsd</schema>
         <schema>input\createresponse.xsd</schema>
         <schema>input\deleterequest.xsd</schema>
         <schema>input\deleteresponse.xsd</schema>
         <schema>input\environment.xsd</schema>
         <schema>input\infrastructurecommontypes.xsd</schema>
-		<schema>input\job.xsd</schema>
+        <schema>input\job.xsd</schema>
         <schema>input\namespace.xsd</schema>
         <schema>input\provider.xsd</schema>
         <schema>input\provisionrequest.xsd</schema>
