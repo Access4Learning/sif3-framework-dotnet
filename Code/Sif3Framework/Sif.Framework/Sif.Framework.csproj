@@ -188,6 +188,9 @@
     <Compile Include="Model\Settings\SessionElement.cs" />
     <Compile Include="Model\Settings\SessionsElementCollection.cs" />
     <Compile Include="Service\Authentication\IAuthorisationTokenService.cs" />
+    <Compile Include="Service\Compression\DeflateCompressor.cs" />
+    <Compile Include="Service\Compression\GZipCompressor.cs" />
+    <Compile Include="Service\Compression\ICompressor.cs" />
     <Compile Include="Service\Functional\FunctionalService.cs" />
     <Compile Include="Service\Functional\PhaseActions.cs" />
     <Compile Include="Service\Functional\IPhaseActions.cs" />
@@ -215,7 +218,11 @@
     <Compile Include="Utils\ProviderUtils.cs" />
     <Compile Include="WebApi\ActionResults\CustomHeaderResult.cs" />
     <Compile Include="WebApi\ActionResults\EmptyContentResult.cs" />
+    <Compile Include="WebApi\Content\CompressedContent.cs" />
+    <Compile Include="WebApi\Content\CompressionContent.cs" />
+    <Compile Include="WebApi\Content\DecompressedContent.cs" />
     <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
+    <Compile Include="WebApi\Handlers\CompressionHandler.cs" />
     <Compile Include="WebApi\MethodOverrideHandler.cs" />
     <Compile Include="Utils\RegistrationManager.cs" />
     <Compile Include="Utils\SessionsManager.cs" />
