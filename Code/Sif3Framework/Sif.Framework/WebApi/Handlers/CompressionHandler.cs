@@ -27,7 +27,8 @@ using System.Threading.Tasks;
 namespace Sif.Framework.WebApi.Handlers
 {
     /// <summary>
-    /// Message handler for managing HTTP content compression.
+    /// Message handler for managing HTTP content compression. This handler is based on the solution provided in the
+    /// article <see cref="http://www.ronaldrosier.net/blog/2013/07/16/implement_compression_in_aspnet_web_api">Implement compression in ASP.NET Web API</see>.
     /// </summary>
     public class CompressionHandler : DelegatingHandler
     {
