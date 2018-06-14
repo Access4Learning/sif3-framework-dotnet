@@ -73,9 +73,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnrollmentConsumerApp.cs" />
     <Compile Include="ConsumerApp.cs" />
+    <Compile Include="Consumers\StudentSchoolEnrollmentConsumer.cs" />
     <Compile Include="Consumers\StudentPersonalEventConsumer.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
+    <Compile Include="Models\StudentSchoolEnrollment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Consumers\StudentPersonalConsumer.cs" />
     <Compile Include="Utils\RandomNameGenerator.cs" />
@@ -90,7 +93,7 @@
     <None Include="packages.config" />
     <None Include="SifFramework.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
