@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
 [assembly: AssemblyProduct("Sif.Specification.DataModel.Au.v3_4_2")]
-[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2017")]
+[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

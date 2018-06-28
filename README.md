@@ -363,10 +363,20 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 **Feb 19, 2018 - 3.2.1.7 Resolve issues with Event Consumer**
 
-- Fix issues with Event Consumer start up.
-- Improve exception management with the registration process.
-- Fix ACL issues with the UK and US Demo projects.
+- Fixed issues with Event Consumer start up.
+- Improved exception management with the registration process.
+- Fixed ACL issues with the UK and US Demo projects.
 
 **Feb 25, 2018 - 3.2.1.8 Resolve issues with SIF Events**
 
-- Fix issues with SIF Events for both Providers and Consumers.
+- Fixed issues with SIF Events for both Providers and Consumers.
+
+**Jun 28, 2018 - 3.2.1.9 Updated to .NET Framework 4.6.1, SIF AU Data Model 3.4.3**
+
+- Updated all projects to use .NET Framework 4.6.1.
+- Updated NuGet packages used for all projects.
+- Added a level of uniqueness to queue names used by EventConsumers.
+- Implemented an internal mechanism for handling HTTP content compression and decompression.
+- Added some demo code for StudentSchoolEnrollment objects.
+- Corrected issues with SIF AU Data Model 3.4.2.
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.3.

@@ -46,8 +46,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                     YearLevel = new YearLevelType
 
                     {
-                        Code = AUCodeSetsYearLevelCodeType.Item10,
-                        CodeSpecified = true
+                        Code = AUCodeSetsYearLevelCodeType.Item10
                     }
                 };
 

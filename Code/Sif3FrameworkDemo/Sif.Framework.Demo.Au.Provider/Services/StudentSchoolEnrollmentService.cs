@@ -34,8 +34,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
                 RefId = Guid.NewGuid().ToString(),
                 YearLevel = new YearLevelType
                 {
-                    Code = AUCodeSetsYearLevelCodeType.Item10,
-                    CodeSpecified = true
+                    Code = AUCodeSetsYearLevelCodeType.Item10
                 }
             };
 
