@@ -936,6 +936,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class MedicationType {
         
+        private string medicationNameField;
+        
         private string dosageField;
         
         private string frequencyField;
@@ -943,6 +945,17 @@ namespace Sif.Specification.DataModel.Au {
         private string administrationInformationField;
         
         private string methodField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string MedicationName {
+            get {
+                return this.medicationNameField;
+            }
+            set {
+                this.medicationNameField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
@@ -2648,7 +2661,7 @@ namespace Sif.Specification.DataModel.Au {
         COL,
         
         /// <remarks/>
-        BRA,
+        OFF,
         
         /// <remarks/>
         ETA,
@@ -2670,6 +2683,9 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         SUP,
+        
+        /// <remarks/>
+        ETD,
     }
     
     /// <remarks/>
@@ -3001,40 +3017,6 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class NAPSubscoreType {
-        
-        private string subscoreTypeField;
-        
-        private decimal subscoreValueField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
-        public string SubscoreType {
-            get {
-                return this.subscoreTypeField;
-            }
-            set {
-                this.subscoreTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal SubscoreValue {
-            get {
-                return this.subscoreValueField;
-            }
-            set {
-                this.subscoreValueField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class NAPTestletResponseItemType {
         
         private string nAPTestItemRefIdField;
@@ -3184,6 +3166,40 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         NotAttempted,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class NAPSubscoreType {
+        
+        private string subscoreTypeField;
+        
+        private decimal subscoreValueField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string SubscoreType {
+            get {
+                return this.subscoreTypeField;
+            }
+            set {
+                this.subscoreTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal SubscoreValue {
+            get {
+                return this.subscoreValueField;
+            }
+            set {
+                this.subscoreValueField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -4100,6 +4116,346 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.eventField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class GradeType {
+        
+        private System.Nullable<decimal> percentageField;
+        
+        private bool percentageFieldSpecified;
+        
+        private System.Nullable<decimal> numericField;
+        
+        private bool numericFieldSpecified;
+        
+        private string letterField;
+        
+        private string narrativeField;
+        
+        private string markInfoRefIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> Percentage {
+            get {
+                return this.percentageField;
+            }
+            set {
+                this.percentageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool PercentageSpecified {
+            get {
+                return this.percentageFieldSpecified;
+            }
+            set {
+                this.percentageFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> Numeric {
+            get {
+                return this.numericField;
+            }
+            set {
+                this.numericField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericSpecified {
+            get {
+                return this.numericFieldSpecified;
+            }
+            set {
+                this.numericFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string Letter {
+            get {
+                return this.letterField;
+            }
+            set {
+                this.letterField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string Narrative {
+            get {
+                return this.narrativeField;
+            }
+            set {
+                this.narrativeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string MarkInfoRefId {
+            get {
+                return this.markInfoRefIdField;
+            }
+            set {
+                this.markInfoRefIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class AssignmentScoreType {
+        
+        private string gradingAssignmentScoreRefIdField;
+        
+        private System.Nullable<decimal> weightField;
+        
+        private bool weightFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string GradingAssignmentScoreRefId {
+            get {
+                return this.gradingAssignmentScoreRefIdField;
+            }
+            set {
+                this.gradingAssignmentScoreRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> Weight {
+            get {
+                return this.weightField;
+            }
+            set {
+                this.weightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool WeightSpecified {
+            get {
+                return this.weightFieldSpecified;
+            }
+            set {
+                this.weightFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class MarkerType {
+        
+        private string staffPersonalRefIdField;
+        
+        private string roleField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string StaffPersonalRefId {
+            get {
+                return this.staffPersonalRefIdField;
+            }
+            set {
+                this.staffPersonalRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string Role {
+            get {
+                return this.roleField;
+            }
+            set {
+                this.roleField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class ValidLetterMarkType {
+        
+        private string codeField;
+        
+        private System.Nullable<decimal> numericEquivalentField;
+        
+        private bool numericEquivalentFieldSpecified;
+        
+        private string descriptionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string Code {
+            get {
+                return this.codeField;
+            }
+            set {
+                this.codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> NumericEquivalent {
+            get {
+                return this.numericEquivalentField;
+            }
+            set {
+                this.numericEquivalentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericEquivalentSpecified {
+            get {
+                return this.numericEquivalentFieldSpecified;
+            }
+            set {
+                this.numericEquivalentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string Description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class LearningStandardType {
+        
+        private string[] learningStandardItemRefIdField;
+        
+        private string learningStandardURLField;
+        
+        private string learningStandardLocalIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("LearningStandardItemRefId", DataType="token")]
+        public string[] LearningStandardItemRefId {
+            get {
+                return this.learningStandardItemRefIdField;
+            }
+            set {
+                this.learningStandardItemRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI", IsNullable=true)]
+        public string LearningStandardURL {
+            get {
+                return this.learningStandardURLField;
+            }
+            set {
+                this.learningStandardURLField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string LearningStandardLocalId {
+            get {
+                return this.learningStandardLocalIdField;
+            }
+            set {
+                this.learningStandardLocalIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class GenericRubricType {
+        
+        private string rubricTypeField;
+        
+        private ScoreType[] scoreListField;
+        
+        private string descriptorField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string RubricType {
+            get {
+                return this.rubricTypeField;
+            }
+            set {
+                this.rubricTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Score", IsNullable=false)]
+        public ScoreType[] ScoreList {
+            get {
+                return this.scoreListField;
+            }
+            set {
+                this.scoreListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string Descriptor {
+            get {
+                return this.descriptorField;
+            }
+            set {
+                this.descriptorField = value;
             }
         }
     }
@@ -5772,44 +6128,7 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class ExpenseAccountsType {
-        
-        private object expenseAccountTypeField;
-        
-        private ExpenseAccountType[] expenseAccountField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public object ExpenseAccountType {
-            get {
-                return this.expenseAccountTypeField;
-            }
-            set {
-                this.expenseAccountTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ExpenseAccount")]
-        public ExpenseAccountType[] ExpenseAccount {
-            get {
-                return this.expenseAccountField;
-            }
-            set {
-                this.expenseAccountField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class PurchasingItemType {
-        
-        private object[] purchasingItemField;
         
         private string itemNumberField;
         
@@ -5831,18 +6150,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool taxRateFieldSpecified;
         
-        private ExpenseAccountsType expenseAccountsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("PurchasingItem")]
-        public object[] PurchasingItem {
-            get {
-                return this.purchasingItemField;
-            }
-            set {
-                this.purchasingItemField = value;
-            }
-        }
+        private ExpenseAccountType[] expenseAccountsField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
@@ -5955,8 +6263,9 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExpenseAccountsType ExpenseAccounts {
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("ExpenseAccount", IsNullable=false)]
+        public ExpenseAccountType[] ExpenseAccounts {
             get {
                 return this.expenseAccountsField;
             }
@@ -14278,20 +14587,20 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class ResourcesType {
+    public partial class RelatedLearningStandardItemRefIdType {
         
-        private ResourcesTypeResourceType resourceTypeField;
+        private string relationshipTypeField;
         
         private string valueField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ResourcesTypeResourceType ResourceType {
+        public string RelationshipType {
             get {
-                return this.resourceTypeField;
+                return this.relationshipTypeField;
             }
             set {
-                this.resourceTypeField = value;
+                this.relationshipTypeField = value;
             }
         }
         
@@ -14310,20 +14619,127 @@ namespace Sif.Specification.DataModel.Au {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public enum ResourcesTypeResourceType {
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class StandardIdentifierType {
+        
+        private string yearCreatedField;
+        
+        private ACStrandSubjectAreaType aCStrandSubjectAreaField;
+        
+        private string standardNumberField;
+        
+        private YearLevelType[] yearLevelsField;
+        
+        private string benchmarkField;
+        
+        private YearLevelType yearLevelField;
+        
+        private string indicatorNumberField;
+        
+        private string[] alternateIdentificationCodesField;
+        
+        private string organizationField;
         
         /// <remarks/>
-        LearningResource,
+        [System.Xml.Serialization.XmlElementAttribute(DataType="gYear")]
+        public string YearCreated {
+            get {
+                return this.yearCreatedField;
+            }
+            set {
+                this.yearCreatedField = value;
+            }
+        }
         
         /// <remarks/>
-        WorkSample,
+        public ACStrandSubjectAreaType ACStrandSubjectArea {
+            get {
+                return this.aCStrandSubjectAreaField;
+            }
+            set {
+                this.aCStrandSubjectAreaField = value;
+            }
+        }
         
         /// <remarks/>
-        AnnotatedWorkSample,
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string StandardNumber {
+            get {
+                return this.standardNumberField;
+            }
+            set {
+                this.standardNumberField = value;
+            }
+        }
         
         /// <remarks/>
-        Other,
+        [System.Xml.Serialization.XmlArrayItemAttribute("YearLevel", IsNullable=false)]
+        public YearLevelType[] YearLevels {
+            get {
+                return this.yearLevelsField;
+            }
+            set {
+                this.yearLevelsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string Benchmark {
+            get {
+                return this.benchmarkField;
+            }
+            set {
+                this.benchmarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public YearLevelType YearLevel {
+            get {
+                return this.yearLevelField;
+            }
+            set {
+                this.yearLevelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string IndicatorNumber {
+            get {
+                return this.indicatorNumberField;
+            }
+            set {
+                this.indicatorNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("AlternateIdentificationCode", DataType="normalizedString", IsNullable=false)]
+        public string[] AlternateIdentificationCodes {
+            get {
+                return this.alternateIdentificationCodesField;
+            }
+            set {
+                this.alternateIdentificationCodesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string Organization {
+            get {
+                return this.organizationField;
+            }
+            set {
+                this.organizationField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -14410,6 +14826,202 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         W,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class StandardHierarchyLevelType {
+        
+        private uint numberField;
+        
+        private string descriptionField;
+        
+        /// <remarks/>
+        public uint Number {
+            get {
+                return this.numberField;
+            }
+            set {
+                this.numberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class StandardsSettingBodyType {
+        
+        private System.Nullable<CountryType> countryField;
+        
+        private bool countryFieldSpecified;
+        
+        private string stateProvinceField;
+        
+        private string settingBodyNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<CountryType> Country {
+            get {
+                return this.countryField;
+            }
+            set {
+                this.countryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool CountrySpecified {
+            get {
+                return this.countryFieldSpecified;
+            }
+            set {
+                this.countryFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string StateProvince {
+            get {
+                return this.stateProvinceField;
+            }
+            set {
+                this.stateProvinceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string SettingBodyName {
+            get {
+                return this.settingBodyNameField;
+            }
+            set {
+                this.settingBodyNameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class ResourcesType {
+        
+        private ResourcesTypeResourceType resourceTypeField;
+        
+        private string valueField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ResourcesTypeResourceType ResourceType {
+            get {
+                return this.resourceTypeField;
+            }
+            set {
+                this.resourceTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
+        public string Value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public enum ResourcesTypeResourceType {
+        
+        /// <remarks/>
+        LearningResource,
+        
+        /// <remarks/>
+        WorkSample,
+        
+        /// <remarks/>
+        AnnotatedWorkSample,
+        
+        /// <remarks/>
+        Other,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class CopyRightContainerType {
+        
+        private System.Nullable<System.DateTime> dateField;
+        
+        private bool dateFieldSpecified;
+        
+        private string holderField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date", IsNullable=true)]
+        public System.Nullable<System.DateTime> Date {
+            get {
+                return this.dateField;
+            }
+            set {
+                this.dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DateSpecified {
+            get {
+                return this.dateFieldSpecified;
+            }
+            set {
+                this.dateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string Holder {
+            get {
+                return this.holderField;
+            }
+            set {
+                this.holderField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -35081,7 +35693,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool endOfLifeDateFieldSpecified;
         
-        private LearningStandardDocumentTypeCopyright copyrightField;
+        private CopyRightContainerType copyrightField;
         
         private YearLevelType[] yearLevelsField;
         
@@ -35287,7 +35899,7 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public LearningStandardDocumentTypeCopyright Copyright {
+        public CopyRightContainerType Copyright {
             get {
                 return this.copyrightField;
             }
@@ -35440,54 +36052,6 @@ namespace Sif.Specification.DataModel.Au {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class LearningStandardDocumentTypeCopyright {
-        
-        private System.Nullable<System.DateTime> dateField;
-        
-        private bool dateFieldSpecified;
-        
-        private string holderField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date", IsNullable=true)]
-        public System.Nullable<System.DateTime> Date {
-            get {
-                return this.dateField;
-            }
-            set {
-                this.dateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool DateSpecified {
-            get {
-                return this.dateFieldSpecified;
-            }
-            set {
-                this.dateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string Holder {
-            get {
-                return this.holderField;
-            }
-            set {
-                this.holderField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     [System.Xml.Serialization.XmlRootAttribute("LearningStandardDocuments", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class LearningStandardDocumentCollectionType {
@@ -35517,9 +36081,9 @@ namespace Sif.Specification.DataModel.Au {
         
         private ResourcesType[] resourcesField;
         
-        private LearningStandardItemTypeStandardSettingBody standardSettingBodyField;
+        private StandardsSettingBodyType standardSettingBodyField;
         
-        private LearningStandardItemTypeStandardHierarchyLevel standardHierarchyLevelField;
+        private StandardHierarchyLevelType standardHierarchyLevelField;
         
         private string[] predecessorItemsField;
         
@@ -35531,11 +36095,11 @@ namespace Sif.Specification.DataModel.Au {
         
         private ACStrandSubjectAreaType aCStrandSubjectAreaField;
         
-        private LearningStandardItemTypeStandardIdentifier standardIdentifierField;
+        private StandardIdentifierType standardIdentifierField;
         
         private string learningStandardDocumentRefIdField;
         
-        private LearningStandardItemTypeLearningStandardItemRefId[] relatedLearningStandardItemsField;
+        private RelatedLearningStandardItemRefIdType[] relatedLearningStandardItemsField;
         
         private string level4Field;
         
@@ -35561,7 +36125,7 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public LearningStandardItemTypeStandardSettingBody StandardSettingBody {
+        public StandardsSettingBodyType StandardSettingBody {
             get {
                 return this.standardSettingBodyField;
             }
@@ -35571,7 +36135,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        public LearningStandardItemTypeStandardHierarchyLevel StandardHierarchyLevel {
+        public StandardHierarchyLevelType StandardHierarchyLevel {
             get {
                 return this.standardHierarchyLevelField;
             }
@@ -35640,7 +36204,7 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public LearningStandardItemTypeStandardIdentifier StandardIdentifier {
+        public StandardIdentifierType StandardIdentifier {
             get {
                 return this.standardIdentifierField;
             }
@@ -35663,7 +36227,7 @@ namespace Sif.Specification.DataModel.Au {
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("LearningStandardItemRefId", IsNullable=false)]
-        public LearningStandardItemTypeLearningStandardItemRefId[] RelatedLearningStandardItems {
+        public RelatedLearningStandardItemRefIdType[] RelatedLearningStandardItems {
             get {
                 return this.relatedLearningStandardItemsField;
             }
@@ -35725,247 +36289,6 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.refIdField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class LearningStandardItemTypeStandardSettingBody {
-        
-        private CountryType countryField;
-        
-        private string stateProvinceField;
-        
-        private string settingBodyNameField;
-        
-        /// <remarks/>
-        public CountryType Country {
-            get {
-                return this.countryField;
-            }
-            set {
-                this.countryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string StateProvince {
-            get {
-                return this.stateProvinceField;
-            }
-            set {
-                this.stateProvinceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string SettingBodyName {
-            get {
-                return this.settingBodyNameField;
-            }
-            set {
-                this.settingBodyNameField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class LearningStandardItemTypeStandardHierarchyLevel {
-        
-        private uint numberField;
-        
-        private string descriptionField;
-        
-        /// <remarks/>
-        public uint Number {
-            get {
-                return this.numberField;
-            }
-            set {
-                this.numberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Description {
-            get {
-                return this.descriptionField;
-            }
-            set {
-                this.descriptionField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class LearningStandardItemTypeStandardIdentifier {
-        
-        private string yearCreatedField;
-        
-        private ACStrandSubjectAreaType aCStrandSubjectAreaField;
-        
-        private string standardNumberField;
-        
-        private YearLevelType[] yearLevelsField;
-        
-        private string benchmarkField;
-        
-        private YearLevelType yearLevelField;
-        
-        private string indicatorNumberField;
-        
-        private string[] alternateIdentificationCodesField;
-        
-        private string organizationField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="gYear")]
-        public string YearCreated {
-            get {
-                return this.yearCreatedField;
-            }
-            set {
-                this.yearCreatedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public ACStrandSubjectAreaType ACStrandSubjectArea {
-            get {
-                return this.aCStrandSubjectAreaField;
-            }
-            set {
-                this.aCStrandSubjectAreaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
-        public string StandardNumber {
-            get {
-                return this.standardNumberField;
-            }
-            set {
-                this.standardNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("YearLevel", IsNullable=false)]
-        public YearLevelType[] YearLevels {
-            get {
-                return this.yearLevelsField;
-            }
-            set {
-                this.yearLevelsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string Benchmark {
-            get {
-                return this.benchmarkField;
-            }
-            set {
-                this.benchmarkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public YearLevelType YearLevel {
-            get {
-                return this.yearLevelField;
-            }
-            set {
-                this.yearLevelField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string IndicatorNumber {
-            get {
-                return this.indicatorNumberField;
-            }
-            set {
-                this.indicatorNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("AlternateIdentificationCode", DataType="normalizedString", IsNullable=false)]
-        public string[] AlternateIdentificationCodes {
-            get {
-                return this.alternateIdentificationCodesField;
-            }
-            set {
-                this.alternateIdentificationCodesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
-        public string Organization {
-            get {
-                return this.organizationField;
-            }
-            set {
-                this.organizationField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class LearningStandardItemTypeLearningStandardItemRefId {
-        
-        private string relationshipTypeField;
-        
-        private string valueField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string RelationshipType {
-            get {
-                return this.relationshipTypeField;
-            }
-            set {
-                this.relationshipTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute(DataType="token")]
-        public string Value {
-            get {
-                return this.valueField;
-            }
-            set {
-                this.valueField = value;
             }
         }
     }
@@ -43740,6 +44063,8 @@ namespace Sif.Specification.DataModel.Au {
         
         private string teachingGroupRefIdField;
         
+        private string[] studentPersonalRefIdListField;
+        
         private string schoolInfoRefIdField;
         
         private string gradingCategoryField;
@@ -43766,6 +44091,20 @@ namespace Sif.Specification.DataModel.Au {
         
         private byte[] detailedDescriptionBinaryField;
         
+        private string assessmentTypeField;
+        
+        private string levelAssessedField;
+        
+        private string assignmentPurposeField;
+        
+        private string[] subAssignmentListField;
+        
+        private GenericRubricType rubricScoringGuideField;
+        
+        private string[] prerequisiteListField;
+        
+        private LearningStandardType[] learningStandardListField;
+        
         private SIF_MetadataType sIF_MetadataField;
         
         private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
@@ -43780,6 +44119,18 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.teachingGroupRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("StudentPersonalRefId", DataType="token", IsNullable=false)]
+        public string[] StudentPersonalRefIdList {
+            get {
+                return this.studentPersonalRefIdListField;
+            }
+            set {
+                this.studentPersonalRefIdListField = value;
             }
         }
         
@@ -43926,6 +44277,86 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string AssessmentType {
+            get {
+                return this.assessmentTypeField;
+            }
+            set {
+                this.assessmentTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string LevelAssessed {
+            get {
+                return this.levelAssessedField;
+            }
+            set {
+                this.levelAssessedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AssignmentPurpose {
+            get {
+                return this.assignmentPurposeField;
+            }
+            set {
+                this.assignmentPurposeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("GradingAssignmentRefId", DataType="token", IsNullable=false)]
+        public string[] SubAssignmentList {
+            get {
+                return this.subAssignmentListField;
+            }
+            set {
+                this.subAssignmentListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public GenericRubricType RubricScoringGuide {
+            get {
+                return this.rubricScoringGuideField;
+            }
+            set {
+                this.rubricScoringGuideField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("Prerequisite", IsNullable=false)]
+        public string[] PrerequisiteList {
+            get {
+                return this.prerequisiteListField;
+            }
+            set {
+                this.prerequisiteListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("LearningStandard", IsNullable=false)]
+        public LearningStandardType[] LearningStandardList {
+            get {
+                return this.learningStandardListField;
+            }
+            set {
+                this.learningStandardListField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public SIF_MetadataType SIF_Metadata {
             get {
@@ -44002,6 +44433,16 @@ namespace Sif.Specification.DataModel.Au {
         
         private string gradingAssignmentRefIdField;
         
+        private string staffPersonalRefIdField;
+        
+        private System.Nullable<System.DateTime> dateGradedField;
+        
+        private bool dateGradedFieldSpecified;
+        
+        private System.Nullable<bool> expectedScoreField;
+        
+        private bool expectedScoreFieldSpecified;
+        
         private System.Nullable<uint> scorePointsField;
         
         private bool scorePointsFieldSpecified;
@@ -44013,6 +44454,14 @@ namespace Sif.Specification.DataModel.Au {
         private string scoreLetterField;
         
         private string scoreDescriptionField;
+        
+        private NAPSubscoreType[] subscoreListField;
+        
+        private string teacherJudgementField;
+        
+        private string markInfoRefIdField;
+        
+        private string assignmentScoreIterationField;
         
         private SIF_MetadataType sIF_MetadataField;
         
@@ -44072,6 +44521,61 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.gradingAssignmentRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string StaffPersonalRefId {
+            get {
+                return this.staffPersonalRefIdField;
+            }
+            set {
+                this.staffPersonalRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date", IsNullable=true)]
+        public System.Nullable<System.DateTime> DateGraded {
+            get {
+                return this.dateGradedField;
+            }
+            set {
+                this.dateGradedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DateGradedSpecified {
+            get {
+                return this.dateGradedFieldSpecified;
+            }
+            set {
+                this.dateGradedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<bool> ExpectedScore {
+            get {
+                return this.expectedScoreField;
+            }
+            set {
+                this.expectedScoreField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ExpectedScoreSpecified {
+            get {
+                return this.expectedScoreFieldSpecified;
+            }
+            set {
+                this.expectedScoreFieldSpecified = value;
             }
         }
         
@@ -44142,6 +44646,51 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("Subscore", IsNullable=false)]
+        public NAPSubscoreType[] SubscoreList {
+            get {
+                return this.subscoreListField;
+            }
+            set {
+                this.subscoreListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string TeacherJudgement {
+            get {
+                return this.teacherJudgementField;
+            }
+            set {
+                this.teacherJudgementField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string MarkInfoRefId {
+            get {
+                return this.markInfoRefIdField;
+            }
+            set {
+                this.markInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string AssignmentScoreIteration {
+            get {
+                return this.assignmentScoreIterationField;
+            }
+            set {
+                this.assignmentScoreIterationField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public SIF_MetadataType SIF_Metadata {
             get {
@@ -44195,6 +44744,649 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.gradingAssignmentScoreField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("MarkValueInfo", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class MarkValueInfoType {
+        
+        private string schoolInfoRefIdField;
+        
+        private YearLevelType[] yearLevelsField;
+        
+        private string nameField;
+        
+        private System.Nullable<decimal> percentageMinimumField;
+        
+        private bool percentageMinimumFieldSpecified;
+        
+        private System.Nullable<decimal> percentageMaximumField;
+        
+        private bool percentageMaximumFieldSpecified;
+        
+        private System.Nullable<decimal> percentagePassingGradeField;
+        
+        private bool percentagePassingGradeFieldSpecified;
+        
+        private System.Nullable<uint> numericPrecisionField;
+        
+        private bool numericPrecisionFieldSpecified;
+        
+        private System.Nullable<uint> numericScaleField;
+        
+        private bool numericScaleFieldSpecified;
+        
+        private System.Nullable<decimal> numericLowField;
+        
+        private bool numericLowFieldSpecified;
+        
+        private System.Nullable<decimal> numericHighField;
+        
+        private bool numericHighFieldSpecified;
+        
+        private System.Nullable<decimal> numericPassingGradeField;
+        
+        private bool numericPassingGradeFieldSpecified;
+        
+        private ValidLetterMarkType[] validLetterMarkListField;
+        
+        private string narrativeField;
+        
+        private System.Nullable<uint> narrativeMaximumSizeField;
+        
+        private bool narrativeMaximumSizeFieldSpecified;
+        
+        private SIF_MetadataType sIF_MetadataField;
+        
+        private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
+        
+        private string refIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string SchoolInfoRefId {
+            get {
+                return this.schoolInfoRefIdField;
+            }
+            set {
+                this.schoolInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("YearLevel", IsNullable=false)]
+        public YearLevelType[] YearLevels {
+            get {
+                return this.yearLevelsField;
+            }
+            set {
+                this.yearLevelsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> PercentageMinimum {
+            get {
+                return this.percentageMinimumField;
+            }
+            set {
+                this.percentageMinimumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool PercentageMinimumSpecified {
+            get {
+                return this.percentageMinimumFieldSpecified;
+            }
+            set {
+                this.percentageMinimumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> PercentageMaximum {
+            get {
+                return this.percentageMaximumField;
+            }
+            set {
+                this.percentageMaximumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool PercentageMaximumSpecified {
+            get {
+                return this.percentageMaximumFieldSpecified;
+            }
+            set {
+                this.percentageMaximumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> PercentagePassingGrade {
+            get {
+                return this.percentagePassingGradeField;
+            }
+            set {
+                this.percentagePassingGradeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool PercentagePassingGradeSpecified {
+            get {
+                return this.percentagePassingGradeFieldSpecified;
+            }
+            set {
+                this.percentagePassingGradeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<uint> NumericPrecision {
+            get {
+                return this.numericPrecisionField;
+            }
+            set {
+                this.numericPrecisionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericPrecisionSpecified {
+            get {
+                return this.numericPrecisionFieldSpecified;
+            }
+            set {
+                this.numericPrecisionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<uint> NumericScale {
+            get {
+                return this.numericScaleField;
+            }
+            set {
+                this.numericScaleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericScaleSpecified {
+            get {
+                return this.numericScaleFieldSpecified;
+            }
+            set {
+                this.numericScaleFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> NumericLow {
+            get {
+                return this.numericLowField;
+            }
+            set {
+                this.numericLowField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericLowSpecified {
+            get {
+                return this.numericLowFieldSpecified;
+            }
+            set {
+                this.numericLowFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> NumericHigh {
+            get {
+                return this.numericHighField;
+            }
+            set {
+                this.numericHighField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericHighSpecified {
+            get {
+                return this.numericHighFieldSpecified;
+            }
+            set {
+                this.numericHighFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<decimal> NumericPassingGrade {
+            get {
+                return this.numericPassingGradeField;
+            }
+            set {
+                this.numericPassingGradeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NumericPassingGradeSpecified {
+            get {
+                return this.numericPassingGradeFieldSpecified;
+            }
+            set {
+                this.numericPassingGradeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("ValidLetterMark", IsNullable=false)]
+        public ValidLetterMarkType[] ValidLetterMarkList {
+            get {
+                return this.validLetterMarkListField;
+            }
+            set {
+                this.validLetterMarkListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Narrative {
+            get {
+                return this.narrativeField;
+            }
+            set {
+                this.narrativeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<uint> NarrativeMaximumSize {
+            get {
+                return this.narrativeMaximumSizeField;
+            }
+            set {
+                this.narrativeMaximumSizeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NarrativeMaximumSizeSpecified {
+            get {
+                return this.narrativeMaximumSizeFieldSpecified;
+            }
+            set {
+                this.narrativeMaximumSizeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public SIF_MetadataType SIF_Metadata {
+            get {
+                return this.sIF_MetadataField;
+            }
+            set {
+                this.sIF_MetadataField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("SIF_ExtendedElement", IsNullable=false)]
+        public SIF_ExtendedElementsTypeSIF_ExtendedElement[] SIF_ExtendedElements {
+            get {
+                return this.sIF_ExtendedElementsField;
+            }
+            set {
+                this.sIF_ExtendedElementsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string RefId {
+            get {
+                return this.refIdField;
+            }
+            set {
+                this.refIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("MarkValueInfos", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class MarkValueInfoCollectionType {
+        
+        private MarkValueInfoType[] markValueInfoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("MarkValueInfo")]
+        public MarkValueInfoType[] MarkValueInfo {
+            get {
+                return this.markValueInfoField;
+            }
+            set {
+                this.markValueInfoField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentGrade", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class StudentGradeType {
+        
+        private string studentPersonalRefIdField;
+        
+        private string homegroupField;
+        
+        private YearLevelType yearLevelField;
+        
+        private string teachingGroupShortNameField;
+        
+        private string teachingGroupRefIdField;
+        
+        private string staffPersonalRefIdField;
+        
+        private MarkerType[] markersField;
+        
+        private string schoolInfoRefIdField;
+        
+        private string termInfoRefIdField;
+        
+        private string descriptionField;
+        
+        private ACStrandSubjectAreaType learningAreaField;
+        
+        private LearningStandardType[] learningStandardListField;
+        
+        private AssignmentScoreType[] gradingScoreListField;
+        
+        private GradeType gradeField;
+        
+        private string teacherJudgementField;
+        
+        private SIF_MetadataType sIF_MetadataField;
+        
+        private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
+        
+        private string refIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token")]
+        public string StudentPersonalRefId {
+            get {
+                return this.studentPersonalRefIdField;
+            }
+            set {
+                this.studentPersonalRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string Homegroup {
+            get {
+                return this.homegroupField;
+            }
+            set {
+                this.homegroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public YearLevelType YearLevel {
+            get {
+                return this.yearLevelField;
+            }
+            set {
+                this.yearLevelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string TeachingGroupShortName {
+            get {
+                return this.teachingGroupShortNameField;
+            }
+            set {
+                this.teachingGroupShortNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string TeachingGroupRefId {
+            get {
+                return this.teachingGroupRefIdField;
+            }
+            set {
+                this.teachingGroupRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string StaffPersonalRefId {
+            get {
+                return this.staffPersonalRefIdField;
+            }
+            set {
+                this.staffPersonalRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("Marker", IsNullable=false)]
+        public MarkerType[] Markers {
+            get {
+                return this.markersField;
+            }
+            set {
+                this.markersField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string SchoolInfoRefId {
+            get {
+                return this.schoolInfoRefIdField;
+            }
+            set {
+                this.schoolInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string TermInfoRefId {
+            get {
+                return this.termInfoRefIdField;
+            }
+            set {
+                this.termInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string Description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public ACStrandSubjectAreaType LearningArea {
+            get {
+                return this.learningAreaField;
+            }
+            set {
+                this.learningAreaField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("LearningStandard", IsNullable=false)]
+        public LearningStandardType[] LearningStandardList {
+            get {
+                return this.learningStandardListField;
+            }
+            set {
+                this.learningStandardListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("GradingAssignmentScore", IsNullable=false)]
+        public AssignmentScoreType[] GradingScoreList {
+            get {
+                return this.gradingScoreListField;
+            }
+            set {
+                this.gradingScoreListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public GradeType Grade {
+            get {
+                return this.gradeField;
+            }
+            set {
+                this.gradeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string TeacherJudgement {
+            get {
+                return this.teacherJudgementField;
+            }
+            set {
+                this.teacherJudgementField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public SIF_MetadataType SIF_Metadata {
+            get {
+                return this.sIF_MetadataField;
+            }
+            set {
+                this.sIF_MetadataField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("SIF_ExtendedElement", IsNullable=false)]
+        public SIF_ExtendedElementsTypeSIF_ExtendedElement[] SIF_ExtendedElements {
+            get {
+                return this.sIF_ExtendedElementsField;
+            }
+            set {
+                this.sIF_ExtendedElementsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string RefId {
+            get {
+                return this.refIdField;
+            }
+            set {
+                this.refIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentGrades", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class StudentGradeCollectionType {
+        
+        private StudentGradeType[] studentGradeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("StudentGrade")]
+        public StudentGradeType[] StudentGrade {
+            get {
+                return this.studentGradeField;
+            }
+            set {
+                this.studentGradeField = value;
             }
         }
     }
