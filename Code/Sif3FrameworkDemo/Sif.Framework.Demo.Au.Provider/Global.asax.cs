@@ -42,6 +42,10 @@ namespace Sif.Framework.Demo.Au.Provider
             ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(schoolInfosXmlRootAttribute);
             formatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
 
+            XmlRootAttribute studentSchoolEnrollmentsXmlRootAttribute = new XmlRootAttribute("StudentSchoolEnrollments") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<StudentSchoolEnrollment>> studentSchoolEnrollmentsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentSchoolEnrollment>>(studentSchoolEnrollmentsXmlRootAttribute);
+            formatter.SetSerializer<List<StudentSchoolEnrollment>>((XmlSerializer)studentSchoolEnrollmentsSerialiser);
+
             // Alternative 1.
             //XmlRootAttribute xmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             //formatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), xmlRootAttribute));

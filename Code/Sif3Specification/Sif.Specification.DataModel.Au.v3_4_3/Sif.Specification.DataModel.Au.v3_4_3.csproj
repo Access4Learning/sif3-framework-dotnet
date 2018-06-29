@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Sif.Specification.DataModel.Au</AssemblyName>
+    <RootNamespace>Sif.Specification.DataModel.Au</RootNamespace>
+    <PackageId>Sif.Specification.DataModel.Au.v3_4_3</PackageId>
+    <FileVersion>3.4.3.0</FileVersion>
+    <AssemblyVersion>3.4.3.0</AssemblyVersion>
+    <Version>3.4.3.0</Version>
+    <Company>Systemic Pty Ltd</Company>
+    <Authors>Rafidzal Rafiq</Authors>
+    <Copyright>Copyright © Systemic Pty Ltd 2018</Copyright>
+    <Description>SIF AU 3.4.3 Data Model library</Description>
+    <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <Product>SIF Framework</Product>
+    <PackageTags>SIF</PackageTags>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.3&quot; mkdir &quot;$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.3&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(SolutionDir)..\..\SharedLibs\$(TargetName) 3.4.3\$(TargetFileName)&quot; /Y /V" />
+  </Target>
+
+</Project>

@@ -420,11 +420,12 @@ namespace Sif.Framework.Consumers
                 // If the Subscription identifier does NOT exist, create a Subscription and associated Queue.
                 if (string.IsNullOrWhiteSpace(subscriptionId))
                 {
+                    string queueNameSuffix = DateTime.UtcNow.ToString("yyMMddHHmmssfff");
 
                     // For the SIF Broker, the name property is a mandatory.
                     queueType queue = new queueType
                     {
-                        name = $"{TypeName}-event-consumer"
+                        name = $"{TypeName}-{queueNameSuffix}"
                     };
 
                     Queue = CreateQueue(queue);
