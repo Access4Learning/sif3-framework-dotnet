@@ -1,12 +1,12 @@
 ﻿/*
  * Copyright 2018 Systemic Pty Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,8 +27,7 @@ using System.Linq;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
-
-    class ConsumerApp
+    internal class ConsumerApp
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -55,25 +54,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
-        private static bool RunDemo(string demoName)
-        {
-            Console.WriteLine();
-            Console.Write("Would you like run the " + demoName + " demo (Y/N)? - ");
-            ConsoleKeyInfo info = new ConsoleKeyInfo();
-
-            do
-            {
-                info = Console.ReadKey();
-            }
-            while (info.Key != ConsoleKey.N && info.Key != ConsoleKey.Y && info.Key != ConsoleKey.Enter);
-
-            Console.WriteLine();
-            Console.WriteLine();
-
-            return (info.Key == ConsoleKey.Y);
-        }
-
-        void RunStudentPersonalConsumer()
+        private void RunStudentPersonalConsumer()
         {
             StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(
                 SettingsManager.ConsumerSettings.ApplicationKey,
@@ -85,7 +66,6 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-
                 // Retrieve Bart Simpson using QBE.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve Bart Simpson using QBE.");
                 NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
@@ -158,7 +138,6 @@ namespace Sif.Framework.Demo.Au.Consumer
                         {
                             if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
                         }
-
                     }
                     catch (UnauthorizedAccessException)
                     {
@@ -182,13 +161,11 @@ namespace Sif.Framework.Demo.Au.Consumer
                         {
                             if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
                         }
-
                     }
                     catch (UnauthorizedAccessException)
                     {
                         if (log.IsInfoEnabled) log.Info($"Access to delete multiple students is rejected.");
                     }
-
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -206,7 +183,6 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 if (students.Count() > 1)
                 {
-
                     // Retrieve a single student.
                     if (log.IsInfoEnabled) log.Info("*** Retrieve a single student.");
                     string studentId = students.ElementAt(1).RefId;
@@ -246,13 +222,11 @@ namespace Sif.Framework.Demo.Au.Consumer
                         {
                             if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                         }
-
                     }
                     catch (UnauthorizedAccessException)
                     {
                         if (log.IsInfoEnabled) log.Info($"Access to delete a student is rejected.");
                     }
-
                 }
 
                 // Retrieve students based on Teaching Group using Service Paths.
@@ -271,21 +245,15 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                         if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
                         {
-
                             foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
                             {
-
                                 foreach (string content in element.Text)
                                 {
                                     if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
                                 }
-
                             }
-
                         }
-
                     }
-
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -305,12 +273,10 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
                 else
                 {
-
                     foreach (StudentPersonal student in changedStudents)
                     {
                         if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
-
                 }
 
                 changesSinceMarker = nextChangesSinceMarker;
@@ -324,12 +290,10 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
                 else
                 {
-
                     foreach (StudentPersonal student in changedStudents)
                     {
                         if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
-
                 }
 
                 changesSinceMarker = nextChangesSinceMarker;
@@ -343,14 +307,11 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
                 else
                 {
-
                     foreach (StudentPersonal student in changedStudents)
                     {
                         if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
-
                 }
-
             }
             catch (UnauthorizedAccessException)
             {
@@ -365,67 +326,23 @@ namespace Sif.Framework.Demo.Au.Consumer
                 studentPersonalConsumer.Unregister();
                 if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
             }
-
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();
 
-            if (RunDemo("Student Personal CRUD Consumer"))
+            try
             {
-
-                try
-                {
-                    app.RunStudentPersonalConsumer();
-                }
-                catch (Exception e)
-                {
-                    if (log.IsErrorEnabled) log.Error("Error running the Student Personal CRUD Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
-                }
-
+                app.RunStudentPersonalConsumer();
             }
-
-            Console.WriteLine();
-            Console.WriteLine("********************************************************************************");
-            Console.WriteLine();
-            Console.WriteLine("To run the following Event Consumer demo, the following is required:");
-            Console.WriteLine();
-            Console.WriteLine("  1) The consumer.environment.url app setting in the SifFramework.config file needs to reference the BROKERED environment endpoint.");
-            Console.WriteLine("  2) The Sif.Framework.Demo.Broker needs to be run instead of the Sif.Framework.EnvironmentProvider.");
-            Console.WriteLine();
-            Console.WriteLine("********************************************************************************");
-
-            if (RunDemo("Student Personal Event Consumer"))
+            catch (Exception e)
             {
-
-                try
-                {
-                    StudentPersonalEventConsumer studentPersonalConsumer = new StudentPersonalEventConsumer(
-                        SettingsManager.ConsumerSettings.ApplicationKey,
-                        SettingsManager.ConsumerSettings.InstanceId,
-                        SettingsManager.ConsumerSettings.UserToken,
-                        SettingsManager.ConsumerSettings.SolutionId);
-                    studentPersonalConsumer.Start("Sif3DemoZone1", "DEFAULT");
-                    if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
-
-                    Console.WriteLine("Press any key to stop the Event Consumer (may take several seconds to complete) ...");
-                    Console.ReadKey();
-
-                    studentPersonalConsumer.Stop();
-                    if (log.IsInfoEnabled) log.Info("Stopped the Event Consumer.");
-                }
-                catch (Exception e)
-                {
-                    if (log.IsErrorEnabled) log.Error("Error running the Student Personal Event Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
-                }
-
+                if (log.IsErrorEnabled) log.Error("Error running the Student Personal CRUD Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
 
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
         }
-
     }
-
 }
