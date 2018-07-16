@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventConsumerApp.cs" />
     <Compile Include="EnrollmentConsumerApp.cs" />
     <Compile Include="ConsumerApp.cs" />
     <Compile Include="Consumers\StudentSchoolEnrollmentConsumer.cs" />
