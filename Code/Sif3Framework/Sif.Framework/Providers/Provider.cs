@@ -256,7 +256,7 @@ namespace Sif.Framework.Providers
 
                 if (obj == null)
                 {
-                    result = NotFound();
+                    result = StatusCode(HttpStatusCode.NoContent);
                 }
                 else
                 {
