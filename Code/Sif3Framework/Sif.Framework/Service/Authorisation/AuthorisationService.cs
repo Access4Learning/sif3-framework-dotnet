@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Extensions;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Authentication;
@@ -25,13 +26,11 @@ using System.Net.Http.Headers;
 
 namespace Sif.Framework.Service.Authorisation
 {
-
     /// <summary>
     /// <see cref="IAuthorisationService">IAuthorisationService</see>
     /// </summary>
     public class AuthorisationService : IAuthorisationService
     {
-
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
@@ -55,7 +54,7 @@ namespace Sif.Framework.Service.Authorisation
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
         /// </summary>
-        /// <param name="authenticationService">An instance of either the <see cref="BrokeredAuthenticationService" /> or the 
+        /// <param name="authenticationService">An instance of either the <see cref="BrokeredAuthenticationService" /> or the
         ///  <see cref="DirectAuthenticationService" /> classes.</param>
         public AuthorisationService(IAuthenticationService authenticationService)
         {
@@ -81,7 +80,7 @@ namespace Sif.Framework.Service.Authorisation
             }
 
             Right operationPolicy = new Right(permission, privilege);
-            string serviceType = HttpUtils.GetHeaderValue(headers, "serviceType");
+            string serviceType = HttpUtils.GetHeaderValue(headers, "serviceType") ?? ServiceType.OBJECT.ToDescription();
 
             // Retrieving permissions for requester.
             IDictionary<string, Right> requesterPermissions = GetRightsForService(serviceType, serviceName, EnvironmentUtils.GetTargetZone(environment, zoneId));
@@ -92,7 +91,6 @@ namespace Sif.Framework.Service.Authorisation
             }
             else
             {
-
                 // Checking the appropriate rights.
                 try
                 {
@@ -102,7 +100,6 @@ namespace Sif.Framework.Service.Authorisation
                 {
                     isAuthorised = false;
                 }
-
             }
 
             return isAuthorised;
@@ -124,7 +121,5 @@ namespace Sif.Framework.Service.Authorisation
 
             return service?.Rights;
         }
-
     }
-
 }
