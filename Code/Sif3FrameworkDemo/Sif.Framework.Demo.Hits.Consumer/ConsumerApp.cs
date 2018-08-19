@@ -161,6 +161,39 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
         }
 
+        void RunStudentContactRelationshipConsumer()
+        {
+            StudentContactRelationshipConsumer consumer = new StudentContactRelationshipConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
+            consumer.Register();
+
+            try
+            {
+                IEnumerable<StudentContactRelationship> relationships = consumer.Query(1, 2);
+
+                if (log.IsInfoEnabled) log.Info($"Student contact relationship count is {(relationships == null ? 0 : relationships.Count())}.");
+
+                if (relationships != null)
+                {
+
+                    foreach (StudentContactRelationship relationship in relationships)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Student {relationship.StudentPersonalRefId} has {relationship.StudentContactPersonalRefId} as a registered contact.");
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the StudentContactRelationship Consumer against HITS.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
+            finally
+            {
+                consumer.Unregister();
+            }
+
+        }
+
         void RunStudentPersonalConsumer()
         {
             StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
@@ -194,6 +227,39 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
         }
 
+        void RunWellbeingCharacteristicConsumer()
+        {
+            WellbeingCharacteristicConsumer consumer = new WellbeingCharacteristicConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
+            consumer.Register();
+
+            try
+            {
+                IEnumerable<WellbeingCharacteristic> characteristics = consumer.Query(1, 2);
+
+                if (log.IsInfoEnabled) log.Info($"Wellbeing characteristic count is {(characteristics == null ? 0 : characteristics.Count())}.");
+
+                if (characteristics != null)
+                {
+
+                    foreach (WellbeingCharacteristic characteristic in characteristics)
+                    {
+                        if (log.IsInfoEnabled) log.Info($"Wellbeing characteristic is for student {characteristic.StudentPersonalRefId}.");
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                if (log.IsErrorEnabled) log.Error("Error running the WellbeingCharacteristic Consumer against HITS.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+            }
+            finally
+            {
+                consumer.Unregister();
+            }
+
+        }
+
         static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();
@@ -202,7 +268,9 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 app.RunSchoolInfoConsumer();
                 app.RunStaffPersonalConsumer();
+                app.RunStudentContactRelationshipConsumer();
                 app.RunStudentPersonalConsumer();
+                app.RunWellbeingCharacteristicConsumer();
             }
             catch (Exception e)
             {
