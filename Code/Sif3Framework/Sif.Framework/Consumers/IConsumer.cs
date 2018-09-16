@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Consumers
 {
-
     /// <summary>
     /// This interface defines the operations available for Consumers of SIF data model objects.
     /// <para>Note that due to XML serialisation constraints, the TSingle and TMultiple generic types should not be
@@ -31,7 +31,6 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
     public interface IConsumer<TSingle, TMultiple, TPrimaryKey>
     {
-
         /// <summary>
         /// This method must be called before any other.
         /// </summary>
@@ -96,9 +95,15 @@ namespace Sif.Framework.Consumers
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Request parameters for the query.</param>
         /// <returns>Retrieved objects.</returns>
         /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
-        TMultiple Query(uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
+        TMultiple Query(
+            uint? navigationPage = null,
+            uint? navigationPageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params MessageParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using Query by Example.
@@ -109,9 +114,16 @@ namespace Sif.Framework.Consumers
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Request parameters for the query.</param>
         /// <returns>Retrieved objects.</returns>
         /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
-        TMultiple QueryByExample(TSingle obj, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
+        TMultiple QueryByExample(
+            TSingle obj,
+            uint? navigationPage = null,
+            uint? navigationPageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params MessageParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -124,9 +136,16 @@ namespace Sif.Framework.Consumers
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Request parameters for the query.</param>
         /// <returns>Retrieved objects.</returns>
         /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
-        TMultiple QueryByServicePath(IEnumerable<EqualCondition> conditions, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
+        TMultiple QueryByServicePath(
+            IEnumerable<EqualCondition> conditions,
+            uint? navigationPage = null,
+            uint? navigationPageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params MessageParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects based on the Changes Since marker.
@@ -138,9 +157,37 @@ namespace Sif.Framework.Consumers
         /// <param name="navigationPageSize">Page size.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Request parameters for the query.</param>
         /// <returns>Retrieved objects.</returns>
         /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
-        TMultiple QueryChangesSince(string changesSinceMarker, out string nextChangesSinceMarker, uint? navigationPage = null, uint? navigationPageSize = null, string zoneId = null, string contextId = null);
+        TMultiple QueryChangesSince(
+            string changesSinceMarker,
+            out string nextChangesSinceMarker,
+            uint? navigationPage = null,
+            uint? navigationPageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params MessageParameter[] requestParameters);
+
+        /// <summary>
+        /// Retrieve multiple objects using a Dynamic Query.
+        /// <para>GET /StudentPersonals?where=</para>
+        /// </summary>
+        /// <param name="whereClause">The "where" clause that defines the Dynamic Query.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Request parameters for the query.</param>
+        /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TMultiple DynamicQuery(
+            string whereClause,
+            uint? navigationPage = null,
+            uint? navigationPageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params MessageParameter[] requestParameters);
 
         /// <summary>
         /// Update a single object.
@@ -183,7 +230,5 @@ namespace Sif.Framework.Consumers
         /// <returns>Response containing status of each object deleted.</returns>
         /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
         MultipleDeleteResponse Delete(IEnumerable<TPrimaryKey> refIds, string zoneId = null, string contextId = null);
-
     }
-
 }
