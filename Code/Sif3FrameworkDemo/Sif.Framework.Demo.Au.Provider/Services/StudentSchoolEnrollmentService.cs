@@ -60,17 +60,30 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             enrollmentsCache = CreateEnrollments(5);
         }
 
-        public StudentSchoolEnrollment Create(StudentSchoolEnrollment obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public StudentSchoolEnrollment Create(
+            StudentSchoolEnrollment obj,
+            bool? mustUseAdvisory = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(string refId, string zoneId = null, string contextId = null)
+        public void Delete(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public StudentSchoolEnrollment Retrieve(string refId, string zoneId = null, string contextId = null)
+        public StudentSchoolEnrollment Retrieve(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
@@ -117,7 +130,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             throw new NotImplementedException();
         }
 
-        public void Update(StudentSchoolEnrollment obj, string zoneId = null, string contextId = null)
+        public void Update(
+            StudentSchoolEnrollment obj,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }

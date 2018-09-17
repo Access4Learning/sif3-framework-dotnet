@@ -105,6 +105,24 @@ namespace Sif.Framework.Providers
         }
 
         /// <summary>
+        /// Get the query parameters associated with the HTTP Request.
+        /// </summary>
+        /// <param name="request">HTTP Request.</param>
+        /// <returns>Query parameters if found; an empty collection otherwise.</returns>
+        private RequestParameter[] GetQueryParameters(HttpRequestMessage request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return request
+                .GetQueryNameValuePairs()
+                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
+                .ToArray();
+        }
+
+        /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TTSingle, string[], string[])">Post</see>
         /// </summary>
         public virtual IHttpActionResult Post(TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
@@ -136,7 +154,8 @@ namespace Sif.Framework.Providers
                 {
                     if (hasAdvisoryId)
                     {
-                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId: zoneId?[0], contextId: contextId?[0]);
+                        RequestParameter[] requestParameters = GetQueryParameters(Request);
+                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
                         string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                         result = Created(uri, createdObject);
                     }
@@ -147,7 +166,8 @@ namespace Sif.Framework.Providers
                 }
                 else
                 {
-                    TSingle createdObject = service.Create(obj, zoneId: zoneId?[0], contextId: contextId?[0]);
+                    RequestParameter[] requestParameters = GetQueryParameters(Request);
+                    TSingle createdObject = service.Create(obj, zoneId: zoneId?[0], contextId: contextId?[0], requestParameters: requestParameters);
                     string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
                     result = Created(uri, createdObject);
                 }
@@ -202,8 +222,9 @@ namespace Sif.Framework.Providers
             }
 
             bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
+            RequestParameter[] requestParameters = GetQueryParameters(Request);
             MultipleCreateResponse multipleCreateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId: zoneId?[0], contextId: contextId?[0]);
+                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
             createResponseType createResponse = MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
             IHttpActionResult result = Ok(createResponse);
 
@@ -240,7 +261,8 @@ namespace Sif.Framework.Providers
 
             try
             {
-                TSingle obj = service.Retrieve(refId, zoneId: zoneId?[0], contextId: contextId?[0]);
+                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                TSingle obj = service.Retrieve(refId, zoneId?[0], contextId?[0], requestParameters);
 
                 if (obj == null)
                 {
@@ -286,10 +308,7 @@ namespace Sif.Framework.Providers
 
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-            RequestParameter[] requestParameters = Request
-                .GetQueryNameValuePairs()
-                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
-                .ToArray();
+            RequestParameter[] requestParameters = GetQueryParameters(Request);
             TMultiple objs = service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
@@ -334,10 +353,7 @@ namespace Sif.Framework.Providers
 
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-            RequestParameter[] requestParameters = Request
-                .GetQueryNameValuePairs()
-                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
-                .ToArray();
+            RequestParameter[] requestParameters = GetQueryParameters(Request);
             TMultiple objs = changesSinceService.RetrieveChangesSince(
                 changesSinceMarker,
                 navigationPage,
@@ -395,10 +411,7 @@ namespace Sif.Framework.Providers
 
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-            RequestParameter[] requestParameters = Request
-                .GetQueryNameValuePairs()
-                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
-                .ToArray();
+            RequestParameter[] requestParameters = GetQueryParameters(Request);
             TMultiple objs = service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
@@ -532,13 +545,6 @@ namespace Sif.Framework.Providers
 
             try
             {
-                uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
-                uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-                RequestParameter[] requestParameters = Request
-                    .GetQueryNameValuePairs()
-                    .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
-                    .ToArray();
-
                 IList<EqualCondition> conditions = new List<EqualCondition>() { new EqualCondition() { Left = object1, Right = refId1 } };
 
                 if (!string.IsNullOrWhiteSpace(object2))
@@ -551,6 +557,9 @@ namespace Sif.Framework.Providers
                     }
                 }
 
+                uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
+                uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
+                RequestParameter[] requestParameters = GetQueryParameters(Request);
                 TMultiple objs = service.Retrieve(conditions, navigationPage, navigationPageSize, zoneId?[0], contextId?[0], requestParameters);
 
                 if (objs == null)
@@ -612,7 +621,8 @@ namespace Sif.Framework.Providers
 
             try
             {
-                service.Update(obj, zoneId: zoneId?[0], contextId: contextId?[0]);
+                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                service.Update(obj, zoneId?[0], contextId?[0], requestParameters);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -656,8 +666,9 @@ namespace Sif.Framework.Providers
                 return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
             }
 
+            RequestParameter[] requestParameters = GetQueryParameters(Request);
             MultipleUpdateResponse multipleUpdateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId: zoneId?[0], contextId: contextId?[0]);
+                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId?[0], contextId?[0], requestParameters);
             updateResponseType updateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
             IHttpActionResult result = Ok(updateResponse);
 
@@ -689,7 +700,8 @@ namespace Sif.Framework.Providers
 
             try
             {
-                service.Delete(refId, zoneId: zoneId?[0], contextId: contextId?[0]);
+                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                service.Delete(refId, zoneId?[0], contextId?[0], requestParameters);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -747,7 +759,8 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-                        service.Delete(deleteId.id, zoneId: zoneId?[0], contextId: contextId?[0]);
+                        RequestParameter[] requestParameters = GetQueryParameters(Request);
+                        service.Delete(deleteId.id, zoneId?[0], contextId?[0], requestParameters);
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
@@ -891,20 +904,20 @@ namespace Sif.Framework.Providers
 
                             NameValueCollection requestHeaders = new NameValueCollection()
                             {
-                                { HttpUtils.RequestHeader.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
-                                { HttpUtils.RequestHeader.messageId.ToDescription(), sifEvent.Id.ToString() },
-                                { HttpUtils.RequestHeader.messageType.ToDescription(), "EVENT" },
-                                { HttpUtils.RequestHeader.serviceName.ToDescription(), $"{TypeName}s" }
+                                { EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
+                                { EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString() },
+                                { EventParameterType.messageType.ToDescription(), "EVENT" },
+                                { EventParameterType.serviceName.ToDescription(), $"{TypeName}s" }
                             };
 
                             switch (sifEvent.EventAction)
                             {
                                 case EventAction.UPDATE_FULL:
-                                    requestHeaders.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "FULL");
+                                    requestHeaders.Add(EventParameterType.Replacement.ToDescription(), "FULL");
                                     break;
 
                                 case EventAction.UPDATE_PARTIAL:
-                                    requestHeaders.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "PARTIAL");
+                                    requestHeaders.Add(EventParameterType.Replacement.ToDescription(), "PARTIAL");
                                     break;
                             }
 

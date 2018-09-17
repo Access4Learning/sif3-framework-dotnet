@@ -25,12 +25,21 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 {
     public class SchoolInfoService : IBasicProviderService<SchoolInfo>
     {
-        public SchoolInfo Create(SchoolInfo obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public SchoolInfo Create(
+            SchoolInfo obj,
+            bool? mustUseAdvisory = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public SchoolInfo Retrieve(string refId, string zoneId = null, string contextId = null)
+        public SchoolInfo Retrieve(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
@@ -73,12 +82,20 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             throw new NotImplementedException();
         }
 
-        public void Update(SchoolInfo obj, string zoneId = null, string contextId = null)
+        public void Update(
+            SchoolInfo obj,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(string refId, string zoneId = null, string contextId = null)
+        public void Delete(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }

@@ -23,6 +23,7 @@ using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sif.Framework.Demo.Au.Provider.Services
 {
@@ -108,7 +109,12 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             studentsChangedCache.Add("ver.2", CreateStudents(3));
         }
 
-        public StudentPersonal Create(StudentPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public StudentPersonal Create(
+            StudentPersonal obj, bool?
+            mustUseAdvisory = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             if (!mustUseAdvisory.HasValue || !mustUseAdvisory.Value)
             {
@@ -121,7 +127,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return obj;
         }
 
-        public StudentPersonal Retrieve(string refId, string zoneId = null, string contextId = null)
+        public StudentPersonal Retrieve(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             if (!studentsCache.TryGetValue(refId, out StudentPersonal student))
             {
@@ -143,7 +153,15 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             if ((zoneId == null && contextId == null) || ("Gov".Equals(zoneId) && "Curr".Equals(contextId)))
             {
                 List<StudentPersonal> allStudents = new List<StudentPersonal>();
-                allStudents.AddRange(studentsCache.Values);
+
+                if (requestParameters.Any(p => RequestParameterType.where.ToString().Equals(p.Name)))
+                {
+                    allStudents.Add(studentsCache.Values.FirstOrDefault());
+                }
+                else
+                {
+                    allStudents.AddRange(studentsCache.Values);
+                }
 
                 if (pageIndex.HasValue && pageSize.HasValue)
                 {
@@ -231,7 +249,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return new List<StudentPersonal>(students.Values);
         }
 
-        public void Update(StudentPersonal obj, string zoneId = null, string contextId = null)
+        public void Update(
+            StudentPersonal obj,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             if (studentsCache.ContainsKey(obj.RefId))
             {
@@ -240,7 +262,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             }
         }
 
-        public void Delete(string refId, string zoneId = null, string contextId = null)
+        public void Delete(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             studentsCache.Remove(refId);
         }
