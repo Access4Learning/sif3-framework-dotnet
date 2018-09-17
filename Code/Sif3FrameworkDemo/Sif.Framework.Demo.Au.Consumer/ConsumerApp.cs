@@ -66,6 +66,13 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
+                IEnumerable<StudentPersonal> queriedStudents = studentPersonalConsumer.DynamicQuery("[@id=1234]");
+
+                foreach (StudentPersonal student in queriedStudents)
+                {
+                    if (log.IsInfoEnabled) log.Info("Queried student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                }
+
                 // Retrieve Bart Simpson using QBE.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve Bart Simpson using QBE.");
                 NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
@@ -232,8 +239,10 @@ namespace Sif.Framework.Demo.Au.Consumer
                 // Retrieve students based on Teaching Group using Service Paths.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve students based on Teaching Group using Service Paths.");
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
-                IList<EqualCondition> conditions = new List<EqualCondition>();
-                conditions.Add(condition);
+                IList<EqualCondition> conditions = new List<EqualCondition>
+                {
+                    condition
+                };
 
                 try
                 {
@@ -263,8 +272,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 // Retrieve student changes since a particular point as defined by the Changes Since marker.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve student changes since a particular point as defined by the Changes Since marker.");
                 string changesSinceMarker = studentPersonalConsumer.GetChangesSinceMarker();
-                string nextChangesSinceMarker;
-                IEnumerable<StudentPersonal> changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
+                IEnumerable<StudentPersonal> changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out string nextChangesSinceMarker);
                 if (log.IsInfoEnabled) log.Info("Iteration 1 - Student changes based on Changes Since marker - " + changesSinceMarker);
 
                 if (changedStudents == null || changedStudents.Count() == 0)

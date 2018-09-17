@@ -111,7 +111,9 @@
     <Compile Include="Model\Parameters\DynamicQueryParameter.cs" />
     <Compile Include="Model\Parameters\EventParameterType.cs" />
     <Compile Include="Model\Parameters\MessageParameter.cs" />
+    <Compile Include="Model\Parameters\RequestParameter.cs" />
     <Compile Include="Model\Parameters\RequestParameterType.cs" />
+    <Compile Include="Model\Parameters\ResponseParameter.cs" />
     <Compile Include="Model\Parameters\ResponseParameterType.cs" />
     <Compile Include="Model\Parameters\ResultSetOrderParameter.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />

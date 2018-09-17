@@ -1,12 +1,12 @@
 ﻿/*
  * Copyright 2018 Systemic Pty Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Events;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service;
@@ -38,11 +39,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace Sif.Framework.Providers
 {
-
     /// <summary>
     /// This class defines a Provider of SIF data model objects.
     /// </summary>
@@ -50,7 +51,6 @@ namespace Sif.Framework.Providers
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     public abstract class Provider<TSingle, TMultiple> : ApiController, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple> where TSingle : ISifRefId<string>
     {
-
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
@@ -71,12 +71,10 @@ namespace Sif.Framework.Providers
         /// </summary>
         protected virtual string TypeName
         {
-
             get
             {
                 return typeof(TSingle).Name;
             }
-
         }
 
         /// <summary>
@@ -85,7 +83,6 @@ namespace Sif.Framework.Providers
         /// </summary>
         protected Provider()
         {
-
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
                 authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
@@ -112,9 +109,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Post(TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -139,10 +134,9 @@ namespace Sif.Framework.Providers
 
                 if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                 {
-
                     if (hasAdvisoryId)
                     {
-                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId: zoneId?[0], contextId: contextId?[0]);
                         string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                         result = Created(uri, createdObject);
                     }
@@ -150,15 +144,13 @@ namespace Sif.Framework.Providers
                     {
                         result = BadRequest($"Request failed for object {TypeName} as object ID is not provided, but mustUseAdvisory is true.");
                     }
-
                 }
                 else
                 {
-                    TSingle createdObject = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                    TSingle createdObject = service.Create(obj, zoneId: zoneId?[0], contextId: contextId?[0]);
                     string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
                     result = Created(uri, createdObject);
                 }
-
             }
             catch (AlreadyExistsException)
             {
@@ -193,9 +185,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Post(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -213,7 +203,7 @@ namespace Sif.Framework.Providers
 
             bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
             MultipleCreateResponse multipleCreateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId: zoneId?[0], contextId: contextId?[0]);
             createResponseType createResponse = MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
             IHttpActionResult result = Ok(createResponse);
 
@@ -225,9 +215,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Get([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -252,7 +240,7 @@ namespace Sif.Framework.Providers
 
             try
             {
-                TSingle obj = service.Retrieve(refId, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                TSingle obj = service.Retrieve(refId, zoneId: zoneId?[0], contextId: contextId?[0]);
 
                 if (obj == null)
                 {
@@ -262,7 +250,6 @@ namespace Sif.Framework.Providers
                 {
                     result = Ok(obj);
                 }
-
             }
             catch (ArgumentException e)
             {
@@ -283,25 +270,28 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Retrieve all objects.
         /// </summary>
-        /// <param name="navigationPage">Current paging index.</param>
-        /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="requestedZone">Zone associated with the request.</param>
-        /// <param name="requestedContext">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <exception cref="ArgumentException">One or more parameters of the Provider service call are invalid.</exception>
         /// <exception cref="ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="QueryException">Error retrieving objects.</exception>
         /// <exception cref="Exception">Catch all for exceptions thrown by the implementation of the Provider service interface.</exception>
         /// <returns>All objects.</returns>
-        private IHttpActionResult GetAll(uint? navigationPage, uint? navigationPageSize, string requestedZone, string requestedContext)
+        private IHttpActionResult GetAll(string zoneId, string contextId)
         {
-
             if (HttpUtils.HasMethodOverrideHeader(Request.Headers))
             {
                 return BadRequest("GET (Query by Example) request failed due to missing payload.");
             }
 
+            uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
+            uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
+            RequestParameter[] requestParameters = Request
+                .GetQueryNameValuePairs()
+                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
+                .ToArray();
+            TMultiple objs = service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
-            TMultiple objs = service.Retrieve(navigationPage, navigationPageSize, requestedZone, requestedContext);
 
             if (objs == null)
             {
@@ -319,18 +309,15 @@ namespace Sif.Framework.Providers
         /// Retrieve objects based on the Changes Since marker.
         /// </summary>
         /// <param name="changesSinceMarker">Changes Since marker.</param>
-        /// <param name="navigationPage">Current paging index.</param>
-        /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="requestedZone">Zone associated with the request.</param>
-        /// <param name="requestedContext">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <exception cref="ArgumentException">One or more parameters of the Provider service call are invalid.</exception>
         /// <exception cref="ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="QueryException">Error retrieving objects.</exception>
         /// <exception cref="Exception">Catch all for exceptions thrown by the implementation of the Provider service interface.</exception>
         /// <returns>Objects associated with the Changes Since marker.</returns>
-        private IHttpActionResult GetChangesSince(string changesSinceMarker, uint? navigationPage, uint? navigationPageSize, string requestedZone, string requestedContext)
+        private IHttpActionResult GetChangesSince(string changesSinceMarker, string zoneId, string contextId)
         {
-
             if (HttpUtils.HasMethodOverrideHeader(Request.Headers))
             {
                 return BadRequest("The Changes Since marker is not applicable for a GET (Query by Example) request.");
@@ -345,8 +332,20 @@ namespace Sif.Framework.Providers
                 return BadRequest("The Changes Since request is not supported.");
             }
 
+            uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
+            uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
+            RequestParameter[] requestParameters = Request
+                .GetQueryNameValuePairs()
+                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
+                .ToArray();
+            TMultiple objs = changesSinceService.RetrieveChangesSince(
+                changesSinceMarker,
+                navigationPage,
+                navigationPageSize,
+                zoneId,
+                contextId,
+                requestParameters);
             IHttpActionResult result;
-            TMultiple objs = changesSinceService.RetrieveChangesSince(changesSinceMarker, navigationPage, navigationPageSize, requestedZone, requestedContext);
 
             if (objs == null)
             {
@@ -363,7 +362,6 @@ namespace Sif.Framework.Providers
             // Changes Since marker is only returned for non-paged requests or the first page of a paged request.
             if (!pagedRequest || firstPage)
             {
-
                 try
                 {
                     result = result.AddHeader("changesSinceMarker", changesSinceService.NextChangesSinceMarker ?? string.Empty);
@@ -372,7 +370,6 @@ namespace Sif.Framework.Providers
                 {
                     throw new QueryException("Implementaton to retrieve the next Changes Since marker returned an error.");
                 }
-
             }
 
             return result;
@@ -382,25 +379,28 @@ namespace Sif.Framework.Providers
         /// Retrieve objects using Query by Example.
         /// </summary>
         /// <param name="obj">Example object.</param>
-        /// <param name="navigationPage">Current paging index.</param>
-        /// <param name="navigationPageSize">Page size.</param>
-        /// <param name="requestedZone">Zone associated with the request.</param>
-        /// <param name="requestedContext">Zone context.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
         /// <exception cref="ArgumentException">One or more parameters of the Provider service call are invalid.</exception>
         /// <exception cref="ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="QueryException">Error retrieving objects.</exception>
         /// <exception cref="Exception">Catch all for exceptions thrown by the implementation of the Provider service interface.</exception>
         /// <returns>Objects which match the Query by Example.</returns>
-        private IHttpActionResult GetQueryByExample(TSingle obj, uint? navigationPage, uint? navigationPageSize, string requestedZone, string requestedContext)
+        private IHttpActionResult GetQueryByExample(TSingle obj, string zoneId, string contextId)
         {
-
             if (!HttpUtils.HasMethodOverrideHeader(Request.Headers))
             {
                 return BadRequest("GET (Query by Example) request failed due to a missing method override header.");
             }
 
+            uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
+            uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
+            RequestParameter[] requestParameters = Request
+                .GetQueryNameValuePairs()
+                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
+                .ToArray();
+            TMultiple objs = service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
-            TMultiple objs = service.Retrieve(obj, navigationPage, navigationPageSize, requestedZone, requestedContext);
 
             if (objs == null)
             {
@@ -419,9 +419,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -432,9 +430,7 @@ namespace Sif.Framework.Providers
                 return StatusCode(HttpStatusCode.Forbidden);
             }
 
-            string errorMessage;
-
-            if (!HttpUtils.ValidatePagingParameters(Request.Headers, out errorMessage))
+            if (!HttpUtils.ValidatePagingParameters(Request.Headers, out string errorMessage))
             {
                 return BadRequest(errorMessage);
             }
@@ -448,29 +444,21 @@ namespace Sif.Framework.Providers
 
             try
             {
-                uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
-                uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-                string requestedZone = (zoneId == null ? null : zoneId[0]);
-                string requestedContext = (contextId == null ? null : contextId[0]);
-
                 if (obj == null)
                 {
-
                     if (changesSinceMarker == null)
                     {
-                        result = GetAll(navigationPage, navigationPageSize, requestedZone, requestedContext);
+                        result = GetAll(zoneId?[0], contextId?[0]);
                     }
                     else
                     {
-                        result = GetChangesSince(changesSinceMarker, navigationPage, navigationPageSize, requestedZone, requestedContext);
+                        result = GetChangesSince(changesSinceMarker, zoneId?[0], contextId?[0]);
                     }
-
                 }
                 else
                 {
-                    result = GetQueryByExample(obj, navigationPage, navigationPageSize, requestedZone, requestedContext);
+                    result = GetQueryByExample(obj, zoneId?[0], contextId?[0]);
                 }
-
             }
             catch (ArgumentException e)
             {
@@ -504,9 +492,7 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -532,9 +518,7 @@ namespace Sif.Framework.Providers
                 return StatusCode(HttpStatusCode.Forbidden);
             }
 
-            string errorMessage;
-
-            if (!HttpUtils.ValidatePagingParameters(Request.Headers, out errorMessage))
+            if (!HttpUtils.ValidatePagingParameters(Request.Headers, out string errorMessage))
             {
                 return BadRequest(errorMessage);
             }
@@ -550,8 +534,10 @@ namespace Sif.Framework.Providers
             {
                 uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
                 uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-                string requestedZone = (zoneId == null ? null : zoneId[0]);
-                string requestedContext = (contextId == null ? null : contextId[0]);
+                RequestParameter[] requestParameters = Request
+                    .GetQueryNameValuePairs()
+                    .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
+                    .ToArray();
 
                 IList<EqualCondition> conditions = new List<EqualCondition>() { new EqualCondition() { Left = object1, Right = refId1 } };
 
@@ -563,10 +549,9 @@ namespace Sif.Framework.Providers
                     {
                         conditions.Add(new EqualCondition() { Left = object3, Right = refId3 });
                     }
-
                 }
 
-                TMultiple objs = service.Retrieve(conditions, navigationPage, navigationPageSize, requestedZone, requestedContext);
+                TMultiple objs = service.Retrieve(conditions, navigationPage, navigationPageSize, zoneId?[0], contextId?[0], requestParameters);
 
                 if (objs == null)
                 {
@@ -576,7 +561,6 @@ namespace Sif.Framework.Providers
                 {
                     result = Ok(objs);
                 }
-
             }
             catch (ArgumentException e)
             {
@@ -603,9 +587,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Put([FromUri(Name = "id")] string refId, TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -630,7 +612,7 @@ namespace Sif.Framework.Providers
 
             try
             {
-                service.Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                service.Update(obj, zoneId: zoneId?[0], contextId: contextId?[0]);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -658,9 +640,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Put(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -677,7 +657,7 @@ namespace Sif.Framework.Providers
             }
 
             MultipleUpdateResponse multipleUpdateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId: zoneId?[0], contextId: contextId?[0]);
             updateResponseType updateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
             IHttpActionResult result = Ok(updateResponse);
 
@@ -689,9 +669,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Delete([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -711,7 +689,7 @@ namespace Sif.Framework.Providers
 
             try
             {
-                service.Delete(refId, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                service.Delete(refId, zoneId: zoneId?[0], contextId: contextId?[0]);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -739,9 +717,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         public virtual IHttpActionResult Delete(deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -762,15 +738,16 @@ namespace Sif.Framework.Providers
 
             try
             {
-
                 foreach (deleteIdType deleteId in deleteRequest.deletes)
                 {
-                    deleteStatus status = new deleteStatus();
-                    status.id = deleteId.id;
+                    deleteStatus status = new deleteStatus
+                    {
+                        id = deleteId.id
+                    };
 
                     try
                     {
-                        service.Delete(deleteId.id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                        service.Delete(deleteId.id, zoneId: zoneId?[0], contextId: contextId?[0]);
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
@@ -796,7 +773,6 @@ namespace Sif.Framework.Providers
 
                     deleteStatuses.Add(status);
                 }
-
             }
             catch (Exception)
             {
@@ -815,9 +791,7 @@ namespace Sif.Framework.Providers
         [HttpHead]
         public virtual IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -828,9 +802,7 @@ namespace Sif.Framework.Providers
                 return StatusCode(HttpStatusCode.Forbidden);
             }
 
-            string errorMessage;
-
-            if (!HttpUtils.ValidatePagingParameters(Request.Headers, out errorMessage))
+            if (!HttpUtils.ValidatePagingParameters(Request.Headers, out string errorMessage))
             {
                 return BadRequest(errorMessage);
             }
@@ -844,18 +816,12 @@ namespace Sif.Framework.Providers
 
             try
             {
-                uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
-                uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
-                string requestedZone = (zoneId == null ? null : zoneId[0]);
-                string requestedContext = (contextId == null ? null : contextId[0]);
-                result = GetAll(navigationPage, navigationPageSize, requestedZone, requestedContext).ClearContent();
-                ISupportsChangesSince supportsChangesSince = service as ISupportsChangesSince;
+                result = GetAll(zoneId?[0], contextId?[0]).ClearContent();
 
-                if (supportsChangesSince != null)
+                if (service is ISupportsChangesSince supportsChangesSince)
                 {
                     result = result.AddHeader("changesSinceMarker", supportsChangesSince.ChangesSinceMarker ?? string.Empty);
                 }
-
             }
             catch (ArgumentException e)
             {
@@ -936,6 +902,7 @@ namespace Sif.Framework.Providers
                                 case EventAction.UPDATE_FULL:
                                     requestHeaders.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "FULL");
                                     break;
+
                                 case EventAction.UPDATE_PARTIAL:
                                     requestHeaders.Add(HttpUtils.RequestHeader.Replacement.ToDescription(), "PARTIAL");
                                     break;
@@ -944,12 +911,10 @@ namespace Sif.Framework.Providers
                             string body = SerialiseEvents(sifEvent.SifObjects);
                             string xml = HttpUtils.PostRequest(url, token, body, requestHeaders: requestHeaders);
                         }
-
                     }
 
                     result = Ok();
                 }
-
             }
             catch (Exception e)
             {
@@ -967,7 +932,5 @@ namespace Sif.Framework.Providers
         {
             return SerialiserFactory.GetXmlSerialiser<TMultiple>().Serialise(obj);
         }
-
     }
-
 }

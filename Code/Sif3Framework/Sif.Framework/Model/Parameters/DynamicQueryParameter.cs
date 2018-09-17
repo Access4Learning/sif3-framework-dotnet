@@ -21,7 +21,7 @@ namespace Sif.Framework.Model.Parameters
     /// <summary>
     /// Message parameter associated with a Dynamic Query.
     /// </summary>
-    public class DynamicQueryParameter : MessageParameter
+    public class DynamicQueryParameter : RequestParameter
     {
         /// <summary>
         /// Create an instance of a Dynamic Query message parameter.

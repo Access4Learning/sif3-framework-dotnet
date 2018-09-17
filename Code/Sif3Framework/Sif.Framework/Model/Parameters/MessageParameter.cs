@@ -19,7 +19,7 @@ using System;
 namespace Sif.Framework.Model.Parameters
 {
     /// <summary>
-    /// Custom parameters that may be used for Requests, Responses and Events.
+    /// Message parameter that may be used for Requests, Responses and Events.
     /// </summary>
     public class MessageParameter
     {
@@ -27,10 +27,9 @@ namespace Sif.Framework.Model.Parameters
         /// Create an instance of a message parameter.
         /// </summary>
         /// <param name="name">Name of the message parameter.</param>
-        /// <param name="type">Conveyance type for the message parameter.</param>
         /// <param name="value">Value associated with the message parameter.</param>
-        /// <exception cref="ArgumentNullException">Either the name and/or the value parameters are null or empty.</exception>
-        public MessageParameter(string name, ConveyanceType type, string value)
+        /// <exception cref="ArgumentNullException">Either name and/or value are null or empty.</exception>
+        public MessageParameter(string name, string value)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -43,7 +42,6 @@ namespace Sif.Framework.Model.Parameters
             }
 
             Name = name.Trim();
-            Type = type;
             Value = value.Trim();
         }
 
@@ -51,11 +49,6 @@ namespace Sif.Framework.Model.Parameters
         /// Name of the message parameter.
         /// </summary>
         public string Name { get; }
-
-        /// <summary>
-        /// Conveyance type for the message parameter.
-        /// </summary>
-        public ConveyanceType Type { get; }
 
         /// <summary>
         /// Value associated with the message parameter.

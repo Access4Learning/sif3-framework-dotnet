@@ -103,7 +103,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters);
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using Query by Example.
@@ -123,7 +123,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters);
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -145,7 +145,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters);
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects based on the Changes Since marker.
@@ -167,7 +167,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters);
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using a Dynamic Query.
@@ -187,7 +187,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters);
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Update a single object.

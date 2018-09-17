@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Extensions;
+using System;
 
 namespace Sif.Framework.Model.Parameters
 {
     /// <summary>
-    /// Message parameter associated with a Result Set Order request.
+    /// Message parameter used for Responses.
     /// </summary>
-    public class ResultSetOrderParameter : RequestParameter
+    public class ResponseParameter : MessageParameter
     {
         /// <summary>
-        /// Create an instance of a Result Set Order message parameter.
+        /// Create an instance of a response parameter.
         /// </summary>
-        /// <param name="value">Value associated with the message parameter.</param>
-        /// <exception cref="System.ArgumentNullException">The value parameter is null or empty.</exception>
-        public ResultSetOrderParameter(string value)
-            : base(RequestParameterType.order.ToDescription(), ConveyanceType.QueryParameter, value)
+        /// <param name="name">Name of the response parameter.</param>
+        /// <param name="value">Value associated with the response parameter.</param>
+        /// <exception cref="ArgumentNullException">Either name and/or value are null or empty.</exception>
+        public ResponseParameter(string name, string value) : base(name, value)
         {
         }
     }

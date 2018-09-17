@@ -102,7 +102,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="messageParameters">Message parameters.</param>
         /// <returns>Query parameter string if message parameters exist; an empty string otherwise.</returns>
-        private string GenerateQueryParameterString(params MessageParameter[] messageParameters)
+        private string GenerateQueryParameterString(params RequestParameter[] messageParameters)
         {
             string queryParameterString = string.Empty;
 
@@ -113,28 +113,6 @@ namespace Sif.Framework.Consumers
                     .Select(m => $"{m.Name}={m.Value}");
                 queryParameterString = string.Join("&", queryParameters);
                 queryParameterString = (string.IsNullOrWhiteSpace(queryParameterString) ? string.Empty : $"?{queryParameterString}");
-            }
-
-            return queryParameterString;
-        }
-
-        /// <summary>
-        /// Generate a query parameter string based upon the message parameters provided which includes the specified prefix.
-        /// </summary>
-        /// <param name="prefix">Prefix to the resultant query parameter string.</param>
-        /// <param name="messageParameters">Message parameters.</param>
-        /// <returns>Query parameter string.</returns>
-        private string GenerateQueryParameterString(string prefix = "?", params MessageParameter[] messageParameters)
-        {
-            string queryParameterString = string.Empty;
-
-            if (messageParameters != null)
-            {
-                IEnumerable<string> queryParameters = messageParameters
-                    .Where(m => m?.Type == ConveyanceType.QueryParameter)
-                    .Select(m => $"{m.Name}={m.Value}");
-                queryParameterString = string.Join("&", queryParameters);
-                queryParameterString = (string.IsNullOrWhiteSpace(queryParameterString) ? "" : $"{prefix}{queryParameterString}");
             }
 
             return queryParameterString;
@@ -297,14 +275,14 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Query(uint?, uint?, string, string, MessageParameter[])">Query</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Query(uint?, uint?, string, string, RequestParameter[])">Query</see>
         /// </summary>
         public virtual TMultiple Query(
             uint? navigationPage = null,
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters)
+            params RequestParameter[] requestParameters)
         {
             if (!RegistrationService.Registered)
             {
@@ -330,7 +308,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByExample(TSingle, uint?, uint?, string, string, MessageParameter[])">QueryByExample</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByExample(TSingle, uint?, uint?, string, string, RequestParameter[])">QueryByExample</see>
         /// </summary>
         public virtual TMultiple QueryByExample(
             TSingle obj,
@@ -338,7 +316,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters)
+            params RequestParameter[] requestParameters)
         {
             if (!RegistrationService.Registered)
             {
@@ -359,7 +337,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByServicePath(IEnumerable{EqualCondition}, uint?, uint?, string, string, MessageParameter[])">QueryByServicePath</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryByServicePath(IEnumerable{EqualCondition}, uint?, uint?, string, string, RequestParameter[])">QueryByServicePath</see>
         /// </summary>
         public virtual TMultiple QueryByServicePath(
             IEnumerable<EqualCondition> conditions,
@@ -367,7 +345,7 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters)
+            params RequestParameter[] requestParameters)
         {
             if (!RegistrationService.Registered)
             {
@@ -405,7 +383,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryChangesSince(string, out string, uint?, uint?, string, string, MessageParameter[])">QueryChangesSince</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryChangesSince(string, out string, uint?, uint?, string, string, RequestParameter[])">QueryChangesSince</see>
         /// </summary>
         public virtual TMultiple QueryChangesSince(
             string changesSinceMarker,
@@ -414,17 +392,17 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters)
+            params RequestParameter[] requestParameters)
         {
             if (!RegistrationService.Registered)
             {
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            MessageParameter[] messageParameters = (requestParameters ?? (new MessageParameter[0]));
+            RequestParameter[] messageParameters = (requestParameters ?? (new RequestParameter[0]));
             messageParameters = string.IsNullOrWhiteSpace(changesSinceMarker)
                 ? messageParameters
-                : messageParameters.Concat(new MessageParameter[1] { new ChangesSinceQueryParameter(changesSinceMarker) }).ToArray();
+                : messageParameters.Concat(new RequestParameter[1] { new ChangesSinceQueryParameter(changesSinceMarker) }).ToArray();
             string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
@@ -447,7 +425,7 @@ namespace Sif.Framework.Consumers
         }
 
         /// <summary>
-        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryChangesSince(string, out string, uint?, uint?, string, string, MessageParameter[])">QueryChangesSince</see>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.QueryChangesSince(string, out string, uint?, uint?, string, string, RequestParameter[])">QueryChangesSince</see>
         /// </summary>
         public TMultiple DynamicQuery(
             string whereClause,
@@ -455,17 +433,17 @@ namespace Sif.Framework.Consumers
             uint? navigationPageSize = null,
             string zoneId = null,
             string contextId = null,
-            params MessageParameter[] requestParameters)
+            params RequestParameter[] requestParameters)
         {
             if (!RegistrationService.Registered)
             {
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            MessageParameter[] messageParameters = (requestParameters ?? (new MessageParameter[0]));
+            RequestParameter[] messageParameters = (requestParameters ?? (new RequestParameter[0]));
             messageParameters = string.IsNullOrWhiteSpace(whereClause)
                 ? messageParameters
-                : messageParameters.Concat(new MessageParameter[1] { new DynamicQueryParameter(whereClause) }).ToArray();
+                : messageParameters.Concat(new RequestParameter[1] { new DynamicQueryParameter(whereClause) }).ToArray();
             string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))

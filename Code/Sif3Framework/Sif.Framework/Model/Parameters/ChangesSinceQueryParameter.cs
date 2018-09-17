@@ -21,7 +21,7 @@ namespace Sif.Framework.Model.Parameters
     /// <summary>
     /// Message parameter associated with a Changes Since request.
     /// </summary>
-    public class ChangesSinceQueryParameter : MessageParameter
+    public class ChangesSinceQueryParameter : RequestParameter
     {
         /// <summary>
         /// Create an instance of a Changes Since message parameter.
