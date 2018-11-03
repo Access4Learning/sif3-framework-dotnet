@@ -106,6 +106,16 @@
     <Compile Include="Model\Exceptions\ConsumerException.cs" />
     <Compile Include="Model\Infrastructure\Initialization.cs" />
     <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
+    <Compile Include="Model\Parameters\ChangesSinceQueryParameter.cs" />
+    <Compile Include="Model\Parameters\ConveyanceType.cs" />
+    <Compile Include="Model\Parameters\DynamicQueryParameter.cs" />
+    <Compile Include="Model\Parameters\EventParameterType.cs" />
+    <Compile Include="Model\Parameters\MessageParameter.cs" />
+    <Compile Include="Model\Parameters\RequestParameter.cs" />
+    <Compile Include="Model\Parameters\RequestParameterType.cs" />
+    <Compile Include="Model\Parameters\ResponseParameter.cs" />
+    <Compile Include="Model\Parameters\ResponseParameterType.cs" />
+    <Compile Include="Model\Parameters\ResultSetOrderParameter.cs" />
     <Compile Include="Providers\FunctionalServiceProvider.cs" />
     <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
     <Compile Include="Model\Infrastructure\PhaseState.cs" />

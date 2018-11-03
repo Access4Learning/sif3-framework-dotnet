@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Demo.Au.Provider.Models;
+using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Au;
@@ -59,27 +60,51 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             enrollmentsCache = CreateEnrollments(5);
         }
 
-        public StudentSchoolEnrollment Create(StudentSchoolEnrollment obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public StudentSchoolEnrollment Create(
+            StudentSchoolEnrollment obj,
+            bool? mustUseAdvisory = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(string refId, string zoneId = null, string contextId = null)
+        public void Delete(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public StudentSchoolEnrollment Retrieve(string refId, string zoneId = null, string contextId = null)
+        public StudentSchoolEnrollment Retrieve(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public List<StudentSchoolEnrollment> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<StudentSchoolEnrollment> Retrieve(
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public List<StudentSchoolEnrollment> Retrieve(StudentSchoolEnrollment obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<StudentSchoolEnrollment> Retrieve(
+            StudentSchoolEnrollment obj,
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             List<StudentSchoolEnrollment> enrollments = new List<StudentSchoolEnrollment>();
 
@@ -94,12 +119,22 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return enrollments;
         }
 
-        public List<StudentSchoolEnrollment> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<StudentSchoolEnrollment> Retrieve(
+            IEnumerable<EqualCondition> conditions,
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(StudentSchoolEnrollment obj, string zoneId = null, string contextId = null)
+        public void Update(
+            StudentSchoolEnrollment obj,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             throw new NotImplementedException();
         }
