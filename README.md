@@ -380,3 +380,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 - Added some demo code for StudentSchoolEnrollment objects.
 - Corrected issues with SIF AU Data Model 3.4.2.
 - Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.3.
+
+**Nov 03, 2018 - 3.2.1.10 Added custom parameters to Consumers and Providers**
+
+- Added custom parameters to Consumers and Providers (query parameters only).
