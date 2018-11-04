@@ -79,7 +79,7 @@
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Au 3.4.3\Sif.Specification.DataModel.Au.dll</HintPath>
+      <HintPath>..\..\..\SharedLibs\Sif.Specification.DataModel.Au 3.4.4\Sif.Specification.DataModel.Au.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -137,16 +137,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FQReportingObjectsProvider.cs" />
     <Compile Include="Controllers\SchoolInfosProvider.cs" />
     <Compile Include="Controllers\StudentPersonalsProvider.cs" />
     <Compile Include="Controllers\StudentSchoolEnrollmentsProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FQReportingObject.cs" />
     <Compile Include="Models\SchoolInfo.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Models\StudentSchoolEnrollment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FQReportingObjectService.cs" />
     <Compile Include="Services\SchoolInfoService.cs" />
     <Compile Include="Services\StudentPersonalIterator.cs" />
     <Compile Include="Services\StudentPersonalService.cs" />
