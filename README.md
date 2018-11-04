@@ -384,3 +384,7 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 **Nov 03, 2018 - 3.2.1.10 Added custom parameters to Consumers and Providers**
 
 - Added custom parameters to Consumers and Providers (query parameters only).
+
+**Nov 04, 2018 - 3.2.1.10 Added demo Consumer and Provider for FQReportingObject objects**
+
+- Added demo Consumer and Provider for FQReportingObject objects.

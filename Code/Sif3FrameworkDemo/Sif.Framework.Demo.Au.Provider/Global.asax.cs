@@ -15,15 +15,18 @@ namespace Sif.Framework.Demo.Au.Provider
     public class WebApiApplication : System.Web.HttpApplication
     {
         private IRegistrationService registrationService;
+
         private void Register()
         {
             registrationService = RegistrationManager.ProviderRegistrationService;
             registrationService.Register();
         }
+
         private void Unregister()
         {
             registrationService.Unregister();
         }
+
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -34,13 +37,17 @@ namespace Sif.Framework.Demo.Au.Provider
             XmlMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
             formatter.UseXmlSerializer = true;
 
-            XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
-            ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
-            formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+            XmlRootAttribute fqReportingObjectsXmlRootAttribute = new XmlRootAttribute("FQReportingObjects") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<FQReportingObject>> fqReportingObjectsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FQReportingObject>>(fqReportingObjectsXmlRootAttribute);
+            formatter.SetSerializer<List<FQReportingObject>>((XmlSerializer)fqReportingObjectsSerialiser);
 
             XmlRootAttribute schoolInfosXmlRootAttribute = new XmlRootAttribute("SchoolInfos") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(schoolInfosXmlRootAttribute);
             formatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+
+            XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
+            formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
 
             XmlRootAttribute studentSchoolEnrollmentsXmlRootAttribute = new XmlRootAttribute("StudentSchoolEnrollments") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<StudentSchoolEnrollment>> studentSchoolEnrollmentsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentSchoolEnrollment>>(studentSchoolEnrollmentsXmlRootAttribute);
@@ -66,6 +73,7 @@ namespace Sif.Framework.Demo.Au.Provider
             Trace.TraceInformation("********** Application_Start **********");
             Register();
         }
+
         protected void Application_End(object sender, System.EventArgs e)
         {
             Trace.TraceInformation("********** Application_End **********");
