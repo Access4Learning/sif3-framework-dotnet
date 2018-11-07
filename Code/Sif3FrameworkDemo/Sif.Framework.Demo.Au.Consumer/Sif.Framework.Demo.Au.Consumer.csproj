@@ -73,14 +73,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consumers\FQReportingObjectConsumer.cs" />
+    <Compile Include="Consumers\FQReportingConsumer.cs" />
     <Compile Include="EventConsumerApp.cs" />
     <Compile Include="EnrollmentConsumerApp.cs" />
     <Compile Include="ConsumerApp.cs" />
     <Compile Include="Consumers\StudentSchoolEnrollmentConsumer.cs" />
     <Compile Include="Consumers\StudentPersonalEventConsumer.cs" />
-    <Compile Include="FQReportingObjectConsumerApp.cs" />
-    <Compile Include="Models\FQReportingObject.cs" />
+    <Compile Include="FQReportingConsumerApp.cs" />
+    <Compile Include="Models\FQReporting.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Models\StudentSchoolEnrollment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

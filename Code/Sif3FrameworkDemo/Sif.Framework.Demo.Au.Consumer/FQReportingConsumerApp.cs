@@ -23,13 +23,13 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
-    internal class FQReportingObjectConsumerApp
+    internal class FQReportingConsumerApp
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private FQReportingObject CreateFQReportingObject()
+        private FQReporting CreateFQReporting()
         {
-            FQReportingObject fqReportingObject = new FQReportingObject
+            FQReporting fqReporting = new FQReporting
             {
                 FQYear = "2018",
                 ReportingAuthority = "Ballarat Diocese",
@@ -44,12 +44,12 @@ namespace Sif.Framework.Demo.Au.Consumer
                 EntityName = "XXX Secondary College"
             };
 
-            return fqReportingObject;
+            return fqReporting;
         }
 
         private void RunConsumer()
         {
-            FQReportingObjectConsumer consumer = new FQReportingObjectConsumer(
+            FQReportingConsumer consumer = new FQReportingConsumer(
                 SettingsManager.ConsumerSettings.ApplicationKey,
                 SettingsManager.ConsumerSettings.InstanceId,
                 SettingsManager.ConsumerSettings.UserToken,
@@ -63,7 +63,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                 try
                 {
                     if (log.IsInfoEnabled) log.Info("*** Create a new FQ reporting object.");
-                    FQReportingObject createdObject = consumer.Create(CreateFQReportingObject());
+                    FQReporting createdObject = consumer.Create(CreateFQReporting());
                     if (log.IsInfoEnabled) log.Info($"Created new FQ reporting object with ID of {createdObject.RefId}.");
                 }
                 catch (UnauthorizedAccessException)
@@ -73,9 +73,9 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Retrieve all FQ reporting objects.
                 if (log.IsInfoEnabled) log.Info("*** Retrieve all FQ reporting objects.");
-                IEnumerable<FQReportingObject> retrievedObjects = consumer.Query(0, 10);
+                IEnumerable<FQReporting> retrievedObjects = consumer.Query(0, 10);
 
-                foreach (FQReportingObject retrievedObject in retrievedObjects)
+                foreach (FQReporting retrievedObject in retrievedObjects)
                 {
                     if (log.IsInfoEnabled) log.Info($"FQ reporting object {retrievedObject.RefId} is for {retrievedObject.EntityName}.");
                 }
@@ -97,7 +97,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         private static void Main(string[] args)
         {
-            FQReportingObjectConsumerApp app = new FQReportingObjectConsumerApp();
+            FQReportingConsumerApp app = new FQReportingConsumerApp();
 
             try
             {

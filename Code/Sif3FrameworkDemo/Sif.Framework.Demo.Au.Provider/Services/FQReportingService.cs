@@ -23,15 +23,15 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Provider.Services
 {
-    public class FQReportingObjectService : IBasicProviderService<FQReportingObject>
+    public class FQReportingService : IBasicProviderService<FQReporting>
     {
         private static readonly Random random = new Random();
 
-        private static IDictionary<string, FQReportingObject> cache = new Dictionary<string, FQReportingObject>();
+        private static IDictionary<string, FQReporting> cache = new Dictionary<string, FQReporting>();
 
-        private static FQReportingObject CreateObject()
+        private static FQReporting CreateObject()
         {
-            FQReportingObject obj = new FQReportingObject
+            FQReporting obj = new FQReporting
             {
                 RefId = Guid.NewGuid().ToString(),
                 FQYear = random.Next(2016, 2020).ToString(),
@@ -46,26 +46,26 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return obj;
         }
 
-        private static IDictionary<string, FQReportingObject> CreateObjects(int count)
+        private static IDictionary<string, FQReporting> CreateObjects(int count)
         {
-            IDictionary<string, FQReportingObject> objs = new Dictionary<string, FQReportingObject>();
+            IDictionary<string, FQReporting> objs = new Dictionary<string, FQReporting>();
 
             for (int i = 1; i <= count; i++)
             {
-                FQReportingObject obj = CreateObject();
+                FQReporting obj = CreateObject();
                 objs.Add(obj.RefId, obj);
             }
 
             return objs;
         }
 
-        static FQReportingObjectService()
+        static FQReportingService()
         {
             cache = CreateObjects(5);
         }
 
-        public FQReportingObject Create(
-            FQReportingObject obj,
+        public FQReporting Create(
+            FQReporting obj,
             bool? mustUseAdvisory = null,
             string zoneId = null,
             string contextId = null,
@@ -91,13 +91,13 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             throw new NotImplementedException();
         }
 
-        public FQReportingObject Retrieve(
+        public FQReporting Retrieve(
             string refId,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            if (!cache.TryGetValue(refId, out FQReportingObject obj))
+            if (!cache.TryGetValue(refId, out FQReporting obj))
             {
                 obj = null;
             }
@@ -105,14 +105,14 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return obj;
         }
 
-        public List<FQReportingObject> Retrieve(
+        public List<FQReporting> Retrieve(
             uint? pageIndex = null,
             uint? pageSize = null,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            List<FQReportingObject> objs = new List<FQReportingObject>();
+            List<FQReporting> objs = new List<FQReporting>();
 
             if (pageIndex.HasValue && pageSize.HasValue)
             {
@@ -138,8 +138,8 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return objs;
         }
 
-        public List<FQReportingObject> Retrieve(
-            FQReportingObject obj,
+        public List<FQReporting> Retrieve(
+            FQReporting obj,
             uint? pageIndex = null,
             uint? pageSize = null,
             string zoneId = null,
@@ -149,7 +149,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             throw new NotImplementedException();
         }
 
-        public List<FQReportingObject> Retrieve(
+        public List<FQReporting> Retrieve(
             IEnumerable<EqualCondition> conditions,
             uint? pageIndex = null,
             uint? pageSize = null,
@@ -161,7 +161,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         }
 
         public void Update(
-            FQReportingObject obj,
+            FQReporting obj,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)

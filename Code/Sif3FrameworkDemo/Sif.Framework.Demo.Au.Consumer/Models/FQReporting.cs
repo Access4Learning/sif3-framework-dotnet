@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Consumers;
-using Sif.Framework.Demo.Au.Consumer.Models;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.DataModels;
+using Sif.Specification.DataModel.Au;
+using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Au.Consumer.Consumers
+namespace Sif.Framework.Demo.Au.Consumer.Models
 {
-    internal class FQReportingObjectConsumer : BasicConsumer<FQReportingObject>
+    [XmlRoot("FQReporting", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+    [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
+    public class FQReporting : FQReportingType, IDataModel
     {
-        public FQReportingObjectConsumer(Environment environment) : base(environment)
-        {
-        }
-
-        public FQReportingObjectConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
-            : base(applicationKey, instanceId, userToken, solutionId)
-        {
-        }
     }
 }
