@@ -22,9 +22,9 @@ using System.Web.Http;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
-    public class FQReportingObjectsProvider : BasicProvider<FQReportingObject>
+    public class FQReportingsProvider : BasicProvider<FQReporting>
     {
-        public FQReportingObjectsProvider() : base(new FQReportingObjectService())
+        public FQReportingsProvider() : base(new FQReportingService())
         {
         }
 
@@ -34,8 +34,8 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
             return base.BroadcastEvents(zoneId, contextId);
         }
 
-        [Route("~/api/FQReportingObjects/FQReportingObject")]
-        public override IHttpActionResult Post(FQReportingObject obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        [Route("~/api/FQReportings/FQReporting")]
+        public override IHttpActionResult Post(FQReporting obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);
         }

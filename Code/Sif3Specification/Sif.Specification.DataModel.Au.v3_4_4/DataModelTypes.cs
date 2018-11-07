@@ -49246,8 +49246,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    [System.Xml.Serialization.XmlRootAttribute("FQReportingObject", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
-    public partial class FQReportingObjectType {
+    [System.Xml.Serialization.XmlRootAttribute("FQReporting", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class FQReportingType {
         
         private string fQYearField;
         
@@ -49533,19 +49533,19 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    [System.Xml.Serialization.XmlRootAttribute("FQReportingObjects", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
-    public partial class FQReportingObjectCollectionType {
+    [System.Xml.Serialization.XmlRootAttribute("FQReportings", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class FQReportingCollectionType {
         
-        private FQReportingObjectType[] fQReportingObjectField;
+        private FQReportingType[] fQReportingField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("FQReportingObject")]
-        public FQReportingObjectType[] FQReportingObject {
+        [System.Xml.Serialization.XmlElementAttribute("FQReporting")]
+        public FQReportingType[] FQReporting {
             get {
-                return this.fQReportingObjectField;
+                return this.fQReportingField;
             }
             set {
-                this.fQReportingObjectField = value;
+                this.fQReportingField = value;
             }
         }
     }

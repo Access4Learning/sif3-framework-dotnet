@@ -12133,9 +12133,9 @@
   <xs:element name="WellbeingCharacteristics" type="WellbeingCharacteristicCollectionType" />
 
 
-  <!--FQReportingObject-->
+  <!--FQReporting-->
 
-  <xs:complexType name="FQReportingObjectType">
+  <xs:complexType name="FQReportingType">
     <xs:annotation>
       <xs:appinfo>
         <sifChar />
@@ -12329,19 +12329,19 @@
     </xs:attribute>
   </xs:complexType>
 
-  <xs:element name="FQReportingObject" type="FQReportingObjectType">
-    <xs:key name="FQReportingObjectKey1">
-      <xs:selector xpath="./FQReportingObject" />
+  <xs:element name="FQReporting" type="FQReportingType">
+    <xs:key name="FQReportingKey1">
+      <xs:selector xpath="./FQReporting" />
       <xs:field xpath="@RefId" />
     </xs:key>
   </xs:element>
 
-  <xs:complexType name="FQReportingObjectCollectionType">
+  <xs:complexType name="FQReportingCollectionType">
     <xs:sequence>
-      <xs:element name="FQReportingObject" type="FQReportingObjectType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="FQReporting" type="FQReportingType" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="FQReportingObjects" type="FQReportingObjectCollectionType" />
+  <xs:element name="FQReportings" type="FQReportingCollectionType" />
 
   <xs:simpleType name="AUCodeSetsWellbeingCharacteristicSubCategoryType">
     <xs:restriction base="xs:token">
@@ -45134,7 +45134,7 @@
         <sifChar>O</sifChar>
         <privacyRating />
       </xs:appinfo>
-      <xs:documentation>A List of teachers associated with the group -  may or may not include the teacher timetabled in the schedule.</xs:documentation>
+      <xs:documentation>A List of teachers associated with the group - may or may not include the teacher timetabled in the schedule.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="TeachingGroupTeacher" maxOccurs="unbounded" type="TeachingGroupTeacherType">
@@ -45143,7 +45143,7 @@
             <sifChar>MR</sifChar>
             <privacyRating />
           </xs:appinfo>
-          <xs:documentation>Teacher associated with the Teaching group -  may or may not be the teacher timetabled in the schedule</xs:documentation>
+          <xs:documentation>Teacher associated with the Teaching group - may or may not be the teacher timetabled in the schedule</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>

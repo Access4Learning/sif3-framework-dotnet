@@ -18,11 +18,11 @@ using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Au.Consumer.Models
+namespace Sif.Framework.Demo.Au.Provider.Models
 {
-    [XmlRoot("FQReportingObject", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+    [XmlRoot("FQReporting", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
     [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
-    public class FQReportingObject : FQReportingObjectType, IDataModel
+    public class FQReporting : FQReportingType, IDataModel
     {
     }
 }
