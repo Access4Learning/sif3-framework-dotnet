@@ -387,4 +387,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 **Nov 04, 2018 - 3.2.1.10 Added demo Consumer and Provider for FQReportingObject objects**
 
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.4.
 - Added demo Consumer and Provider for FQReportingObject objects.
+
+**Nov 07, 2018 - 3.2.1.10 Updated the SIF AU 3.4.4 Data Model**
+
+- Updated the SIF AU 3.4.4 Data Model.
+- Refactored the AU Demo Consumer and Provider to reflect the data model changes.
