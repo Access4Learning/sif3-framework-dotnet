@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,11 +20,10 @@ using NHibernate.Tool.hbm2ddl;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
-
     /// <summary>
     /// A Singleton helper class for managing NHibernate sessions based upon the default configuration file.
     /// </summary>
-    class EnvironmentProviderSessionFactory : IBaseSessionFactory
+    internal class EnvironmentProviderSessionFactory : IBaseSessionFactory
     {
         private static EnvironmentProviderSessionFactory environmentProviderSessionFactory;
 
@@ -35,19 +34,31 @@ namespace Sif.Framework.Persistence.NHibernate
         /// </summary>
         public static EnvironmentProviderSessionFactory Instance
         {
-
             get
             {
-
                 if (environmentProviderSessionFactory == null)
                 {
                     environmentProviderSessionFactory = new EnvironmentProviderSessionFactory();
-                    string configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.cfg.xml");
+                    string configurationFilePath;
+#if NETFULL
+                    configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.cfg.xml");
 
                     if (configurationFilePath == null)
                     {
                         configurationFilePath = "SifFramework.cfg.xml";
                     }
+#else
+                    System.Configuration.Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.None);
+
+                    if (config.HasFile && !string.IsNullOrWhiteSpace(config.FilePath))
+                    {
+                        configurationFilePath = $"{System.IO.Path.GetDirectoryName(config.FilePath)}/SifFramework.cfg.xml";
+                    }
+                    else
+                    {
+                        configurationFilePath = "SifFramework.cfg.xml";
+                    }
+#endif
 
                     Configuration configuration = new Configuration().Configure(configurationFilePath);
                     SchemaMetadataUpdater.QuoteTableAndColumns(configuration);
@@ -56,7 +67,6 @@ namespace Sif.Framework.Persistence.NHibernate
 
                 return environmentProviderSessionFactory;
             }
-
         }
 
         /// <summary>
@@ -64,7 +74,6 @@ namespace Sif.Framework.Persistence.NHibernate
         /// </summary>
         private EnvironmentProviderSessionFactory()
         {
-
         }
 
         /// <summary>
@@ -75,7 +84,5 @@ namespace Sif.Framework.Persistence.NHibernate
         {
             return SessionFactory.OpenSession();
         }
-
     }
-
 }
