@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.EventsConnector.Models;
+using Sif.Framework.Demo.Broker.Models;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using System;
 using System.Collections.Generic;
 
-namespace Sif.Framework.Demo.EventsConnector.Services
+namespace Sif.Framework.Demo.Broker.Services
 {
     public class StudentPersonalService : IBasicProviderService<StudentPersonal>
     {
