@@ -106,9 +106,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsumerApp.cs" />
+    <Compile Include="Consumers\FQReportingConsumer.cs" />
     <Compile Include="Consumers\StudentContactRelationshipConsumer.cs" />
     <Compile Include="Consumers\StudentPersonalConsumer.cs" />
     <Compile Include="Consumers\WellbeingCharacteristicConsumer.cs" />
+    <Compile Include="FQReportingConsumerApp.cs" />
+    <Compile Include="Models\FQReporting.cs" />
     <Compile Include="Models\SchoolInfo.cs" />
     <Compile Include="Models\StudentContactRelationship.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
