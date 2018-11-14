@@ -1,13 +1,13 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
 
 using Sif.Framework.Demo.Uk.Provider.Models;
 using Sif.Framework.Demo.Uk.Provider.Utils;
+using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Uk;
@@ -25,7 +26,6 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Uk.Provider.Services
 {
-
     public class LearnerPersonalService : IBasicProviderService<LearnerPersonal>
     {
         private static IDictionary<string, LearnerPersonal> learnerCache = new Dictionary<string, LearnerPersonal>();
@@ -33,12 +33,14 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
 
         private static LearnerPersonal CreateBartSimpson()
         {
-            return new LearnerPersonal {
+            return new LearnerPersonal
+            {
                 RefId = Guid.NewGuid().ToString(),
                 LocalId = "666",
                 PersonalInformation = new PersonalInformationType
                 {
-                    Name = new NameType {
+                    Name = new NameType
+                    {
                         Type = NameTypeType.C,
                         FamilyName = "Simpson",
                         GivenName = "Bart"
@@ -79,7 +81,6 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
                     LearnerPersonal LearnerPersonal = CreateLearner();
                     LearnerPersonalsCache.Add(LearnerPersonal.RefId, LearnerPersonal);
                 }
-
             }
 
             return LearnerPersonalsCache;
@@ -90,7 +91,12 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             learnerCache = CreateLearner(20);
         }
 
-        public LearnerPersonal Create(LearnerPersonal obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null)
+        public LearnerPersonal Create(
+            LearnerPersonal obj,
+            bool? mustUseAdvisory = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             string refId = Guid.NewGuid().ToString();
             obj.RefId = refId;
@@ -99,7 +105,11 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return obj;
         }
 
-        public LearnerPersonal Retrieve(string refId, string zoneId = null, string contextId = null)
+        public LearnerPersonal Retrieve(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             LearnerPersonal student;
 
@@ -111,7 +121,12 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return student;
         }
 
-        public List<LearnerPersonal> Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<LearnerPersonal> Retrieve(
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             List<LearnerPersonal> retrievedStudents = new List<LearnerPersonal>();
 
@@ -138,36 +153,44 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
                     {
                         retrievedStudents = allStudents.GetRange((int)index, (int)count);
                     }
-
                 }
                 else
                 {
                     retrievedStudents = allStudents;
                 }
-
             }
 
             return retrievedStudents;
         }
 
-        public List<LearnerPersonal> Retrieve(LearnerPersonal obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<LearnerPersonal> Retrieve(
+            LearnerPersonal obj,
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             List<LearnerPersonal> students = new List<LearnerPersonal>();
 
             foreach (LearnerPersonal student in learnerCache.Values)
             {
-
                 if (student.PersonalInformation.Name.FamilyName.Equals(obj.PersonalInformation.Name.FamilyName) && student.PersonalInformation.Name.GivenName.Equals(obj.PersonalInformation.Name.GivenName))
                 {
                     students.Add(student);
                 }
-
             }
 
             return students;
         }
 
-        public List<LearnerPersonal> Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null)
+        public List<LearnerPersonal> Retrieve(
+            IEnumerable<EqualCondition> conditions,
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             List<LearnerPersonal> students = new List<LearnerPersonal>();
             students.Add(CreateBartSimpson());
@@ -175,18 +198,24 @@ namespace Sif.Framework.Demo.Uk.Provider.Services
             return students;
         }
 
-        public void Update(LearnerPersonal obj, string zoneId = null, string contextId = null)
+        public void Update(
+            LearnerPersonal obj,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
-
             if (learnerCache.ContainsKey(obj.RefId))
             {
                 learnerCache.Remove(obj.RefId);
                 learnerCache.Add(obj.RefId, obj);
             }
-
         }
 
-        public void Delete(string refId, string zoneId = null, string contextId = null)
+        public void Delete(
+            string refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters)
         {
             learnerCache.Remove(refId);
         }

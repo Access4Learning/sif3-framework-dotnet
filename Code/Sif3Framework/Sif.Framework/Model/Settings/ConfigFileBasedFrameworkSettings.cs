@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,15 +19,13 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
-using System.Web.Hosting;
 
 namespace Sif.Framework.Model.Settings
 {
-
     /// <summary>
     /// This class represents settings that are stored in the SifFramework.config custom configuration file.
     /// </summary>
-    abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
+    internal abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
     {
         private Configuration configuration;
 
@@ -44,7 +42,6 @@ namespace Sif.Framework.Model.Settings
 
             if (setting != null)
             {
-
                 try
                 {
                     value = bool.Parse(setting.Value);
@@ -54,7 +51,6 @@ namespace Sif.Framework.Model.Settings
                     string message = $"The valid values for the {setting.Key} setting are \"true\" or \"false\". The value \"{setting.Value}\" is not valid.";
                     throw new ConfigurationErrorsException(message);
                 }
-
             }
 
             return value;
@@ -73,7 +69,6 @@ namespace Sif.Framework.Model.Settings
 
             if (setting != null)
             {
-
                 try
                 {
                     value = int.Parse(setting.Value);
@@ -83,7 +78,6 @@ namespace Sif.Framework.Model.Settings
                     string message = $"The value \"{setting.Value}\" is not a valid integer for the {setting.Key} setting.";
                     throw new ConfigurationErrorsException(message);
                 }
-
             }
 
             return value;
@@ -123,15 +117,28 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         protected ConfigFileBasedFrameworkSettings()
         {
-            string configurationFilePath = HostingEnvironment.MapPath("~/SifFramework.config");
+            string configurationFilePath = null;
+#if NETFULL
+            configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.config");
+#else
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            if (config.HasFile && !string.IsNullOrWhiteSpace(config.FilePath))
+            {
+                configurationFilePath = $"{Path.GetDirectoryName(config.FilePath)}/SifFramework.config";
+            }
+#endif
 
             if (configurationFilePath == null)
             {
                 configurationFilePath = "SifFramework.config";
             }
 
-            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap();
-            exeConfigurationFileMap.ExeConfigFilename = configurationFilePath;
+            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap
+            {
+                ExeConfigFilename = configurationFilePath
+            };
+
             configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
 
             if (!configuration.HasFile)
@@ -146,7 +153,6 @@ namespace Sif.Framework.Model.Settings
                 string message = $"Missing configuration file {configurationFilePath}.";
                 throw new ConfigurationErrorsException(message);
             }
-
         }
 
         /// <summary>
@@ -154,12 +160,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string ApplicationKey
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.applicationKey");
             }
-
         }
 
         /// <summary>
@@ -167,12 +171,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string AuthenticationMethod
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.authenticationMethod");
             }
-
         }
 
         /// <summary>
@@ -180,12 +182,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public bool CompressPayload
         {
-
             get
             {
                 return GetBooleanSetting(SettingsPrefix + ".payload.compress", false);
             }
-
         }
 
         /// <summary>
@@ -193,12 +193,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string ConsumerName
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.consumerName");
             }
-
         }
 
         /// <summary>
@@ -206,12 +204,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string DataModelNamespace
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.dataModelNamespace");
             }
-
         }
 
         /// <summary>
@@ -219,12 +215,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string InfrastructureNamespace
         {
-
             get
             {
                 return "http://www.sifassociation.org/infrastructure/" + SupportedInfrastructureVersion;
             }
-
         }
 
         /// <summary>
@@ -232,12 +226,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public bool DeleteOnUnregister
         {
-
             get
             {
                 return GetBooleanSetting(SettingsPrefix + ".environment.deleteOnUnregister", false);
             }
-
         }
 
         /// <summary>
@@ -245,7 +237,6 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public EnvironmentType EnvironmentType
         {
-
             get
             {
                 KeyValueConfigurationElement setting = configuration.AppSettings.Settings[SettingsPrefix + ".environmentType"];
@@ -253,7 +244,6 @@ namespace Sif.Framework.Model.Settings
 
                 if (setting != null)
                 {
-
                     if (EnvironmentType.BROKERED.ToString().Equals(setting.Value.ToUpper()))
                     {
                         value = EnvironmentType.BROKERED;
@@ -267,12 +257,10 @@ namespace Sif.Framework.Model.Settings
                         string message = $"The valid values for the {setting.Key} setting are \"BROKERED\" or \"DIRECT\". The value \"{setting.Value}\" is not valid.";
                         throw new ConfigurationErrorsException(message);
                     }
-
                 }
 
                 return value;
             }
-
         }
 
         /// <summary>
@@ -280,12 +268,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string EnvironmentUrl
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.url");
             }
-
         }
 
         /// <summary>
@@ -293,12 +279,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public int EventProcessingWaitTime
         {
-
             get
             {
                 return GetIntegerSetting(SettingsPrefix + ".events.minWaitTimeSeconds", 60);
             }
-
         }
 
         /// <summary>
@@ -306,12 +290,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string InstanceId
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.instanceId");
             }
-
         }
 
         /// <summary>
@@ -319,12 +301,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public int NavigationPageSize
         {
-
             get
             {
                 return GetIntegerSetting(SettingsPrefix + ".paging.navigationPageSize", 100);
             }
-
         }
 
         /// <summary>
@@ -332,12 +312,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string SharedSecret
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.sharedSecret");
             }
-
         }
 
         /// <summary>
@@ -345,12 +323,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string SolutionId
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.solutionId");
             }
-
         }
 
         /// <summary>
@@ -358,12 +334,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         public string SupportedInfrastructureVersion
         {
-
             get
             {
                 return GetStringSetting(SettingsPrefix + ".environment.template.supportedInfrastructureVersion");
             }
-
         }
 
         /// <summary>
@@ -414,5 +388,4 @@ namespace Sif.Framework.Model.Settings
             get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
         }
     }
-
 }

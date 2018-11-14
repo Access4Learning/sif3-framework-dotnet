@@ -20,76 +20,54 @@ using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Sif.Framework.Demo.Broker.Services
 {
-    public class SubscriptionService : IBasicProviderService<Subscription>
+    public class StudentPersonalService : IBasicProviderService<StudentPersonal>
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static IDictionary<string, Subscription> subscriptionsCache = new Dictionary<string, Subscription>();
-
-        public Subscription Create(
-            Subscription obj,
+        public StudentPersonal Create(
+            StudentPersonal obj,
             bool? mustUseAdvisory = null,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            if (obj == null)
-            {
-                obj = new Subscription();
-            }
-
-            obj.id = Guid.NewGuid().ToString();
-            obj.zoneId = zoneId;
-            obj.contextId = contextId;
-            subscriptionsCache.Add(obj.id, obj);
-            if (log.IsDebugEnabled) log.Debug($"*** Created Subscription with ID of {obj.id}.");
+            if (log.IsDebugEnabled) log.Debug($"*** Student name is {obj.PersonInfo.Name.GivenName} {obj.PersonInfo.Name.FamilyName}");
 
             return obj;
         }
 
         public void Delete(
-            string id,
+            string refId,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            if (id != null && subscriptionsCache.ContainsKey(id))
-            {
-                subscriptionsCache.Remove(id);
-            }
+            throw new NotImplementedException();
         }
 
-        public Subscription Retrieve(
-            string id,
+        public StudentPersonal Retrieve(
+            string refId,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            Subscription queue = null;
-
-            if (id != null && subscriptionsCache.ContainsKey(id))
-            {
-                subscriptionsCache.TryGetValue(id, out queue);
-            }
-
-            return queue;
+            throw new NotImplementedException();
         }
 
-        public List<Subscription> Retrieve(
+        public List<StudentPersonal> Retrieve(
             uint? pageIndex = null,
             uint? pageSize = null,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            return subscriptionsCache.Values.ToList();
+            throw new NotImplementedException();
         }
 
-        public List<Subscription> Retrieve(
+        public List<StudentPersonal> Retrieve(
             IEnumerable<EqualCondition> conditions,
             uint? pageIndex = null,
             uint? pageSize = null,
@@ -100,8 +78,8 @@ namespace Sif.Framework.Demo.Broker.Services
             throw new NotImplementedException();
         }
 
-        public List<Subscription> Retrieve(
-            Subscription obj,
+        public List<StudentPersonal> Retrieve(
+            StudentPersonal obj,
             uint? pageIndex = null,
             uint? pageSize = null,
             string zoneId = null,
@@ -112,7 +90,7 @@ namespace Sif.Framework.Demo.Broker.Services
         }
 
         public void Update(
-            Subscription obj,
+            StudentPersonal obj,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)

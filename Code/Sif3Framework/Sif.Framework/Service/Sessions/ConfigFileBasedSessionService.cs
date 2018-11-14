@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,18 +18,15 @@ using Sif.Framework.Model.Settings;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
-using System.Web.Hosting;
 
 namespace Sif.Framework.Service.Sessions
 {
-
     /// <summary>
     /// This class represents operations associated with sessions that are stored in the SifFramework.config custom
     /// configuration file.
     /// </summary>
-    abstract class ConfigFileBasedSessionService : ISessionService
+    internal abstract class ConfigFileBasedSessionService : ISessionService
     {
-
         /// <summary>
         /// Reference to the SifFramework.config custom configuration file.
         /// </summary>
@@ -45,15 +42,28 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public ConfigFileBasedSessionService()
         {
-            string configurationFilePath = HostingEnvironment.MapPath("~/SifFramework.config");
+            string configurationFilePath = null;
+#if NETFULL
+            configurationFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/SifFramework.config");
+#else
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            if (config.HasFile && !string.IsNullOrWhiteSpace(config.FilePath))
+            {
+                configurationFilePath = $"{Path.GetDirectoryName(config.FilePath)}/SifFramework.config";
+            }
+#endif
 
             if (configurationFilePath == null)
             {
                 configurationFilePath = "SifFramework.config";
             }
 
-            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap();
-            exeConfigurationFileMap.ExeConfigFilename = configurationFilePath;
+            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap
+            {
+                ExeConfigFilename = configurationFilePath
+            };
+
             Configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
 
             if (!Configuration.HasFile)
@@ -68,7 +78,6 @@ namespace Sif.Framework.Service.Sessions
                 string message = $"Missing configuration file {configurationFilePath}.";
                 throw new ConfigurationErrorsException(message);
             }
-
         }
 
         /// <summary>
@@ -92,14 +101,12 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public void RemoveSession(string sessionToken)
         {
-
             if (HasSession(sessionToken))
             {
                 SessionsSection.Sessions.Remove(sessionToken);
                 Configuration.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(SifFrameworkSectionGroup.SectionGroupReference);
             }
-
         }
 
         /// <summary>
@@ -136,7 +143,6 @@ namespace Sif.Framework.Service.Sessions
 
             foreach (SessionElement session in SessionsSection.Sessions)
             {
-
                 if (string.Equals(applicationKey, session.ApplicationKey) &&
                     (solutionId == null ? string.IsNullOrWhiteSpace(session.SolutionId) : solutionId.Equals(session.SolutionId)) &&
                     (userToken == null ? string.IsNullOrWhiteSpace(session.UserToken) : userToken.Equals(session.UserToken)) &&
@@ -145,7 +151,6 @@ namespace Sif.Framework.Service.Sessions
                     sessionElement = session;
                     break;
                 }
-
             }
 
             return sessionElement;
@@ -176,7 +181,6 @@ namespace Sif.Framework.Service.Sessions
         /// </summary>
         public void StoreSession(string applicationKey, string sessionToken, string environmentUrl, string solutionId = null, string userToken = null, string instanceId = null)
         {
-
             if (HasSession(applicationKey, solutionId, userToken, instanceId))
             {
                 string message = string.Format("Session with the following credentials already exists - [applicationKey={0}]{1}{2}{3}.",
@@ -212,7 +216,6 @@ namespace Sif.Framework.Service.Sessions
                 Configuration.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(SifFrameworkSectionGroup.SectionGroupReference);
             }
-
         }
 
         /// <summary>
@@ -228,9 +231,6 @@ namespace Sif.Framework.Service.Sessions
                 Configuration.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(SifFrameworkSectionGroup.SectionGroupReference);
             }
-
         }
-
     }
-
 }
