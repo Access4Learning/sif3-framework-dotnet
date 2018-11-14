@@ -394,3 +394,10 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 - Updated the SIF AU 3.4.4 Data Model.
 - Refactored the AU Demo Consumer and Provider to reflect the data model changes.
+
+**Nov 15, 2018 - 3.2.1.11 Updated the SIF Framework to .NET Standard**
+
+- Updated the SIF Framework to .NET Standard from .NET Framework.
+- Enabled the creation and use of NuGet packages in relation to the SIF Framework.
+- Refactored the demo projects to utilise the SIF Framework NuGet packages.
+- Updated the training documentation to reflect the use of the SIF Framework NuGet packages.
