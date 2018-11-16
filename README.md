@@ -18,6 +18,18 @@ The SIF3 Framework is a .NET framework that enables developers to efficiently im
 
 The framework includes a demo Solution that illustrates how to use it.
 
+###Getting started
+
+To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
+
+###Pre-requisites
+
+The SIF3 Framework library is a .NET Standard project that supports multiple versions of .NET Framework (4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2). If you do not have all these versions installed, you will need to edit the Sif.Framework.csproj project file to reflect your installation. Multiple versions are targeted for the benefit of NuGet package deployment.
+
+For more information regarding support for multiple versions, refer to the article [Target frameworks](https://docs.microsoft.com/en-us/dotnet/standard/frameworks).
+
+The SIF3 Framework has been developed on Visual Studio Community 2017.
+
 ### Contributing to this framework
 
 See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
@@ -25,20 +37,6 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 * contributing to this framework 
 * the coding style to be used and
 * the structure of the SIF 3 Framework repositories
-
-###Download Instructions
-
-#####Option 1 - As a Zip.
-Click on the button marked "Download ZIP" available from the Code tab.
-
-#####Option 2 - Using a Git command-line client.
-From the command-line type: `git clone https://github.com/nsip/sif3-framework-dotnet.git`
-
-If you want to use this option but don't have a client installed, one can be downloaded from [http://git-scm.com/download](http://git-scm.com/download "Git command-line client download").
-
-###Getting started
-
-To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
 
 ##Version control history
 
