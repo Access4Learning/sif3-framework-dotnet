@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2019 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
-    internal class FQReportingConsumer : BasicConsumer<FQReporting>
+    internal class FinancialQuestionnaireSubmissionConsumer : BasicConsumer<FinancialQuestionnaireSubmission>
     {
-        public FQReportingConsumer(Environment environment) : base(environment)
+        public FinancialQuestionnaireSubmissionConsumer(Environment environment) : base(environment)
         {
         }
 
-        public FQReportingConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+        public FinancialQuestionnaireSubmissionConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
             : base(applicationKey, instanceId, userToken, solutionId)
         {
         }

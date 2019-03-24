@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2019 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ using System.Web.Http;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
-    public class FQReportingsProvider : BasicProvider<FQReporting>
+    public class FinancialQuestionnaireSubmissionsProvider : BasicProvider<FinancialQuestionnaireSubmission>
     {
-        public FQReportingsProvider() : base(new FQReportingService())
+        public FinancialQuestionnaireSubmissionsProvider() : base(new FinancialQuestionnaireSubmissionService())
         {
         }
 
@@ -34,8 +34,8 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
             return base.BroadcastEvents(zoneId, contextId);
         }
 
-        [Route("~/api/FQReportings/FQReporting")]
-        public override IHttpActionResult Post(FQReporting obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        [Route("~/api/FinancialQuestionnaireSubmissions/FinancialQuestionnaireSubmission")]
+        public override IHttpActionResult Post(FinancialQuestionnaireSubmission obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);
         }

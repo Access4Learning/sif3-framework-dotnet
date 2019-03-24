@@ -385,12 +385,12 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 **Nov 04, 2018 - 3.2.1.10 Added demo Consumer and Provider for FQReportingObject objects**
 
-- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.4.
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.4 (draft).
 - Added demo Consumer and Provider for FQReportingObject objects.
 
-**Nov 07, 2018 - 3.2.1.10 Updated the SIF AU 3.4.4 Data Model**
+**Nov 07, 2018 - 3.2.1.10 Updated the SIF AU 3.4.4 Data Model (draft)**
 
-- Updated the SIF AU 3.4.4 Data Model.
+- Updated the SIF AU 3.4.4 Data Model (draft).
 - Refactored the AU Demo Consumer and Provider to reflect the data model changes.
 
 **Nov 15, 2018 - 3.2.1.11 Updated the SIF Framework to .NET Standard**
@@ -399,3 +399,8 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Enabled the creation and use of NuGet packages in relation to the SIF Framework.
 - Refactored the demo projects to utilise the SIF Framework NuGet packages.
 - Updated the training documentation to reflect the use of the SIF Framework NuGet packages.
+
+**Mar 24, 2019 - 3.2.1.11.1 Updated to the official release of the SIF AU 3.4.4 Data Model**
+
+- Updated to the official release of  the SIF AU 3.4.4 Data Model.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
