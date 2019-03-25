@@ -1,12 +1,12 @@
 ﻿/*
  * Copyright 2018 Systemic Pty Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Events;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
@@ -33,7 +34,6 @@ using System.Xml.Serialization;
 
 namespace Sif.Framework.Consumers
 {
-
     /// <summary>
     /// This class defines a Consumer of SIF Events for data model objects.
     /// </summary>
@@ -53,11 +53,9 @@ namespace Sif.Framework.Consumers
         /// </summary>
         protected Model.Infrastructure.Environment Environment
         {
-
             get { return environment; }
 
             private set { environment = value; }
-
         }
 
         /// <summary>
@@ -80,12 +78,10 @@ namespace Sif.Framework.Consumers
         /// </summary>
         protected virtual string TypeName
         {
-
             get
             {
                 return typeof(TSingle).Name;
             }
-
         }
 
         /// <summary>
@@ -226,10 +222,8 @@ namespace Sif.Framework.Consumers
         /// <param name="cancellationToken">Notification that processing should be cancelled.</param>
         private void ProcessEvents(CancellationToken cancellationToken)
         {
-
             while (true)
             {
-
                 if (cancellationToken.IsCancellationRequested)
                 {
                     break;
@@ -243,37 +237,31 @@ namespace Sif.Framework.Consumers
                 // Read from the message queue until no more messages are found.
                 do
                 {
-
                     try
                     {
-                        WebHeaderCollection responseHeaders;
                         string deleteMessageIdMatrixParameter = (deleteMessageId == null ? "" : $";deleteMessageId={deleteMessageId.Trim()}");
                         if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url}{deleteMessageIdMatrixParameter}.");
-                        string xml = HttpUtils.GetRequestAndHeaders($"{url}{deleteMessageIdMatrixParameter}", RegistrationService.AuthorisationToken, out responseHeaders, deleteMessageId: deleteMessageId);
-                        string contextId = responseHeaders?[HttpUtils.RequestHeader.contextId.ToDescription()];
-                        deleteMessageId = responseHeaders?[HttpUtils.RequestHeader.messageId.ToDescription()];
-                        string minWaitTimeValue = responseHeaders?[HttpUtils.RequestHeader.minWaitTime.ToDescription()];
-                        string zoneId = responseHeaders?[HttpUtils.RequestHeader.zoneId.ToDescription()];
+                        string xml = HttpUtils.GetRequestAndHeaders($"{url}{deleteMessageIdMatrixParameter}", RegistrationService.AuthorisationToken, out WebHeaderCollection responseHeaders, deleteMessageId: deleteMessageId);
+                        string contextId = responseHeaders?[EventParameterType.contextId.ToDescription()];
+                        deleteMessageId = responseHeaders?[EventParameterType.messageId.ToDescription()];
+                        string minWaitTimeValue = responseHeaders?[EventParameterType.minWaitTime.ToDescription()];
+                        string zoneId = responseHeaders?[EventParameterType.zoneId.ToDescription()];
 
                         if (!string.IsNullOrWhiteSpace(minWaitTimeValue))
                         {
-                            double minWaitTime;
-
-                            if (double.TryParse(minWaitTimeValue, out minWaitTime) && (TimeSpan.FromSeconds(minWaitTime) > waitTime))
+                            if (double.TryParse(minWaitTimeValue, out double minWaitTime) && (TimeSpan.FromSeconds(minWaitTime) > waitTime))
                             {
                                 waitTime = TimeSpan.FromSeconds(minWaitTime);
                             }
-
                         }
 
                         // Call the appropriate event handler for messages read.
                         if (!string.IsNullOrWhiteSpace(xml))
                         {
-
                             try
                             {
                                 TMultiple obj = DeserialiseMultiple(xml);
-                                string eventAction = responseHeaders?[HttpUtils.RequestHeader.eventAction.ToDescription()];
+                                string eventAction = responseHeaders?[EventParameterType.eventAction.ToDescription()];
 
                                 if (EventAction.CREATE.ToDescription().Equals(eventAction))
                                 {
@@ -287,7 +275,7 @@ namespace Sif.Framework.Consumers
                                 }
                                 else if ("UPDATE".Equals(eventAction))
                                 {
-                                    string replacement = responseHeaders?[HttpUtils.RequestHeader.Replacement.ToDescription()];
+                                    string replacement = responseHeaders?[EventParameterType.Replacement.ToDescription()];
 
                                     if ("FULL".Equals(replacement))
                                     {
@@ -304,7 +292,6 @@ namespace Sif.Framework.Consumers
                                         if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
                                         OnUpdateEvent(obj, true, zoneId, contextId);
                                     }
-
                                 }
                                 else
                                 {
@@ -313,7 +300,6 @@ namespace Sif.Framework.Consumers
                                     ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = eventException.Message, Description = xml, Scope = TypeName };
                                     OnErrorEvent(error);
                                 }
-
                             }
                             catch (SerializationException e)
                             {
@@ -322,14 +308,12 @@ namespace Sif.Framework.Consumers
                                 ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = e.Message, Description = xml, Scope = TypeName };
                                 OnErrorEvent(error);
                             }
-
                         }
                         else
                         {
                             if (log.IsDebugEnabled) log.Debug($"No event messages.");
                             getEvents = false;
                         }
-
                     }
                     catch (Exception e)
                     {
@@ -337,7 +321,6 @@ namespace Sif.Framework.Consumers
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
                         getEvents = false;
                     }
-
                 } while (getEvents);
 
                 if (log.IsDebugEnabled) log.Debug($"Wait time is {waitTime.Seconds} seconds.");
@@ -345,7 +328,6 @@ namespace Sif.Framework.Consumers
                 // Wait an appropriate amount of time before reading from the message queue again.
                 Thread.Sleep(waitTime);
             }
-
         }
 
         /// <summary>
@@ -420,11 +402,12 @@ namespace Sif.Framework.Consumers
                 // If the Subscription identifier does NOT exist, create a Subscription and associated Queue.
                 if (string.IsNullOrWhiteSpace(subscriptionId))
                 {
+                    string queueNameSuffix = DateTime.UtcNow.ToString("yyMMddHHmmssfff");
 
                     // For the SIF Broker, the name property is a mandatory.
                     queueType queue = new queueType
                     {
-                        name = $"{TypeName}-event-consumer"
+                        name = $"{TypeName}-{queueNameSuffix}"
                     };
 
                     Queue = CreateQueue(queue);
@@ -458,7 +441,6 @@ namespace Sif.Framework.Consumers
                 // If the Subscription identifier does exist, retrieve the Queue.
                 else
                 {
-
                     try
                     {
                         string queueId = SessionsManager.ConsumerSessionService.RetrieveQueueId(
@@ -475,7 +457,6 @@ namespace Sif.Framework.Consumers
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
                         throw e;
                     }
-
                 }
 
                 // Manage SIF Events using background tasks.
@@ -499,7 +480,6 @@ namespace Sif.Framework.Consumers
                 if (log.IsErrorEnabled) log.Error(e, errorMessage);
                 throw e;
             }
-
         }
 
         /// <summary>
@@ -530,7 +510,5 @@ namespace Sif.Framework.Consumers
 
             if (log.IsDebugEnabled) log.Debug($"Stopped Consumer that was waiting for SIF Events of type {TypeName}.");
         }
-
     }
-
 }

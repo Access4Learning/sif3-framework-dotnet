@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2018 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Service
 {
-
     /// <summary>
     /// This interface defines the services available on SIF data model objects.
     /// </summary>
@@ -28,7 +28,6 @@ namespace Sif.Framework.Service
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
     public interface IObjectService<TSingle, TMultiple, TPrimaryKey> : IService
     {
-
         /// <summary>
         /// Create an object.
         /// </summary>
@@ -36,12 +35,18 @@ namespace Sif.Framework.Service
         /// <param name="mustUseAdvisory">Flag to indicate whether the object's identifier should be retained.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="Model.Exceptions.AlreadyExistsException">Object already exists.</exception>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.CreateException">Error creating object.</exception>
         /// <exception cref="Model.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
         /// <returns>Created object.</returns>
-        TSingle Create(TSingle obj, bool? mustUseAdvisory = null, string zoneId = null, string contextId = null);
+        TSingle Create(
+            TSingle obj,
+            bool? mustUseAdvisory = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Delete an object.
@@ -49,10 +54,15 @@ namespace Sif.Framework.Service
         /// <param name="refId">SIF identifier of the object.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.DeleteException">Error deleting object.</exception>
         /// <exception cref="Model.Exceptions.NotFoundException">Object to delete not found.</exception>
-        void Delete(TPrimaryKey refId, string zoneId = null, string contextId = null);
+        void Delete(
+            TPrimaryKey refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve an object.
@@ -60,10 +70,15 @@ namespace Sif.Framework.Service
         /// <param name="refId">SIF identifier of the object.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.QueryException">Error retrieving object.</exception>
         /// <returns>Retrieved object.</returns>
-        TSingle Retrieve(TPrimaryKey refId, string zoneId = null, string contextId = null);
+        TSingle Retrieve(
+            TPrimaryKey refId,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve all objects (paged query).
@@ -72,11 +87,17 @@ namespace Sif.Framework.Service
         /// <param name="pageSize">Page size.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">One or more parameters are invalid.</exception>
         /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
-        TMultiple Retrieve(uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null);
+        TMultiple Retrieve(
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using Query by Example.
@@ -86,11 +107,18 @@ namespace Sif.Framework.Service
         /// <param name="pageSize">Page size.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">One or more parameters are invalid.</exception>
         /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
-        TMultiple Retrieve(TSingle obj, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null);
+        TMultiple Retrieve(
+            TSingle obj,
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Retrieve multiple objects using Service Paths.
@@ -100,11 +128,18 @@ namespace Sif.Framework.Service
         /// <param name="pageSize">A (nullable) size of elements in a page.</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
         /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
-        TMultiple Retrieve(IEnumerable<EqualCondition> conditions, uint? pageIndex = null, uint? pageSize = null, string zoneId = null, string contextId = null);
+        TMultiple Retrieve(
+            IEnumerable<EqualCondition> conditions,
+            uint? pageIndex = null,
+            uint? pageSize = null,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
 
         /// <summary>
         /// Update an object.
@@ -112,11 +147,14 @@ namespace Sif.Framework.Service
         /// <param name="obj">Object to update</param>
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.NotFoundException">Object to update not found.</exception>
         /// <exception cref="Model.Exceptions.UpdateException">Error updating objects.</exception>
-        void Update(TSingle obj, string zoneId = null, string contextId = null);
-
+        void Update(
+            TSingle obj,
+            string zoneId = null,
+            string contextId = null,
+            params RequestParameter[] requestParameters);
     }
-
 }

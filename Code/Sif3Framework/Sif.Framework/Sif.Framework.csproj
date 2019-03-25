@@ -1,314 +1,100 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{202E8CB9-9AED-4034-908F-0B3BB04B171A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sif.Framework</RootNamespace>
-    <AssemblyName>Sif.Framework</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net461;net462;net47;net471;net472;netstandard2.0</TargetFrameworks>
+    <Version>3.2.1.11</Version>
+    <AssemblyVersion>3.2.1.11</AssemblyVersion>
+    <FileVersion>3.2.1.11</FileVersion>
+    <Authors>Rafidzal Rafiq</Authors>
+    <Company>Systemic Pty Ltd</Company>
+    <Product>SIF Framework library</Product>
+    <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
+    <Copyright>Copyright © Systemic Pty Ltd 2018</Copyright>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>SIF framework</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Sif.Framework.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Sif.Specification.Infrastructure, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SharedLibs\Sif.Specification.Infrastructure 3.2.1\Sif.Specification.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="slf4net, Version=0.1.32.1, Culture=neutral, PublicKeyToken=592edb3b6b36b5ba, processorArchitecture=MSIL">
-      <HintPath>..\packages\slf4net.0.1.32.1\lib\net35\slf4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Remove="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Job.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Property.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Right.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Service.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
+    <None Remove="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Filters\OperationAuthorisationFilter.cs" />
-    <Compile Include="Consumers\BasicEventConsumer.cs" />
-    <Compile Include="Consumers\EventConsumer.cs" />
-    <Compile Include="Consumers\FunctionalServiceConsumer.cs" />
-    <Compile Include="Consumers\IBasicConsumer.cs" />
-    <Compile Include="Consumers\IEventConsumer.cs" />
-    <Compile Include="Model\Authentication\AuthenticationMethod.cs" />
-    <Compile Include="Model\Authentication\AuthorisationToken.cs" />
-    <Compile Include="Model\Events\SifEvent.cs" />
-    <Compile Include="Model\Events\EventAction.cs" />
-    <Compile Include="Model\Events\IEventIterator.cs" />
-    <Compile Include="Model\Events\IEventPayloadSerialisable.cs" />
-    <Compile Include="Model\Exceptions\RegistrationException.cs" />
-    <Compile Include="Model\Exceptions\EventException.cs" />
-    <Compile Include="Model\Exceptions\InvalidAuthorisationTokenException.cs" />
-    <Compile Include="Model\Exceptions\ConsumerException.cs" />
-    <Compile Include="Model\Infrastructure\Initialization.cs" />
-    <Compile Include="Model\Infrastructure\SifObjectBinding.cs" />
-    <Compile Include="Providers\FunctionalServiceProvider.cs" />
-    <Compile Include="Model\DataModels\ServiceClassInfo.cs" />
-    <Compile Include="Model\Infrastructure\PhaseState.cs" />
-    <Compile Include="Controllers\EnvironmentsController.cs" />
-    <Compile Include="Consumers\BasicConsumer.cs" />
-    <Compile Include="Consumers\Consumer.cs" />
-    <Compile Include="Consumers\IConsumer.cs" />
-    <Compile Include="Controllers\SifController.cs" />
-    <Compile Include="Extensions\Extension.cs" />
-    <Compile Include="Model\DataModels\IDataModel.cs" />
-    <Compile Include="Model\DataModels\ISifRefId.cs" />
-    <Compile Include="Model\Exceptions\AlreadyRegisteredException.cs" />
-    <Compile Include="Model\Exceptions\BaseException.cs" />
-    <Compile Include="Model\Exceptions\ContentTooLargeException.cs" />
-    <Compile Include="Model\Exceptions\CreateException.cs" />
-    <Compile Include="Model\Exceptions\DeleteException.cs" />
-    <Compile Include="Model\Exceptions\InvalidSessionException.cs" />
-    <Compile Include="Model\Exceptions\NotFoundException.cs" />
-    <Compile Include="Model\Exceptions\QueryException.cs" />
-    <Compile Include="Model\Exceptions\RejectedException.cs" />
-    <Compile Include="Model\Exceptions\UpdateException.cs" />
-    <Compile Include="Model\Infrastructure\ApplicationInfo.cs" />
-    <Compile Include="Model\Infrastructure\ApplicationRegister.cs" />
-    <Compile Include="Model\Infrastructure\Phase.cs" />
-    <Compile Include="Model\Infrastructure\Job.cs" />
-    <Compile Include="Model\Infrastructure\Environment.cs" />
-    <Compile Include="Model\Infrastructure\EnvironmentRegister.cs" />
-    <Compile Include="Model\Infrastructure\EnvironmentType.cs" />
-    <Compile Include="Model\Infrastructure\InfrastructureService.cs" />
-    <Compile Include="Model\Infrastructure\InfrastructureServiceNames.cs" />
-    <Compile Include="Model\Infrastructure\ProductIdentity.cs" />
-    <Compile Include="Model\Infrastructure\Property.cs" />
-    <Compile Include="Model\Infrastructure\ProvisionedZone.cs" />
-    <Compile Include="Model\Infrastructure\Right.cs" />
-    <Compile Include="Model\Infrastructure\JobStateType.cs" />
-    <Compile Include="Model\Infrastructure\PhaseStateType.cs" />
-    <Compile Include="Model\Infrastructure\RightType.cs" />
-    <Compile Include="Model\Infrastructure\RightValue.cs" />
-    <Compile Include="Model\Infrastructure\Service.cs" />
-    <Compile Include="Model\Infrastructure\ServiceType.cs" />
-    <Compile Include="Model\Infrastructure\Zone.cs" />
-    <Compile Include="Model\Query\Condition.cs" />
-    <Compile Include="Model\Query\EqualCondition.cs" />
-    <Compile Include="Model\Requests\MultipleDeleteRequest.cs" />
-    <Compile Include="Model\Responses\MultipleCreateResponse.cs" />
-    <Compile Include="Model\Responses\CreateStatus.cs" />
-    <Compile Include="Model\Responses\MultipleDeleteResponse.cs" />
-    <Compile Include="Model\Responses\DeleteStatus.cs" />
-    <Compile Include="Model\Responses\MultipleObjectResponse.cs" />
-    <Compile Include="Model\Responses\ResponseError.cs" />
-    <Compile Include="Model\Responses\ResponseStatus.cs" />
-    <Compile Include="Model\Responses\MultipleUpdateResponse.cs" />
-    <Compile Include="Model\Responses\UpdateStatus.cs" />
-    <Compile Include="Model\Settings\ConfigFileBasedFrameworkSettings.cs" />
-    <Compile Include="Model\Settings\ISessionsSection.cs" />
-    <Compile Include="Model\Settings\ProviderSettings.cs" />
-    <Compile Include="Persistence\NHibernate\ApplicationRegisterRepository.cs" />
-    <Compile Include="Persistence\NHibernate\EnvironmentProviderSessionFactory.cs" />
-    <Compile Include="Persistence\NHibernate\EnvironmentRegisterRepository.cs" />
-    <Compile Include="Persistence\NHibernate\EnvironmentRepository.cs" />
-    <Compile Include="Persistence\NHibernate\GenericRepository.cs" />
-    <Compile Include="Persistence\NHibernate\IBaseSessionFactory.cs" />
-    <Compile Include="Providers\IBasicProvider.cs" />
-    <Compile Include="Providers\IProvider.cs" />
-    <Compile Include="Providers\BasicProvider.cs" />
-    <Compile Include="Providers\Provider.cs" />
-    <Compile Include="Providers\FunctionalServiceProviderFactory.cs" />
-    <Compile Include="Service\Authorisation\AuthorisationService.cs" />
-    <Compile Include="Service\Authentication\BasicAuthorisationTokenService.cs" />
-    <Compile Include="Service\Authentication\BrokeredAuthenticationService.cs" />
-    <Compile Include="Service\Authentication\AuthenticationService.cs" />
-    <Compile Include="Service\Authentication\HmacShaAuthorisationTokenService.cs" />
-    <Compile Include="Service\Authorisation\IAuthorisationService.cs" />
-    <Compile Include="Service\Authentication\IAuthenticationService.cs" />
-    <Compile Include="Service\Authentication\DirectAuthenticationService.cs" />
-    <Compile Include="Model\Settings\ConsumerSection.cs" />
-    <Compile Include="Model\Settings\ConsumerSettings.cs" />
-    <Compile Include="Model\Settings\IFrameworkSettings.cs" />
-    <Compile Include="Model\Settings\ProviderSection.cs" />
-    <Compile Include="Model\Settings\SessionElement.cs" />
-    <Compile Include="Model\Settings\SessionsElementCollection.cs" />
-    <Compile Include="Service\Authentication\IAuthorisationTokenService.cs" />
-    <Compile Include="Service\Functional\FunctionalService.cs" />
-    <Compile Include="Service\Functional\PhaseActions.cs" />
-    <Compile Include="Service\Functional\IPhaseActions.cs" />
-    <Compile Include="Service\Functional\IFunctionalService.cs" />
-    <Compile Include="Service\Infrastructure\ApplicationRegisterService.cs" />
-    <Compile Include="Service\Infrastructure\EnvironmentRegisterService.cs" />
-    <Compile Include="Service\Infrastructure\EnvironmentService.cs" />
-    <Compile Include="Service\IService.cs" />
-    <Compile Include="Service\Providers\IBasicProviderService.cs" />
-    <Compile Include="Service\Providers\IEventService.cs" />
-    <Compile Include="Service\Providers\IChangesSinceService.cs" />
-    <Compile Include="Service\Providers\IProviderService.cs" />
-    <Compile Include="Service\IObjectService.cs" />
-    <Compile Include="Service\Providers\ISupportsChangesSince.cs" />
-    <Compile Include="Service\Registration\IRegistrationService.cs" />
-    <Compile Include="Service\Registration\NoRegistrationService.cs" />
-    <Compile Include="Service\Registration\RegistrationService.cs" />
-    <Compile Include="Service\Sessions\ConfigFileBasedSessionService.cs" />
-    <Compile Include="Service\Sessions\ISessionService.cs" />
-    <Compile Include="Service\Sessions\ConsumerSessionService.cs" />
-    <Compile Include="Service\Sessions\ProviderSessionService.cs" />
-    <Compile Include="Utils\EnvironmentUtils.cs" />
-    <Compile Include="Utils\RightsUtils.cs" />
-    <Compile Include="Utils\ZoneUtils.cs" />
-    <Compile Include="Utils\ProviderUtils.cs" />
-    <Compile Include="WebApi\ActionResults\CustomHeaderResult.cs" />
-    <Compile Include="WebApi\ActionResults\EmptyContentResult.cs" />
-    <Compile Include="WebApi\ControllerSelectors\ServiceProviderHttpControllerSelector.cs" />
-    <Compile Include="WebApi\MethodOverrideHandler.cs" />
-    <Compile Include="Utils\RegistrationManager.cs" />
-    <Compile Include="Utils\SessionsManager.cs" />
-    <Compile Include="Utils\SettingsManager.cs" />
-    <Compile Include="Model\Settings\SifFrameworkSectionGroup.cs" />
-    <Compile Include="Persistence\IApplicationRegisterRepository.cs" />
-    <Compile Include="Persistence\IEnvironmentRegisterRepository.cs" />
-    <Compile Include="Persistence\IEnvironmentRepository.cs" />
-    <Compile Include="Persistence\IGenericRepository.cs" />
-    <Compile Include="Model\Persistence\IPersistable.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\Infrastructure\IApplicationRegisterService.cs" />
-    <Compile Include="Service\GenericService.cs" />
-    <Compile Include="Service\IGenericService.cs" />
-    <Compile Include="Service\Serialisation\ISerialiser.cs" />
-    <Compile Include="Service\Serialisation\XmlSerialiser.cs" />
-    <Compile Include="Service\SifService.cs" />
-    <Compile Include="Service\ISifService.cs" />
-    <Compile Include="Service\Infrastructure\IEnvironmentRegisterService.cs" />
-    <Compile Include="Service\Infrastructure\IEnvironmentService.cs" />
-    <Compile Include="Service\Mapper\MapperFactory.cs" />
-    <Compile Include="Model\Exceptions\AlreadyExistsException.cs" />
-    <Compile Include="Utils\AuthenticationUtils.cs" />
-    <Compile Include="Utils\ExceptionUtils.cs" />
-    <Compile Include="WebApi\GlobalUnexpectedExceptionHandler.cs" />
-    <Compile Include="Utils\HttpUtils.cs" />
-    <Compile Include="Service\Serialisation\SerialiserFactory.cs" />
-    <Compile Include="Utils\StringUtils.cs" />
-    <Compile Include="Utils\TraceExceptionLogger.cs" />
-    <Compile Include="WebApi\ModelBinders\MatrixParameterAttribute.cs" />
-    <Compile Include="WebApi\ModelBinders\MatrixParameterModelBinder.cs" />
-    <Compile Include="WebApi\ModelBinders\SegmentPrefixAttribute.cs" />
-    <Compile Include="WebApi\ModelBinders\SegmentPrefixModelBinder.cs" />
-    <Compile Include="WebApi\NotFoundErrorMessageResult.cs" />
-    <Compile Include="WebApi\RouteConstraints\SegmentPrefixConstraint.cs" />
-    <Compile Include="WebApi\ServiceProviderHttpControllerTypeResolver.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
     <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="PostBuildMacros">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="Targets" />
-    </GetAssemblyIdentity>
-    <PropertyGroup>
-      <Version>@(Targets->'%(Version)')</Version>
-      <Major>$(Version.Split('.')[0])</Major>
-      <Minor>$(Version.Split('.')[1])</Minor>
-      <Revision>$(Version.Split('.')[2])</Revision>
-      <Build>$(Version.Split('.')[3])</Build>
-    </PropertyGroup>
-    <ItemGroup>
-      <Version Include="$(Version)" />
-      <Major Include="$(Major)" />
-      <Minor Include="$(Minor)" />
-      <Revision Include="$(Revision)" />
-      <Build Include="$(Build)" />
-      <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor).$(Revision).$(Build)\" />
-    </ItemGroup>
-  </Target>
-  <PropertyGroup>
-    <PostBuildEventDependsOn>
-    $(PostBuildEventDependsOn);
-    PostBuildMacros;
-  </PostBuildEventDependsOn>
-    <PostBuildEvent>if not exist "@(SifFrameworkOut)" mkdir "@(SifFrameworkOut)"
-copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "@(SifFrameworkOut)$(TargetFileName)" /Y /V</PostBuildEvent>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.6" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.6" />
+    <PackageReference Include="NHibernate" Version="5.1.3" />
+    <PackageReference Include="Sif.Specification.Infrastructure" Version="3.2.1" />
+    <PackageReference Include="slf4net" Version="0.1.32.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>NET461;NETFULL</DefineConstants>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net462'">
+    <DefineConstants>NET462;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
+    <DefineConstants>NET47;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net471'">
+    <DefineConstants>NET471;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
+    <DefineConstants>NET472;NETFULL</DefineConstants>
+  </PropertyGroup>
+
 </Project>

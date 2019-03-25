@@ -40,6 +40,7 @@ namespace Sif.Framework.Utils
 
         internal enum RequestMethod { DELETE, GET, HEAD, POST, PUT }
 
+        [Obsolete("To be replaced by EventParameterType, RequestParameterType and ResponseParameterType")]
         internal enum RequestHeader
         {
             applicationKey,

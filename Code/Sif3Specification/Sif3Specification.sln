@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v3_4_2", "Sif.Specification.DataModel.Au.v3_4_2\Sif.Specification.DataModel.Au.v3_4_2.csproj", "{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Specification.DataModel.Au.v3_4_3", "Sif.Specification.DataModel.Au.v3_4_3\Sif.Specification.DataModel.Au.v3_4_3.csproj", "{C7AE4D0D-57B7-43D9-B133-CF790411E4A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Specification.DataModel.Au.v3_4_4", "Sif.Specification.DataModel.Au.v3_4_4\Sif.Specification.DataModel.Au.v3_4_4.csproj", "{3DDCFB69-954F-490A-B6D6-F41D29C29DBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,8 +91,19 @@ Global
 		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E38B2A2-DC47-48AF-B1E8-C8258024A5AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7AE4D0D-57B7-43D9-B133-CF790411E4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7AE4D0D-57B7-43D9-B133-CF790411E4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7AE4D0D-57B7-43D9-B133-CF790411E4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7AE4D0D-57B7-43D9-B133-CF790411E4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DDCFB69-954F-490A-B6D6-F41D29C29DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DDCFB69-954F-490A-B6D6-F41D29C29DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DDCFB69-954F-490A-B6D6-F41D29C29DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DDCFB69-954F-490A-B6D6-F41D29C29DBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F92FBC44-7A81-405C-A519-8039835AC4DC}
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,6 @@
 ﻿using Sif.Framework.WebApi;
 using Sif.Framework.WebApi.ControllerSelectors;
+using Sif.Framework.WebApi.Handlers;
 using Sif.Framework.WebApi.RouteConstraints;
 using System.Reflection;
 using System.Web.Http;
@@ -48,6 +49,7 @@ namespace Sif.Framework.Demo.Au.Provider
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.MessageHandlers.Insert(0, new CompressionHandler());
             config.MessageHandlers.Add(new MethodOverrideHandler());
 
             config.Services.Replace(typeof(IHttpControllerTypeResolver), new ServiceProviderHttpControllerTypeResolver());

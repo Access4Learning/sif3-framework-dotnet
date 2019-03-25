@@ -18,6 +18,18 @@ The SIF3 Framework is a .NET framework that enables developers to efficiently im
 
 The framework includes a demo Solution that illustrates how to use it.
 
+###Getting started
+
+To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
+
+###Pre-requisites
+
+The SIF3 Framework library is a .NET Standard project that supports multiple versions of .NET Framework (4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2). If you do not have all these versions installed, you will need to edit the Sif.Framework.csproj project file to reflect your installation. Multiple versions are targeted for the benefit of NuGet package deployment.
+
+For more information regarding support for multiple versions, refer to the article [Target frameworks](https://docs.microsoft.com/en-us/dotnet/standard/frameworks).
+
+The SIF3 Framework has been developed on Visual Studio Community 2017.
+
 ### Contributing to this framework
 
 See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
@@ -25,20 +37,6 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 * contributing to this framework 
 * the coding style to be used and
 * the structure of the SIF 3 Framework repositories
-
-###Download Instructions
-
-#####Option 1 - As a Zip.
-Click on the button marked "Download ZIP" available from the Code tab.
-
-#####Option 2 - Using a Git command-line client.
-From the command-line type: `git clone https://github.com/nsip/sif3-framework-dotnet.git`
-
-If you want to use this option but don't have a client installed, one can be downloaded from [http://git-scm.com/download](http://git-scm.com/download "Git command-line client download").
-
-###Getting started
-
-To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
 
 ##Version control history
 
@@ -363,10 +361,46 @@ To get started using this framework, read the *Sif3Framework .NET Developer's Gu
 
 **Feb 19, 2018 - 3.2.1.7 Resolve issues with Event Consumer**
 
-- Fix issues with Event Consumer start up.
-- Improve exception management with the registration process.
-- Fix ACL issues with the UK and US Demo projects.
+- Fixed issues with Event Consumer start up.
+- Improved exception management with the registration process.
+- Fixed ACL issues with the UK and US Demo projects.
 
 **Feb 25, 2018 - 3.2.1.8 Resolve issues with SIF Events**
 
-- Fix issues with SIF Events for both Providers and Consumers.
+- Fixed issues with SIF Events for both Providers and Consumers.
+
+**Jun 28, 2018 - 3.2.1.9 Updated to .NET Framework 4.6.1, SIF AU Data Model 3.4.3**
+
+- Updated all projects to use .NET Framework 4.6.1.
+- Updated NuGet packages used for all projects.
+- Added a level of uniqueness to queue names used by EventConsumers.
+- Implemented an internal mechanism for handling HTTP content compression and decompression.
+- Added some demo code for StudentSchoolEnrollment objects.
+- Corrected issues with SIF AU Data Model 3.4.2.
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.3.
+
+**Nov 03, 2018 - 3.2.1.10 Added custom parameters to Consumers and Providers**
+
+- Added custom parameters to Consumers and Providers (query parameters only).
+
+**Nov 04, 2018 - 3.2.1.10 Added demo Consumer and Provider for FQReportingObject objects**
+
+- Updated the SIF Framework to use the latest version of the SIF AU Data Model 3.4.4 (draft).
+- Added demo Consumer and Provider for FQReportingObject objects.
+
+**Nov 07, 2018 - 3.2.1.10 Updated the SIF AU 3.4.4 Data Model (draft)**
+
+- Updated the SIF AU 3.4.4 Data Model (draft).
+- Refactored the AU Demo Consumer and Provider to reflect the data model changes.
+
+**Nov 15, 2018 - 3.2.1.11 Updated the SIF Framework to .NET Standard**
+
+- Updated the SIF Framework to .NET Standard from .NET Framework.
+- Enabled the creation and use of NuGet packages in relation to the SIF Framework.
+- Refactored the demo projects to utilise the SIF Framework NuGet packages.
+- Updated the training documentation to reflect the use of the SIF Framework NuGet packages.
+
+**Mar 24, 2019 - 3.2.1.11.1 Updated to the official release of the SIF AU 3.4.4 Data Model**
+
+- Updated to the official release of  the SIF AU 3.4.4 Data Model.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
