@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2019 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,33 +23,27 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
-    internal class FQReportingConsumerApp
+    internal class FinancialQuestionnaireSubmissionConsumerApp
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private FQReporting CreateFQReporting()
+        private FinancialQuestionnaireSubmission CreateSubmission()
         {
-            FQReporting fqReporting = new FQReporting
+            FinancialQuestionnaireSubmission submission = new FinancialQuestionnaireSubmission
             {
                 FQYear = "2018",
                 ReportingAuthority = "Ballarat Diocese",
                 ReportingAuthoritySystem = "Vic Catholic",
                 ReportingAuthorityCommonwealthId = "012345",
-                SystemSubmission = AUCodeSetsYesOrNoCategoryType.N,
-                EntityLevel = "School",
-                LocalId = "01011234",
-                StateProvinceId = "45645567",
-                CommonwealthId = "12387",
-                ACARAId = "99007",
-                EntityName = "XXX Secondary College"
+                SystemSubmission = AUCodeSetsYesOrNoCategoryType.N
             };
 
-            return fqReporting;
+            return submission;
         }
 
         private void RunConsumer()
         {
-            FQReportingConsumer consumer = new FQReportingConsumer(
+            FinancialQuestionnaireSubmissionConsumer consumer = new FinancialQuestionnaireSubmissionConsumer(
                 SettingsManager.ConsumerSettings.ApplicationKey,
                 SettingsManager.ConsumerSettings.InstanceId,
                 SettingsManager.ConsumerSettings.UserToken,
@@ -59,30 +53,30 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                // Create a new FQ reporting object.
+                // Create a new submission.
                 try
                 {
-                    if (log.IsInfoEnabled) log.Info("*** Create a new FQ reporting object.");
-                    FQReporting createdObject = consumer.Create(CreateFQReporting());
-                    if (log.IsInfoEnabled) log.Info($"Created new FQ reporting object with ID of {createdObject.RefId}.");
+                    if (log.IsInfoEnabled) log.Info("*** Create a new submission.");
+                    FinancialQuestionnaireSubmission createdObject = consumer.Create(CreateSubmission());
+                    if (log.IsInfoEnabled) log.Info($"Created new submission with ID of {createdObject.RefId}.");
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    if (log.IsInfoEnabled) log.Info("Access to create a new FQ reporting object is rejected.");
+                    if (log.IsInfoEnabled) log.Info("Access to create a new submission is rejected.");
                 }
 
-                // Retrieve all FQ reporting objects.
-                if (log.IsInfoEnabled) log.Info("*** Retrieve all FQ reporting objects.");
-                IEnumerable<FQReporting> retrievedObjects = consumer.Query(0, 10);
+                // Retrieve all submissions.
+                if (log.IsInfoEnabled) log.Info("*** Retrieve all submissions.");
+                IEnumerable<FinancialQuestionnaireSubmission> retrievedObjects = consumer.Query(0, 10);
 
-                foreach (FQReporting retrievedObject in retrievedObjects)
+                foreach (FinancialQuestionnaireSubmission retrievedObject in retrievedObjects)
                 {
-                    if (log.IsInfoEnabled) log.Info($"FQ reporting object {retrievedObject.RefId} is for {retrievedObject.EntityName}.");
+                    if (log.IsInfoEnabled) log.Info($"Submission {retrievedObject.RefId} is for {retrievedObject.ReportingAuthority}.");
                 }
             }
             catch (UnauthorizedAccessException)
             {
-                if (log.IsInfoEnabled) log.Info($"Access to query FQ reporting objects is rejected.");
+                if (log.IsInfoEnabled) log.Info($"Access to query submissions is rejected.");
             }
             catch (Exception e)
             {
@@ -97,7 +91,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         private static void Main(string[] args)
         {
-            FQReportingConsumerApp app = new FQReportingConsumerApp();
+            FinancialQuestionnaireSubmissionConsumerApp app = new FinancialQuestionnaireSubmissionConsumerApp();
 
             try
             {

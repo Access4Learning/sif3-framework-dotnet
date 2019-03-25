@@ -58,7 +58,7 @@
             <right type="ADMIN">REJECTED</right>
           </rights>
         </service>
-        <service name="FQReportings" contextId="DEFAULT" type="OBJECT">
+        <service name="FinancialQuestionnaireSubmissions" contextId="DEFAULT" type="OBJECT">
           <rights>
             <right type="QUERY">APPROVED</right>
             <right type="CREATE">APPROVED</right>

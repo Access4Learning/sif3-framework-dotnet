@@ -47,14 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsumerApp.cs" />
-    <Compile Include="Consumers\FQReportingConsumer.cs" />
+    <Compile Include="Consumers\FinancialQuestionnaireSubmissionConsumer.cs" />
     <Compile Include="Consumers\StudentPersonalConsumer.cs" />
     <Compile Include="Consumers\StudentPersonalEventConsumer.cs" />
     <Compile Include="Consumers\StudentSchoolEnrollmentConsumer.cs" />
     <Compile Include="EnrollmentConsumerApp.cs" />
     <Compile Include="EventConsumerApp.cs" />
-    <Compile Include="FQReportingConsumerApp.cs" />
-    <Compile Include="Models\FQReporting.cs" />
+    <Compile Include="FinancialQuestionnaireSubmissionConsumerApp.cs" />
+    <Compile Include="Models\FinancialQuestionnaireSubmission.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Models\StudentSchoolEnrollment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,7 +77,7 @@
       <Version>3.2.1.11</Version>
     </PackageReference>
     <PackageReference Include="Sif.Specification.DataModel.Au">
-      <Version>3.4.4</Version>
+      <Version>3.4.4.1</Version>
     </PackageReference>
     <PackageReference Include="slf4net.log4net">
       <Version>0.1.32.1</Version>

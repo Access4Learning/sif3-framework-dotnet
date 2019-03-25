@@ -37,9 +37,9 @@ namespace Sif.Framework.Demo.Au.Provider
             XmlMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
             formatter.UseXmlSerializer = true;
 
-            XmlRootAttribute fqReportingsXmlRootAttribute = new XmlRootAttribute("FQReportings") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
-            ISerialiser<List<FQReporting>> fqReportingsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FQReporting>>(fqReportingsXmlRootAttribute);
-            formatter.SetSerializer<List<FQReporting>>((XmlSerializer)fqReportingsSerialiser);
+            XmlRootAttribute submissionsXmlRootAttribute = new XmlRootAttribute("FinancialQuestionnaireSubmissions") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<FinancialQuestionnaireSubmission>> submissionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FinancialQuestionnaireSubmission>>(submissionsXmlRootAttribute);
+            formatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
 
             XmlRootAttribute schoolInfosXmlRootAttribute = new XmlRootAttribute("SchoolInfos") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(schoolInfosXmlRootAttribute);

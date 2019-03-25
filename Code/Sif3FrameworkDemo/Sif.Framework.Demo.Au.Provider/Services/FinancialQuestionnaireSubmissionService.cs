@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2019 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,49 +23,45 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Provider.Services
 {
-    public class FQReportingService : IBasicProviderService<FQReporting>
+    public class FinancialQuestionnaireSubmissionService : IBasicProviderService<FinancialQuestionnaireSubmission>
     {
         private static readonly Random random = new Random();
 
-        private static IDictionary<string, FQReporting> cache = new Dictionary<string, FQReporting>();
+        private static IDictionary<string, FinancialQuestionnaireSubmission> cache = new Dictionary<string, FinancialQuestionnaireSubmission>();
 
-        private static FQReporting CreateObject()
+        private static FinancialQuestionnaireSubmission CreateObject()
         {
-            FQReporting obj = new FQReporting
+            FinancialQuestionnaireSubmission obj = new FinancialQuestionnaireSubmission
             {
                 RefId = Guid.NewGuid().ToString(),
                 FQYear = random.Next(2016, 2020).ToString(),
-                ReportingAuthorityCommonwealthId = $"0{random.Next(12000, 12999)}",
-                LocalId = $"0{random.Next(1010000, 1019999)}",
-                StateProvinceId = random.Next(45640000, 45649999).ToString(),
-                CommonwealthId = random.Next(12000, 12999).ToString(),
-                ACARAId = random.Next(99000, 99999).ToString(),
-                EntityName = $"John {random.Next(11, 39)} College"
+                ReportingAuthority = "Ballarat Diocese",
+                ReportingAuthorityCommonwealthId = $"0{random.Next(12000, 12999)}"
             };
 
             return obj;
         }
 
-        private static IDictionary<string, FQReporting> CreateObjects(int count)
+        private static IDictionary<string, FinancialQuestionnaireSubmission> CreateObjects(int count)
         {
-            IDictionary<string, FQReporting> objs = new Dictionary<string, FQReporting>();
+            IDictionary<string, FinancialQuestionnaireSubmission> objs = new Dictionary<string, FinancialQuestionnaireSubmission>();
 
             for (int i = 1; i <= count; i++)
             {
-                FQReporting obj = CreateObject();
+                FinancialQuestionnaireSubmission obj = CreateObject();
                 objs.Add(obj.RefId, obj);
             }
 
             return objs;
         }
 
-        static FQReportingService()
+        static FinancialQuestionnaireSubmissionService()
         {
             cache = CreateObjects(5);
         }
 
-        public FQReporting Create(
-            FQReporting obj,
+        public FinancialQuestionnaireSubmission Create(
+            FinancialQuestionnaireSubmission obj,
             bool? mustUseAdvisory = null,
             string zoneId = null,
             string contextId = null,
@@ -91,13 +87,13 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             throw new NotImplementedException();
         }
 
-        public FQReporting Retrieve(
+        public FinancialQuestionnaireSubmission Retrieve(
             string refId,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            if (!cache.TryGetValue(refId, out FQReporting obj))
+            if (!cache.TryGetValue(refId, out FinancialQuestionnaireSubmission obj))
             {
                 obj = null;
             }
@@ -105,14 +101,14 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return obj;
         }
 
-        public List<FQReporting> Retrieve(
+        public List<FinancialQuestionnaireSubmission> Retrieve(
             uint? pageIndex = null,
             uint? pageSize = null,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            List<FQReporting> objs = new List<FQReporting>();
+            List<FinancialQuestionnaireSubmission> objs = new List<FinancialQuestionnaireSubmission>();
 
             if (pageIndex.HasValue && pageSize.HasValue)
             {
@@ -138,8 +134,8 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             return objs;
         }
 
-        public List<FQReporting> Retrieve(
-            FQReporting obj,
+        public List<FinancialQuestionnaireSubmission> Retrieve(
+            FinancialQuestionnaireSubmission obj,
             uint? pageIndex = null,
             uint? pageSize = null,
             string zoneId = null,
@@ -149,7 +145,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             throw new NotImplementedException();
         }
 
-        public List<FQReporting> Retrieve(
+        public List<FinancialQuestionnaireSubmission> Retrieve(
             IEnumerable<EqualCondition> conditions,
             uint? pageIndex = null,
             uint? pageSize = null,
@@ -161,7 +157,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         }
 
         public void Update(
-            FQReporting obj,
+            FinancialQuestionnaireSubmission obj,
             string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)

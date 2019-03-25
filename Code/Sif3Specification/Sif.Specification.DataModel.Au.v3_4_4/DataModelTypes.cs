@@ -899,167 +899,171 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class ShareWithType {
+    public partial class AGReportingObjectResponseType {
         
-        private string shareWithPartyField;
+        private string submittedRefIdField;
         
-        private string purposeField;
+        private string sIFRefIdField;
         
-        private string shareWithCommentsField;
+        private string hTTPStatusCodeField;
         
-        private AUCodeSetsYesOrNoCategoryType permissionToOnShareField;
+        private string errorTextField;
         
-        private string shareWithURLField;
+        private string commonwealthIdField;
+        
+        private string entityNameField;
+        
+        private string aGSubmissionStatusCodeField;
+        
+        private AGRuleType[] aGRuleListField;
         
         /// <remarks/>
-        public string ShareWithParty {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string SubmittedRefId {
             get {
-                return this.shareWithPartyField;
+                return this.submittedRefIdField;
             }
             set {
-                this.shareWithPartyField = value;
+                this.submittedRefIdField = value;
             }
         }
         
         /// <remarks/>
-        public string Purpose {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string SIFRefId {
             get {
-                return this.purposeField;
+                return this.sIFRefIdField;
             }
             set {
-                this.purposeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ShareWithComments {
-            get {
-                return this.shareWithCommentsField;
-            }
-            set {
-                this.shareWithCommentsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public AUCodeSetsYesOrNoCategoryType PermissionToOnShare {
-            get {
-                return this.permissionToOnShareField;
-            }
-            set {
-                this.permissionToOnShareField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
-        public string ShareWithURL {
-            get {
-                return this.shareWithURLField;
-            }
-            set {
-                this.shareWithURLField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public enum AUCodeSetsYesOrNoCategoryType {
-        
-        /// <remarks/>
-        N,
-        
-        /// <remarks/>
-        U,
-        
-        /// <remarks/>
-        X,
-        
-        /// <remarks/>
-        Y,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class DataDomainObligationType {
-        
-        private string dataDomainField;
-        
-        private string domainCommentsField;
-        
-        private ShareWithType[] shareWithListField;
-        
-        /// <remarks/>
-        public string DataDomain {
-            get {
-                return this.dataDomainField;
-            }
-            set {
-                this.dataDomainField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string DomainComments {
-            get {
-                return this.domainCommentsField;
-            }
-            set {
-                this.domainCommentsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("ShareWith", IsNullable=false)]
-        public ShareWithType[] ShareWithList {
-            get {
-                return this.shareWithListField;
-            }
-            set {
-                this.shareWithListField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    public partial class FQRuleType {
-        
-        private string fQRuleCodeField;
-        
-        private string fQRuleCommentField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string FQRuleCode {
-            get {
-                return this.fQRuleCodeField;
-            }
-            set {
-                this.fQRuleCodeField = value;
+                this.sIFRefIdField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string FQRuleComment {
+        public string HTTPStatusCode {
             get {
-                return this.fQRuleCommentField;
+                return this.hTTPStatusCodeField;
             }
             set {
-                this.fQRuleCommentField = value;
+                this.hTTPStatusCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string ErrorText {
+            get {
+                return this.errorTextField;
+            }
+            set {
+                this.errorTextField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string CommonwealthId {
+            get {
+                return this.commonwealthIdField;
+            }
+            set {
+                this.commonwealthIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string EntityName {
+            get {
+                return this.entityNameField;
+            }
+            set {
+                this.entityNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AGSubmissionStatusCode {
+            get {
+                return this.aGSubmissionStatusCodeField;
+            }
+            set {
+                this.aGSubmissionStatusCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("AGRule", IsNullable=false)]
+        public AGRuleType[] AGRuleList {
+            get {
+                return this.aGRuleListField;
+            }
+            set {
+                this.aGRuleListField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class AGRuleType {
+        
+        private string aGRuleCodeField;
+        
+        private string aGRuleCommentField;
+        
+        private string aGRuleResponseField;
+        
+        private string aGRuleStatusField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AGRuleCode {
+            get {
+                return this.aGRuleCodeField;
+            }
+            set {
+                this.aGRuleCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AGRuleComment {
+            get {
+                return this.aGRuleCommentField;
+            }
+            set {
+                this.aGRuleCommentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AGRuleResponse {
+            get {
+                return this.aGRuleResponseField;
+            }
+            set {
+                this.aGRuleResponseField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AGRuleStatus {
+            get {
+                return this.aGRuleStatusField;
+            }
+            set {
+                this.aGRuleStatusField = value;
             }
         }
     }
@@ -1230,6 +1234,172 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.fQAnswerField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class FQReportingType {
+        
+        private string fQRefIdField;
+        
+        private string entityLevelField;
+        
+        private string schoolInfoRefIdField;
+        
+        private string localIdField;
+        
+        private string stateProvinceIdField;
+        
+        private string commonwealthIdField;
+        
+        private string aCARAIdField;
+        
+        private string entityNameField;
+        
+        private EntityContactInfoType entityContactField;
+        
+        private FQContextualQuestionType[] fQContextualQuestionListField;
+        
+        private FQItemType[] fQItemListField;
+        
+        private AGRuleType[] aGRuleListField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string FQRefId {
+            get {
+                return this.fQRefIdField;
+            }
+            set {
+                this.fQRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string EntityLevel {
+            get {
+                return this.entityLevelField;
+            }
+            set {
+                this.entityLevelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string SchoolInfoRefId {
+            get {
+                return this.schoolInfoRefIdField;
+            }
+            set {
+                this.schoolInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string LocalId {
+            get {
+                return this.localIdField;
+            }
+            set {
+                this.localIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string StateProvinceId {
+            get {
+                return this.stateProvinceIdField;
+            }
+            set {
+                this.stateProvinceIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string CommonwealthId {
+            get {
+                return this.commonwealthIdField;
+            }
+            set {
+                this.commonwealthIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string ACARAId {
+            get {
+                return this.aCARAIdField;
+            }
+            set {
+                this.aCARAIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string EntityName {
+            get {
+                return this.entityNameField;
+            }
+            set {
+                this.entityNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public EntityContactInfoType EntityContact {
+            get {
+                return this.entityContactField;
+            }
+            set {
+                this.entityContactField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("FQContextualQuestion", IsNullable=false)]
+        public FQContextualQuestionType[] FQContextualQuestionList {
+            get {
+                return this.fQContextualQuestionListField;
+            }
+            set {
+                this.fQContextualQuestionListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("FQItem", IsNullable=false)]
+        public FQItemType[] FQItemList {
+            get {
+                return this.fQItemListField;
+            }
+            set {
+                this.fQItemListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("AGRule", IsNullable=false)]
+        public AGRuleType[] AGRuleList {
+            get {
+                return this.aGRuleListField;
+            }
+            set {
+                this.aGRuleListField = value;
             }
         }
     }
@@ -1571,6 +1741,25 @@ namespace Sif.Specification.DataModel.Au {
                 this.fullNameField = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public enum AUCodeSetsYesOrNoCategoryType {
+        
+        /// <remarks/>
+        N,
+        
+        /// <remarks/>
+        U,
+        
+        /// <remarks/>
+        X,
+        
+        /// <remarks/>
+        Y,
     }
     
     /// <remarks/>
@@ -3936,7 +4125,7 @@ namespace Sif.Specification.DataModel.Au {
         private string softwareVersionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string SoftwareProduct {
             get {
                 return this.softwareProductField;
@@ -3947,7 +4136,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string SoftwareVersion {
             get {
                 return this.softwareVersionField;
@@ -6364,7 +6553,7 @@ namespace Sif.Specification.DataModel.Au {
         
         private string studentProficiencyField;
         
-        private decimal[][] plausibleScaledValueListField;
+        private decimal[] plausibleScaledValueListField;
         
         /// <remarks/>
         public decimal RawScore {
@@ -6439,8 +6628,8 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("PlausibleScaledValue", typeof(decimal), IsNullable=false)]
-        public decimal[][] PlausibleScaledValueList {
+        [System.Xml.Serialization.XmlArrayItemAttribute("PlausibleScaledValue", IsNullable=false)]
+        public decimal[] PlausibleScaledValueList {
             get {
                 return this.plausibleScaledValueListField;
             }
@@ -7438,15 +7627,15 @@ namespace Sif.Specification.DataModel.Au {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class LearningStandardType {
         
-        private string[] learningStandardItemRefIdField;
+        private string learningStandardItemRefIdField;
         
         private string learningStandardURLField;
         
         private string learningStandardLocalIdField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("LearningStandardItemRefId", DataType="token")]
-        public string[] LearningStandardItemRefId {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string LearningStandardItemRefId {
             get {
                 return this.learningStandardItemRefIdField;
             }
@@ -8036,6 +8225,10 @@ namespace Sif.Specification.DataModel.Au {
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("618")]
         Item618,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("619")]
+        Item619,
         
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("700")]
@@ -13787,6 +13980,10 @@ namespace Sif.Specification.DataModel.Au {
         Item20,
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("40")]
+        Item40,
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("99")]
         Item99,
     }
@@ -16262,6 +16459,146 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class PublishingPermissionType {
+        
+        private AUCodeSetsPermissionCategoryCodeType permissionCategoryField;
+        
+        private AUCodeSetsYesOrNoCategoryType permissionValueField;
+        
+        /// <remarks/>
+        public AUCodeSetsPermissionCategoryCodeType PermissionCategory {
+            get {
+                return this.permissionCategoryField;
+            }
+            set {
+                this.permissionCategoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public AUCodeSetsYesOrNoCategoryType PermissionValue {
+            get {
+                return this.permissionValueField;
+            }
+            set {
+                this.permissionValueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public enum AUCodeSetsPermissionCategoryCodeType {
+        
+        /// <remarks/>
+        OKPrintedMaterial,
+        
+        /// <remarks/>
+        OKOnlineMaterial,
+        
+        /// <remarks/>
+        OKMediaRelease,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("School/College Newsletter")]
+        SchoolCollegeNewsletter,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("School/College Yearbook")]
+        SchoolCollegeYearbook,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("Jurisdiction Promotional")]
+        JurisdictionPromotional,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("Jurisdiction Educational")]
+        JurisdictionEducational,
+        
+        /// <remarks/>
+        OKPublishInfo,
+        
+        /// <remarks/>
+        OKOnLineServices,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public partial class StudentGroupType {
+        
+        private AUCodeSetsGroupCategoryCodeType groupCategoryField;
+        
+        private string groupLocalIdField;
+        
+        private string groupDescriptionField;
+        
+        /// <remarks/>
+        public AUCodeSetsGroupCategoryCodeType GroupCategory {
+            get {
+                return this.groupCategoryField;
+            }
+            set {
+                this.groupCategoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string GroupLocalId {
+            get {
+                return this.groupLocalIdField;
+            }
+            set {
+                this.groupLocalIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string GroupDescription {
+            get {
+                return this.groupDescriptionField;
+            }
+            set {
+                this.groupDescriptionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    public enum AUCodeSetsGroupCategoryCodeType {
+        
+        /// <remarks/>
+        PastoralGroup,
+        
+        /// <remarks/>
+        MentorGroup,
+        
+        /// <remarks/>
+        RollGroup,
+        
+        /// <remarks/>
+        AfterSchoolGroup,
+        
+        /// <remarks/>
+        OtherGroup,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     public partial class StudentSubjectChoiceType {
         
         private System.Nullable<uint> preferenceNumberField;
@@ -16570,6 +16907,14 @@ namespace Sif.Specification.DataModel.Au {
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("1931")]
         Item1931,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("1940")]
+        Item1940,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("1941")]
+        Item1941,
         
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("3499")]
@@ -18727,6 +19072,10 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool lBOTEFieldSpecified;
         
+        private System.Nullable<AUCodeSetsYesOrNoCategoryType> interpreterRequiredField;
+        
+        private bool interpreterRequiredFieldSpecified;
+        
         private System.Nullable<AUCodeSetsImmunisationCertificateStatusType> immunisationCertificateStatusField;
         
         private bool immunisationCertificateStatusFieldSpecified;
@@ -19128,6 +19477,28 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.lBOTEFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<AUCodeSetsYesOrNoCategoryType> InterpreterRequired {
+            get {
+                return this.interpreterRequiredField;
+            }
+            set {
+                this.interpreterRequiredField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool InterpreterRequiredSpecified {
+            get {
+                return this.interpreterRequiredFieldSpecified;
+            }
+            set {
+                this.interpreterRequiredFieldSpecified = value;
             }
         }
         
@@ -31230,6 +31601,8 @@ namespace Sif.Specification.DataModel.Au {
         
         private string[] calendarSummaryListField;
         
+        private string previousSchoolNameField;
+        
         private SIF_MetadataType sIF_MetadataField;
         
         private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
@@ -31477,6 +31850,17 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.calendarSummaryListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string PreviousSchoolName {
+            get {
+                return this.previousSchoolNameField;
+            }
+            set {
+                this.previousSchoolNameField = value;
             }
         }
         
@@ -31826,6 +32210,10 @@ namespace Sif.Specification.DataModel.Au {
         private System.Nullable<AUCodeSetsYesOrNoCategoryType> offlineDeliveryField;
         
         private bool offlineDeliveryFieldSpecified;
+        
+        private System.Nullable<AUCodeSetsYesOrNoCategoryType> eSLSupportField;
+        
+        private bool eSLSupportFieldSpecified;
         
         private string prePrimaryEducationField;
         
@@ -32228,6 +32616,28 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<AUCodeSetsYesOrNoCategoryType> ESLSupport {
+            get {
+                return this.eSLSupportField;
+            }
+            set {
+                this.eSLSupportField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ESLSupportSpecified {
+            get {
+                return this.eSLSupportFieldSpecified;
+            }
+            set {
+                this.eSLSupportFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
         public string PrePrimaryEducation {
             get {
@@ -32401,13 +32811,21 @@ namespace Sif.Specification.DataModel.Au {
         
         private string previousSchoolField;
         
+        private string previousSchoolNameField;
+        
         private string destinationSchoolField;
+        
+        private string destinationSchoolNameField;
         
         private StudentSubjectChoiceType[] studentSubjectChoiceListField;
         
         private System.Nullable<System.DateTime> startedAtSchoolDateField;
         
         private bool startedAtSchoolDateFieldSpecified;
+        
+        private StudentGroupType[] studentGroupListField;
+        
+        private PublishingPermissionType[] publishingPermissionListField;
         
         private SIF_MetadataType sIF_MetadataField;
         
@@ -32822,12 +33240,34 @@ namespace Sif.Specification.DataModel.Au {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string PreviousSchoolName {
+            get {
+                return this.previousSchoolNameField;
+            }
+            set {
+                this.previousSchoolNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
         public string DestinationSchool {
             get {
                 return this.destinationSchoolField;
             }
             set {
                 this.destinationSchoolField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string DestinationSchoolName {
+            get {
+                return this.destinationSchoolNameField;
+            }
+            set {
+                this.destinationSchoolNameField = value;
             }
         }
         
@@ -32862,6 +33302,30 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.startedAtSchoolDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("StudentGroup", IsNullable=false)]
+        public StudentGroupType[] StudentGroupList {
+            get {
+                return this.studentGroupListField;
+            }
+            set {
+                this.studentGroupListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("PublishingPermission", IsNullable=false)]
+        public PublishingPermissionType[] PublishingPermissionList {
+            get {
+                return this.publishingPermissionListField;
+            }
+            set {
+                this.publishingPermissionListField = value;
             }
         }
         
@@ -34229,6 +34693,8 @@ namespace Sif.Specification.DataModel.Au {
         
         private bool oKToPublishFieldSpecified;
         
+        private PublishingPermissionType[] publishingPermissionListField;
+        
         private SIF_MetadataType sIF_MetadataField;
         
         private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
@@ -34285,6 +34751,18 @@ namespace Sif.Specification.DataModel.Au {
             }
             set {
                 this.oKToPublishFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("PublishingPermission", IsNullable=false)]
+        public PublishingPermissionType[] PublishingPermissionList {
+            get {
+                return this.publishingPermissionListField;
+            }
+            set {
+                this.publishingPermissionListField = value;
             }
         }
         
@@ -45893,6 +46371,339 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentScoreJudgementAgainstStandard", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class StudentScoreJudgementAgainstStandardType {
+        
+        private string schoolYearField;
+        
+        private string termInfoRefIdField;
+        
+        private string localTermCodeField;
+        
+        private string studentPersonalRefIdField;
+        
+        private string studentStateProvinceIdField;
+        
+        private string studentLocalIdField;
+        
+        private YearLevelType yearLevelField;
+        
+        private string teachingGroupRefIdField;
+        
+        private string classLocalIdField;
+        
+        private string staffPersonalRefIdField;
+        
+        private string staffLocalIdField;
+        
+        private LearningStandardType[] learningStandardListField;
+        
+        private string curriculumCodeField;
+        
+        private string curriculumNodeCodeField;
+        
+        private string scoreField;
+        
+        private string specialCircumstanceLocalCodeField;
+        
+        private string managedPathwayLocalCodeField;
+        
+        private string schoolInfoRefIdField;
+        
+        private string schoolLocalIdField;
+        
+        private string schoolCommonwealthIdField;
+        
+        private SIF_MetadataType sIF_MetadataField;
+        
+        private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
+        
+        private string refIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="gYear")]
+        public string SchoolYear {
+            get {
+                return this.schoolYearField;
+            }
+            set {
+                this.schoolYearField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string TermInfoRefId {
+            get {
+                return this.termInfoRefIdField;
+            }
+            set {
+                this.termInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string LocalTermCode {
+            get {
+                return this.localTermCodeField;
+            }
+            set {
+                this.localTermCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string StudentPersonalRefId {
+            get {
+                return this.studentPersonalRefIdField;
+            }
+            set {
+                this.studentPersonalRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string StudentStateProvinceId {
+            get {
+                return this.studentStateProvinceIdField;
+            }
+            set {
+                this.studentStateProvinceIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string StudentLocalId {
+            get {
+                return this.studentLocalIdField;
+            }
+            set {
+                this.studentLocalIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public YearLevelType YearLevel {
+            get {
+                return this.yearLevelField;
+            }
+            set {
+                this.yearLevelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string TeachingGroupRefId {
+            get {
+                return this.teachingGroupRefIdField;
+            }
+            set {
+                this.teachingGroupRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string ClassLocalId {
+            get {
+                return this.classLocalIdField;
+            }
+            set {
+                this.classLocalIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string StaffPersonalRefId {
+            get {
+                return this.staffPersonalRefIdField;
+            }
+            set {
+                this.staffPersonalRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string StaffLocalId {
+            get {
+                return this.staffLocalIdField;
+            }
+            set {
+                this.staffLocalIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("LearningStandard", IsNullable=false)]
+        public LearningStandardType[] LearningStandardList {
+            get {
+                return this.learningStandardListField;
+            }
+            set {
+                this.learningStandardListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string CurriculumCode {
+            get {
+                return this.curriculumCodeField;
+            }
+            set {
+                this.curriculumCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string CurriculumNodeCode {
+            get {
+                return this.curriculumNodeCodeField;
+            }
+            set {
+                this.curriculumNodeCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string Score {
+            get {
+                return this.scoreField;
+            }
+            set {
+                this.scoreField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string SpecialCircumstanceLocalCode {
+            get {
+                return this.specialCircumstanceLocalCodeField;
+            }
+            set {
+                this.specialCircumstanceLocalCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string ManagedPathwayLocalCode {
+            get {
+                return this.managedPathwayLocalCodeField;
+            }
+            set {
+                this.managedPathwayLocalCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
+        public string SchoolInfoRefId {
+            get {
+                return this.schoolInfoRefIdField;
+            }
+            set {
+                this.schoolInfoRefIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string SchoolLocalId {
+            get {
+                return this.schoolLocalIdField;
+            }
+            set {
+                this.schoolLocalIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string SchoolCommonwealthId {
+            get {
+                return this.schoolCommonwealthIdField;
+            }
+            set {
+                this.schoolCommonwealthIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public SIF_MetadataType SIF_Metadata {
+            get {
+                return this.sIF_MetadataField;
+            }
+            set {
+                this.sIF_MetadataField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("SIF_ExtendedElement", IsNullable=false)]
+        public SIF_ExtendedElementsTypeSIF_ExtendedElement[] SIF_ExtendedElements {
+            get {
+                return this.sIF_ExtendedElementsField;
+            }
+            set {
+                this.sIF_ExtendedElementsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string RefId {
+            get {
+                return this.refIdField;
+            }
+            set {
+                this.refIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("StudentScoreJudgementAgainstStandards", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class StudentScoreJudgementAgainstStandardCollectionType {
+        
+        private StudentScoreJudgementAgainstStandardType[] studentScoreJudgementAgainstStandardField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("StudentScoreJudgementAgainstStandard")]
+        public StudentScoreJudgementAgainstStandardType[] StudentScoreJudgementAgainstStandard {
+            get {
+                return this.studentScoreJudgementAgainstStandardField;
+            }
+            set {
+                this.studentScoreJudgementAgainstStandardField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
     [System.Xml.Serialization.XmlRootAttribute("NAPEventStudentLink", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
     public partial class NAPEventStudentLinkType {
         
@@ -49246,8 +50057,8 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    [System.Xml.Serialization.XmlRootAttribute("FQReporting", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
-    public partial class FQReportingType {
+    [System.Xml.Serialization.XmlRootAttribute("FinancialQuestionnaireSubmission", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class FinancialQuestionnaireSubmissionType {
         
         private string fQYearField;
         
@@ -49263,27 +50074,11 @@ namespace Sif.Specification.DataModel.Au {
         
         private SoftwareVendorInfoContainerType softwareVendorInfoField;
         
-        private string entityLevelField;
+        private EntityContactInfoType submissionContactField;
         
-        private string schoolInfoRefIdField;
+        private string fQReportCommentsField;
         
-        private string localIdField;
-        
-        private string stateProvinceIdField;
-        
-        private string commonwealthIdField;
-        
-        private string aCARAIdField;
-        
-        private string entityNameField;
-        
-        private EntityContactInfoType entityContactField;
-        
-        private FQContextualQuestionType[] fQContextualQuestionListField;
-        
-        private FQItemType[] fQItemListField;
-        
-        private FQRuleType[] fQRuleListField;
+        private FQReportingType[] fQReportingListField;
         
         private SIF_MetadataType sIF_MetadataField;
         
@@ -49325,7 +50120,7 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
         public string ReportingAuthorityCommonwealthId {
             get {
                 return this.reportingAuthorityCommonwealthIdField;
@@ -49358,7 +50153,6 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public SoftwareVendorInfoContainerType SoftwareVendorInfo {
             get {
                 return this.softwareVendorInfoField;
@@ -49369,126 +50163,35 @@ namespace Sif.Specification.DataModel.Au {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string EntityLevel {
+        public EntityContactInfoType SubmissionContact {
             get {
-                return this.entityLevelField;
+                return this.submissionContactField;
             }
             set {
-                this.entityLevelField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="token", IsNullable=true)]
-        public string SchoolInfoRefId {
-            get {
-                return this.schoolInfoRefIdField;
-            }
-            set {
-                this.schoolInfoRefIdField = value;
+                this.submissionContactField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string LocalId {
+        public string FQReportComments {
             get {
-                return this.localIdField;
+                return this.fQReportCommentsField;
             }
             set {
-                this.localIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string StateProvinceId {
-            get {
-                return this.stateProvinceIdField;
-            }
-            set {
-                this.stateProvinceIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string CommonwealthId {
-            get {
-                return this.commonwealthIdField;
-            }
-            set {
-                this.commonwealthIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string ACARAId {
-            get {
-                return this.aCARAIdField;
-            }
-            set {
-                this.aCARAIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
-        public string EntityName {
-            get {
-                return this.entityNameField;
-            }
-            set {
-                this.entityNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public EntityContactInfoType EntityContact {
-            get {
-                return this.entityContactField;
-            }
-            set {
-                this.entityContactField = value;
+                this.fQReportCommentsField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("FQContextualQuestion", IsNullable=false)]
-        public FQContextualQuestionType[] FQContextualQuestionList {
+        [System.Xml.Serialization.XmlArrayItemAttribute("FQReporting", IsNullable=false)]
+        public FQReportingType[] FQReportingList {
             get {
-                return this.fQContextualQuestionListField;
+                return this.fQReportingListField;
             }
             set {
-                this.fQContextualQuestionListField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("FQItem", IsNullable=false)]
-        public FQItemType[] FQItemList {
-            get {
-                return this.fQItemListField;
-            }
-            set {
-                this.fQItemListField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("FQRule", IsNullable=false)]
-        public FQRuleType[] FQRuleList {
-            get {
-                return this.fQRuleListField;
-            }
-            set {
-                this.fQRuleListField = value;
+                this.fQReportingListField = value;
             }
         }
         
@@ -49533,19 +50236,210 @@ namespace Sif.Specification.DataModel.Au {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
-    [System.Xml.Serialization.XmlRootAttribute("FQReportings", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
-    public partial class FQReportingCollectionType {
+    [System.Xml.Serialization.XmlRootAttribute("FinancialQuestionnaireSubmissions", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class FinancialQuestionnaireSubmissionCollectionType {
         
-        private FQReportingType[] fQReportingField;
+        private FinancialQuestionnaireSubmissionType[] financialQuestionnaireSubmissionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("FQReporting")]
-        public FQReportingType[] FQReporting {
+        [System.Xml.Serialization.XmlElementAttribute("FinancialQuestionnaireSubmission")]
+        public FinancialQuestionnaireSubmissionType[] FinancialQuestionnaireSubmission {
             get {
-                return this.fQReportingField;
+                return this.financialQuestionnaireSubmissionField;
             }
             set {
-                this.fQReportingField = value;
+                this.financialQuestionnaireSubmissionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AGStatusReport", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class AGStatusReportType {
+        
+        private string reportingAuthorityField;
+        
+        private string reportingAuthoritySystemField;
+        
+        private string reportingAuthorityCommonwealthIdField;
+        
+        private string submittedByField;
+        
+        private System.Nullable<System.DateTime> submissionTimestampField;
+        
+        private bool submissionTimestampFieldSpecified;
+        
+        private string aGCollectionField;
+        
+        private string collectionYearField;
+        
+        private AGReportingObjectResponseType[] aGReportingObjectResponseListField;
+        
+        private SIF_MetadataType sIF_MetadataField;
+        
+        private SIF_ExtendedElementsTypeSIF_ExtendedElement[] sIF_ExtendedElementsField;
+        
+        private string refIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString")]
+        public string ReportingAuthority {
+            get {
+                return this.reportingAuthorityField;
+            }
+            set {
+                this.reportingAuthorityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string ReportingAuthoritySystem {
+            get {
+                return this.reportingAuthoritySystemField;
+            }
+            set {
+                this.reportingAuthoritySystemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string ReportingAuthorityCommonwealthId {
+            get {
+                return this.reportingAuthorityCommonwealthIdField;
+            }
+            set {
+                this.reportingAuthorityCommonwealthIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string SubmittedBy {
+            get {
+                return this.submittedByField;
+            }
+            set {
+                this.submittedByField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<System.DateTime> SubmissionTimestamp {
+            get {
+                return this.submissionTimestampField;
+            }
+            set {
+                this.submissionTimestampField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool SubmissionTimestampSpecified {
+            get {
+                return this.submissionTimestampFieldSpecified;
+            }
+            set {
+                this.submissionTimestampFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="normalizedString", IsNullable=true)]
+        public string AGCollection {
+            get {
+                return this.aGCollectionField;
+            }
+            set {
+                this.aGCollectionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="gYear")]
+        public string CollectionYear {
+            get {
+                return this.collectionYearField;
+            }
+            set {
+                this.collectionYearField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("AGReportingObjectResponse", IsNullable=false)]
+        public AGReportingObjectResponseType[] AGReportingObjectResponseList {
+            get {
+                return this.aGReportingObjectResponseListField;
+            }
+            set {
+                this.aGReportingObjectResponseListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public SIF_MetadataType SIF_Metadata {
+            get {
+                return this.sIF_MetadataField;
+            }
+            set {
+                this.sIF_MetadataField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("SIF_ExtendedElement", IsNullable=false)]
+        public SIF_ExtendedElementsTypeSIF_ExtendedElement[] SIF_ExtendedElements {
+            get {
+                return this.sIF_ExtendedElementsField;
+            }
+            set {
+                this.sIF_ExtendedElementsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="token")]
+        public string RefId {
+            get {
+                return this.refIdField;
+            }
+            set {
+                this.refIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sifassociation.org/datamodel/au/3.4")]
+    [System.Xml.Serialization.XmlRootAttribute("AGStatusReports", Namespace="http://www.sifassociation.org/datamodel/au/3.4", IsNullable=false)]
+    public partial class AGStatusReportCollectionType {
+        
+        private AGStatusReportType[] aGStatusReportField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("AGStatusReport")]
+        public AGStatusReportType[] AGStatusReport {
+            get {
+                return this.aGStatusReportField;
+            }
+            set {
+                this.aGStatusReportField = value;
             }
         }
     }
