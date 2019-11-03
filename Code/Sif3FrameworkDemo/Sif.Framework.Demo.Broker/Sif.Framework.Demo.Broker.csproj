@@ -77,8 +77,8 @@
     <Reference Include="Sif.Framework, Version=3.2.1.11, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Framework.3.2.1.11\lib\net461\Sif.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.4\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
+    <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.5\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure, Version=3.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Specification.Infrastructure.3.2.1\lib\netstandard2.0\Sif.Specification.Infrastructure.dll</HintPath>
