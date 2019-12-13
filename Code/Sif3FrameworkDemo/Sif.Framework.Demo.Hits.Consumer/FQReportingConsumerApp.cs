@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 using Sif.Framework.Demo.Hits.Consumer.Consumers;
 using Sif.Framework.Demo.Hits.Consumer.Models;
 using Sif.Framework.Utils;
-using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
 
@@ -31,11 +30,6 @@ namespace Sif.Framework.Demo.Hits.Consumer
         {
             FQReporting fqReporting = new FQReporting
             {
-                FQYear = "2018",
-                ReportingAuthority = "Ballarat Diocese",
-                ReportingAuthoritySystem = "Vic Catholic",
-                ReportingAuthorityCommonwealthId = "012345",
-                SystemSubmission = AUCodeSetsYesOrNoCategoryType.N,
                 EntityLevel = "School",
                 LocalId = "01011234",
                 StateProvinceId = "45645567",

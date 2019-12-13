@@ -1,4 +1,4 @@
-> Copyright 2018 Systemic Pty Ltd
+> Copyright 2020 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -403,4 +403,9 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 **Mar 24, 2019 - 3.2.1.11.1 Updated to the official release of the SIF AU 3.4.4 Data Model**
 
 - Updated to the official release of  the SIF AU 3.4.4 Data Model.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
+
+**Nov 3, 2019 - 3.2.1.12 Updated to the official release of the SIF AU 3.4.5 Data Model**
+
+- Updated to the official release of  the SIF AU 3.4.5 Data Model.
 - Refactored the AU Demo Consumer and Provider to reflect the data model updates.
