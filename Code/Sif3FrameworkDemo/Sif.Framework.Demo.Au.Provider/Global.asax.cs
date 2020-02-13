@@ -1,4 +1,6 @@
-﻿using Sif.Framework.Demo.Au.Provider.Models;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
@@ -36,6 +38,15 @@ namespace Sif.Framework.Demo.Au.Provider
 
             XmlMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
             formatter.UseXmlSerializer = true;
+
+            // Configuration used for supporting Goessner notation for JSON.
+            JsonMediaTypeFormatter jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            jsonFormatter.UseDataContractJsonSerializer = false;
+            jsonFormatter.SerializerSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.Auto
+            };
 
             XmlRootAttribute submissionsXmlRootAttribute = new XmlRootAttribute("FinancialQuestionnaireSubmissions") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<FinancialQuestionnaireSubmission>> submissionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FinancialQuestionnaireSubmission>>(submissionsXmlRootAttribute);
