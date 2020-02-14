@@ -141,6 +141,7 @@
     <Compile Include="Controllers\SchoolInfosProvider.cs" />
     <Compile Include="Controllers\StudentPersonalsProvider.cs" />
     <Compile Include="Controllers\StudentSchoolEnrollmentsProvider.cs" />
+    <Compile Include="Formatters\GoessnerJsonFormatter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
