@@ -41,18 +41,10 @@ namespace Sif.Framework.Demo.Au.Provider
             formatter.UseXmlSerializer = true;
 
             // Configuration used for supporting Goessner notation for JSON.
-            JsonMediaTypeFormatter jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            jsonFormatter.UseDataContractJsonSerializer = false;
-            jsonFormatter.SerializerSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.Auto
-            };
             XmlToJsonFormatter xmlToJsonFormatter = new XmlToJsonFormatter();
-            GlobalConfiguration.Configuration.Formatters.Clear();
+            xmlToJsonFormatter.UseXmlSerializer = true;
             GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
-            GlobalConfiguration.Configuration.Formatters.Add(formatter);
-            //GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
 
             XmlRootAttribute submissionsXmlRootAttribute = new XmlRootAttribute("FinancialQuestionnaireSubmissions") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<FinancialQuestionnaireSubmission>> submissionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FinancialQuestionnaireSubmission>>(submissionsXmlRootAttribute);

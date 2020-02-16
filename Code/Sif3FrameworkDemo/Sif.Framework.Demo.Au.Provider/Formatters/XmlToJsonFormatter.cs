@@ -13,17 +13,57 @@ using System.Xml.Serialization;
 
 namespace Sif.Framework.Demo.Au.Provider.Formatters
 {
+    /// <summary>
+    /// XML-based MediaTypeFormatter that serialises an object to XML and then JSON, and deserialises JSON to XML and
+    /// then an object.
+    /// </summary>
     public class XmlToJsonFormatter : XmlMediaTypeFormatter
     {
+        /// <summary>
+        /// Create an instance of this formatter.
+        /// </summary>
         public XmlToJsonFormatter()
         {
             SupportedMediaTypes.Clear();
             SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/json"));
         }
 
-        public override Task<object> ReadFromStreamAsync(Type type, Stream readStream, HttpContent content, IFormatterLogger formatterLogger)
+        /// <summary>
+        /// <see cref="MediaTypeFormatter.ReadFromStreamAsync(Type, Stream, HttpContent, IFormatterLogger)"/>
+        /// </summary>
+        public override Task<object> ReadFromStreamAsync(
+            Type type,
+            Stream readStream,
+            HttpContent content,
+            IFormatterLogger formatterLogger)
         {
-            return base.ReadFromStreamAsync(type, readStream, content, formatterLogger);
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            if (readStream == null) throw new ArgumentNullException(nameof(readStream));
+
+            object value = null;
+
+            using (StreamReader streamReader = new StreamReader(readStream))
+            {
+                string json = streamReader.ReadToEnd();
+
+                // If there is JSON data, deserialise into an object.
+                if (!string.IsNullOrWhiteSpace(json))
+                {
+                    // Convert the JSON string into an XML document.
+                    XmlDocument xmlDocument = JsonConvert.DeserializeXmlNode(json);
+
+                    using (XmlReader xmlReader = new XmlNodeReader(xmlDocument))
+                    {
+                        // Deserialise the XML document into an object.
+                        XmlSerializer xmlSerializer = (XmlSerializer)GetDeserializer(type, content);
+                        value = xmlSerializer.Deserialize(xmlReader);
+                    }
+                }
+            }
+
+            return Task.FromResult(value);
         }
 
         /// <summary>
@@ -36,6 +76,10 @@ namespace Sif.Framework.Demo.Au.Provider.Formatters
             HttpContent content,
             TransportContext transportContext)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            if (writeStream == null) throw new ArgumentNullException(nameof(writeStream));
+
             string xml;
 
             using (StringWriter stringWriter = new StringWriter())
@@ -59,12 +103,12 @@ namespace Sif.Framework.Demo.Au.Provider.Formatters
                 .Remove();
             xml = xElement.ToString();
 
-            // Convert the XML into JSON.
+            // Convert the XML document into a JSON string.
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
             string json = JsonConvert.SerializeXmlNode(xmlDocument);
 
-            // Write the JSON to the stream.
+            // Write the JSON string to the stream.
             byte[] buf = System.Text.Encoding.Default.GetBytes(json);
             writeStream.Write(buf, 0, buf.Length);
             writeStream.Flush();
