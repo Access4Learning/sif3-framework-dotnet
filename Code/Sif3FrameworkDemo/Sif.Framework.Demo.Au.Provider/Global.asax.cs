@@ -37,45 +37,48 @@ namespace Sif.Framework.Demo.Au.Provider
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping("json", "application/json");
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.AddUriPathExtensionMapping("xml", "text/xml");
 
-            XmlMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
-            formatter.UseXmlSerializer = true;
-
-            // Configuration used for supporting Goessner notation for JSON.
-            XmlToJsonFormatter xmlToJsonFormatter = new XmlToJsonFormatter();
-            xmlToJsonFormatter.UseXmlSerializer = true;
-            GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
-            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
+            XmlMediaTypeFormatter xmlFormatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
+            xmlFormatter.UseXmlSerializer = true;
 
             XmlRootAttribute submissionsXmlRootAttribute = new XmlRootAttribute("FinancialQuestionnaireSubmissions") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<FinancialQuestionnaireSubmission>> submissionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FinancialQuestionnaireSubmission>>(submissionsXmlRootAttribute);
-            xmlToJsonFormatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
-            formatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
+            xmlFormatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
 
             XmlRootAttribute schoolInfosXmlRootAttribute = new XmlRootAttribute("SchoolInfos") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(schoolInfosXmlRootAttribute);
-            xmlToJsonFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
-            formatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+            xmlFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
 
             XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
-            xmlToJsonFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
-            formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+            xmlFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
 
             XmlRootAttribute studentSchoolEnrollmentsXmlRootAttribute = new XmlRootAttribute("StudentSchoolEnrollments") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<StudentSchoolEnrollment>> studentSchoolEnrollmentsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentSchoolEnrollment>>(studentSchoolEnrollmentsXmlRootAttribute);
+            xmlFormatter.SetSerializer<List<StudentSchoolEnrollment>>((XmlSerializer)studentSchoolEnrollmentsSerialiser);
+
+            // Replacement custom JSON formatter (compliant with Goessner notation).
+            XmlToJsonFormatter xmlToJsonFormatter = new XmlToJsonFormatter
+            {
+                UseXmlSerializer = true
+            };
+            xmlToJsonFormatter.AddUriPathExtensionMapping("json", "application/json");
+            xmlToJsonFormatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
             xmlToJsonFormatter.SetSerializer<List<StudentSchoolEnrollment>>((XmlSerializer)studentSchoolEnrollmentsSerialiser);
-            formatter.SetSerializer<List<StudentSchoolEnrollment>>((XmlSerializer)studentSchoolEnrollmentsSerialiser);
+            GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
 
             // Alternative 1.
             //XmlRootAttribute xmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
-            //formatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), xmlRootAttribute));
+            //xmlFormatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), xmlRootAttribute));
 
             // Alternative 2.
             //XmlAttributes attributes = new XmlAttributes();
             //attributes.XmlRoot = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             //XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             //overrides.Add(typeof(List<StudentPersonal>), attributes);
-            //formatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), overrides));
+            //xmlFormatter.SetSerializer<List<StudentPersonal>>(new XmlSerializer(typeof(List<StudentPersonal>), overrides));
 
             // Configure global exception loggers for unexpected errors.
             GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());

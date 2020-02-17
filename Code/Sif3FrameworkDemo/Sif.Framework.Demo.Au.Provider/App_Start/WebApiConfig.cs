@@ -1,5 +1,4 @@
-﻿using Sif.Framework.Demo.Au.Provider.Formatters;
-using Sif.Framework.WebApi;
+﻿using Sif.Framework.WebApi;
 using Sif.Framework.WebApi.ControllerSelectors;
 using Sif.Framework.WebApi.Handlers;
 using Sif.Framework.WebApi.RouteConstraints;
@@ -60,9 +59,6 @@ namespace Sif.Framework.Demo.Au.Provider
 
             // Replace the default controller selector with a custom one which recognises matrix parameters.
             config.Services.Replace(typeof(IHttpControllerSelector), new ServiceProviderHttpControllerSelector(config));
-
-            //config.Formatters.RemoveAt(0);
-            //config.Formatters.Insert(0, new GoessnerJsonFormatter());
         }
     }
 }
