@@ -17,27 +17,23 @@ namespace Sif.Framework.Demo.Au.Provider
     {
         private IRegistrationService registrationService;
 
-        private void Register()
-        {
-            registrationService = RegistrationManager.ProviderRegistrationService;
-            registrationService.Register();
-        }
-
-        private void Unregister()
-        {
-            registrationService.Unregister();
-        }
-
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
+            // URL Postfix Extension: Update the configuration to recognise postfix extensions and map known
+            // extensions to MIME Types. Additional changes to WebApiConfig.cs are required to fully enable this
+            // feature.
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping("json", "application/json");
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.AddUriPathExtensionMapping("xml", "text/xml");
 
+            // XML Serialisation: Define the specific XML serialiser to use to ensure that SIF Data Model Objects (as
+            // defined by the SIF Specification with XML Schema Definitions (XSDs)) are serialised correctly.
             XmlMediaTypeFormatter xmlFormatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
             xmlFormatter.UseXmlSerializer = true;
 
+            // XML Serialisation: For each SIF Data Model Object used by each SIF Provider, the following entries are
+            // required to define the root element for each collection object.
             XmlRootAttribute submissionsXmlRootAttribute = new XmlRootAttribute("FinancialQuestionnaireSubmissions") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<FinancialQuestionnaireSubmission>> submissionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FinancialQuestionnaireSubmission>>(submissionsXmlRootAttribute);
             xmlFormatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
@@ -92,6 +88,24 @@ namespace Sif.Framework.Demo.Au.Provider
         {
             Trace.TraceInformation("********** Application_End **********");
             Unregister();
+        }
+
+        /// <summary>
+        /// Register this SIF Provider with the EnvironmentProvider based upon settings defined in the SIF 3.0
+        /// Framework configuration, e.g. SifFramework.config.
+        /// </summary>
+        private void Register()
+        {
+            registrationService = RegistrationManager.ProviderRegistrationService;
+            registrationService.Register();
+        }
+
+        /// <summary>
+        /// Unregister this SIF Provider from the EnvironmentProvider.
+        /// </summary>
+        private void Unregister()
+        {
+            registrationService.Unregister();
         }
     }
 }
