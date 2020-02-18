@@ -1,11 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Sif.Framework.Demo.Au.Provider.Formatters;
-using Sif.Framework.Demo.Au.Provider.Models;
+﻿using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
+using Sif.Framework.WebApi.MediaTypeFormatters;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Formatting;
