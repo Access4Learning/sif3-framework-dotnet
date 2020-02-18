@@ -12,17 +12,17 @@
 > See the License for the specific language governing permissions and
 > limitations under the License.
 
-##Summary
+## Summary
 
 The SIF3 Framework is a .NET framework that enables developers to efficiently implement SIF3 Services (Consumers and/or Providers). It fully encapsulates the low level SIF3 Infrastructure. It also provides a basic Environment Provider which is core to SIF3.
 
 The framework includes a demo Solution that illustrates how to use it.
 
-###Getting started
+### Getting started
 
 To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
 
-###Pre-requisites
+### Pre-requisites
 
 The SIF3 Framework library is a .NET Standard project that supports multiple versions of .NET Framework (4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2). If you do not have all these versions installed, you will need to edit the Sif.Framework.csproj project file to reflect your installation. Multiple versions are targeted for the benefit of NuGet package deployment.
 
@@ -38,7 +38,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 * the coding style to be used and
 * the structure of the SIF 3 Framework repositories
 
-##Version control history
+## Version control history
 
 **Feb 18, 2020 - 3.2.1.12 Created a custom JSON Formatter which complies with Goessner notation**
 
