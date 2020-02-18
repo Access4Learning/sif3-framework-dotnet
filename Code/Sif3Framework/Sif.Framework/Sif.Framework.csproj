@@ -2,19 +2,20 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;net462;net47;net471;net472;netstandard2.0</TargetFrameworks>
-    <Version>3.2.1.11</Version>
-    <AssemblyVersion>3.2.1.11</AssemblyVersion>
-    <FileVersion>3.2.1.11</FileVersion>
+    <Version>3.2.1.12</Version>
+    <AssemblyVersion>3.2.1.12</AssemblyVersion>
+    <FileVersion>3.2.1.12</FileVersion>
     <Authors>Rafidzal Rafiq</Authors>
     <Company>Systemic Pty Ltd</Company>
     <Product>SIF Framework library</Product>
     <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
-    <Copyright>Copyright © Systemic Pty Ltd 2018</Copyright>
+    <Copyright>Copyright © Systemic Pty Ltd 2020</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>SIF framework</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

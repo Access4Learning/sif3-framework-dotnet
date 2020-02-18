@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,14 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         private static StudentPersonal CreateStudent()
         {
             NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
-            PersonInfoType personInfo = new PersonInfoType { Name = name };
+
+            EmailType[] emails = new EmailType[2]
+            {
+                new EmailType {Type = AUCodeSetsEmailTypeType.Item01, Value = $"{name.GivenName}01@gmail.com"},
+                new EmailType {Type = AUCodeSetsEmailTypeType.Item02, Value = $"{name.GivenName}02@gmail.com"}
+            };
+
+            PersonInfoType personInfo = new PersonInfoType { Name = name, EmailList = emails };
             StudentPersonal studentPersonal = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
 
             return studentPersonal;
