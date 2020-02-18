@@ -1,8 +1,9 @@
-﻿using Sif.Framework.Demo.EventsConnector.Models;
+﻿using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
+using Sif.Framework.WebApi.MediaTypeFormatters;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Formatting;
@@ -10,9 +11,8 @@ using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Provider
+namespace Sif.Framework.Demo.Au.Provider
 {
-
     public class WebApiApplication : System.Web.HttpApplication
     {
         private IRegistrationService registrationService;
@@ -29,15 +29,30 @@ namespace Sif.Framework.Demo.Provider
 
             // XML Serialisation: Define the specific XML serialiser to use to ensure that SIF Data Model Objects (as
             // defined by the SIF Specification with XML Schema Definitions (XSDs)) are serialised correctly.
-            XmlMediaTypeFormatter formatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
-            formatter.UseXmlSerializer = true;
+            XmlMediaTypeFormatter xmlFormatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
+            xmlFormatter.UseXmlSerializer = true;
 
             // *** TO DO ***
             // XML Serialisation: For each SIF Data Model Object used by each SIF Provider, the following entries are
             // required to define the root element for each collection object.
+            XmlRootAttribute schoolInfosXmlRootAttribute = new XmlRootAttribute("SchoolInfos") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(schoolInfosXmlRootAttribute);
+            xmlFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+
             XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
-            formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+            xmlFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+
+            // Replacement custom JSON formatter (compliant with Goessner notation).
+            XmlToJsonFormatter xmlToJsonFormatter = new XmlToJsonFormatter
+            {
+                UseXmlSerializer = true
+            };
+            xmlToJsonFormatter.AddUriPathExtensionMapping("json", "application/json");
+            xmlToJsonFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+            GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
 
             // Configure global exception loggers for unexpected errors.
             GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
@@ -72,7 +87,5 @@ namespace Sif.Framework.Demo.Provider
         {
             registrationService.Unregister();
         }
-
     }
-
 }
