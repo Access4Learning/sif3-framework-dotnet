@@ -26,7 +26,7 @@ namespace Sif.Framework.Service.Serialisation
     }
 
     /// <summary>
-    /// Interface of serialisation operations.
+    /// Interface of object serialisation operations.
     /// </summary>
     /// <typeparam name="T">Type of the object to serialise/deserialise.</typeparam>
     public interface ISerialiser<T> : ISerialiser

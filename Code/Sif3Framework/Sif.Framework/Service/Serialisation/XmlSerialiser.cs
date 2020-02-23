@@ -30,16 +30,14 @@ namespace Sif.Framework.Service.Serialisation
         /// <summary>
         /// <see cref="XmlSerializer(System.Type)"/>
         /// </summary>
-        public XmlSerialiser()
-            : base(typeof(T))
+        public XmlSerialiser() : base(typeof(T))
         {
         }
 
         /// <summary>
         /// <see cref="XmlSerializer(System.Type, XmlRootAttribute)"/>
         /// </summary>
-        public XmlSerialiser(XmlRootAttribute root)
-            : base(typeof(T), root)
+        public XmlSerialiser(XmlRootAttribute root) : base(typeof(T), root)
         {
         }
 

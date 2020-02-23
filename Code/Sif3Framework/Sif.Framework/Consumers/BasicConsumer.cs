@@ -53,7 +53,7 @@ namespace Sif.Framework.Consumers
         protected override string SerialiseMultiple(List<T> obj)
         {
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Serialise(obj);
+            return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Serialise(obj);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Sif.Framework.Consumers
         protected override List<T> DeserialiseMultiple(string payload)
         {
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Deserialise(payload);
+            return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Deserialise(payload);
         }
 
     }

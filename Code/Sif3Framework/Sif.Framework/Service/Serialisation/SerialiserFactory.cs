@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Model.Requests;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -72,6 +73,30 @@ namespace Sif.Framework.Service.Serialisation
                     serialiser = new XmlToJsonSerialiser<T>(rootAttribute);
                     jsonSerializers.Add(serialiserKey, (XmlToJsonSerialiser<T>)serialiser);
                 }
+            }
+
+            return serialiser;
+        }
+
+        /// <summary>
+        /// Retrieve an appropriate JSON serialiser based on the specified content type.
+        /// </summary>
+        /// <typeparam name="T">Type of the object associated with the serialiser.</typeparam>
+        /// <param name="rootAttribute">XML root attribute associated with the serialiser (if specified).</param>
+        /// <returns>An appropriate serialiser for the content type.</returns>
+        public static ISerialiser<T> GetSerialiser<T>(ContentType contentType, XmlRootAttribute rootAttribute = null)
+        {
+            ISerialiser<T> serialiser = null;
+
+            switch (contentType)
+            {
+                case ContentType.JSON:
+                    serialiser = GetJsonSerialiser<T>(rootAttribute);
+                    break;
+
+                case ContentType.XML:
+                    serialiser = GetXmlSerialiser<T>(rootAttribute);
+                    break;
             }
 
             return serialiser;

@@ -152,6 +152,7 @@ namespace Sif.Framework.Consumers
 
             try
             {
+                // TODO
                 XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
                 obj = SerialiserFactory.GetXmlSerialiser<TMultiple>(xmlRootAttribute).Deserialise(payload);
             }
@@ -170,6 +171,7 @@ namespace Sif.Framework.Consumers
         /// <returns>queueType object.</returns>
         private queueType DeserialiseQueue(string xml)
         {
+            // TODO
             return SerialiserFactory.GetXmlSerialiser<queueType>().Deserialise(xml);
         }
 
@@ -180,6 +182,7 @@ namespace Sif.Framework.Consumers
         /// <returns>subscriptionType object.</returns>
         private subscriptionType DeserialiseSubscription(string xml)
         {
+            // TODO
             return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Deserialise(xml);
         }
 
@@ -367,6 +370,7 @@ namespace Sif.Framework.Consumers
         /// <returns>XML string representation of the queueType object.</returns>
         private string SerialiseQueue(queueType queue)
         {
+            // TODO
             return SerialiserFactory.GetXmlSerialiser<queueType>().Serialise(queue);
         }
 
@@ -377,6 +381,7 @@ namespace Sif.Framework.Consumers
         /// <returns>XML string representation of the subscriptionType object.</returns>
         private string SerialiseSubscription(subscriptionType subscription)
         {
+            // TODO
             return SerialiserFactory.GetXmlSerialiser<subscriptionType>().Serialise(subscription);
         }
 
