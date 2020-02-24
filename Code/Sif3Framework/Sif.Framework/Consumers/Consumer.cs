@@ -310,14 +310,14 @@ namespace Sif.Framework.Consumers
                     .Append($"/{refId}")
                     .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                     .Append(GenerateQueryParameterString(requestParameters)).ToString();
-                string requestBody = HttpUtils.GetRequest(
+                string responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: ContentType.ToDescription());
-                if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
-                if (log.IsDebugEnabled) log.Debug(requestBody);
-                obj = DeserialiseSingle(ContentType, requestBody);
+                if (log.IsDebugEnabled) log.Debug("Response from GET request ...");
+                if (log.IsDebugEnabled) log.Debug(responseBody);
+                obj = DeserialiseSingle(ContentType, responseBody);
             }
             catch (WebException ex)
             {
@@ -362,18 +362,28 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string xml;
+            string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+                responseBody = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    navigationPage: (int)navigationPage,
+                    navigationPageSize: (int)navigationPageSize,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
             else
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+                responseBody = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
 
-            return DeserialiseMultiple(xml);
+            return DeserialiseMultiple(ContentType, responseBody);
         }
 
         /// <summary>
@@ -396,13 +406,19 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string body = SerialiseSingle(obj);
+            string requestBody = SerialiseSingle(ContentType, obj);
             // TODO: Update PostRequest to accept paging parameters.
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, methodOverride: "GET");
-            if (log.IsDebugEnabled) log.Debug("XML from POST (Query by Example) request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
-            // TODO
-            return DeserialiseMultiple(xml);
+            string responseBody = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                requestBody,
+                methodOverride: "GET",
+                contentTypeOverride: ContentType.ToDescription(),
+                acceptOverride: ContentType.ToDescription());
+            if (log.IsDebugEnabled) log.Debug("Response from POST (Query by Example) request ...");
+            if (log.IsDebugEnabled) log.Debug(responseBody);
+
+            return DeserialiseMultiple(ContentType, responseBody);
         }
 
         /// <summary>
@@ -437,18 +453,30 @@ namespace Sif.Framework.Consumers
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
             if (log.IsDebugEnabled) log.Debug("Service Path URL is " + url);
-            string xml;
+            string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.SERVICEPATH, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+                responseBody = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    ServiceType.SERVICEPATH,
+                    navigationPage: (int)navigationPage,
+                    navigationPageSize: (int)navigationPageSize,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
             else
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.SERVICEPATH);
+                responseBody = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    ServiceType.SERVICEPATH,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
-            // TODO
-            return DeserialiseMultiple(xml);
+
+            return DeserialiseMultiple(ContentType, responseBody);
         }
 
         /// <summary>
@@ -477,20 +505,32 @@ namespace Sif.Framework.Consumers
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(messageParameters)).ToString();
             WebHeaderCollection responseHeaders;
-            string xml;
+            string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+                responseBody = HttpUtils.GetRequestAndHeaders(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    out responseHeaders,
+                    navigationPage: (int)navigationPage,
+                    navigationPageSize: (int)navigationPageSize,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
             else
             {
-                xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out responseHeaders);
+                responseBody = HttpUtils.GetRequestAndHeaders(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    out responseHeaders,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
 
             nextChangesSinceMarker = responseHeaders[ResponseParameterType.changesSinceMarker.ToDescription()];
 
-            return DeserialiseMultiple(xml);
+            return DeserialiseMultiple(ContentType, responseBody);
         }
 
         /// <summary>
@@ -517,18 +557,28 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(messageParameters)).ToString();
-            string xml;
+            string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+                responseBody = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    navigationPage: (int)navigationPage,
+                    navigationPageSize: (int)navigationPageSize,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
             else
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+                responseBody = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    contentTypeOverride: ContentType.ToDescription(),
+                    acceptOverride: ContentType.ToDescription());
             }
-            // TODO
-            return DeserialiseMultiple(xml);
+
+            return DeserialiseMultiple(ContentType, responseBody);
         }
 
         /// <summary>
@@ -550,10 +600,15 @@ namespace Sif.Framework.Consumers
                 .Append($"/{obj.RefId}")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string body = SerialiseSingle(obj);
-            string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body);
-            if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
+            string requestBody = SerialiseSingle(ContentType, obj);
+            string responseBody = HttpUtils.PutRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                requestBody,
+                contentTypeOverride: ContentType.ToDescription(),
+                acceptOverride: ContentType.ToDescription());
+            if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
+            if (log.IsDebugEnabled) log.Debug(responseBody);
         }
 
         /// <summary>
@@ -574,12 +629,16 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string body = SerialiseMultiple(obj);
-            string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body);
-            if (log.IsDebugEnabled) log.Debug("XML from PUT request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
-            // TODO
-            updateResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<updateResponseType>().Deserialise(xml);
+            string requestBody = SerialiseMultiple(ContentType, obj);
+            string responseBody = HttpUtils.PutRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                requestBody,
+                contentTypeOverride: ContentType.ToDescription(),
+                acceptOverride: ContentType.ToDescription());
+            if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
+            if (log.IsDebugEnabled) log.Debug(responseBody);
+            updateResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<updateResponseType>().Deserialise(responseBody);
             MultipleUpdateResponse updateResponse = MapperFactory.CreateInstance<updateResponseType, MultipleUpdateResponse>(updateResponseType);
 
             return updateResponse;
@@ -604,9 +663,13 @@ namespace Sif.Framework.Consumers
                 .Append($"/{refId}")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string xml = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken);
-            if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
+            string responseBody = HttpUtils.DeleteRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                contentTypeOverride: ContentType.ToDescription(),
+                acceptOverride: ContentType.ToDescription());
+            if (log.IsDebugEnabled) log.Debug("Response from DELETE request ...");
+            if (log.IsDebugEnabled) log.Debug(responseBody);
         }
 
         /// <summary>
@@ -636,13 +699,17 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            // TODO
-            string body = SerialiserFactory.GetXmlSerialiser<deleteRequestType>().Serialise(request);
-            string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, methodOverride: "DELETE");
-            if (log.IsDebugEnabled) log.Debug("XML from PUT (DELETE) request ...");
-            if (log.IsDebugEnabled) log.Debug(xml);
-            // TODO
-            deleteResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<deleteResponseType>().Deserialise(xml);
+            string requestBody = SerialiserFactory.GetSerialiser<deleteRequestType>(ContentType).Serialise(request);
+            string responseBody = HttpUtils.PutRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                requestBody,
+                methodOverride: "DELETE",
+                contentTypeOverride: ContentType.ToDescription(),
+                acceptOverride: ContentType.ToDescription());
+            if (log.IsDebugEnabled) log.Debug("Response from PUT (DELETE) request ...");
+            if (log.IsDebugEnabled) log.Debug(responseBody);
+            deleteResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<deleteResponseType>().Deserialise(responseBody);
             MultipleDeleteResponse updateResponse = MapperFactory.CreateInstance<deleteResponseType, MultipleDeleteResponse>(updateResponseType);
 
             return updateResponse;
