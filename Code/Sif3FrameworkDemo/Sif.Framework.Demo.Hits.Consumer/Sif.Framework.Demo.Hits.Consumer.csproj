@@ -61,6 +61,9 @@
     <Reference Include="Remotion.Linq.EagerFetching, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.EagerFetching.2.1.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
+    <Reference Include="Sif.Framework, Version=3.2.1.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.3.2.1.12\lib\net461\Sif.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.5\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
     </Reference>

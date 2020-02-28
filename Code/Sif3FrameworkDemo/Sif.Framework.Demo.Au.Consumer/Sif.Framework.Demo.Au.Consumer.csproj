@@ -73,15 +73,18 @@
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
     </PackageReference>
-    <PackageReference Include="Sif.Framework">
-      <Version>3.2.1.12</Version>
-    </PackageReference>
     <PackageReference Include="Sif.Specification.DataModel.Au">
       <Version>3.4.5</Version>
     </PackageReference>
     <PackageReference Include="slf4net.log4net">
       <Version>0.1.32.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
+      <Project>{1839870e-ea95-4d92-8bc0-779d2467ff60}</Project>
+      <Name>Sif.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Hits.Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Broker", "Sif.Framework.Demo.Broker\Sif.Framework.Demo.Broker.csproj", "{B058872B-5A62-4D45-BC67-2AB7B411444B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Framework\Sif.Framework\Sif.Framework.csproj", "{1839870E-EA95-4D92-8BC0-779D2467FF60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{B058872B-5A62-4D45-BC67-2AB7B411444B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B058872B-5A62-4D45-BC67-2AB7B411444B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B058872B-5A62-4D45-BC67-2AB7B411444B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1839870E-EA95-4D92-8BC0-779D2467FF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1839870E-EA95-4D92-8BC0-779D2467FF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1839870E-EA95-4D92-8BC0-779D2467FF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1839870E-EA95-4D92-8BC0-779D2467FF60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

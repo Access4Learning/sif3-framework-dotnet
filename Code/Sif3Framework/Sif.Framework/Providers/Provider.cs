@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
+using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
@@ -66,6 +67,14 @@ namespace Sif.Framework.Providers
         /// </summary>
         protected IObjectService<TSingle, TMultiple, string> service;
 
+        protected ContentType ContentType
+        {
+            get
+            {
+                return ContentType.JSON;
+            }
+        }
+
         /// <summary>
         /// Name of the SIF data model that the Provider is based on, e.g. SchoolInfo, StudentPersonal, etc.
         /// </summary>
@@ -99,7 +108,7 @@ namespace Sif.Framework.Providers
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        public Provider(IProviderService<TSingle, TMultiple> service) : base()
+        protected Provider(IProviderService<TSingle, TMultiple> service) : base()
         {
             this.service = service;
         }
@@ -921,8 +930,14 @@ namespace Sif.Framework.Providers
                                     break;
                             }
 
-                            string body = SerialiseEvents(sifEvent.SifObjects);
-                            string xml = HttpUtils.PostRequest(url, token, body, requestHeaders: requestHeaders);
+                            string requestBody = SerialiseEvents(sifEvent.SifObjects);
+                            HttpUtils.PostRequest(
+                                url,
+                                token,
+                                requestBody,
+                                contentTypeOverride: ContentType.ToDescription(),
+                                acceptOverride: ContentType.ToDescription(),
+                                requestHeaders: requestHeaders);
                         }
                     }
 
@@ -943,7 +958,7 @@ namespace Sif.Framework.Providers
         [NonAction]
         public virtual string SerialiseEvents(TMultiple obj)
         {
-            return SerialiserFactory.GetXmlSerialiser<TMultiple>().Serialise(obj);
+            return SerialiserFactory.GetSerialiser<TMultiple>(ContentType).Serialise(obj);
         }
     }
 }
