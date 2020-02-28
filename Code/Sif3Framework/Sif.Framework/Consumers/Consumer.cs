@@ -638,7 +638,7 @@ namespace Sif.Framework.Consumers
                 acceptOverride: ContentType.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            updateResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<updateResponseType>().Deserialise(responseBody);
+            updateResponseType updateResponseType = SerialiserFactory.GetSerialiser<updateResponseType>(ContentType).Deserialise(responseBody);
             MultipleUpdateResponse updateResponse = MapperFactory.CreateInstance<updateResponseType, MultipleUpdateResponse>(updateResponseType);
 
             return updateResponse;
@@ -709,7 +709,7 @@ namespace Sif.Framework.Consumers
                 acceptOverride: ContentType.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from PUT (DELETE) request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            deleteResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<deleteResponseType>().Deserialise(responseBody);
+            deleteResponseType updateResponseType = SerialiserFactory.GetSerialiser<deleteResponseType>(ContentType).Deserialise(responseBody);
             MultipleDeleteResponse updateResponse = MapperFactory.CreateInstance<deleteResponseType, MultipleDeleteResponse>(updateResponseType);
 
             return updateResponse;
