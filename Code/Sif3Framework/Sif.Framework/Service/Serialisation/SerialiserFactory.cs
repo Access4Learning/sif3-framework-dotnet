@@ -79,6 +79,30 @@ namespace Sif.Framework.Service.Serialisation
         }
 
         /// <summary>
+        /// Retrieve an appropriate JSON serialiser based on the specified accepted content type.
+        /// </summary>
+        /// <typeparam name="T">Type of the object associated with the serialiser.</typeparam>
+        /// <param name="rootAttribute">XML root attribute associated with the serialiser (if specified).</param>
+        /// <returns>An appropriate serialiser for the accepted content type.</returns>
+        public static ISerialiser<T> GetSerialiser<T>(Accept accept, XmlRootAttribute rootAttribute = null)
+        {
+            ISerialiser<T> serialiser = null;
+
+            switch (accept)
+            {
+                case Accept.JSON:
+                    serialiser = GetJsonSerialiser<T>(rootAttribute);
+                    break;
+
+                case Accept.XML:
+                    serialiser = GetXmlSerialiser<T>(rootAttribute);
+                    break;
+            }
+
+            return serialiser;
+        }
+
+        /// <summary>
         /// Retrieve an appropriate JSON serialiser based on the specified content type.
         /// </summary>
         /// <typeparam name="T">Type of the object associated with the serialiser.</typeparam>

@@ -52,16 +52,16 @@ namespace Sif.Framework.Consumers
         protected override string SerialiseMultiple(ContentType contentType, List<T> obj)
         {
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Serialise(obj);
+            return SerialiserFactory.GetSerialiser<List<T>>(contentType, xmlRootAttribute).Serialise(obj);
         }
 
         /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.DeserialiseMultiple(ContentType, string)">DeserialiseMultiple</see>
+        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.DeserialiseMultiple(Accept, string)">DeserialiseMultiple</see>
         /// </summary>
-        protected override List<T> DeserialiseMultiple(ContentType contentType, string payload)
+        protected override List<T> DeserialiseMultiple(Accept accept, string payload)
         {
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Deserialise(payload);
+            return SerialiserFactory.GetSerialiser<List<T>>(accept, xmlRootAttribute).Deserialise(payload);
         }
     }
 }

@@ -46,11 +46,19 @@ namespace Sif.Framework.Service.Registration
         private string environmentUrl;
         private string sessionToken;
 
+        protected Accept Accept
+        {
+            get
+            {
+                return SettingsManager.ProviderSettings.Accept;
+            }
+        }
+
         protected ContentType ContentType
         {
             get
             {
-                return ContentType.JSON;
+                return SettingsManager.ProviderSettings.ContentType;
             }
         }
 
@@ -156,7 +164,7 @@ namespace Sif.Framework.Service.Registration
                     storedEnvironmentUrl,
                     AuthorisationToken,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
 
                 if (log.IsDebugEnabled) log.Debug("Environment response from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(environmentBody);
@@ -194,7 +202,7 @@ namespace Sif.Framework.Service.Registration
                         initialToken,
                         body,
                         contentTypeOverride: ContentType.ToDescription(),
-                        acceptOverride: ContentType.ToDescription());
+                        acceptOverride: Accept.ToDescription());
 
                     if (log.IsDebugEnabled) log.Debug("Environment response from POST request ...");
                     if (log.IsDebugEnabled) log.Debug(environmentBody);
@@ -244,7 +252,7 @@ namespace Sif.Framework.Service.Registration
                         environmentUrl,
                         AuthorisationToken,
                         contentTypeOverride: ContentType.ToDescription(),
-                        acceptOverride: ContentType.ToDescription());
+                        acceptOverride: Accept.ToDescription());
                     sessionService.RemoveSession(sessionToken);
                 }
 

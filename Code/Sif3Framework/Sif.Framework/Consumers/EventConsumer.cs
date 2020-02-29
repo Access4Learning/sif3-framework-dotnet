@@ -49,11 +49,19 @@ namespace Sif.Framework.Consumers
         private Model.Infrastructure.Environment environment;
         private Task task;
 
+        protected Accept Accept
+        {
+            get
+            {
+                return SettingsManager.ConsumerSettings.Accept;
+            }
+        }
+
         protected ContentType ContentType
         {
             get
             {
-                return ContentType.JSON;
+                return SettingsManager.ConsumerSettings.ContentType;
             }
         }
 
@@ -131,7 +139,7 @@ namespace Sif.Framework.Consumers
                 RegistrationService.AuthorisationToken,
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -152,7 +160,7 @@ namespace Sif.Framework.Consumers
                 RegistrationService.AuthorisationToken,
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -172,7 +180,7 @@ namespace Sif.Framework.Consumers
             try
             {
                 XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-                obj = SerialiserFactory.GetSerialiser<TMultiple>(ContentType, xmlRootAttribute).Deserialise(payload);
+                obj = SerialiserFactory.GetSerialiser<TMultiple>(Accept, xmlRootAttribute).Deserialise(payload);
             }
             catch (Exception e)
             {
@@ -189,7 +197,7 @@ namespace Sif.Framework.Consumers
         /// <returns>queueType object.</returns>
         private queueType DeserialiseQueue(string content)
         {
-            return SerialiserFactory.GetSerialiser<queueType>(ContentType).Deserialise(content);
+            return SerialiserFactory.GetSerialiser<queueType>(Accept).Deserialise(content);
         }
 
         /// <summary>
@@ -199,7 +207,7 @@ namespace Sif.Framework.Consumers
         /// <returns>subscriptionType object.</returns>
         private subscriptionType DeserialiseSubscription(string content)
         {
-            return SerialiserFactory.GetSerialiser<subscriptionType>(ContentType).Deserialise(content);
+            return SerialiserFactory.GetSerialiser<subscriptionType>(Accept).Deserialise(content);
         }
 
         /// <summary>
@@ -265,7 +273,7 @@ namespace Sif.Framework.Consumers
                             RegistrationService.AuthorisationToken,
                             out WebHeaderCollection responseHeaders,
                             contentTypeOverride: ContentType.ToDescription(),
-                            acceptOverride: ContentType.ToDescription(),
+                            acceptOverride: Accept.ToDescription(),
                             deleteMessageId: deleteMessageId);
                         string contextId = responseHeaders?[EventParameterType.contextId.ToDescription()];
                         deleteMessageId = responseHeaders?[EventParameterType.messageId.ToDescription()];
@@ -367,7 +375,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -386,7 +394,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 

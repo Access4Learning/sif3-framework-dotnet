@@ -69,11 +69,19 @@ namespace Sif.Framework.Providers
         /// </summary>
         protected IObjectService<TSingle, TMultiple, string> service;
 
+        protected Accept Accept
+        {
+            get
+            {
+                return SettingsManager.ProviderSettings.Accept;
+            }
+        }
+
         protected ContentType ContentType
         {
             get
             {
-                return ContentType.JSON;
+                return SettingsManager.ProviderSettings.ContentType;
             }
         }
 
@@ -1014,7 +1022,7 @@ namespace Sif.Framework.Providers
                                 token,
                                 requestBody,
                                 contentTypeOverride: ContentType.ToDescription(),
-                                acceptOverride: ContentType.ToDescription(),
+                                acceptOverride: Accept.ToDescription(),
                                 requestHeaders: requestHeaders);
                         }
                     }

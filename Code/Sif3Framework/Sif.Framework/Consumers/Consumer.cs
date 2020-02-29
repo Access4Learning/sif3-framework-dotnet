@@ -50,7 +50,7 @@ namespace Sif.Framework.Consumers
         {
             get
             {
-                return Accept.JSON;
+                return SettingsManager.ConsumerSettings.Accept;
             }
         }
 
@@ -58,7 +58,7 @@ namespace Sif.Framework.Consumers
         {
             get
             {
-                return ContentType.JSON;
+                return SettingsManager.ConsumerSettings.ContentType;
             }
         }
 
@@ -160,23 +160,23 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Deserialise a single object entity.
         /// </summary>
-        /// <param name="contentType">Content type of the payload.</param>
+        /// <param name="accept">Content type of the payload.</param>
         /// <param name="payload">Payload of a single object.</param>
         /// <returns>Entity representing the single object.</returns>
-        protected virtual TSingle DeserialiseSingle(ContentType contentType, string payload)
+        protected virtual TSingle DeserialiseSingle(Accept accept, string payload)
         {
-            return SerialiserFactory.GetSerialiser<TSingle>(contentType).Deserialise(payload);
+            return SerialiserFactory.GetSerialiser<TSingle>(accept).Deserialise(payload);
         }
 
         /// <summary>
         /// Deserialise an entity of multiple objects.
         /// </summary>
-        /// <param name="contentType">Content type of the payload.</param>
+        /// <param name="accept">Content type of the payload.</param>
         /// <param name="payload">Payload of multiple objects.</param>
         /// <returns>Entity representing the multiple objects.</returns>
-        protected virtual TMultiple DeserialiseMultiple(ContentType contentType, string payload)
+        protected virtual TMultiple DeserialiseMultiple(Accept accept, string payload)
         {
-            return SerialiserFactory.GetSerialiser<TMultiple>(contentType).Deserialise(payload);
+            return SerialiserFactory.GetSerialiser<TMultiple>(accept).Deserialise(payload);
         }
 
         /// <summary>
@@ -243,13 +243,12 @@ namespace Sif.Framework.Consumers
                 RegistrationService.AuthorisationToken,
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription(),
+                acceptOverride: Accept.ToDescription(),
                 mustUseAdvisory: mustUseAdvisory);
             if (log.IsDebugEnabled) log.Debug("Response from POST request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
-            // TODO
-            return DeserialiseSingle(ContentType, responseBody);
+            return DeserialiseSingle(Accept, responseBody);
         }
 
         /// <summary>
@@ -277,11 +276,11 @@ namespace Sif.Framework.Consumers
                 RegistrationService.AuthorisationToken,
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription(),
+                acceptOverride: Accept.ToDescription(),
                 mustUseAdvisory: mustUseAdvisory);
             if (log.IsDebugEnabled) log.Debug("Response from POST request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            createResponseType createResponseType = SerialiserFactory.GetSerialiser<createResponseType>(ContentType).Deserialise(responseBody);
+            createResponseType createResponseType = SerialiserFactory.GetSerialiser<createResponseType>(Accept).Deserialise(responseBody);
             MultipleCreateResponse createResponse = MapperFactory.CreateInstance<createResponseType, MultipleCreateResponse>(createResponseType);
 
             return createResponse;
@@ -314,10 +313,10 @@ namespace Sif.Framework.Consumers
                     url,
                     RegistrationService.AuthorisationToken,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
                 if (log.IsDebugEnabled) log.Debug("Response from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(responseBody);
-                obj = DeserialiseSingle(ContentType, responseBody);
+                obj = DeserialiseSingle(Accept, responseBody);
             }
             catch (WebException ex)
             {
@@ -372,7 +371,7 @@ namespace Sif.Framework.Consumers
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
             else
             {
@@ -380,10 +379,10 @@ namespace Sif.Framework.Consumers
                     url,
                     RegistrationService.AuthorisationToken,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
 
-            return DeserialiseMultiple(ContentType, responseBody);
+            return DeserialiseMultiple(Accept, responseBody);
         }
 
         /// <summary>
@@ -414,11 +413,11 @@ namespace Sif.Framework.Consumers
                 requestBody,
                 methodOverride: "GET",
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from POST (Query by Example) request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
-            return DeserialiseMultiple(ContentType, responseBody);
+            return DeserialiseMultiple(Accept, responseBody);
         }
 
         /// <summary>
@@ -464,7 +463,7 @@ namespace Sif.Framework.Consumers
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
             else
             {
@@ -473,10 +472,10 @@ namespace Sif.Framework.Consumers
                     RegistrationService.AuthorisationToken,
                     ServiceType.SERVICEPATH,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
 
-            return DeserialiseMultiple(ContentType, responseBody);
+            return DeserialiseMultiple(Accept, responseBody);
         }
 
         /// <summary>
@@ -516,7 +515,7 @@ namespace Sif.Framework.Consumers
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
             else
             {
@@ -525,12 +524,12 @@ namespace Sif.Framework.Consumers
                     RegistrationService.AuthorisationToken,
                     out responseHeaders,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
 
             nextChangesSinceMarker = responseHeaders[ResponseParameterType.changesSinceMarker.ToDescription()];
 
-            return DeserialiseMultiple(ContentType, responseBody);
+            return DeserialiseMultiple(Accept, responseBody);
         }
 
         /// <summary>
@@ -567,7 +566,7 @@ namespace Sif.Framework.Consumers
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
             else
             {
@@ -575,10 +574,10 @@ namespace Sif.Framework.Consumers
                     url,
                     RegistrationService.AuthorisationToken,
                     contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: ContentType.ToDescription());
+                    acceptOverride: Accept.ToDescription());
             }
 
-            return DeserialiseMultiple(ContentType, responseBody);
+            return DeserialiseMultiple(Accept, responseBody);
         }
 
         /// <summary>
@@ -606,7 +605,7 @@ namespace Sif.Framework.Consumers
                 RegistrationService.AuthorisationToken,
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
         }
@@ -635,10 +634,10 @@ namespace Sif.Framework.Consumers
                 RegistrationService.AuthorisationToken,
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            updateResponseType updateResponseType = SerialiserFactory.GetSerialiser<updateResponseType>(ContentType).Deserialise(responseBody);
+            updateResponseType updateResponseType = SerialiserFactory.GetSerialiser<updateResponseType>(Accept).Deserialise(responseBody);
             MultipleUpdateResponse updateResponse = MapperFactory.CreateInstance<updateResponseType, MultipleUpdateResponse>(updateResponseType);
 
             return updateResponse;
@@ -667,7 +666,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
         }
@@ -706,10 +705,10 @@ namespace Sif.Framework.Consumers
                 requestBody,
                 methodOverride: "DELETE",
                 contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: ContentType.ToDescription());
+                acceptOverride: Accept.ToDescription());
             if (log.IsDebugEnabled) log.Debug("Response from PUT (DELETE) request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            deleteResponseType updateResponseType = SerialiserFactory.GetSerialiser<deleteResponseType>(ContentType).Deserialise(responseBody);
+            deleteResponseType updateResponseType = SerialiserFactory.GetSerialiser<deleteResponseType>(Accept).Deserialise(responseBody);
             MultipleDeleteResponse updateResponse = MapperFactory.CreateInstance<deleteResponseType, MultipleDeleteResponse>(updateResponseType);
 
             return updateResponse;
