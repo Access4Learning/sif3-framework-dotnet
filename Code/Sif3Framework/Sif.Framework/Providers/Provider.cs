@@ -50,7 +50,9 @@ namespace Sif.Framework.Providers
     /// </summary>
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
-    public abstract class Provider<TSingle, TMultiple> : ApiController, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple> where TSingle : ISifRefId<string>
+    public abstract class Provider<TSingle, TMultiple>
+        : ApiController, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple>
+        where TSingle : ISifRefId<string>
     {
         /// <summary>
         /// Service used for request authentication.
@@ -94,11 +96,13 @@ namespace Sif.Framework.Providers
         {
             if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                authenticationService =
+                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
             else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
             {
-                authenticationService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                authenticationService =
+                    new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
 
             authorisationService = new AuthorisationService(authenticationService);
@@ -134,7 +138,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TTSingle, string[], string[])">Post</see>
         /// </summary>
-        public virtual IHttpActionResult Post(TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Post(
+            TSingle obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -149,7 +156,7 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -164,7 +171,8 @@ namespace Sif.Framework.Providers
                     if (hasAdvisoryId)
                     {
                         RequestParameter[] requestParameters = GetQueryParameters(Request);
-                        TSingle createdObject = service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
+                        TSingle createdObject =
+                            service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
                         string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                         result = Created(uri, createdObject);
                     }
@@ -176,8 +184,12 @@ namespace Sif.Framework.Providers
                 else
                 {
                     RequestParameter[] requestParameters = GetQueryParameters(Request);
-                    TSingle createdObject = service.Create(obj, zoneId: zoneId?[0], contextId: contextId?[0], requestParameters: requestParameters);
-                    string uri = Url.Link("DefaultApi", new { controller = typeof(TSingle).Name, id = createdObject.RefId });
+                    TSingle createdObject = service.Create(
+                        obj,
+                        zoneId: zoneId?[0],
+                        contextId: contextId?[0],
+                        requestParameters: requestParameters);
+                    string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                     result = Created(uri, createdObject);
                 }
             }
@@ -187,19 +199,20 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("Object to create of type " + typeof(TSingle).Name + " is invalid.\n " + e.Message);
+                result = BadRequest($"Object to create of type {TypeName} is invalid.\n{e.Message}");
             }
             catch (CreateException e)
             {
-                result = BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
+                result = BadRequest($"Request failed for object {TypeName}.\n{e.Message}");
             }
             catch (RejectedException e)
             {
-                result = this.NotFound("Create request rejected for object " + typeof(TSingle).Name + " with ID of " + obj.RefId + ".\n" + e.Message);
+                result = this.NotFound(
+                    $"Create request rejected for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
             }
             catch (QueryException e)
             {
-                result = BadRequest("Request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
+                result = BadRequest($"Request failed for object {TypeName}.\n{e.Message}");
             }
             catch (Exception e)
             {
@@ -212,7 +225,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
-        public virtual IHttpActionResult Post(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Post(
+            TMultiple obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -227,14 +243,19 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            MultipleCreateResponse multipleCreateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
-            createResponseType createResponse = MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
+            MultipleCreateResponse multipleCreateResponse = ((IProviderService<TSingle, TMultiple>)service).Create(
+                obj,
+                mustUseAdvisory,
+                zoneId?[0],
+                contextId?[0],
+                requestParameters);
+            createResponseType createResponse =
+                MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
             IHttpActionResult result = Ok(createResponse);
 
             return result;
@@ -243,7 +264,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TPrimaryKey, string[], string[])">Get</see>
         /// </summary>
-        public virtual IHttpActionResult Get([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Get(
+            [FromUri(Name = "id")] string refId,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -263,7 +287,7 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -284,11 +308,11 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("Invalid argument: id=" + refId + ".\n" + e.Message);
+                result = BadRequest($"Invalid argument: id={refId}.\n{e.Message}");
             }
             catch (QueryException e)
             {
-                result = BadRequest("Request failed for object " + typeof(TSingle).Name + " with ID of " + refId + ".\n " + e.Message);
+                result = BadRequest($"Request failed for object {TypeName} with ID of {refId}.\n{e.Message}");
             }
             catch (Exception e)
             {
@@ -318,7 +342,8 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs = service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
+            TMultiple objs =
+                service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
             if (objs == null)
@@ -389,11 +414,14 @@ namespace Sif.Framework.Providers
             {
                 try
                 {
-                    result = result.AddHeader("changesSinceMarker", changesSinceService.NextChangesSinceMarker ?? string.Empty);
+                    result = result.AddHeader(
+                        "changesSinceMarker",
+                        changesSinceService.NextChangesSinceMarker ?? string.Empty);
                 }
                 catch (Exception)
                 {
-                    throw new QueryException("Implementaton to retrieve the next Changes Since marker returned an error.");
+                    throw new QueryException(
+                        "Implementaton to retrieve the next Changes Since marker returned an error.");
                 }
             }
 
@@ -421,7 +449,8 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs = service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
+            TMultiple objs =
+                service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
             if (objs == null)
@@ -439,7 +468,11 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TTSingle, string, string[], string[])">Get</see>
         /// </summary>
-        public virtual IHttpActionResult Get(TSingle obj, string changesSinceMarker = null, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Get(
+            TSingle obj,
+            string changesSinceMarker = null,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -459,7 +492,7 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -484,11 +517,11 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("One or more parameters of the GET request are invalid.\n" + e.Message);
+                result = BadRequest("One or more parameters of the GET request are invalid.\n{e.Message}");
             }
             catch (QueryException e)
             {
-                result = BadRequest("GET request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
+                result = BadRequest($"GET request failed for object {TypeName}.\n{e.Message}");
             }
             catch (ContentTooLargeException)
             {
@@ -547,14 +580,15 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
 
             try
             {
-                IList<EqualCondition> conditions = new List<EqualCondition>() { new EqualCondition() { Left = object1, Right = refId1 } };
+                IList<EqualCondition> conditions =
+                    new List<EqualCondition>() { new EqualCondition() { Left = object1, Right = refId1 } };
 
                 if (!string.IsNullOrWhiteSpace(object2))
                 {
@@ -569,7 +603,13 @@ namespace Sif.Framework.Providers
                 uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
                 uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                TMultiple objs = service.Retrieve(conditions, navigationPage, navigationPageSize, zoneId?[0], contextId?[0], requestParameters);
+                TMultiple objs = service.Retrieve(
+                    conditions,
+                    navigationPage,
+                    navigationPageSize,
+                    zoneId?[0],
+                    contextId?[0],
+                    requestParameters);
 
                 if (objs == null)
                 {
@@ -582,11 +622,11 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("One or more conditions are invalid.\n" + e.Message);
+                result = BadRequest($"One or more conditions are invalid.\n{e.Message}");
             }
             catch (QueryException e)
             {
-                result = BadRequest("Service Path GET request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
+                result = BadRequest($"Service Path GET request failed for object {TypeName}.\n{e.Message}");
             }
             catch (ContentTooLargeException)
             {
@@ -603,7 +643,11 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TPrimaryKey, TTSingle, string[], string[])">Put</see>
         /// </summary>
-        public virtual IHttpActionResult Put([FromUri(Name = "id")] string refId, TSingle obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Put(
+            [FromUri(Name = "id")] string refId,
+            TSingle obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -618,12 +662,13 @@ namespace Sif.Framework.Providers
 
             if (string.IsNullOrWhiteSpace(refId) || obj == null || !refId.Equals(obj.RefId))
             {
-                return BadRequest("The refId in the update request does not match the SIF identifier of the object provided.");
+                return BadRequest(
+                    "The refId in the update request does not match the SIF identifier of the object provided.");
             }
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -636,15 +681,15 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("Object to update of type " + typeof(TSingle).Name + " is invalid.\n " + e.Message);
+                result = BadRequest($"Object to update of type {TypeName} is invalid.\n{e.Message}");
             }
             catch (NotFoundException e)
             {
-                result = this.NotFound("Object " + typeof(TSingle).Name + " with ID of " + refId + " not found.\n" + e.Message);
+                result = this.NotFound($"Object {TypeName} with ID of {refId} not found.\n{e.Message}");
             }
             catch (UpdateException e)
             {
-                result = BadRequest("Request failed for object " + typeof(TSingle).Name + " with ID of " + refId + ".\n " + e.Message);
+                result = BadRequest($"Request failed for object {TypeName} with ID of {refId}.\n{e.Message}");
             }
             catch (Exception e)
             {
@@ -657,7 +702,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
-        public virtual IHttpActionResult Put(TMultiple obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Put(
+            TMultiple obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -672,13 +720,17 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            MultipleUpdateResponse multipleUpdateResponse =
-                ((IProviderService<TSingle, TMultiple>)service).Update(obj, zoneId?[0], contextId?[0], requestParameters);
-            updateResponseType updateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
+            MultipleUpdateResponse multipleUpdateResponse = ((IProviderService<TSingle, TMultiple>)service).Update(
+                obj,
+                zoneId?[0],
+                contextId?[0],
+                requestParameters);
+            updateResponseType updateResponse =
+                MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
             IHttpActionResult result = Ok(updateResponse);
 
             return result;
@@ -687,7 +739,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(TPrimaryKey, string[], string[])">Delete</see>
         /// </summary>
-        public virtual IHttpActionResult Delete([FromUri(Name = "id")] string refId, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Delete(
+            [FromUri(Name = "id")] string refId,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -702,7 +757,7 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -715,15 +770,15 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("Invalid argument: id=" + refId + ".\n" + e.Message);
+                result = BadRequest($"Invalid argument: id={refId}.\n{e.Message}");
             }
             catch (DeleteException e)
             {
-                result = BadRequest("Request failed for object " + typeof(TSingle).Name + " with ID of " + refId + ".\n " + e.Message);
+                result = BadRequest($"Request failed for object {TypeName} with ID of {refId}.\n{e.Message}");
             }
             catch (NotFoundException e)
             {
-                result = this.NotFound("Object " + typeof(TSingle).Name + " with ID of " + refId + " not found.\n" + e.Message);
+                result = this.NotFound($"Object {TypeName} with ID of {refId} not found.\n{e.Message}");
             }
             catch (Exception e)
             {
@@ -736,7 +791,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(deleteRequestType, string[], string[])">Delete</see>
         /// </summary>
-        public virtual IHttpActionResult Delete(deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Delete(
+            deleteRequestType deleteRequest,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -751,7 +809,7 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -774,22 +832,34 @@ namespace Sif.Framework.Providers
                     }
                     catch (ArgumentException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(TSingle).Name, "Invalid argument: id=" + deleteId.id + ".\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Invalid argument: id={deleteId.id}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (DeleteException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(TSingle).Name, "Request failed for object " + typeof(TSingle).Name + " with ID of " + deleteId.id + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Request failed for object {TypeName} with ID of {deleteId.id}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (NotFoundException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.NotFound, typeof(TSingle).Name, "Object " + typeof(TSingle).Name + " with ID of " + deleteId.id + " not found.\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.NotFound,
+                            TypeName,
+                            $"Object {TypeName} with ID of {deleteId.id} not found.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.NotFound).ToString();
                     }
                     catch (Exception e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.InternalServerError, typeof(TSingle).Name, "Request failed for object " + typeof(TSingle).Name + " with ID of " + deleteId.id + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.InternalServerError,
+                            TypeName,
+                            $"Request failed for object {TypeName} with ID of {deleteId.id}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 
@@ -811,7 +881,9 @@ namespace Sif.Framework.Providers
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Head(string[], string[])">Head</see>
         /// </summary>
         [HttpHead]
-        public virtual IHttpActionResult Head([MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual IHttpActionResult Head(
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
@@ -831,7 +903,7 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(TSingle).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -842,16 +914,19 @@ namespace Sif.Framework.Providers
 
                 if (service is ISupportsChangesSince supportsChangesSince)
                 {
-                    result = result.AddHeader("changesSinceMarker", supportsChangesSince.ChangesSinceMarker ?? string.Empty);
+                    result = result.AddHeader(
+                        "changesSinceMarker",
+                        supportsChangesSince.ChangesSinceMarker ?? string.Empty);
                 }
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("One or more parameters of the GET request (associated with the HEAD request) are invalid.\n" + e.Message);
+                result = BadRequest(
+                    $"One or more parameters of the GET request (associated with the HEAD request) are invalid.\n{e.Message}");
             }
             catch (QueryException e)
             {
-                result = BadRequest("HEAD request failed for object " + typeof(TSingle).Name + ".\n " + e.Message);
+                result = BadRequest($"HEAD request failed for object {TypeName}.\n{e.Message}");
             }
             catch (ContentTooLargeException)
             {
@@ -905,7 +980,10 @@ namespace Sif.Framework.Providers
                         AuthorisationToken token = registrationService.AuthorisationToken;
 
                         // Retrieve the EventsConnector endpoint URL.
-                        string url = EnvironmentUtils.ParseServiceUrl(environment, ServiceType.UTILITY, InfrastructureServiceNames.eventsConnector);
+                        string url = EnvironmentUtils.ParseServiceUrl(
+                            environment,
+                            ServiceType.UTILITY,
+                            InfrastructureServiceNames.eventsConnector);
 
                         while (eventIterator.HasNext())
                         {

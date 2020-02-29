@@ -397,7 +397,7 @@ namespace Sif.Framework.Consumers
         /// Serialise a queueType object.
         /// </summary>
         /// <param name="queue">queueType object.</param>
-        /// <returns>XML string representation of the queueType object.</returns>
+        /// <returns>String representation of the queueType object.</returns>
         private string SerialiseQueue(queueType queue)
         {
             return SerialiserFactory.GetSerialiser<queueType>(ContentType).Serialise(queue);
@@ -407,7 +407,7 @@ namespace Sif.Framework.Consumers
         /// Serialise a subscriptionType object.
         /// </summary>
         /// <param name="subscription">subscriptionType object.</param>
-        /// <returns>XML string representation of the subscriptionType object.</returns>
+        /// <returns>String representation of the subscriptionType object.</returns>
         private string SerialiseSubscription(subscriptionType subscription)
         {
             return SerialiserFactory.GetSerialiser<subscriptionType>(ContentType).Serialise(subscription);

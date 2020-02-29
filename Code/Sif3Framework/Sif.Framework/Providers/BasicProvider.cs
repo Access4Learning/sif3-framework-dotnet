@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,14 +37,15 @@ namespace Sif.Framework.Providers
     /// type System.String and the multiple objects entity is represented as a list of single objects.
     /// </summary>
     /// <typeparam name="T">Type of object associated with the Service Provider.</typeparam>
-    public abstract class BasicProvider<T> : Provider<T, List<T>>, IProvider<T, List<T>, string> where T : ISifRefId<string>
+    public abstract class BasicProvider<T> : Provider<T, List<T>>, IProvider<T, List<T>, string>
+        where T : ISifRefId<string>
     {
 
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        public BasicProvider(IBasicProviderService<T> service) : base()
+        protected BasicProvider(IBasicProviderService<T> service) : base()
         {
             this.service = service;
         }
@@ -52,24 +53,31 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
-        public override IHttpActionResult Post(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public override IHttpActionResult Post(
+            List<T> objs,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
 
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED))
+            if (!authorisationService.IsAuthorised(
+                Request.Headers,
+                sessionToken,
+                $"{TypeName}s",
+                RightType.CREATE,
+                RightValue.APPROVED))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -82,8 +90,10 @@ namespace Sif.Framework.Providers
                 foreach (T obj in objs)
                 {
                     bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
-                    createType status = new createType();
-                    status.advisoryId = (hasAdvisoryId ? obj.RefId : null);
+                    createType status = new createType
+                    {
+                        advisoryId = (hasAdvisoryId ? obj.RefId : null)
+                    };
 
                     try
                     {
@@ -93,46 +103,66 @@ namespace Sif.Framework.Providers
 
                             if (hasAdvisoryId)
                             {
-                                status.id = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
+                                status.id = service
+                                    .Create(obj, mustUseAdvisory, zoneId: (zoneId?[0]), contextId: (contextId?[0]))
+                                    .RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                             else
                             {
-                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
+                                status.error = ProviderUtils.CreateError(
+                                    HttpStatusCode.BadRequest,
+                                    TypeName,
+                                    "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
                                 status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
 
                         }
                         else
                         {
-                            status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
+                            status.id = service.Create(obj, zoneId: (zoneId?[0]), contextId: (contextId?[0])).RefId;
                             status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
 
                     }
                     catch (AlreadyExistsException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.Conflict, typeof(T).Name, "Object " + typeof(T).Name + " with ID of " + obj.RefId + " already exists.\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.Conflict,
+                            TypeName,
+                            $"Object {TypeName} with ID of {obj.RefId} already exists.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (ArgumentException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Object to create of type " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + " is invalid.\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Object to create of type {TypeName}" + (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $" is invalid.\n {e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (CreateException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Request failed for object " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Request failed for object {TypeName}" + (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $".\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (RejectedException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.NotFound, typeof(T).Name, "Create request rejected for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.NotFound,
+                            TypeName,
+                            $"Create request rejected for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (Exception e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.InternalServerError, typeof(T).Name, "Request failed for object " + typeof(T).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.InternalServerError,
+                            TypeName,
+                            $"Request failed for object {TypeName}" + (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $".\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 
@@ -154,24 +184,31 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
-        public override IHttpActionResult Put(List<T> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public override IHttpActionResult Put(
+            List<T> objs,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken;
 
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE, RightValue.APPROVED))
+            if (!authorisationService.IsAuthorised(
+                Request.Headers,
+                sessionToken,
+                $"{TypeName}s",
+                RightType.CREATE,
+                RightValue.APPROVED))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(T).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
             IHttpActionResult result;
@@ -182,32 +219,46 @@ namespace Sif.Framework.Providers
 
                 foreach (T obj in objs)
                 {
-                    updateType status = new updateType();
-                    status.id = obj.RefId;
+                    updateType status = new updateType
+                    {
+                        id = obj.RefId
+                    };
 
                     try
                     {
-                        service.Update(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
+                        service.Update(obj, zoneId: (zoneId?[0]), contextId: (contextId?[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Object to update of type " + typeof(T).Name + " is invalid.\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Object to update of type {TypeName} is invalid.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (NotFoundException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.NotFound, typeof(T).Name, "Object " + typeof(T).Name + " with ID of " + obj.RefId + " not found.\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.NotFound,
+                            TypeName,
+                            $"Object {TypeName} with ID of {obj.RefId} not found.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.NotFound).ToString();
                     }
                     catch (UpdateException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(T).Name, "Request failed for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Request failed for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (Exception e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.InternalServerError, typeof(T).Name, "Request failed for object " + typeof(T).Name + " with ID of " + obj.RefId + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.InternalServerError,
+                            TypeName,
+                            $"Request failed for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 
@@ -239,7 +290,7 @@ namespace Sif.Framework.Providers
                 IsNullable = false
             };
 
-            return SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute).Serialise(obj);
+            return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Serialise(obj);
         }
 
     }

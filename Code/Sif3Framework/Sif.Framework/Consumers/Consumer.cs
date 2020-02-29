@@ -140,7 +140,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="contentType">Content type of the payload.</param>
         /// <param name="obj">Payload of a single object.</param>
-        /// <returns>XML string representation of the single object.</returns>
+        /// <returns>String representation of the single object.</returns>
         protected virtual string SerialiseSingle(ContentType contentType, TSingle obj)
         {
             return SerialiserFactory.GetSerialiser<TSingle>(contentType).Serialise(obj);
@@ -151,7 +151,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="contentType">Content type of the payload.</param>
         /// <param name="obj">Payload of multiple objects.</param>
-        /// <returns>XML string representation of the multiple objects.</returns>
+        /// <returns>String representation of the multiple objects.</returns>
         protected virtual string SerialiseMultiple(ContentType contentType, TMultiple obj)
         {
             return SerialiserFactory.GetSerialiser<TMultiple>(contentType).Serialise(obj);
