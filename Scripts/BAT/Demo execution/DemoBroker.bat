@@ -6,7 +6,7 @@ rem ============================================================================
 
 set CONFIG_ONEDRIVE=%userprofile%\OneDrive\Documents\IISExpress\config\applicationhost.config
 set CONFIG_ORIGINAL=%userprofile%\Documents\IISExpress\config\applicationhost.config
-set CONFIG_VS2015=%~dp0..\..\..\Code\Sif3FrameworkDemo\.vs\config\applicationhost.config
+set CONFIG_VS2015=%~dp0..\..\..\Code\Sif3FrameworkDemo\.vs\Sif3FrameworkDemo\config\applicationhost.config
 set IISEXPRESS_EXE="C:\Program Files\IIS Express\iisexpress.exe"
 set SITE=Sif.Framework.Demo.Broker
 

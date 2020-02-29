@@ -3,6 +3,7 @@ using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
+using Sif.Framework.WebApi.MediaTypeFormatters;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Formatting;
@@ -39,12 +40,24 @@ namespace Sif.Framework.Demo.Broker
             formatter.SetSerializer<List<Queue>>((XmlSerializer)queuesSerialiser);
 
             XmlRootAttribute subscriptionsXmlRootAttribute = new XmlRootAttribute("Subscriptions") { Namespace = SettingsManager.ProviderSettings.InfrastructureNamespace, IsNullable = false };
-            ISerialiser<List<Queue>> subscriptionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<Queue>>(subscriptionsXmlRootAttribute);
-            formatter.SetSerializer<List<Queue>>((XmlSerializer)subscriptionsSerialiser);
+            ISerialiser<List<Subscription>> subscriptionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<Subscription>>(subscriptionsXmlRootAttribute);
+            formatter.SetSerializer<List<Subscription>>((XmlSerializer)subscriptionsSerialiser);
 
             XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
             formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+
+            // Replacement custom JSON formatter (compliant with Goessner notation).
+            XmlToJsonFormatter xmlToJsonFormatter = new XmlToJsonFormatter
+            {
+                UseXmlSerializer = true
+            };
+            xmlToJsonFormatter.AddUriPathExtensionMapping("json", "application/json");
+            xmlToJsonFormatter.SetSerializer<List<Queue>>((XmlSerializer)queuesSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<Subscription>>((XmlSerializer)subscriptionsSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+            GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
 
             // Configure global exception loggers for unexpected errors.
             GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
