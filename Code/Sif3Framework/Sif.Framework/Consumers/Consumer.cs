@@ -138,45 +138,41 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Serialise a single object entity.
         /// </summary>
-        /// <param name="contentType">Content type of the payload.</param>
         /// <param name="obj">Payload of a single object.</param>
         /// <returns>String representation of the single object.</returns>
-        protected virtual string SerialiseSingle(ContentType contentType, TSingle obj)
+        protected virtual string SerialiseSingle(TSingle obj)
         {
-            return SerialiserFactory.GetSerialiser<TSingle>(contentType).Serialise(obj);
+            return SerialiserFactory.GetSerialiser<TSingle>(ContentType).Serialise(obj);
         }
 
         /// <summary>
         /// Serialise an entity of multiple objects.
         /// </summary>
-        /// <param name="contentType">Content type of the payload.</param>
         /// <param name="obj">Payload of multiple objects.</param>
         /// <returns>String representation of the multiple objects.</returns>
-        protected virtual string SerialiseMultiple(ContentType contentType, TMultiple obj)
+        protected virtual string SerialiseMultiple(TMultiple obj)
         {
-            return SerialiserFactory.GetSerialiser<TMultiple>(contentType).Serialise(obj);
+            return SerialiserFactory.GetSerialiser<TMultiple>(ContentType).Serialise(obj);
         }
 
         /// <summary>
         /// Deserialise a single object entity.
         /// </summary>
-        /// <param name="accept">Content type of the payload.</param>
         /// <param name="payload">Payload of a single object.</param>
         /// <returns>Entity representing the single object.</returns>
-        protected virtual TSingle DeserialiseSingle(Accept accept, string payload)
+        protected virtual TSingle DeserialiseSingle(string payload)
         {
-            return SerialiserFactory.GetSerialiser<TSingle>(accept).Deserialise(payload);
+            return SerialiserFactory.GetSerialiser<TSingle>(Accept).Deserialise(payload);
         }
 
         /// <summary>
         /// Deserialise an entity of multiple objects.
         /// </summary>
-        /// <param name="accept">Content type of the payload.</param>
         /// <param name="payload">Payload of multiple objects.</param>
         /// <returns>Entity representing the multiple objects.</returns>
-        protected virtual TMultiple DeserialiseMultiple(Accept accept, string payload)
+        protected virtual TMultiple DeserialiseMultiple(string payload)
         {
-            return SerialiserFactory.GetSerialiser<TMultiple>(accept).Deserialise(payload);
+            return SerialiserFactory.GetSerialiser<TMultiple>(Accept).Deserialise(payload);
         }
 
         /// <summary>
@@ -237,7 +233,7 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string requestBody = SerialiseSingle(ContentType, obj);
+            string requestBody = SerialiseSingle(obj);
             string responseBody = HttpUtils.PostRequest(
                 url,
                 RegistrationService.AuthorisationToken,
@@ -248,7 +244,7 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug("Response from POST request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
-            return DeserialiseSingle(Accept, responseBody);
+            return DeserialiseSingle(responseBody);
         }
 
         /// <summary>
@@ -270,7 +266,7 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string requestBody = SerialiseMultiple(ContentType, obj);
+            string requestBody = SerialiseMultiple(obj);
             string responseBody = HttpUtils.PostRequest(
                 url,
                 RegistrationService.AuthorisationToken,
@@ -316,7 +312,7 @@ namespace Sif.Framework.Consumers
                     acceptOverride: Accept.ToDescription());
                 if (log.IsDebugEnabled) log.Debug("Response from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(responseBody);
-                obj = DeserialiseSingle(Accept, responseBody);
+                obj = DeserialiseSingle(responseBody);
             }
             catch (WebException ex)
             {
@@ -382,7 +378,7 @@ namespace Sif.Framework.Consumers
                     acceptOverride: Accept.ToDescription());
             }
 
-            return DeserialiseMultiple(Accept, responseBody);
+            return DeserialiseMultiple(responseBody);
         }
 
         /// <summary>
@@ -405,7 +401,7 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string requestBody = SerialiseSingle(ContentType, obj);
+            string requestBody = SerialiseSingle(obj);
             // TODO: Update PostRequest to accept paging parameters.
             string responseBody = HttpUtils.PostRequest(
                 url,
@@ -417,7 +413,7 @@ namespace Sif.Framework.Consumers
             if (log.IsDebugEnabled) log.Debug("Response from POST (Query by Example) request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
-            return DeserialiseMultiple(Accept, responseBody);
+            return DeserialiseMultiple(responseBody);
         }
 
         /// <summary>
@@ -475,7 +471,7 @@ namespace Sif.Framework.Consumers
                     acceptOverride: Accept.ToDescription());
             }
 
-            return DeserialiseMultiple(Accept, responseBody);
+            return DeserialiseMultiple(responseBody);
         }
 
         /// <summary>
@@ -529,7 +525,7 @@ namespace Sif.Framework.Consumers
 
             nextChangesSinceMarker = responseHeaders[ResponseParameterType.changesSinceMarker.ToDescription()];
 
-            return DeserialiseMultiple(Accept, responseBody);
+            return DeserialiseMultiple(responseBody);
         }
 
         /// <summary>
@@ -577,7 +573,7 @@ namespace Sif.Framework.Consumers
                     acceptOverride: Accept.ToDescription());
             }
 
-            return DeserialiseMultiple(Accept, responseBody);
+            return DeserialiseMultiple(responseBody);
         }
 
         /// <summary>
@@ -599,7 +595,7 @@ namespace Sif.Framework.Consumers
                 .Append($"/{obj.RefId}")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string requestBody = SerialiseSingle(ContentType, obj);
+            string requestBody = SerialiseSingle(obj);
             string responseBody = HttpUtils.PutRequest(
                 url,
                 RegistrationService.AuthorisationToken,
@@ -628,7 +624,7 @@ namespace Sif.Framework.Consumers
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters)).ToString();
-            string requestBody = SerialiseMultiple(ContentType, obj);
+            string requestBody = SerialiseMultiple(obj);
             string responseBody = HttpUtils.PutRequest(
                 url,
                 RegistrationService.AuthorisationToken,
