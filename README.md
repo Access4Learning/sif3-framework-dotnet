@@ -40,11 +40,19 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
+**Mar 01, 2020 - 3.2.1.13 Enable Goessner notation JSON for Consumers and SIF Events**
+
+- Created a custom (XML to) JSON serialiser complying with Goessner notation that can be used by SIF Consumers.
+- Configured the Sif.Framework.EnvironmentProvider project to use the new JSON Media Type Formatter.
+- Enhanced SIF Providers to enable JSON payloads with SIF Events.
+- Updated demo projects to use the new JSON formatters and serialisers.
+- Created/updated documentation and templates regarding configuration for JSON usage.
+
 **Feb 18, 2020 - 3.2.1.12 Created a custom JSON Formatter which complies with Goessner notation**
 
 - Created a custom JSON Media Type Formatter that complies with Goessner notation that can be used by SIF Providers.
 - Configured the Sif.Framework.Demo.Au.Provider project to use the new JSON Media Type Formatter.
-- Created/updated documentation and templates regarding the new JSON Media Type Formatter
+- Created/updated documentation and templates regarding the new JSON Media Type Formatter.
 
 **Nov 3, 2019 - 3.2.1.11.2 Updated to the official release of the SIF AU 3.4.5 Data Model**
 
