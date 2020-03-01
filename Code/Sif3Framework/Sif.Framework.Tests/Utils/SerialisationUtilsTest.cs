@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,71 @@ namespace Sif.Framework.Utils
     [TestClass]
     public class SerialisationUtilsTest
     {
-        private string environmentXmlFile = "Data files\\environment.xml";
+        private readonly string environmentXmlFile = "Data files\\environment.xml";
+        private readonly string environmentJsonFile = "Data files\\environment.json";
 
         [TestMethod]
-        public void environmentType_Serialisation()
+        public void JsonEnvironment_Serialisation()
+        {
+            environmentType environmentType;
+
+            using (FileStream stream = File.OpenRead(environmentJsonFile))
+            {
+                environmentType = SerialiserFactory.GetJsonSerialiser<environmentType>().Deserialise(stream);
+            }
+
+            Assert.AreEqual(environmentType.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
+
+            string environmentText;
+
+            using (StreamReader reader = new StreamReader(environmentJsonFile))
+            {
+                environmentText = reader.ReadToEnd();
+            }
+
+            string jsonString = SerialiserFactory.GetJsonSerialiser<environmentType>().Serialise(environmentType);
+            //Assert.AreEqual(jsonString, environmentText.Trim(), true, "Environment deserialised does not match serialised version.");
+            System.Console.WriteLine(jsonString);
+        }
+
+        [TestMethod]
+        public void JsonEnvironments_Serialisation()
+        {
+            environmentType environmentType1;
+
+            using (FileStream stream = File.OpenRead(environmentJsonFile))
+            {
+                environmentType1 = SerialiserFactory.GetJsonSerialiser<environmentType>().Deserialise(stream);
+            }
+
+            Assert.AreEqual(environmentType1.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
+
+            environmentType environmentType2;
+
+            using (FileStream stream = File.OpenRead(environmentJsonFile))
+            {
+                environmentType2 = SerialiserFactory.GetJsonSerialiser<environmentType>().Deserialise(stream);
+            }
+
+            Assert.AreEqual(environmentType2.sessionToken, "2e5dd3ca282fc8ddb3d08dcacc407e8a", true, "Session token does not match.");
+
+            ICollection<environmentType> environmentTypes = new Collection<environmentType>
+            {
+                environmentType1,
+                environmentType2
+            };
+
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute("environments") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+
+            string jsonString = SerialiserFactory.GetJsonSerialiser<Collection<environmentType>>(xmlRootAttribute).Serialise((Collection<environmentType>)environmentTypes);
+            System.Console.WriteLine(jsonString);
+
+            environmentTypes = SerialiserFactory.GetJsonSerialiser<Collection<environmentType>>(xmlRootAttribute).Deserialise(jsonString);
+            System.Console.WriteLine("Number deserialised is " + environmentTypes.Count);
+        }
+
+        [TestMethod]
+        public void XmlEnvironment_Serialisation()
         {
             environmentType environmentType;
 
@@ -55,7 +116,7 @@ namespace Sif.Framework.Utils
         }
 
         [TestMethod]
-        public void environmentTypes_Serialisation()
+        public void XmlEnvironments_Serialisation()
         {
             environmentType environmentType1;
 

@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
- * 
+ * Copyright 2020 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,38 +20,30 @@ using System.Xml.Serialization;
 
 namespace Sif.Framework.Service.Serialisation
 {
-
     /// <summary>
-    /// 
+    /// Wrapper for the Microsoft XmlSerializer.
+    /// <see cref="XmlSerializer"/>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    class XmlSerialiser<T> : XmlSerializer, ISerialiser<T>
+    /// <typeparam name="T">Type of the object being serialised/deserialised.</typeparam>
+    public class XmlSerialiser<T> : XmlSerializer, ISerialiser<T>
     {
-
         /// <summary>
-        /// 
+        /// <see cref="XmlSerializer(System.Type)"/>
         /// </summary>
-        public XmlSerialiser()
-            : base(typeof(T))
+        public XmlSerialiser() : base(typeof(T))
         {
-
         }
 
         /// <summary>
-        /// 
+        /// <see cref="XmlSerializer(System.Type, XmlRootAttribute)"/>
         /// </summary>
-        /// <param name="root"></param>
-        public XmlSerialiser(XmlRootAttribute root)
-            : base(typeof(T), root)
+        public XmlSerialiser(XmlRootAttribute root) : base(typeof(T), root)
         {
-
         }
 
         /// <summary>
-        /// 
+        /// <see cref="ISerialiser{T}.Deserialise(Stream)"/>
         /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
         public T Deserialise(Stream stream)
         {
             T obj = default(T);
@@ -65,39 +57,32 @@ namespace Sif.Framework.Service.Serialisation
         }
 
         /// <summary>
-        /// 
+        /// <see cref="ISerialiser{T}.Deserialise(string)"/>
         /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
         public T Deserialise(string str)
         {
             T obj = default(T);
 
             if (!string.IsNullOrWhiteSpace(str))
             {
-
                 using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(str)))
                 {
                     obj = Deserialise(stream);
                 }
-
             }
 
             return obj;
         }
 
         /// <summary>
-        /// 
+        /// <see cref="ISerialiser{T}.Serialise(T, out Stream)"/>
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="stream"></param>
         public void Serialise(T obj, out Stream stream)
         {
             stream = new MemoryStream();
 
             if (obj != null)
             {
-
                 using (Stream serialiseStream = new MemoryStream())
                 {
                     Serialize(serialiseStream, obj);
@@ -105,36 +90,28 @@ namespace Sif.Framework.Service.Serialisation
                     serialiseStream.CopyTo(stream);
                     stream.Position = 0;
                 }
-
             }
-
         }
 
         /// <summary>
-        /// 
+        /// <see cref="ISerialiser{T}.Serialise(T)"/>
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
         public string Serialise(T obj)
         {
             string str = null;
 
             if (obj != null)
             {
-                Stream stream;
-                Serialise(obj, out stream);
+                Serialise(obj, out Stream stream);
                 stream.Position = 0;
 
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     str = reader.ReadToEnd();
                 }
-
             }
 
             return str;
         }
-
     }
-
 }

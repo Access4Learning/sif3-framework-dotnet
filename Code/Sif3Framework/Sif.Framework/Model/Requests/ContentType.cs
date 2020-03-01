@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Model.Events
+using System.ComponentModel;
+
+namespace Sif.Framework.Model.Requests
 {
     /// <summary>
-    /// This interface defines serialisation operations for SIF Event payloads.
+    /// Enumeration of content types.
     /// </summary>
-    /// <typeparam name="TMultiple">Type that defines a SIF Events entity.</typeparam>
-    public interface IEventPayloadSerialisable<TMultiple>
+    public enum ContentType
     {
-        /// <summary>
-        /// Serialise a SIF Events entity.
-        /// </summary>
-        /// <param name="obj">Payload of SIF Events.</param>
-        /// <returns>String representation of the SIF Events.</returns>
-        string SerialiseEvents(TMultiple obj);
+        [Description("application/xml")]
+        XML,
+
+        [Description("application/json")]
+        JSON
     }
 }

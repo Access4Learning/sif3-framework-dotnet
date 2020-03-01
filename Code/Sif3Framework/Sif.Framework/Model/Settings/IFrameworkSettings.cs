@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2020 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,19 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Requests;
 
 namespace Sif.Framework.Model.Settings
 {
-
     /// <summary>
     /// This interface represents SIF Framework settings.
     /// </summary>
     public interface IFrameworkSettings
     {
+        /// <summary>
+        /// Accepted content type (XML or JSON) for a message payload if it exists; defaults to XML otherwise.
+        /// </summary>
+        Accept Accept { get; }
 
         /// <summary>
         /// Application key if it exists; null otherwise.
@@ -44,6 +48,11 @@ namespace Sif.Framework.Model.Settings
         /// Consumer name if it exists; null otherwise.
         /// </summary>
         string ConsumerName { get; }
+
+        /// <summary>
+        /// Content type (XML or JSON) of the message payload if it exists; defaults to XML otherwise.
+        /// </summary>
+        ContentType ContentType { get; }
 
         /// <summary>
         /// Data model namespace if it exists; null otherwise.
@@ -129,7 +138,5 @@ namespace Sif.Framework.Model.Settings
         /// How often to check for timedout jobs in seconds. Default 60.
         /// </summary>
         int JobTimeoutFrequency { get; }
-
     }
-
 }

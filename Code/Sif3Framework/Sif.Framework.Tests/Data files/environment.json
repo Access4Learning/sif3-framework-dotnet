@@ -1,0 +1,178 @@
+{
+  "environment": {
+    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+    "@xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+    "@type": "DIRECT",
+    "@id": "5b72f2d4-7a83-4297-a71f-8b5fb26cbf14",
+    "@xmlns": "http://www.sifassociation.org/infrastructure/3.2.1",
+    "sessionToken": "2e5dd3ca282fc8ddb3d08dcacc407e8a",
+    "solutionId": "auTestSolution",
+    "defaultZone": {
+      "@id": "00000000-0000-1000-0000-000000000000",
+      "description": "auSchoolTestingZone",
+      "properties": {
+        "property": {
+          "@name": "name1",
+          "#text": "property0"
+        }
+      }
+    },
+    "authenticationMethod": "Basic",
+    "consumerName": "AUTestProvider",
+    "applicationInfo": {
+      "applicationKey": "AUDemoAppKey",
+      "supportedInfrastructureVersion": "3.2",
+      "dataModelNamespace": "http://www.sifassociation.org/datamodel/au/3.4",
+      "transport": "REST",
+      "applicationProduct": {
+        "vendorName": "NSIP EDU",
+        "productName": "NSIP Edu SIF Demo",
+        "productVersion": "1.0.6"
+      }
+    },
+    "infrastructureServices": {
+      "infrastructureService": [
+        {
+          "@name": "environment",
+          "#text": "http://rest3api.sifassociation.org/api/solutions/auTestSolution/environments/5b72f2d4-7a83-4297-a71f-8b5fb26cbf14"
+        },
+        {
+          "@name": "requestsConnector",
+          "#text": "http://rest3api.sifassociation.org/api/solutions/auTestSolution/requestsConnector"
+        },
+        {
+          "@name": "provisionRequests",
+          "#text": "http://rest3api.sifassociation.org/api/solutions/auTestSolution/provisionRequests"
+        },
+        {
+          "@name": "queues",
+          "#text": "http://rest3api.sifassociation.org/api/solutions/auTestSolution/queues"
+        },
+        {
+          "@name": "subscriptions",
+          "#text": "http://rest3api.sifassociation.org/api/solutions/auTestSolution/subscriptions"
+        }
+      ]
+    },
+    "provisionedZones": {
+      "provisionedZone": {
+        "@id": "auSchoolTestingZone",
+        "services": {
+          "service": [
+            {
+              "@name": "alerts",
+              "@contextId": "DEFAULT",
+              "@type": "UTILITY",
+              "rights": {
+                "right": [
+                  {
+                    "@type": "QUERY",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "CREATE",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "UPDATE",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "DELETE",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "PROVIDE",
+                    "#text": "SUPPORTED"
+                  },
+                  {
+                    "@type": "SUBSCRIBE",
+                    "#text": "SUPPORTED"
+                  },
+                  {
+                    "@type": "ADMIN",
+                    "#text": "APPROVED"
+                  }
+                ]
+              }
+            },
+            {
+              "@name": "students",
+              "@contextId": "DEFAULT",
+              "@type": "OBJECT",
+              "rights": {
+                "right": [
+                  {
+                    "@type": "QUERY",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "CREATE",
+                    "#text": "REJECTED"
+                  },
+                  {
+                    "@type": "UPDATE",
+                    "#text": "REJECTED"
+                  },
+                  {
+                    "@type": "DELETE",
+                    "#text": "REJECTED"
+                  },
+                  {
+                    "@type": "PROVIDE",
+                    "#text": "REJECTED"
+                  },
+                  {
+                    "@type": "SUBSCRIBE",
+                    "#text": "SUPPORTED"
+                  },
+                  {
+                    "@type": "ADMIN",
+                    "#text": "REJECTED"
+                  }
+                ]
+              }
+            },
+            {
+              "@name": "zones",
+              "@contextId": "DEFAULT",
+              "@type": "UTILITY",
+              "rights": {
+                "right": [
+                  {
+                    "@type": "QUERY",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "CREATE",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "UPDATE",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "DELETE",
+                    "#text": "APPROVED"
+                  },
+                  {
+                    "@type": "PROVIDE",
+                    "#text": "SUPPORTED"
+                  },
+                  {
+                    "@type": "SUBSCRIBE",
+                    "#text": "SUPPORTED"
+                  },
+                  {
+                    "@type": "ADMIN",
+                    "#text": "APPROVED"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
