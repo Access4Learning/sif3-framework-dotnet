@@ -1,12 +1,12 @@
 ﻿/*
  * Copyright 2020 Systemic Pty Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,6 @@ using System.Xml.Serialization;
 
 namespace Sif.Framework.Providers
 {
-
     /// <summary>
     /// This is a convenience class that defines a Provider of SIF data model objects whereby the primary key is of
     /// type System.String and the multiple objects entity is represented as a list of single objects.
@@ -40,7 +39,6 @@ namespace Sif.Framework.Providers
     public abstract class BasicProvider<T> : Provider<T, List<T>>, IProvider<T, List<T>, string>
         where T : ISifRefId<string>
     {
-
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
@@ -58,7 +56,6 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
@@ -97,10 +94,8 @@ namespace Sif.Framework.Providers
 
                     try
                     {
-
                         if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
                         {
-
                             if (hasAdvisoryId)
                             {
                                 status.id = service
@@ -116,14 +111,12 @@ namespace Sif.Framework.Providers
                                     "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
                                 status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
-
                         }
                         else
                         {
                             status.id = service.Create(obj, zoneId: (zoneId?[0]), contextId: (contextId?[0])).RefId;
                             status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
-
                     }
                     catch (AlreadyExistsException e)
                     {
@@ -168,7 +161,6 @@ namespace Sif.Framework.Providers
 
                     createStatuses.Add(status);
                 }
-
             }
             catch (Exception)
             {
@@ -189,7 +181,6 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-
             if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
@@ -216,7 +207,6 @@ namespace Sif.Framework.Providers
 
             try
             {
-
                 foreach (T obj in objs)
                 {
                     updateType status = new updateType
@@ -264,7 +254,6 @@ namespace Sif.Framework.Providers
 
                     updateStatuses.Add(status);
                 }
-
             }
             catch (Exception)
             {
@@ -283,7 +272,6 @@ namespace Sif.Framework.Providers
         [NonAction]
         public override string SerialiseEvents(List<T> obj)
         {
-
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
                 Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
@@ -292,7 +280,5 @@ namespace Sif.Framework.Providers
 
             return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Serialise(obj);
         }
-
     }
-
 }

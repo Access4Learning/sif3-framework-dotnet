@@ -13,7 +13,6 @@ using System.Xml.Serialization;
 
 namespace Sif.Framework.Demo.Broker
 {
-
     public class WebApiApplication : System.Web.HttpApplication
     {
         private IRegistrationService registrationService;
@@ -92,7 +91,5 @@ namespace Sif.Framework.Demo.Broker
         {
             registrationService.Unregister();
         }
-
     }
-
 }
