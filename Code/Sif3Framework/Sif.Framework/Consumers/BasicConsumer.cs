@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Requests;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using System.Collections.Generic;
@@ -33,35 +32,48 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.Consumer(Model.Infrastructure.Environment)">Consumer</see>
         /// </summary>
-        public BasicConsumer(Model.Infrastructure.Environment environment)
-            : base(environment)
+        public BasicConsumer(Model.Infrastructure.Environment environment) : base(environment)
         {
         }
 
         /// <summary>
         /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.Consumer(string, string, string, string)">Consumer</see>
         /// </summary>
-        public BasicConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+        public BasicConsumer(
+            string applicationKey,
+            string instanceId = null,
+            string userToken = null,
+            string solutionId = null)
             : base(applicationKey, instanceId, userToken, solutionId)
         {
         }
 
         /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.SerialiseMultiple(ContentType, TMultiple)">SerialiseMultiple</see>
+        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.SerialiseMultiple(TMultiple)">SerialiseMultiple</see>
         /// </summary>
-        protected override string SerialiseMultiple(ContentType contentType, List<T> obj)
+        protected override string SerialiseMultiple(List<T> obj)
         {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetSerialiser<List<T>>(contentType, xmlRootAttribute).Serialise(obj);
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            {
+                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                IsNullable = false
+            };
+
+            return SerialiserFactory.GetSerialiser<List<T>>(ContentType, xmlRootAttribute).Serialise(obj);
         }
 
         /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.DeserialiseMultiple(Accept, string)">DeserialiseMultiple</see>
+        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.DeserialiseMultiple(string)">DeserialiseMultiple</see>
         /// </summary>
-        protected override List<T> DeserialiseMultiple(Accept accept, string payload)
+        protected override List<T> DeserialiseMultiple(string payload)
         {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
-            return SerialiserFactory.GetSerialiser<List<T>>(accept, xmlRootAttribute).Deserialise(payload);
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            {
+                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                IsNullable = false
+            };
+
+            return SerialiserFactory.GetSerialiser<List<T>>(Accept, xmlRootAttribute).Deserialise(payload);
         }
     }
 }
