@@ -18,7 +18,6 @@ using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Mapper;
@@ -45,22 +44,6 @@ namespace Sif.Framework.Service.Registration
 
         private string environmentUrl;
         private string sessionToken;
-
-        protected Accept Accept
-        {
-            get
-            {
-                return SettingsManager.ProviderSettings.Accept;
-            }
-        }
-
-        protected ContentType ContentType
-        {
-            get
-            {
-                return SettingsManager.ProviderSettings.ContentType;
-            }
-        }
 
         /// <summary>
         /// <see cref="IRegistrationService.AuthorisationToken">AuthorisationToken</see>
@@ -163,13 +146,13 @@ namespace Sif.Framework.Service.Registration
                 string environmentBody = HttpUtils.GetRequest(
                     storedEnvironmentUrl,
                     AuthorisationToken,
-                    contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: Accept.ToDescription());
+                    contentTypeOverride: settings.ContentType.ToDescription(),
+                    acceptOverride: settings.Accept.ToDescription());
 
                 if (log.IsDebugEnabled) log.Debug("Environment response from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(environmentBody);
 
-                environmentType environmentTypeToDeserialise = SerialiserFactory.GetSerialiser<environmentType>(ContentType).Deserialise(environmentBody);
+                environmentType environmentTypeToDeserialise = SerialiserFactory.GetSerialiser<environmentType>(settings.Accept).Deserialise(environmentBody);
                 Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
 
                 sessionToken = environmentResponse.SessionToken;
@@ -196,18 +179,18 @@ namespace Sif.Framework.Service.Registration
                 {
                     AuthorisationToken initialToken = authorisationTokenService.Generate(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
                     environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
-                    string body = SerialiserFactory.GetSerialiser<environmentType>(ContentType).Serialise(environmentTypeToSerialise);
+                    string body = SerialiserFactory.GetSerialiser<environmentType>(settings.ContentType).Serialise(environmentTypeToSerialise);
                     environmentBody = HttpUtils.PostRequest(
                         settings.EnvironmentUrl,
                         initialToken,
                         body,
-                        contentTypeOverride: ContentType.ToDescription(),
-                        acceptOverride: Accept.ToDescription());
+                        contentTypeOverride: settings.ContentType.ToDescription(),
+                        acceptOverride: settings.Accept.ToDescription());
 
                     if (log.IsDebugEnabled) log.Debug("Environment response from POST request ...");
                     if (log.IsDebugEnabled) log.Debug(environmentBody);
 
-                    environmentType environmentTypeToDeserialise = SerialiserFactory.GetSerialiser<environmentType>(ContentType).Deserialise(environmentBody);
+                    environmentType environmentTypeToDeserialise = SerialiserFactory.GetSerialiser<environmentType>(settings.Accept).Deserialise(environmentBody);
                     Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
 
                     sessionToken = environmentResponse.SessionToken;
@@ -251,8 +234,8 @@ namespace Sif.Framework.Service.Registration
                     HttpUtils.DeleteRequest(
                         environmentUrl,
                         AuthorisationToken,
-                        contentTypeOverride: ContentType.ToDescription(),
-                        acceptOverride: Accept.ToDescription());
+                        contentTypeOverride: settings.ContentType.ToDescription(),
+                        acceptOverride: settings.Accept.ToDescription());
                     sessionService.RemoveSession(sessionToken);
                 }
 
