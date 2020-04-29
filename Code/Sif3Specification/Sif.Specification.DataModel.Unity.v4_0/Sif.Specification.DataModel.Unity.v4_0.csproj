@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Sif.Specification.DataModel.Unity</AssemblyName>
+    <RootNamespace>Sif.Specification.DataModel.Unity</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>4.0.0</Version>
+    <Authors>Rafidzal Rafiq</Authors>
+    <Company>Systemic Pty Ltd</Company>
+    <Product>SIF Unity Data Model library</Product>
+    <Description>SIF Unity Data Model library</Description>
+    <Copyright>Copyright © Systemic Pty Ltd 2020</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>SIF</PackageTags>
+  </PropertyGroup>
+
+</Project>
