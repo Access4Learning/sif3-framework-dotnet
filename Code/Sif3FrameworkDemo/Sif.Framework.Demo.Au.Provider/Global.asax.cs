@@ -34,10 +34,6 @@ namespace Sif.Framework.Demo.Au.Provider
 
             // XML Serialisation: For each SIF Data Model Object used by each SIF Provider, the following entries are
             // required to define the root element for each collection object.
-            XmlRootAttribute submissionsXmlRootAttribute = new XmlRootAttribute("FinancialQuestionnaireSubmissions") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
-            ISerialiser<List<FinancialQuestionnaireSubmission>> submissionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<FinancialQuestionnaireSubmission>>(submissionsXmlRootAttribute);
-            xmlFormatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
-
             XmlRootAttribute schoolInfosXmlRootAttribute = new XmlRootAttribute("SchoolInfos") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
             ISerialiser<List<SchoolInfo>> schoolInfosSerialiser = SerialiserFactory.GetXmlSerialiser<List<SchoolInfo>>(schoolInfosXmlRootAttribute);
             xmlFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
@@ -56,7 +52,6 @@ namespace Sif.Framework.Demo.Au.Provider
                 UseXmlSerializer = true
             };
             xmlToJsonFormatter.AddUriPathExtensionMapping("json", "application/json");
-            xmlToJsonFormatter.SetSerializer<List<FinancialQuestionnaireSubmission>>((XmlSerializer)submissionsSerialiser);
             xmlToJsonFormatter.SetSerializer<List<SchoolInfo>>((XmlSerializer)schoolInfosSerialiser);
             xmlToJsonFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
             xmlToJsonFormatter.SetSerializer<List<StudentSchoolEnrollment>>((XmlSerializer)studentSchoolEnrollmentsSerialiser);
