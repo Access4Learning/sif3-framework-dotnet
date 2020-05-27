@@ -76,8 +76,8 @@
     <Reference Include="Sif.Framework, Version=3.2.1.13, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Framework.3.2.1.13\lib\net461\Sif.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.6\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
+    <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.6.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.6.1\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.Infrastructure, Version=3.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Specification.Infrastructure.3.2.1\lib\netstandard2.0\Sif.Specification.Infrastructure.dll</HintPath>
@@ -137,19 +137,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\FinancialQuestionnaireSubmissionsProvider.cs" />
     <Compile Include="Controllers\SchoolInfosProvider.cs" />
     <Compile Include="Controllers\StudentPersonalsProvider.cs" />
     <Compile Include="Controllers\StudentSchoolEnrollmentsProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\FinancialQuestionnaireSubmission.cs" />
     <Compile Include="Models\SchoolInfo.cs" />
     <Compile Include="Models\StudentPersonal.cs" />
     <Compile Include="Models\StudentSchoolEnrollment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\FinancialQuestionnaireSubmissionService.cs" />
     <Compile Include="Services\SchoolInfoService.cs" />
     <Compile Include="Services\StudentPersonalIterator.cs" />
     <Compile Include="Services\StudentPersonalService.cs" />

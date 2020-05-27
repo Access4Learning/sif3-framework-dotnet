@@ -40,9 +40,14 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
-**Apr 29, 2019 - 3.2.1.13.1 Updated to the official release of the SIF AU 3.4.6 Data Model**
+**May 27, 2020 - 3.2.1.13.2 Corrected the SIF AU 3.4.6 Data Model**
 
-- Updated to the official release of  the SIF AU 3.4.6 Data Model.
+- Corrected the SIF AU 3.4.6 Data Model release provided with the SIF Framework.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
+
+**Apr 29, 2020 - 3.2.1.13.1 Updated to the official release of the SIF AU 3.4.6 Data Model**
+
+- Updated to the official release of the SIF AU 3.4.6 Data Model.
 - Refactored the AU Demo Consumer and Provider to reflect the data model updates.
 - Added the SIF NA Unity 4.0 Data Model to the Sif.Specification project.
 
