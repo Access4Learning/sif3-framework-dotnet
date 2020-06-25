@@ -268,7 +268,7 @@ namespace Sif.Framework.Consumers
             }
 
             TSingle obj = default(TSingle);
-
+            
             try
             {
                 string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -309,9 +309,44 @@ namespace Sif.Framework.Consumers
         /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Query(uint?, uint?, string, string, RequestParameter[])">Query</see>
         /// </summary>
         public virtual TMultiple Query(
+	        uint? navigationPage = null,
+	        uint? navigationPageSize = null,
+	        string zoneId = null,
+	        string contextId = null,
+	        params RequestParameter[] requestParameters)
+        {
+	        if (!RegistrationService.Registered)
+	        {
+		        throw new InvalidOperationException("Consumer has not registered.");
+	        }
+
+	        string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+		        .Append($"/{TypeName}s")
+		        .Append(HttpUtils.MatrixParameters(zoneId, contextId))
+		        .Append(GenerateQueryParameterString(requestParameters)).ToString();
+	        string xml;
+
+	        if (navigationPage.HasValue && navigationPageSize.HasValue)
+	        {
+		        xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+	        }
+	        else
+	        {
+		        xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken);
+	        }
+
+	        return DeserialiseMultiple(xml);
+        }
+
+        /// <summary>
+        /// <see cref="IConsumer{TSingle,TMultiple,TPrimaryKey}.Query(out uint?, out uint?, uint?, uint?, string, string, RequestParameter[])">Query</see>
+        /// </summary>
+        public virtual TMultiple Query(
+	        out uint? navigationCount,
+	        out uint? navigationLastPage,
             uint? navigationPage = null,
             uint? navigationPageSize = null,
-            string zoneId = null,
+	        string zoneId = null,
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
@@ -319,6 +354,9 @@ namespace Sif.Framework.Consumers
             {
                 throw new InvalidOperationException("Consumer has not registered.");
             }
+
+            navigationCount = null;
+            navigationLastPage = null;
 
             string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
@@ -328,7 +366,9 @@ namespace Sif.Framework.Consumers
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+	            xml = HttpUtils.GetRequestAndHeaders(url, RegistrationService.AuthorisationToken, out var responseHeaders, navigationPage: (int)navigationPage, navigationPageSize: (int)navigationPageSize);
+	            navigationCount = GetResponseHeaderUInt(responseHeaders, ResponseParameterType.navigationCount);
+	            navigationLastPage = GetResponseHeaderUInt(responseHeaders, ResponseParameterType.navigationLastPage);
             }
             else
             {
@@ -336,6 +376,16 @@ namespace Sif.Framework.Consumers
             }
 
             return DeserialiseMultiple(xml);
+        }
+
+        private static uint? GetResponseHeaderUInt(WebHeaderCollection responseHeaders, ResponseParameterType responseParameterType)
+        {
+	        var responseHeaderValue = responseHeaders.Get(responseParameterType.ToDescription());
+	        if (uint.TryParse(responseHeaderValue, out var responseHeaderValueUInt))
+		        return string.IsNullOrWhiteSpace(responseHeaderValue)
+			        ? (uint?)null
+			        : responseHeaderValueUInt;
+	        return null;
         }
 
         /// <summary>
