@@ -127,6 +127,28 @@ namespace Sif.Framework.Consumers
             params RequestParameter[] requestParameters);
 
         /// <summary>
+        /// Retrieve all objects.
+        /// <para>GET /StudentPersonals</para>
+        /// </summary>
+        /// <param name="navigationCount">Total number of of objects.</param>
+        /// <param name="navigationLastPage">Last page index.</param>
+        /// <param name="navigationPage">Current paging index.</param>
+        /// <param name="navigationPageSize">Page size.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <param name="requestParameters">Additional parameters associated with the request.</param>
+        /// <returns>Retrieved objects.</returns>
+        /// <exception cref="System.UnauthorizedAccessException">Request is unauthorised.</exception>
+        TMultiple Query(
+	        out uint? navigationCount,
+	        out uint? navigationLastPage,
+            uint? navigationPage = null,
+	        uint? navigationPageSize = null,
+	        string zoneId = null,
+	        string contextId = null,
+	        params RequestParameter[] requestParameters);
+
+        /// <summary>
         /// Retrieve multiple objects using Query by Example.
         /// <para>POST /StudentPersonals (methodOverride: GET)</para>
         /// </summary>
