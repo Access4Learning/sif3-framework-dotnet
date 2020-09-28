@@ -71,7 +71,7 @@
       <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="Sif.Framework">
-      <Version>3.2.1.13</Version>
+      <Version>3.2.1.14</Version>
     </PackageReference>
     <PackageReference Include="Sif.Specification.DataModel.Au">
       <Version>3.4.6.1</Version>
