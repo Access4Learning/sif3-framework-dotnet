@@ -40,7 +40,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
-**Sept 28, 2020 - 3.2.1.14 Resolved issues with SIF_HMACSHA256 authentication**
+**Sept 28, 2020 - 3.2.1.14 Updated to the official release of the SIF AU 3.4.7 Data Model**
 
 - Resolved issues with SIF_HMACSHA256 authentication.
 - Updated to the official release of the SIF AU 3.4.7 Data Model.
