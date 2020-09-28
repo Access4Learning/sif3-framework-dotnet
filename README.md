@@ -40,6 +40,10 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
+**Sept 28, 2020 - 3.2.1.14 Resolved issues with SIF_HMACSHA256 authentication**
+
+- Resolved issues with SIF_HMACSHA256 authentication.
+
 **May 27, 2020 - 3.2.1.13.2 Corrected the SIF AU 3.4.6 Data Model**
 
 - Corrected the SIF AU 3.4.6 Data Model release provided with the SIF Framework.

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,14 @@ namespace Sif.Framework.Service.Registration
         private readonly ISessionService sessionService;
         private readonly IFrameworkSettings settings;
 
+        private AuthorisationToken authorisationToken;
         private string environmentUrl;
         private string sessionToken;
 
         /// <summary>
         /// <see cref="IRegistrationService.AuthorisationToken">AuthorisationToken</see>
         /// </summary>
-        public AuthorisationToken AuthorisationToken { get; private set; }
+        public AuthorisationToken AuthorisationToken { get => GetAuthorisationToken(); private set => authorisationToken = value; }
 
         /// <summary>
         /// <see cref="IRegistrationService.Registered">Registered</see>
@@ -59,6 +60,32 @@ namespace Sif.Framework.Service.Registration
         /// The current environment that this RegistrationService has registered with.
         /// </summary>
         public Environment CurrentEnvironment { get; private set; }
+
+        /// <summary>
+        /// Get the current authorisation token to use.
+        /// </summary>
+        /// <returns>The current authorisation token to use.</returns>
+        private AuthorisationToken GetAuthorisationToken()
+        {
+            if (!Registered)
+            {
+                return null;
+            }
+
+            if (authorisationTokenService is HmacShaAuthorisationTokenService)
+            {
+                string storedSessionToken = sessionService.RetrieveSessionToken(
+                    CurrentEnvironment.ApplicationInfo.ApplicationKey,
+                    CurrentEnvironment.SolutionId,
+                    CurrentEnvironment.UserToken,
+                    CurrentEnvironment.InstanceId);
+                authorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
+            }
+
+            if (log.IsDebugEnabled) log.Debug($"Authorisation token is {authorisationToken.Token} with a timestamp of {authorisationToken.Timestamp ?? "<null>"}.");
+
+            return authorisationToken;
+        }
 
         /// <summary>
         /// Parse the URL of the Environment infrastructure service from the XML.
@@ -141,11 +168,11 @@ namespace Sif.Framework.Service.Registration
                 if (log.IsDebugEnabled) log.Debug("Session token already exists for this object service (Consumer/Provider).");
 
                 string storedSessionToken = sessionService.RetrieveSessionToken(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
-                AuthorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
+                authorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
                 string storedEnvironmentUrl = sessionService.RetrieveEnvironmentUrl(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
                 string environmentBody = HttpUtils.GetRequest(
                     storedEnvironmentUrl,
-                    AuthorisationToken,
+                    authorisationToken,
                     contentTypeOverride: settings.ContentType.ToDescription(),
                     acceptOverride: settings.Accept.ToDescription());
 
@@ -162,7 +189,7 @@ namespace Sif.Framework.Service.Registration
 
                 if (!storedSessionToken.Equals(sessionToken) || !storedEnvironmentUrl.Equals(environmentUrl))
                 {
-                    AuthorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
+                    authorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
                     sessionService.RemoveSession(storedSessionToken);
                     sessionService.StoreSession(environmentResponse.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
                 }
@@ -198,7 +225,7 @@ namespace Sif.Framework.Service.Registration
 
                     if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
 
-                    AuthorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
+                    authorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
                     sessionService.StoreSession(environment.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
                     environment = environmentResponse;
                 }
@@ -206,11 +233,11 @@ namespace Sif.Framework.Service.Registration
                 {
                     if (environmentUrl != null)
                     {
-                        HttpUtils.DeleteRequest(environmentUrl, AuthorisationToken);
+                        HttpUtils.DeleteRequest(environmentUrl, authorisationToken);
                     }
                     else if (!string.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentBody)))
                     {
-                        HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentBody), AuthorisationToken);
+                        HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentBody), authorisationToken);
                     }
 
                     throw new RegistrationException("Registration failed.", e);
@@ -233,7 +260,7 @@ namespace Sif.Framework.Service.Registration
                 {
                     HttpUtils.DeleteRequest(
                         environmentUrl,
-                        AuthorisationToken,
+                        authorisationToken,
                         contentTypeOverride: settings.ContentType.ToDescription(),
                         acceptOverride: settings.Accept.ToDescription());
                     sessionService.RemoveSession(sessionToken);

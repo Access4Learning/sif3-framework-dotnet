@@ -93,6 +93,19 @@ namespace Sif.Framework.Service.Authentication
                 throw new InvalidAuthorisationTokenException("The authorisation token timestamp is null or empty.");
             }
 
+            //if (!DateTime.TryParse(authorisationToken.Timestamp, out DateTime tokenTimestamp))
+            //{
+            //    throw new InvalidAuthorisationTokenException("The authorisation token timestamp is not of a valid format.");
+            //}
+
+            //TimeSpan timeSpan = DateTime.UtcNow - tokenTimestamp;
+
+            // TODO: Retrieve the token expiry limit from configuration.
+            //if (timeSpan.TotalSeconds > 10)
+            //{
+            //    throw new InvalidAuthorisationTokenException("The authorisation token timestamp has expired.");
+            //}
+
             if (getSharedSecret == null)
             {
                 throw new ArgumentNullException("getSharedSecret");
