@@ -43,7 +43,9 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 **Sept 28, 2020 - 3.2.1.14 Resolved issues with SIF_HMACSHA256 authentication**
 
 - Resolved issues with SIF_HMACSHA256 authentication.
+- Updated to the official release of the SIF AU 3.4.7 Data Model.
 - Updated the Demo projects with the latest version of the SIF Framework.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
 
 **May 27, 2020 - 3.2.1.13.2 Corrected the SIF AU 3.4.6 Data Model**
 
