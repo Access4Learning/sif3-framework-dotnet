@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net462;net47;net471;net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472;net461</TargetFrameworks>
     <Version>3.2.1.14</Version>
     <Authors>Rafidzal Rafiq</Authors>
     <Company>Systemic Pty Ltd</Company>
@@ -66,27 +66,6 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NET461;NETFULL</DefineConstants>
-  </PropertyGroup>
-  
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net462'">
-    <DefineConstants>NET462;NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
-    <DefineConstants>NET47;NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net471'">
-    <DefineConstants>NET471;NETFULL</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
