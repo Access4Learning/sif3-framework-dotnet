@@ -36,16 +36,14 @@ namespace Sif.Framework.Providers
     /// type System.String and the multiple objects entity is represented as a list of single objects.
     /// </summary>
     /// <typeparam name="T">Type of object associated with the Service Provider.</typeparam>
-    public abstract class BasicProvider<T> : Provider<T, List<T>>, IProvider<T, List<T>, string>
-        where T : ISifRefId<string>
+    public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefId<string>
     {
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        protected BasicProvider(IBasicProviderService<T> service) : base()
+        protected BasicProvider(IBasicProviderService<T> service) : base(service)
         {
-            this.service = service;
         }
 
         /// <summary>
@@ -56,18 +54,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(
-                Request.Headers,
-                sessionToken,
-                $"{TypeName}s",
-                RightType.CREATE,
-                RightValue.APPROVED))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -77,7 +70,6 @@ namespace Sif.Framework.Providers
                 return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
-            IHttpActionResult result;
             ICollection<createType> createStatuses = new List<createType>();
 
             try
@@ -87,34 +79,32 @@ namespace Sif.Framework.Providers
                 foreach (T obj in objs)
                 {
                     bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
-                    createType status = new createType
+                    var status = new createType
                     {
                         advisoryId = (hasAdvisoryId ? obj.RefId : null)
                     };
 
                     try
                     {
-                        if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                        if (mustUseAdvisory.HasValue)
                         {
-                            if (hasAdvisoryId)
-                            {
-                                status.id = service
-                                    .Create(obj, mustUseAdvisory, zoneId: (zoneId?[0]), contextId: (contextId?[0]))
-                                    .RefId;
-                                status.statusCode = ((int)HttpStatusCode.Created).ToString();
-                            }
-                            else
+                            if (mustUseAdvisory.Value && !hasAdvisoryId)
                             {
                                 status.error = ProviderUtils.CreateError(
                                     HttpStatusCode.BadRequest,
                                     TypeName,
                                     "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
-                                status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
+                                status.statusCode = ((int) HttpStatusCode.BadRequest).ToString();
+                            }
+                            else
+                            {
+                                status.id = Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0]).RefId;
+                                status.statusCode = ((int) HttpStatusCode.Created).ToString();
                             }
                         }
                         else
                         {
-                            status.id = service.Create(obj, zoneId: (zoneId?[0]), contextId: (contextId?[0])).RefId;
+                            status.id = Service.Create(obj, null, zoneId?[0], contextId?[0]).RefId;
                             status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
                     }
@@ -167,10 +157,9 @@ namespace Sif.Framework.Providers
                 // Need to ignore exceptions otherwise it would not be possible to return status records of processed objects.
             }
 
-            createResponseType createResponse = new createResponseType { creates = createStatuses.ToArray() };
-            result = Ok(createResponse);
+            var createResponse = new createResponseType { creates = createStatuses.ToArray() };
 
-            return result;
+            return Ok(createResponse);
         }
 
         /// <summary>
@@ -181,18 +170,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(
-                Request.Headers,
-                sessionToken,
-                $"{TypeName}s",
-                RightType.CREATE,
-                RightValue.APPROVED))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -202,21 +186,20 @@ namespace Sif.Framework.Providers
                 return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
-            IHttpActionResult result;
             ICollection<updateType> updateStatuses = new List<updateType>();
 
             try
             {
                 foreach (T obj in objs)
                 {
-                    updateType status = new updateType
+                    var status = new updateType
                     {
                         id = obj.RefId
                     };
 
                     try
                     {
-                        service.Update(obj, zoneId: (zoneId?[0]), contextId: (contextId?[0]));
+                        Service.Update(obj, (zoneId?[0]), (contextId?[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
@@ -260,10 +243,9 @@ namespace Sif.Framework.Providers
                 // Need to ignore exceptions otherwise it would not be possible to return status records of processed objects.
             }
 
-            updateResponseType updateResponse = new updateResponseType { updates = updateStatuses.ToArray() };
-            result = Ok(updateResponse);
+            var updateResponse = new updateResponseType { updates = updateStatuses.ToArray() };
 
-            return result;
+            return Ok(updateResponse);
         }
 
         /// <summary>
@@ -272,7 +254,7 @@ namespace Sif.Framework.Providers
         [NonAction]
         public override string SerialiseEvents(List<T> obj)
         {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
                 Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
                 IsNullable = false
