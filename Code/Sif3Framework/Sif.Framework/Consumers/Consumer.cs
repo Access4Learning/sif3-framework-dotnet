@@ -21,6 +21,7 @@ using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
@@ -40,63 +41,46 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public class Consumer<TSingle, TMultiple, TPrimaryKey> : IConsumer<TSingle, TMultiple, TPrimaryKey> where TSingle : ISifRefId<TPrimaryKey>
+    public class Consumer<TSingle, TMultiple, TPrimaryKey> : IConsumer<TSingle, TMultiple, TPrimaryKey>
+        where TSingle : ISifRefId<TPrimaryKey>
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly slf4net.ILogger log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Model.Infrastructure.Environment environmentTemplate;
 
-        protected Accept Accept
-        {
-            get
-            {
-                return SettingsManager.ConsumerSettings.Accept;
-            }
-        }
+        protected Accept Accept => ConsumerSettings.Accept;
 
-        protected ContentType ContentType
-        {
-            get
-            {
-                return SettingsManager.ConsumerSettings.ContentType;
-            }
-        }
+        protected IFrameworkSettings ConsumerSettings { get; }
+
+        protected ContentType ContentType => ConsumerSettings.ContentType;
 
         /// <summary>
         /// Consumer environment.
         /// </summary>
-        protected Model.Infrastructure.Environment EnvironmentTemplate
-        {
-            get
-            {
-                return environmentTemplate;
-            }
-        }
+        protected Model.Infrastructure.Environment EnvironmentTemplate => environmentTemplate;
 
         /// <summary>
         /// Service for Consumer registration.
         /// </summary>
-        protected IRegistrationService RegistrationService { get; private set; }
+        protected IRegistrationService RegistrationService { get; }
 
         /// <summary>
         /// Name of the SIF data model that the Consumer is based on, e.g. SchoolInfo, StudentPersonal, etc.
         /// </summary>
-        protected virtual string TypeName
-        {
-            get
-            {
-                return typeof(TSingle).Name;
-            }
-        }
+        protected virtual string TypeName => typeof(TSingle).Name;
 
         /// <summary>
         /// Create a Consumer instance based upon the Environment passed.
         /// </summary>
         /// <param name="environment">Environment object.</param>
-        public Consumer(Model.Infrastructure.Environment environment)
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        public Consumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
         {
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
+
+            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
+            RegistrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -106,11 +90,19 @@ namespace Sif.Framework.Consumers
         /// <param name="instanceId">Instance ID.</param>
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
-        public Consumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        public Consumer(
+            string applicationKey,
+            string instanceId = null,
+            string userToken = null,
+            string solutionId = null,
+            IFrameworkSettings settings = null)
         {
-            Model.Infrastructure.Environment environment = new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId);
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
+
+            var environment = new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId);
+            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
+            RegistrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -119,18 +111,19 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="messageParameters">Message parameters.</param>
         /// <returns>Query parameter string if message parameters exist; an empty string otherwise.</returns>
-        private string GenerateQueryParameterString(params RequestParameter[] messageParameters)
+        private static string GenerateQueryParameterString(params RequestParameter[] messageParameters)
         {
-            string queryParameterString = string.Empty;
-
-            if (messageParameters != null)
+            if (messageParameters == null)
             {
-                IEnumerable<string> queryParameters = messageParameters
-                    .Where(m => m?.Type == ConveyanceType.QueryParameter)
-                    .Select(m => $"{m.Name}={m.Value}");
-                queryParameterString = string.Join("&", queryParameters);
-                queryParameterString = (string.IsNullOrWhiteSpace(queryParameterString) ? string.Empty : $"?{queryParameterString}");
+                return string.Empty;
             }
+
+            IEnumerable<string> queryParameters = messageParameters
+                .Where(m => m?.Type == ConveyanceType.QueryParameter)
+                .Select(m => $"{m.Name}={m.Value}");
+            string queryParameterString = string.Join("&", queryParameters);
+            queryParameterString =
+                string.IsNullOrWhiteSpace(queryParameterString) ? string.Empty : $"?{queryParameterString}";
 
             return queryParameterString;
         }
@@ -204,10 +197,11 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             WebHeaderCollection responseHeaders = HttpUtils.HeadRequest(url, RegistrationService.AuthorisationToken);
 
             return responseHeaders[ResponseParameterType.changesSinceMarker.ToDescription()];
@@ -228,11 +222,12 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append($"/{TypeName}")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string requestBody = SerialiseSingle(obj);
             string responseBody = HttpUtils.PostRequest(
                 url,
@@ -241,6 +236,7 @@ namespace Sif.Framework.Consumers
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription(),
                 mustUseAdvisory: mustUseAdvisory);
+
             if (log.IsDebugEnabled) log.Debug("Response from POST request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -262,10 +258,11 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string requestBody = SerialiseMultiple(obj);
             string responseBody = HttpUtils.PostRequest(
                 url,
@@ -274,10 +271,14 @@ namespace Sif.Framework.Consumers
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription(),
                 mustUseAdvisory: mustUseAdvisory);
+
             if (log.IsDebugEnabled) log.Debug("Response from POST request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            createResponseType createResponseType = SerialiserFactory.GetSerialiser<createResponseType>(Accept).Deserialise(responseBody);
-            MultipleCreateResponse createResponse = MapperFactory.CreateInstance<createResponseType, MultipleCreateResponse>(createResponseType);
+
+            createResponseType createResponseType =
+                SerialiserFactory.GetSerialiser<createResponseType>(Accept).Deserialise(responseBody);
+            MultipleCreateResponse createResponse =
+                MapperFactory.CreateInstance<createResponseType, MultipleCreateResponse>(createResponseType);
 
             return createResponse;
         }
@@ -296,22 +297,25 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            TSingle obj = default(TSingle);
+            TSingle obj = default;
 
             try
             {
-                string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+                var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                     .Append($"/{TypeName}s")
                     .Append($"/{refId}")
                     .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                    .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                    .Append(GenerateQueryParameterString(requestParameters))
+                    .ToString();
                 string responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: Accept.ToDescription());
+
                 if (log.IsDebugEnabled) log.Debug("Response from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(responseBody);
+
                 obj = DeserialiseSingle(responseBody);
             }
             catch (WebException ex)
@@ -329,10 +333,6 @@ namespace Sif.Framework.Consumers
                 {
                     throw;
                 }
-            }
-            catch (Exception)
-            {
-                throw;
             }
 
             return obj;
@@ -353,10 +353,11 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
@@ -397,10 +398,11 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string requestBody = SerialiseSingle(obj);
             // TODO: Update PostRequest to accept paging parameters.
             string responseBody = HttpUtils.PostRequest(
@@ -410,6 +412,7 @@ namespace Sif.Framework.Consumers
                 methodOverride: "GET",
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug("Response from POST (Query by Example) request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -432,7 +435,7 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            StringBuilder servicePath = new StringBuilder();
+            var servicePath = new StringBuilder();
 
             if (conditions != null)
             {
@@ -442,12 +445,14 @@ namespace Sif.Framework.Consumers
                 }
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append(servicePath)
-                .Append($"/{TypeName}s")
-                .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append($"/{TypeName}s").Append(HttpUtils.MatrixParameters(zoneId, contextId))
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
+
             if (log.IsDebugEnabled) log.Debug("Service Path URL is " + url);
+
             string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
@@ -456,10 +461,10 @@ namespace Sif.Framework.Consumers
                     url,
                     RegistrationService.AuthorisationToken,
                     ServiceType.SERVICEPATH,
-                    navigationPage: (int)navigationPage,
-                    navigationPageSize: (int)navigationPageSize,
-                    contentTypeOverride: ContentType.ToDescription(),
-                    acceptOverride: Accept.ToDescription());
+                    (int)navigationPage,
+                    (int)navigationPageSize,
+                    ContentType.ToDescription(),
+                    Accept.ToDescription());
             }
             else
             {
@@ -494,11 +499,14 @@ namespace Sif.Framework.Consumers
             RequestParameter[] messageParameters = (requestParameters ?? (new RequestParameter[0]));
             messageParameters = string.IsNullOrWhiteSpace(changesSinceMarker)
                 ? messageParameters
-                : messageParameters.Concat(new RequestParameter[1] { new ChangesSinceQueryParameter(changesSinceMarker) }).ToArray();
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+                : messageParameters
+                    .Concat(new RequestParameter[] { new ChangesSinceQueryParameter(changesSinceMarker) })
+                    .ToArray();
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(messageParameters)).ToString();
+                .Append(GenerateQueryParameterString(messageParameters))
+                .ToString();
             WebHeaderCollection responseHeaders;
             string responseBody;
 
@@ -547,11 +555,12 @@ namespace Sif.Framework.Consumers
             RequestParameter[] messageParameters = (requestParameters ?? (new RequestParameter[0]));
             messageParameters = string.IsNullOrWhiteSpace(whereClause)
                 ? messageParameters
-                : messageParameters.Concat(new RequestParameter[1] { new DynamicQueryParameter(whereClause) }).ToArray();
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+                : messageParameters.Concat(new RequestParameter[] { new DynamicQueryParameter(whereClause) }).ToArray();
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(messageParameters)).ToString();
+                .Append(GenerateQueryParameterString(messageParameters))
+                .ToString();
             string responseBody;
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
@@ -590,11 +599,12 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append($"/{obj.RefId}")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string requestBody = SerialiseSingle(obj);
             string responseBody = HttpUtils.PutRequest(
                 url,
@@ -602,6 +612,7 @@ namespace Sif.Framework.Consumers
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
         }
@@ -620,10 +631,11 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string requestBody = SerialiseMultiple(obj);
             string responseBody = HttpUtils.PutRequest(
                 url,
@@ -631,10 +643,14 @@ namespace Sif.Framework.Consumers
                 requestBody,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug("Response from PUT request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            updateResponseType updateResponseType = SerialiserFactory.GetSerialiser<updateResponseType>(Accept).Deserialise(responseBody);
-            MultipleUpdateResponse updateResponse = MapperFactory.CreateInstance<updateResponseType, MultipleUpdateResponse>(updateResponseType);
+
+            updateResponseType updateResponseType =
+                SerialiserFactory.GetSerialiser<updateResponseType>(Accept).Deserialise(responseBody);
+            MultipleUpdateResponse updateResponse =
+                MapperFactory.CreateInstance<updateResponseType, MultipleUpdateResponse>(updateResponseType);
 
             return updateResponse;
         }
@@ -653,16 +669,17 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
-                .Append($"/{refId}")
-                .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append($"/{refId}").Append(HttpUtils.MatrixParameters(zoneId, contextId))
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string responseBody = HttpUtils.DeleteRequest(
                 url,
                 RegistrationService.AuthorisationToken,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug("Response from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
         }
@@ -681,19 +698,13 @@ namespace Sif.Framework.Consumers
                 throw new InvalidOperationException("Consumer has not registered.");
             }
 
-            List<deleteIdType> deleteIds = new List<deleteIdType>();
-
-            foreach (TPrimaryKey id in refIds)
-            {
-                deleteIdType deleteId = new deleteIdType { id = id.ToString() };
-                deleteIds.Add(deleteId);
-            }
-
-            deleteRequestType request = new deleteRequestType { deletes = deleteIds.ToArray() };
-            string url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
+            var request =
+                new deleteRequestType { deletes = refIds.Select(id => new deleteIdType { id = id.ToString() }).ToArray() };
+            var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
-                .Append(GenerateQueryParameterString(requestParameters)).ToString();
+                .Append(GenerateQueryParameterString(requestParameters))
+                .ToString();
             string requestBody = SerialiserFactory.GetSerialiser<deleteRequestType>(ContentType).Serialise(request);
             string responseBody = HttpUtils.PutRequest(
                 url,
@@ -702,10 +713,14 @@ namespace Sif.Framework.Consumers
                 methodOverride: "DELETE",
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug("Response from PUT (DELETE) request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
-            deleteResponseType updateResponseType = SerialiserFactory.GetSerialiser<deleteResponseType>(Accept).Deserialise(responseBody);
-            MultipleDeleteResponse updateResponse = MapperFactory.CreateInstance<deleteResponseType, MultipleDeleteResponse>(updateResponseType);
+
+            deleteResponseType updateResponseType =
+                SerialiserFactory.GetSerialiser<deleteResponseType>(Accept).Deserialise(responseBody);
+            MultipleDeleteResponse updateResponse =
+                MapperFactory.CreateInstance<deleteResponseType, MultipleDeleteResponse>(updateResponseType);
 
             return updateResponse;
         }
