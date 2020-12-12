@@ -18,6 +18,7 @@ using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
@@ -38,7 +39,9 @@ namespace Sif.Framework.Providers
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        protected ObjectProvider(IObjectProviderService<TSingle, TMultiple> service) : base(service)
+        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        protected ObjectProvider(IObjectProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
+            : base(service, settings)
         {
             this.service = service;
         }

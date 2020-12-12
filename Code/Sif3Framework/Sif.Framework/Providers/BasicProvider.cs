@@ -17,6 +17,7 @@
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
@@ -42,7 +43,9 @@ namespace Sif.Framework.Providers
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        protected BasicProvider(IBasicProviderService<T> service) : base(service)
+        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        protected BasicProvider(IBasicProviderService<T> service, IFrameworkSettings settings = null)
+            : base(service, settings)
         {
         }
 
@@ -94,12 +97,12 @@ namespace Sif.Framework.Providers
                                     HttpStatusCode.BadRequest,
                                     TypeName,
                                     "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
-                                status.statusCode = ((int) HttpStatusCode.BadRequest).ToString();
+                                status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
                             else
                             {
                                 status.id = Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0]).RefId;
-                                status.statusCode = ((int) HttpStatusCode.Created).ToString();
+                                status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                         }
                         else
@@ -256,7 +259,7 @@ namespace Sif.Framework.Providers
         {
             var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
-                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                Namespace = ProviderSettings.DataModelNamespace,
                 IsNullable = false
             };
 

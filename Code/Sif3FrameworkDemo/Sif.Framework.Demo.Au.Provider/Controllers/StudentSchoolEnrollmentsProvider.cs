@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,15 @@
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Providers;
+using Sif.Framework.Utils;
 using System.Web.Http;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
     public class StudentSchoolEnrollmentsProvider : BasicProvider<StudentSchoolEnrollment>
     {
-        public StudentSchoolEnrollmentsProvider() : base(new StudentSchoolEnrollmentService())
+        public StudentSchoolEnrollmentsProvider()
+            : base(new StudentSchoolEnrollmentService(), SettingsManager.ProviderSettings)
         {
         }
 

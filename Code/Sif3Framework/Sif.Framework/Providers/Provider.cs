@@ -23,6 +23,7 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
@@ -53,7 +54,7 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Accepted content type (XML or JSON) for a message payload.
         /// </summary>
-        protected Accept Accept => SettingsManager.ProviderSettings.Accept;
+        protected Accept Accept => ProviderSettings.Accept;
 
         /// <summary>
         /// Service used for request authentication.
@@ -68,7 +69,12 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Content type (XML or JSON) of the message payload.
         /// </summary>
-        protected ContentType ContentType => SettingsManager.ProviderSettings.ContentType;
+        protected ContentType ContentType => ProviderSettings.ContentType;
+
+        /// <summary>
+        /// Application settings associated with the Provider.
+        /// </summary>
+        protected IFrameworkSettings ProviderSettings { get; }
 
         /// <summary>
         /// Object service associated with this Provider.
@@ -81,39 +87,21 @@ namespace Sif.Framework.Providers
         protected virtual string TypeName => typeof(TSingle).Name;
 
         /// <summary>
-        /// Default constructor that is only available to derived instances of
-        /// this class.
-        /// </summary>
-        protected Provider()
-        {
-            if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
-            {
-                AuthenticationService =
-                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-            else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
-            {
-                AuthenticationService =
-                    new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-
-            AuthorisationService = new AuthorisationService(AuthenticationService);
-        }
-
-        /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        protected Provider(IProviderService<TSingle, TMultiple> service)
+        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        protected Provider(IProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
         {
             Service = service;
+            ProviderSettings = settings ?? SettingsManager.ConsumerSettings;
 
-            if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
+            if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
                 AuthenticationService =
                     new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
-            else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
+            else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
             {
                 AuthenticationService =
                     new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
@@ -501,7 +489,8 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(string, string, string, string, string, string, string[], string[])">Get</see>
         /// </summary>
-        public virtual IHttpActionResult Get(string object1,
+        public virtual IHttpActionResult Get(
+            string object1,
             [FromUri(Name = "id1")] string refId1,
             string object2 = null,
             [FromUri(Name = "id2")] string refId2 = null,

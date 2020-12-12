@@ -18,7 +18,6 @@ using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -58,7 +57,7 @@ namespace Sif.Framework.Consumers
         {
             var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
-                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                Namespace = ConsumerSettings.DataModelNamespace,
                 IsNullable = false
             };
 
@@ -72,7 +71,7 @@ namespace Sif.Framework.Consumers
         {
             var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
-                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                Namespace = ConsumerSettings.DataModelNamespace,
                 IsNullable = false
             };
 

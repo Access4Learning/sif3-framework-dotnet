@@ -49,10 +49,19 @@ namespace Sif.Framework.Consumers
 
         private Model.Infrastructure.Environment environmentTemplate;
 
+        /// <summary>
+        /// Accepted content type (XML or JSON) for a message payload.
+        /// </summary>
         protected Accept Accept => ConsumerSettings.Accept;
 
+        /// <summary>
+        /// Application settings associated with the Consumer.
+        /// </summary>
         protected IFrameworkSettings ConsumerSettings { get; }
 
+        /// <summary>
+        /// Content type (XML or JSON) of the message payload.
+        /// </summary>
         protected ContentType ContentType => ConsumerSettings.ContentType;
 
         /// <summary>
