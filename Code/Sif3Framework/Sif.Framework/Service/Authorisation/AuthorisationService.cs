@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ using Sif.Framework.Extensions;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,22 +33,7 @@ namespace Sif.Framework.Service.Authorisation
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
-        protected IAuthenticationService authenticationService;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
-        /// </summary>
-        public AuthorisationService()
-        {
-            if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
-            {
-                authenticationService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-            else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
-            {
-                authenticationService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-        }
+        private readonly IAuthenticationService authenticationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
@@ -71,7 +55,7 @@ namespace Sif.Framework.Service.Authorisation
             RightValue privilege = RightValue.APPROVED,
             string zoneId = null)
         {
-            bool isAuthorised = true;
+            var isAuthorised = true;
             Environment environment = authenticationService.GetEnvironmentBySessionToken(sessionToken);
 
             if (environment == null)
@@ -79,11 +63,14 @@ namespace Sif.Framework.Service.Authorisation
                 throw new InvalidSessionException("Session token does not have an associated environment definition.");
             }
 
-            Right operationPolicy = new Right(permission, privilege);
+            var operationPolicy = new Right(permission, privilege);
             string serviceType = HttpUtils.GetHeaderValue(headers, "serviceType") ?? ServiceType.OBJECT.ToDescription();
 
             // Retrieving permissions for requester.
-            IDictionary<string, Right> requesterPermissions = GetRightsForService(serviceType, serviceName, EnvironmentUtils.GetTargetZone(environment, zoneId));
+            IDictionary<string, Right> requesterPermissions = GetRightsForService(
+                serviceType,
+                serviceName,
+                EnvironmentUtils.GetTargetZone(environment, zoneId));
 
             if (requesterPermissions == null)
             {
@@ -112,7 +99,8 @@ namespace Sif.Framework.Service.Authorisation
         /// <param name="serviceName">The service name.</param>
         /// <param name="zone">The zone to retrieve the rights for.</param>
         /// <returns>An array of declared rights</returns>
-        private IDictionary<string, Right> GetRightsForService(string serviceType, string serviceName, ProvisionedZone zone)
+        private static IDictionary<string, Right> GetRightsForService(string serviceType, string serviceName,
+            ProvisionedZone zone)
         {
             Model.Infrastructure.Service service =
                 (from Model.Infrastructure.Service s in zone.Services

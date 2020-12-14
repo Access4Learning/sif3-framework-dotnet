@@ -103,8 +103,11 @@ namespace Sif.Framework.Providers
             }
             else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
             {
-                AuthenticationService =
-                    new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                AuthenticationService = new BrokeredAuthenticationService(
+                    new ApplicationRegisterService(),
+                    new EnvironmentService(),
+                    settings,
+                    SessionsManager.ProviderSessionService);
             }
 
             AuthorisationService = new AuthorisationService(AuthenticationService);
@@ -909,10 +912,10 @@ namespace Sif.Framework.Providers
 
                             var requestHeaders = new NameValueCollection()
                             {
-                                { EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
-                                { EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString() },
-                                { EventParameterType.messageType.ToDescription(), "EVENT" },
-                                { EventParameterType.serviceName.ToDescription(), $"{TypeName}s" }
+                                {EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription()},
+                                {EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString()},
+                                {EventParameterType.messageType.ToDescription(), "EVENT"},
+                                {EventParameterType.serviceName.ToDescription(), $"{TypeName}s"}
                             };
 
                             switch (sifEvent.EventAction)
