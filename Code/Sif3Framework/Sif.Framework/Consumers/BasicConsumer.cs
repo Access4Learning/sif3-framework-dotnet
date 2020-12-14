@@ -33,7 +33,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}">Consumer</see>
         /// </summary>
-        public BasicConsumer(Environment environment, IFrameworkSettings settings = null) : base(environment, settings)
+        protected BasicConsumer(Environment environment, IFrameworkSettings settings = null) : base(environment, settings)
         {
         }
 

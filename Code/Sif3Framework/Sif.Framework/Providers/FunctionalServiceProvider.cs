@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Functional;
@@ -50,15 +51,30 @@ namespace Sif.Framework.Providers
         protected IAuthenticationService authService;
 
         /// <summary>
+        /// Application settings associated with the Provider.
+        /// </summary>
+        protected IFrameworkSettings ProviderSettings { get; }
+
+        /// <summary>
         /// Create an instance.
         /// </summary>
-        public FunctionalServiceProvider()
+        public FunctionalServiceProvider() : this(null)
         {
-            if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
+        }
+
+        /// <summary>
+        /// Create an instance.
+        /// </summary>
+        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        protected FunctionalServiceProvider(IFrameworkSettings settings = null)
+        {
+            ProviderSettings = settings ?? SettingsManager.ProviderSettings;
+
+            if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
                 authService = new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
-            else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
+            else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
             {
                 authService = new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
             }
@@ -98,7 +114,7 @@ namespace Sif.Framework.Providers
 
                 Guid id = service.Create(item, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
-                if (SettingsManager.ProviderSettings.JobBinding)
+                if (ProviderSettings.JobBinding)
                 {
                     service.Bind(id, getOwnerId(sessionToken));
                 }
@@ -162,7 +178,7 @@ namespace Sif.Framework.Providers
                         }
                         Guid id = service.Create(job, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
-                        if (SettingsManager.ProviderSettings.JobBinding)
+                        if (ProviderSettings.JobBinding)
                         {
                             service.Bind(id, getOwnerId(sessionToken));
                         }
@@ -238,7 +254,7 @@ namespace Sif.Framework.Providers
                 ICollection<jobType> jobs = service.Retrieve(zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
                 foreach (jobType job in jobs)
                 {
-                    if (!SettingsManager.ProviderSettings.JobBinding
+                    if (!ProviderSettings.JobBinding
                         || service.IsBound(Guid.Parse(job.id), getOwnerId(sessionToken)))
                     {
                         items.Add(job);
@@ -277,7 +293,7 @@ namespace Sif.Framework.Providers
                 IFunctionalService service = getService(serviceName);
                 item = service.Retrieve(id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(Guid.Parse(item.id), getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
@@ -337,7 +353,7 @@ namespace Sif.Framework.Providers
             {
                 IFunctionalService service = getService(serviceName);
 
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as one or more jobs referred to in this request do not belong to this consumer.");
@@ -345,7 +361,7 @@ namespace Sif.Framework.Providers
 
                 service.Delete(id, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
-                if (SettingsManager.ProviderSettings.JobBinding)
+                if (ProviderSettings.JobBinding)
                 {
                     service.Unbind(id);
                 }
@@ -377,7 +393,7 @@ namespace Sif.Framework.Providers
             {
                 try
                 {
-                    if (SettingsManager.ProviderSettings.JobBinding
+                    if (ProviderSettings.JobBinding
                         && !service.IsBound(Guid.Parse(deleteId.id), getOwnerId(sessionToken)))
                     {
                         throw new InvalidSessionException("Request failed as job does not belong to this consumer.");
@@ -385,7 +401,7 @@ namespace Sif.Framework.Providers
 
                     service.Delete(Guid.Parse(deleteId.id), zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
 
-                    if (SettingsManager.ProviderSettings.JobBinding)
+                    if (ProviderSettings.JobBinding)
                     {
                         service.Unbind(Guid.Parse(deleteId.id));
                     }
@@ -437,7 +453,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
@@ -478,7 +494,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
@@ -517,7 +533,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
@@ -558,7 +574,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
@@ -602,7 +618,7 @@ namespace Sif.Framework.Providers
             try
             {
                 IFunctionalService service = getService(serviceName);
-                if (SettingsManager.ProviderSettings.JobBinding
+                if (ProviderSettings.JobBinding
                     && !service.IsBound(id, getOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException("Request failed as the job referred to in this request does not belong to this consumer.");
@@ -645,7 +661,7 @@ namespace Sif.Framework.Providers
                 throw new InvalidOperationException("Found a functional service to support messages to " + serviceName + ", but its name isn't a plural (doesn't end in 's'). This will not work in the current framework.");
             }
 
-            IService service = FunctionalServiceProviderFactory.GetInstance().GetProvider(serviceName);
+            IService service = FunctionalServiceProviderFactory.GetInstance(ProviderSettings).GetProvider(serviceName);
 
             if (service == null)
             {
@@ -783,7 +799,7 @@ namespace Sif.Framework.Providers
         {
             string ownerId = null;
 
-            switch (SettingsManager.ProviderSettings.EnvironmentType)
+            switch (ProviderSettings.EnvironmentType)
             {
                 case EnvironmentType.DIRECT:
                     // Application key is either in header or in session token

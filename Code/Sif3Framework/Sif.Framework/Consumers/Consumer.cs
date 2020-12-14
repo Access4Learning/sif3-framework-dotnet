@@ -84,7 +84,7 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="environment">Environment object.</param>
         /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
-        public Consumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
+        protected Consumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
         {
             ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
 
@@ -106,12 +106,8 @@ namespace Sif.Framework.Consumers
             string userToken = null,
             string solutionId = null,
             IFrameworkSettings settings = null)
+            : this(new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId), settings)
         {
-            ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
-
-            var environment = new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId);
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
-            RegistrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>

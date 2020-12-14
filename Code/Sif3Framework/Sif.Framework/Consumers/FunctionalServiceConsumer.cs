@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
@@ -43,6 +44,11 @@ namespace Sif.Framework.Consumers
         private RegistrationService registrationService;
 
         /// <summary>
+        /// Application settings associated with the Consumer.
+        /// </summary>
+        protected IFrameworkSettings ConsumerSettings { get; }
+
+        /// <summary>
         /// Consumer environment template
         /// </summary>
         protected Environment EnvironmentTemplate
@@ -62,10 +68,13 @@ namespace Sif.Framework.Consumers
         /// Create a Consumer instance based upon the Environment passed.
         /// </summary>
         /// <param name="environment">Environment object.</param>
-        public FunctionalServiceConsumer(Environment environment)
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        public FunctionalServiceConsumer(Environment environment, IFrameworkSettings settings = null)
         {
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            registrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
+
+            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
+            registrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -75,7 +84,14 @@ namespace Sif.Framework.Consumers
         /// <param name="instanceId">Instance ID.</param>
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
-        public FunctionalServiceConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null): this(new Environment(applicationKey, instanceId, userToken, solutionId))
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        public FunctionalServiceConsumer(
+            string applicationKey,
+            string instanceId = null,
+            string userToken = null,
+            string solutionId = null,
+            IFrameworkSettings settings = null)
+            : this(new Environment(applicationKey, instanceId, userToken, solutionId), settings)
         {
         }
 

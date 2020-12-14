@@ -94,7 +94,7 @@ namespace Sif.Framework.Providers
         protected Provider(IProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
         {
             Service = service;
-            ProviderSettings = settings ?? SettingsManager.ConsumerSettings;
+            ProviderSettings = settings ?? SettingsManager.ProviderSettings;
 
             if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
