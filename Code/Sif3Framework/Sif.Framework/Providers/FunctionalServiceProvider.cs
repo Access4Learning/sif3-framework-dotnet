@@ -42,13 +42,13 @@ namespace Sif.Framework.Providers
     [RoutePrefix("services")]
     public class FunctionalServiceProvider : ApiController
     {
-        private static readonly slf4net.ILogger log =
+        private readonly slf4net.ILogger log =
             slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Authentication (BROKERED or DIRECT) service against which requests will be checked.
         /// </summary>
-        protected IAuthenticationService authService;
+        private readonly IAuthenticationService authService;
 
         /// <summary>
         /// Application settings associated with the Provider.
@@ -94,48 +94,51 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpPost]
         [Route("{serviceName}/{jobName}")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] string jobName,
-            [FromBody] jobType item, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Post(
+            [FromUri] string serviceName,
+            [FromUri] string jobName,
+            [FromBody] jobType item,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.CREATE, RightValue.APPROVED));
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.CREATE, RightValue.APPROVED));
             HttpResponseMessage result;
+
             try
             {
                 bool hasAdvisoryId = ProviderUtils.IsAdvisoryId(item.id);
                 bool? _mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
                 bool mustUseAdvisory = _mustUseAdvisory.HasValue && _mustUseAdvisory.Value;
 
-                IFunctionalService service = getService(serviceName);
+                IFunctionalService service = GetService(serviceName);
 
                 if (!service.AcceptJob(serviceName, jobName))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    return Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
                         "Service " + serviceName + " does not handle jobs named " + jobName);
                 }
 
                 if (!hasAdvisoryId && mustUseAdvisory)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    return Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
                         "Request requires use of advisory id, but none has been supplied.");
                 }
 
-                Guid id = service.Create(item, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]));
+                Guid id = service.Create(item, zoneId?[0], contextId?[0]);
 
                 if (ProviderSettings.JobBinding)
                 {
-                    service.Bind(id, getOwnerId(sessionToken));
+                    service.Bind(id, GetOwnerId(sessionToken));
                 }
 
-                jobType job = service.Retrieve(id, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]));
+                jobType job = service.Retrieve(id, zoneId?[0], contextId?[0]);
 
-                string uri = Url.Link("ServicesRoute", new { controller = serviceName, id = id });
+                string uri = Url.Link("ServicesRoute", new { controller = serviceName, id });
 
-                result = Request.CreateResponse<jobType>(HttpStatusCode.Created, job);
+                result = Request.CreateResponse(HttpStatusCode.Created, job);
                 result.Headers.Location = new Uri(uri);
             }
             catch (AlreadyExistsException e)
@@ -144,7 +147,9 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Object to create Job is invalid.\n ",
+                result = Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest,
+                    "Object to create Job is invalid.\n ",
                     e);
             }
             catch (CreateException e)
@@ -153,7 +158,8 @@ namespace Sif.Framework.Providers
             }
             catch (RejectedException e)
             {
-                result = Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                result = Request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
                     "Create request rejected for Job" + (item.id == null ? "" : " with advisory id " + item.id) + ".\n",
                     e);
             }
@@ -174,49 +180,54 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpPost]
         [Route("{serviceName}")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromBody] jobCollectionType items,
-            [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual HttpResponseMessage Post(
+            [FromUri] string serviceName,
+            [FromBody] jobCollectionType items,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.CREATE, RightValue.APPROVED));
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.CREATE, RightValue.APPROVED));
             HttpResponseMessage result;
+
             try
             {
-                IFunctionalService service = getService(serviceName);
+                IFunctionalService service = GetService(serviceName);
+                var creates = new List<createType>();
 
-                List<createType> creates = new List<createType>();
                 foreach (jobType job in items.job)
                 {
                     try
                     {
                         if (!service.AcceptJob(serviceName, job.name))
                         {
-                            throw new ArgumentException("Service " + serviceName + " does not handle jobs named " +
-                                                        job.name);
+                            throw new ArgumentException(
+                                $"Service {serviceName} does not handle jobs named {job.name}.");
                         }
 
-                        Guid id = service.Create(job, zoneId: (zoneId == null ? null : zoneId[0]),
-                            contextId: (contextId == null ? null : contextId[0]));
+                        Guid id = service.Create(job, zoneId?[0], contextId?[0]);
 
                         if (ProviderSettings.JobBinding)
                         {
-                            service.Bind(id, getOwnerId(sessionToken));
+                            service.Bind(id, GetOwnerId(sessionToken));
                         }
 
                         creates.Add(ProviderUtils.CreateCreate(HttpStatusCode.Created, id.ToString(), job.id));
                     }
                     catch (CreateException e)
                     {
-                        ProviderUtils.CreateCreate(HttpStatusCode.Conflict, job.id,
-                            error: ProviderUtils.CreateError(HttpStatusCode.Conflict,
-                                HttpStatusCode.Conflict.ToString(), e.Message));
+                        ProviderUtils.CreateCreate(
+                            HttpStatusCode.Conflict,
+                            job.id,
+                            error: ProviderUtils.CreateError(
+                                HttpStatusCode.Conflict,
+                                HttpStatusCode.Conflict.ToString(),
+                                e.Message));
                     }
                 }
 
                 createResponseType createResponse = ProviderUtils.CreateCreateResponse(creates.ToArray());
-
-                result = Request.CreateResponse<createResponseType>(HttpStatusCode.Created, createResponse);
+                result = Request.CreateResponse(HttpStatusCode.Created, createResponse);
                 string uri = Url.Link("ServicesRoute", new { controller = serviceName });
                 result.Headers.Location = new Uri(uri);
             }
@@ -226,18 +237,24 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Object to create Jobs is invalid.\n ",
+                result = Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest,
+                    "Object to create Jobs is invalid.\n ",
                     e);
             }
             catch (CreateException e)
             {
-                result = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request failed for creating Jobs.\n ",
+                result = Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest,
+                    "Request failed for creating Jobs.\n ",
                     e);
             }
             catch (RejectedException e)
             {
-                result = Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    "Create request rejected for creating Jobs.\n", e);
+                result = Request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
+                    "Create request rejected for creating Jobs.\n",
+                    e);
             }
             catch (QueryException e)
             {
@@ -257,7 +274,8 @@ namespace Sif.Framework.Providers
         /// <returns>Forbidden (403)</returns>
         [HttpGet]
         [Route("")]
-        public virtual HttpResponseMessage Get([MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Get(
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
             CheckAuthorisation(zoneId, contextId);
@@ -270,23 +288,23 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpGet]
         [Route("{serviceName}")]
-        public virtual ICollection<jobType> Get([FromUri] string serviceName, [MatrixParameter] string[] zoneId = null,
+        public virtual ICollection<jobType> Get(
+            [FromUri] string serviceName,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.QUERY, RightValue.APPROVED));
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.QUERY, RightValue.APPROVED));
             ICollection<jobType> items = new List<jobType>();
 
             try
             {
-                IFunctionalService service = getService(serviceName);
-                ICollection<jobType> jobs = service.Retrieve(zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]));
+                IFunctionalService service = GetService(serviceName);
+                ICollection<jobType> jobs = service.Retrieve(zoneId?[0], contextId?[0]);
+
                 foreach (jobType job in jobs)
                 {
-                    if (!ProviderSettings.JobBinding
-                        || service.IsBound(Guid.Parse(job.id), getOwnerId(sessionToken)))
+                    if (!ProviderSettings.JobBinding || service.IsBound(Guid.Parse(job.id), GetOwnerId(sessionToken)))
                     {
                         items.Add(job);
                     }
@@ -294,8 +312,10 @@ namespace Sif.Framework.Providers
             }
             catch (Exception e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "The GET request failed for functional services due to the following error:\n " + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        $"The GET request failed for functional services due to the following error:\n{e.Message}"));
             }
 
             if (items == null)
@@ -311,11 +331,14 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpGet]
         [Route("{serviceName}/{id}")]
-        public virtual HttpResponseMessage Get([FromUri] string serviceName, [FromUri] Guid id,
-            [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual HttpResponseMessage Get(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.QUERY, RightValue.APPROVED));
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.QUERY, RightValue.APPROVED));
 
             // Check that we support that provider
             // if not then throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -324,12 +347,10 @@ namespace Sif.Framework.Providers
 
             try
             {
-                IFunctionalService service = getService(serviceName);
-                item = service.Retrieve(id, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]));
+                IFunctionalService service = GetService(serviceName);
+                item = service.Retrieve(id, zoneId?[0], contextId?[0]);
 
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(Guid.Parse(item.id), getOwnerId(sessionToken)))
+                if (ProviderSettings.JobBinding && !service.IsBound(Guid.Parse(item.id), GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as one or more jobs referred to in this request do not belong to this consumer.");
@@ -347,7 +368,8 @@ namespace Sif.Framework.Providers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            HttpResponseMessage result = Request.CreateResponse<jobType>(HttpStatusCode.OK, item);
+            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK, item);
+
             return result;
         }
 
@@ -357,8 +379,12 @@ namespace Sif.Framework.Providers
         /// <returns>Forbidden (403)</returns>
         [HttpPut]
         [Route("{serviceName}/{id}")]
-        public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromUri] Guid id, [FromBody] jobType item,
-            [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual HttpResponseMessage Put(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [FromBody] jobType item,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
 
@@ -371,8 +397,11 @@ namespace Sif.Framework.Providers
         /// <returns>Forbidden (403)</returns>
         [HttpPut]
         [Route("{serviceName}")]
-        public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromBody] jobCollectionType items,
-            [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual HttpResponseMessage Put(
+            [FromUri] string serviceName,
+            [FromBody] jobCollectionType items,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
 
@@ -384,25 +413,26 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpDelete]
         [Route("{serviceName}/{id}")]
-        public virtual HttpResponseMessage Delete([FromUri] string serviceName, [FromUri] Guid id,
-            [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public virtual HttpResponseMessage Delete(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.DELETE, RightValue.APPROVED));
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.DELETE, RightValue.APPROVED));
 
             try
             {
-                IFunctionalService service = getService(serviceName);
+                IFunctionalService service = GetService(serviceName);
 
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(id, getOwnerId(sessionToken)))
+                if (ProviderSettings.JobBinding && !service.IsBound(id, GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
 
-                service.Delete(id, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]));
+                service.Delete(id, zoneId?[0], contextId?[0]);
 
                 if (ProviderSettings.JobBinding)
                 {
@@ -417,6 +447,7 @@ namespace Sif.Framework.Providers
             }
 
             HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
+
             return result;
         }
 
@@ -425,28 +456,28 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpDelete]
         [Route("{serviceName}")]
-        public virtual HttpResponseMessage Delete([FromUri] string serviceName,
-            [FromBody] deleteRequestType deleteRequest, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Delete(
+            [FromUri] string serviceName,
+            [FromBody] deleteRequestType deleteRequest,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.DELETE, RightValue.APPROVED));
-
-            IFunctionalService service = getService(serviceName);
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.DELETE, RightValue.APPROVED));
+            IFunctionalService service = GetService(serviceName);
             ICollection<deleteStatus> statuses = new List<deleteStatus>();
 
             foreach (deleteIdType deleteId in deleteRequest.deletes)
             {
                 try
                 {
-                    if (ProviderSettings.JobBinding
-                        && !service.IsBound(Guid.Parse(deleteId.id), getOwnerId(sessionToken)))
+                    if (ProviderSettings.JobBinding &&
+                        !service.IsBound(Guid.Parse(deleteId.id), GetOwnerId(sessionToken)))
                     {
                         throw new InvalidSessionException("Request failed as job does not belong to this consumer.");
                     }
 
-                    service.Delete(Guid.Parse(deleteId.id), zoneId: (zoneId == null ? null : zoneId[0]),
-                        contextId: (contextId == null ? null : contextId[0]));
+                    service.Delete(Guid.Parse(deleteId.id), zoneId?[0], contextId?[0]);
 
                     if (ProviderSettings.JobBinding)
                     {
@@ -457,41 +488,62 @@ namespace Sif.Framework.Providers
                 }
                 catch (ArgumentException e)
                 {
-                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.BadRequest, deleteId.id,
-                        ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName,
-                            "Invalid argument: id=" + deleteId.id + ".\n" + e.Message)));
+                    statuses.Add(
+                        ProviderUtils.CreateDelete(
+                            HttpStatusCode.BadRequest,
+                            deleteId.id,
+                            ProviderUtils.CreateError(
+                                HttpStatusCode.BadRequest,
+                                serviceName,
+                                "Invalid argument: id=" + deleteId.id + ".\n" + e.Message)));
                 }
                 catch (DeleteException e)
                 {
-                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.BadRequest, deleteId.id,
-                        ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName,
-                            "Request failed for object " + serviceName + " with ID of " + deleteId.id + ".\n " +
-                            e.Message)));
+                    statuses.Add(
+                        ProviderUtils.CreateDelete(
+                            HttpStatusCode.BadRequest,
+                            deleteId.id,
+                            ProviderUtils.CreateError(
+                                HttpStatusCode.BadRequest,
+                                serviceName,
+                                $"Request failed for object {serviceName} with ID of {deleteId.id}.\n{e.Message}")));
                 }
                 catch (NotFoundException e)
                 {
-                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.NotFound, deleteId.id,
-                        ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName,
-                            "Object " + serviceName + " with ID of " + deleteId.id + " not found.\n" + e.Message)));
+                    statuses.Add(
+                        ProviderUtils.CreateDelete(
+                            HttpStatusCode.NotFound,
+                            deleteId.id,
+                            ProviderUtils.CreateError(
+                                HttpStatusCode.BadRequest,
+                                serviceName,
+                                $"Object {serviceName} with ID of {deleteId.id} not found.\n{e.Message}")));
                 }
                 catch (InvalidSessionException e)
                 {
-                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.BadRequest, deleteId.id,
-                        ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName,
-                            "Request failed for object " + serviceName + " with ID of " + deleteId.id +
-                            ", job doesn't belong to this consumer.\n " + e.Message)));
+                    statuses.Add(
+                        ProviderUtils.CreateDelete(
+                            HttpStatusCode.BadRequest,
+                            deleteId.id,
+                            ProviderUtils.CreateError(
+                                HttpStatusCode.BadRequest,
+                                serviceName,
+                                $"Request failed for object {serviceName} with ID of {deleteId.id}, job doesn't belong to this consumer.\n{e.Message}")));
                 }
                 catch (Exception e)
                 {
-                    statuses.Add(ProviderUtils.CreateDelete(HttpStatusCode.InternalServerError, deleteId.id,
-                        ProviderUtils.CreateError(HttpStatusCode.BadRequest, serviceName,
-                            "Request failed for object " + serviceName + " with ID of " + deleteId.id + ".\n " +
-                            e.Message)));
+                    statuses.Add(
+                        ProviderUtils.CreateDelete(
+                            HttpStatusCode.InternalServerError,
+                            deleteId.id,
+                            ProviderUtils.CreateError(
+                                HttpStatusCode.BadRequest,
+                                serviceName,
+                                $"Request failed for object {serviceName} with ID of {deleteId.id}.\n{e.Message}")));
                 }
             }
 
-            return Request.CreateResponse<deleteResponseType>(HttpStatusCode.OK,
-                ProviderUtils.CreateDeleteResponse(statuses.ToArray()));
+            return Request.CreateResponse(HttpStatusCode.OK, ProviderUtils.CreateDeleteResponse(statuses.ToArray()));
         }
 
         /*-------------------*/
@@ -503,50 +555,67 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpPost]
         [Route("{serviceName}/{id}/{phaseName}")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id,
-            [FromUri] string phaseName, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Post(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [FromUri] string phaseName,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.UPDATE, RightValue.APPROVED));
-
-            preventPagingHeaders();
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+            PreventPagingHeaders();
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                IFunctionalService service = getService(serviceName);
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(id, getOwnerId(sessionToken)))
+                IFunctionalService service = GetService(serviceName);
+
+                if (ProviderSettings.JobBinding && !service.IsBound(id, GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as the job referred to in this request does not belong to this consumer.");
                 }
 
-                return OKResult(service.CreateToPhase(id, phaseName, body, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]),
-                    contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OkResult(
+                    service.CreateToPhase(
+                        id,
+                        phaseName,
+                        body,
+                        zoneId?[0],
+                        contextId?[0],
+                        HttpUtils.GetContentType(Request),
+                        HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
             }
             catch (CreateException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Problem creating data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Problem creating data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (RejectedException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    "Problem creating data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        "Problem creating data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (Exception e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                    "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.InternalServerError,
+                        "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message));
             }
         }
 
@@ -555,50 +624,66 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpGet]
         [Route("{serviceName}/{id}/{phaseName}")]
-        public virtual HttpResponseMessage Get([FromUri] string serviceName, [FromUri] Guid id,
-            [FromUri] string phaseName, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Get(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [FromUri] string phaseName,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.UPDATE, RightValue.APPROVED));
-
-            preventPagingHeaders();
-
-            string body = Request.Content.ReadAsStringAsync().Result;
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+            PreventPagingHeaders();
+            string _ = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                IFunctionalService service = getService(serviceName);
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(id, getOwnerId(sessionToken)))
+                IFunctionalService service = GetService(serviceName);
+
+                if (ProviderSettings.JobBinding && !service.IsBound(id, GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as the job referred to in this request does not belong to this consumer.");
                 }
 
-                return OKResult(service.RetrieveToPhase(id, phaseName, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]),
-                    contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OkResult(
+                    service.RetrieveToPhase(
+                        id,
+                        phaseName,
+                        zoneId: zoneId?[0],
+                        contextId: contextId?[0],
+                        contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n",
+                        e));
             }
             catch (NotFoundException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    "Problem retrieving data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.NotFound,
+                        "Problem retrieving data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (RejectedException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    "Problem retrieving data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        "Problem retrieving data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (Exception e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                    "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.InternalServerError,
+                        "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message));
             }
         }
 
@@ -607,48 +692,66 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpPut]
         [Route("{serviceName}/{id}/{phaseName}")]
-        public virtual HttpResponseMessage Put([FromUri] string serviceName, [FromUri] Guid id,
-            [FromUri] string phaseName, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Put(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [FromUri] string phaseName,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.UPDATE, RightValue.APPROVED));
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                IFunctionalService service = getService(serviceName);
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(id, getOwnerId(sessionToken)))
+                IFunctionalService service = GetService(serviceName);
+
+                if (ProviderSettings.JobBinding && !service.IsBound(id, GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as the job referred to in this request does not belong to this consumer.");
                 }
 
-                return OKResult(service.UpdateToPhase(id, phaseName, body, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]),
-                    contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OkResult(
+                    service.UpdateToPhase(
+                        id,
+                        phaseName,
+                        body,
+                        zoneId?[0],
+                        contextId?[0],
+                        HttpUtils.GetContentType(Request), HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Invalid argument for Phase " + phaseName + " in job " + id + ".\n" + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Invalid argument for Phase " + phaseName + " in job " + id + ".\n" + e.Message));
             }
             catch (UpdateException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Problem updating data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Problem updating data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (RejectedException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    "Problem updating data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        "Problem updating data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (Exception e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                    "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message, e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.InternalServerError,
+                        "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message,
+                        e));
             }
         }
 
@@ -657,50 +760,66 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpDelete]
         [Route("{serviceName}/{id}/{phaseName}")]
-        public virtual HttpResponseMessage Delete([FromUri] string serviceName, [FromUri] Guid id,
-            [FromUri] string phaseName, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Delete(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [FromUri] string phaseName,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.UPDATE, RightValue.APPROVED));
-
-            preventPagingHeaders();
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+            PreventPagingHeaders();
             string body = Request.Content.ReadAsStringAsync().Result;
 
             try
             {
-                IFunctionalService service = getService(serviceName);
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(id, getOwnerId(sessionToken)))
+                IFunctionalService service = GetService(serviceName);
+
+                if (ProviderSettings.JobBinding && !service.IsBound(id, GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as the job referred to in this request does not belong to this consumer.");
                 }
 
-                return OKResult(service.DeleteToPhase(id, phaseName, body, zoneId: (zoneId == null ? null : zoneId[0]),
-                    contextId: (contextId == null ? null : contextId[0]),
-                    contentType: HttpUtils.GetContentType(Request), accept: HttpUtils.GetAccept(Request)));
+                return OkResult(
+                    service.DeleteToPhase(
+                        id,
+                        phaseName,
+                        body,
+                        zoneId?[0],
+                        contextId?[0],
+                        HttpUtils.GetContentType(Request), HttpUtils.GetAccept(Request)));
             }
             catch (ArgumentException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
             }
             catch (DeleteException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Problem deleting data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Problem deleting data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (RejectedException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    "Problem deleting data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        "Problem deleting data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (Exception e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                    "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.InternalServerError,
+                        "Request failed for phase " + phaseName + " in job " + id + ".\n " + e.Message));
             }
         }
 
@@ -713,83 +832,96 @@ namespace Sif.Framework.Providers
         /// </summary>
         [HttpPost]
         [Route("{serviceName}/{id}/{phaseName}/states/state")]
-        public virtual HttpResponseMessage Post([FromUri] string serviceName, [FromUri] Guid id,
-            [FromUri] string phaseName, [FromBody] stateType item, [MatrixParameter] string[] zoneId = null,
+        public virtual HttpResponseMessage Post(
+            [FromUri] string serviceName,
+            [FromUri] Guid id,
+            [FromUri] string phaseName,
+            [FromBody] stateType item,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            string sessionToken = CheckAuthorisation(serviceName, zoneId, contextId,
-                new Right(RightType.UPDATE, RightValue.APPROVED));
-
-            preventPagingHeaders();
-
+            string sessionToken =
+                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+            PreventPagingHeaders();
             HttpResponseMessage result;
+
             try
             {
-                IFunctionalService service = getService(serviceName);
-                if (ProviderSettings.JobBinding
-                    && !service.IsBound(id, getOwnerId(sessionToken)))
+                IFunctionalService service = GetService(serviceName);
+
+                if (ProviderSettings.JobBinding && !service.IsBound(id, GetOwnerId(sessionToken)))
                 {
                     throw new InvalidSessionException(
                         "Request failed as the job referred to in this request does not belong to this consumer.");
                 }
 
-                stateType state = service.CreateToState(id, phaseName, item,
-                    zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0]));
-
-                string uri = Url.Link("ServiceStatesRoute",
-                    new { controller = serviceName, id = id, phaseName = phaseName, stateId = state.id });
-                result = Request.CreateResponse<stateType>(HttpStatusCode.Created, state);
+                stateType state = service.CreateToState(id, phaseName, item, zoneId?[0], contextId?[0]);
+                string uri = Url.Link(
+                    "ServiceStatesRoute",
+                    new { controller = serviceName, id, phaseName, stateId = state.id });
+                result = Request.CreateResponse(HttpStatusCode.Created, state);
                 result.Headers.Location = new Uri(uri);
             }
             catch (ArgumentException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Invalid argument: id=" + id + ", phaseName=" + phaseName + ".\n" + e.Message));
             }
             catch (CreateException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Problem creating state data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Problem creating state data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (RejectedException e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    "Problem creating state data for " + phaseName + "@" + id + ".\n", e));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        "Problem creating state data for " + phaseName + "@" + id + ".\n",
+                        e));
             }
             catch (Exception e)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                    "Request failed for creating state for phase " + phaseName + " in job " + id + ".\n " + e.Message));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.InternalServerError,
+                        "Request failed for creating state for phase " + phaseName + " in job " + id + ".\n " +
+                        e.Message));
             }
 
             return result;
         }
 
         /// <summary>
-        /// Gets the IFunctionalService witht he given name, checking to make sure that the name makes sense first.
+        /// Gets the IFunctionalService with the given name, checking to make sure that the name makes sense first.
         /// </summary>
         /// <param name="serviceName">The name of the service to find.</param>
         /// <returns>An IFunctionalService instance if found, otherwise an exception is thrown.</returns>
-        protected virtual IFunctionalService getService(string serviceName)
+        protected virtual IFunctionalService GetService(string serviceName)
         {
             if (!serviceName.ToLower().EndsWith("s"))
             {
-                throw new InvalidOperationException("Found a functional service to support messages to " + serviceName +
-                                                    ", but its name isn't a plural (doesn't end in 's'). This will not work in the current framework.");
+                throw new InvalidOperationException(
+                    $"Found a functional service to support messages to {serviceName}, but its name isn't a plural (doesn't end in 's'). This will not work in the current framework.");
             }
 
             IService service = FunctionalServiceProviderFactory.GetInstance(ProviderSettings).GetProvider(serviceName);
 
             if (service == null)
             {
-                throw new InvalidOperationException("No functional service found to support messages to " +
-                                                    serviceName);
+                throw new InvalidOperationException(
+                    $"No functional service found to support messages to {serviceName}.");
             }
 
             if (!ProviderUtils.isFunctionalService(service.GetType()))
             {
-                throw new InvalidOperationException("Service (" + service.GetType().Name + ") found for " +
-                                                    serviceName + " is not a functional service implementation");
+                throw new InvalidOperationException(
+                    $"Service ({service.GetType().Name}) found for {serviceName} is not a functional service implementation");
             }
 
             return service as IFunctionalService;
@@ -798,11 +930,10 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Internal method to check if the request is authorised in the given zone and context by checking the environment XML.
         /// </summary>
-        /// <returns>The SessionToken if the request is authorised, otherwise an excpetion will be thrown.</returns>
+        /// <returns>The SessionToken if the request is authorised, otherwise an exception will be thrown.</returns>
         protected virtual string CheckAuthorisation(string[] zoneId, string[] contextId)
         {
-            string sessionToken = "";
-            if (!authService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!authService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 log.Debug("Could not verify request headers.");
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
@@ -812,8 +943,10 @@ namespace Sif.Framework.Providers
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Request failed as Zone and/or Context are invalid."));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Request failed as Zone and/or Context are invalid."));
             }
 
             return sessionToken;
@@ -827,7 +960,10 @@ namespace Sif.Framework.Providers
         /// <param name="contextId">The context to check authorization in</param>
         /// <param name="right">The right to check</param>
         /// <returns>The session token if authorized, otherwise a HttpResponseException is thrown</returns>
-        protected virtual string CheckAuthorisation(string serviceName, string[] zoneId, string[] contextId,
+        protected virtual string CheckAuthorisation(
+            string serviceName,
+            string[] zoneId,
+            string[] contextId,
             Right right)
         {
             string sessionToken = CheckAuthorisation(zoneId, contextId);
@@ -835,17 +971,19 @@ namespace Sif.Framework.Providers
 
             if (environment == null)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Request failed as could not retrieve environment XML."));
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Request failed as could not retrieve environment XML."));
             }
 
             try
             {
                 RightsUtils.CheckRight(
-                    getRights(serviceName,
-                        EnvironmentUtils.GetTargetZone(environment, zoneId == null ? null : zoneId[0])), right);
-                log.Debug("Functional Service " + serviceName + " has expected ACL (" + right.Type + ":" + right.Value +
-                          ")");
+                    GetRights(serviceName, EnvironmentUtils.GetTargetZone(environment, zoneId?[0])),
+                    right);
+                log.Debug($"Functional Service {serviceName} has expected ACL ({right.Type}:{right.Value})");
+
                 return sessionToken;
             }
             catch (RejectedException e)
@@ -854,6 +992,7 @@ namespace Sif.Framework.Providers
                              " does not have sufficient access rights to perform an " + right.Type + " operation: " +
                              e.Message;
                 log.Debug(msg);
+
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Forbidden, msg, e));
             }
         }
@@ -864,38 +1003,31 @@ namespace Sif.Framework.Providers
         /// <param name="serviceName">The service name to look for</param>
         /// <param name="zone">The zone to retrieve the rights for</param>
         /// <returns>An array of declared rights</returns>
-        private IDictionary<string, Right> getRights(string serviceName, ProvisionedZone zone)
+        private IDictionary<string, Right> GetRights(string serviceName, ProvisionedZone zone)
         {
-            Model.Infrastructure.Service service = (from Model.Infrastructure.Service s in zone.Services
-                                                    where s.Type.Equals(ServiceType.FUNCTIONAL.ToString())
-                                                          && s.Name.Equals(serviceName)
-                                                    select s).FirstOrDefault();
+            Model.Infrastructure.Service service =
+                (from Model.Infrastructure.Service s in zone.Services
+                    where s.Type.Equals(ServiceType.FUNCTIONAL.ToString()) && s.Name.Equals(serviceName)
+                    select s)
+                .FirstOrDefault();
 
             if (service == null)
             {
                 string msg = "No Functional Service called " + serviceName + " found in Environment.";
                 log.Debug(msg);
+
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, msg));
             }
 
             log.Debug("Found access rights for " + service.Type + " service " + service.Name);
-            return service.Rights;
-        }
 
-        /// <summary>
-        /// Internal method to check that a Right is supported by an array of rightType.
-        /// </summary>
-        /// <param name="serviceName">The service name to check</param>
-        /// <param name="rights">The rights to look in (haystack)</param>
-        /// <param name="right">The right to search for (the needle)</param>
-        private void CheckRights(string serviceName, IDictionary<string, Right> rights, Right right)
-        {
+            return service.Rights;
         }
 
         /// <summary>
         /// Internal method that throws an exception with the Method Not Allowed status code if the request has paging headers.
         /// </summary>
-        protected virtual void preventPagingHeaders()
+        protected virtual void PreventPagingHeaders()
         {
             if (HttpUtils.HasPagingHeaders(Request.Headers))
             {
@@ -908,7 +1040,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         /// <param name="payload">The payload to send back in the response</param>
         /// <returns>A response message</returns>
-        protected HttpResponseMessage OKResult(string payload = null)
+        protected HttpResponseMessage OkResult(string payload = null)
         {
             if (StringUtils.IsEmpty(payload))
             {
@@ -916,13 +1048,14 @@ namespace Sif.Framework.Providers
             }
 
             string accept = HttpUtils.GetAccept(Request);
+
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(payload, Encoding.UTF8, accept)
             };
         }
 
-        private string getOwnerId(string sessionToken)
+        private string GetOwnerId(string sessionToken)
         {
             string ownerId = null;
 
