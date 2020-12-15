@@ -879,7 +879,9 @@ namespace Sif.Framework.Providers
 
             try
             {
-                IRegistrationService registrationService = RegistrationManager.ProviderRegistrationService;
+                IRegistrationService registrationService = RegistrationManager.GetProviderRegistrationService(
+                    ProviderSettings,
+                    SessionsManager.ProviderSessionService);
 
                 if (registrationService is NoRegistrationService)
                 {
