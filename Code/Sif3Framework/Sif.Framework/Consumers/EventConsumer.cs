@@ -141,6 +141,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
 
@@ -164,6 +165,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
 
@@ -289,6 +291,7 @@ namespace Sif.Framework.Consumers
                         string responseBody = HttpUtils.GetRequestAndHeaders(
                             $"{url}{deleteMessageIdMatrixParameter}",
                             RegistrationService.AuthorisationToken,
+                            ConsumerSettings.CompressPayload,
                             out WebHeaderCollection responseHeaders,
                             contentTypeOverride: ContentType.ToDescription(),
                             acceptOverride: Accept.ToDescription(),
@@ -427,6 +430,7 @@ namespace Sif.Framework.Consumers
             string responseBody = HttpUtils.GetRequest(
                 url,
                 RegistrationService.AuthorisationToken,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
 

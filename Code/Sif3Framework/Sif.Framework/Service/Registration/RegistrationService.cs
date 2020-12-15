@@ -192,6 +192,7 @@ namespace Sif.Framework.Service.Registration
                 string environmentBody = HttpUtils.GetRequest(
                     storedEnvironmentUrl,
                     authorisationToken,
+                    settings.CompressPayload,
                     contentTypeOverride: settings.ContentType.ToDescription(),
                     acceptOverride: settings.Accept.ToDescription());
 
@@ -243,6 +244,7 @@ namespace Sif.Framework.Service.Registration
                         settings.EnvironmentUrl,
                         initialToken,
                         body,
+                        settings.CompressPayload,
                         contentTypeOverride: settings.ContentType.ToDescription(),
                         acceptOverride: settings.Accept.ToDescription());
 
@@ -273,11 +275,14 @@ namespace Sif.Framework.Service.Registration
                 {
                     if (environmentUrl != null)
                     {
-                        HttpUtils.DeleteRequest(environmentUrl, authorisationToken);
+                        HttpUtils.DeleteRequest(environmentUrl, authorisationToken, settings.CompressPayload);
                     }
                     else if (!string.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentBody)))
                     {
-                        HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentBody), authorisationToken);
+                        HttpUtils.DeleteRequest(
+                            TryParseEnvironmentUrl(environmentBody),
+                            authorisationToken,
+                            settings.CompressPayload);
                     }
 
                     throw new RegistrationException("Registration failed.", e);
@@ -301,6 +306,7 @@ namespace Sif.Framework.Service.Registration
                     HttpUtils.DeleteRequest(
                         environmentUrl,
                         authorisationToken,
+                        settings.CompressPayload,
                         contentTypeOverride: settings.ContentType.ToDescription(),
                         acceptOverride: settings.Accept.ToDescription());
                     sessionService.RemoveSession(sessionToken);

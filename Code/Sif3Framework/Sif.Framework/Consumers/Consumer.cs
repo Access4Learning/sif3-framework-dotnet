@@ -207,7 +207,8 @@ namespace Sif.Framework.Consumers
                 .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters))
                 .ToString();
-            WebHeaderCollection responseHeaders = HttpUtils.HeadRequest(url, RegistrationService.AuthorisationToken);
+            WebHeaderCollection responseHeaders =
+                HttpUtils.HeadRequest(url, RegistrationService.AuthorisationToken, ConsumerSettings.CompressPayload);
 
             return responseHeaders[ResponseParameterType.changesSinceMarker.ToDescription()];
         }
@@ -238,6 +239,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription(),
                 mustUseAdvisory: mustUseAdvisory);
@@ -273,6 +275,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription(),
                 mustUseAdvisory: mustUseAdvisory);
@@ -315,6 +318,7 @@ namespace Sif.Framework.Consumers
                 string responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: Accept.ToDescription());
 
@@ -370,6 +374,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
                     contentTypeOverride: ContentType.ToDescription(),
@@ -380,6 +385,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: Accept.ToDescription());
             }
@@ -414,6 +420,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 methodOverride: "GET",
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
@@ -465,6 +472,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     ServiceType.SERVICEPATH,
                     (int)navigationPage,
                     (int)navigationPageSize,
@@ -476,6 +484,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     ServiceType.SERVICEPATH,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: Accept.ToDescription());
@@ -520,6 +529,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequestAndHeaders(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     out responseHeaders,
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
@@ -531,6 +541,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequestAndHeaders(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     out responseHeaders,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: Accept.ToDescription());
@@ -573,6 +584,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     navigationPage: (int)navigationPage,
                     navigationPageSize: (int)navigationPageSize,
                     contentTypeOverride: ContentType.ToDescription(),
@@ -583,6 +595,7 @@ namespace Sif.Framework.Consumers
                 responseBody = HttpUtils.GetRequest(
                     url,
                     RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
                     contentTypeOverride: ContentType.ToDescription(),
                     acceptOverride: Accept.ToDescription());
             }
@@ -615,6 +628,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
 
@@ -646,6 +660,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
 
@@ -682,6 +697,7 @@ namespace Sif.Framework.Consumers
             string responseBody = HttpUtils.DeleteRequest(
                 url,
                 RegistrationService.AuthorisationToken,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
 
@@ -715,6 +731,7 @@ namespace Sif.Framework.Consumers
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 methodOverride: "DELETE",
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());

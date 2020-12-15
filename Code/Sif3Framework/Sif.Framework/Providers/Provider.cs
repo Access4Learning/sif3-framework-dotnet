@@ -934,6 +934,7 @@ namespace Sif.Framework.Providers
                                 url,
                                 token,
                                 requestBody,
+                                ProviderSettings.CompressPayload,
                                 contentTypeOverride: ContentType.ToDescription(),
                                 acceptOverride: Accept.ToDescription(),
                                 requestHeaders: requestHeaders);
