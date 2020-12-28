@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.Broker",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Framework\Sif.Framework\Sif.Framework.csproj", "{3682C668-02CD-40D5-867D-F019C116BDDB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tardigrade.Framework", "..\..\..\tardigrade-framework\Code\Tardigrade.Framework\Tardigrade.Framework\Tardigrade.Framework.csproj", "{951C9C09-16FC-4AA9-BB59-9FDA374C6CBD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tardigrade.Framework.EntityFramework", "..\..\..\tardigrade-framework\Code\Tardigrade.Framework\Tardigrade.Framework.EntityFramework\Tardigrade.Framework.EntityFramework.csproj", "{A34E197F-C68D-473D-85A5-6F81C7C01582}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{3682C668-02CD-40D5-867D-F019C116BDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3682C668-02CD-40D5-867D-F019C116BDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3682C668-02CD-40D5-867D-F019C116BDDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{951C9C09-16FC-4AA9-BB59-9FDA374C6CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{951C9C09-16FC-4AA9-BB59-9FDA374C6CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{951C9C09-16FC-4AA9-BB59-9FDA374C6CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{951C9C09-16FC-4AA9-BB59-9FDA374C6CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A34E197F-C68D-473D-85A5-6F81C7C01582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A34E197F-C68D-473D-85A5-6F81C7C01582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A34E197F-C68D-473D-85A5-6F81C7C01582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A34E197F-C68D-473D-85A5-6F81C7C01582}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

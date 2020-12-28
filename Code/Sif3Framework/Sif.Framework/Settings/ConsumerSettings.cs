@@ -16,23 +16,23 @@
 
 using Microsoft.Extensions.Configuration;
 
-namespace Sif.Framework.EntityFramework.Settings
+namespace Sif.Framework.Settings
 {
     /// <summary>
-    /// This class represents Provider application settings that are stored in a database.
+    /// This class represents Consumer application settings that are stored in a database.
     /// </summary>
-    public class ProviderSettings : FrameworkSettings
+    public class ConsumerSettings : FrameworkSettings
     {
         /// <summary>
-        /// Prefix used to indicate Provider specific application settings.
+        /// Prefix used to indicate Consumer specific application settings.
         /// </summary>
-        protected override string SettingsPrefix => "provider";
+        protected override string SettingsPrefix => "consumer.";
 
         /// <summary>
         /// Create an instance of this class based upon the configuration provided.
         /// </summary>
         /// <param name="configuration">Application configuration properties.</param>
-        public ProviderSettings(IConfiguration configuration) : base(configuration)
+        public ConsumerSettings(IConfiguration configuration) : base(configuration)
         {
         }
     }

@@ -1,0 +1,6 @@
+CREATE TABLE AppSettings
+(
+    Id NVARCHAR(128) NOT NULL,
+    Value NVARCHAR(256) NULL,
+    CONSTRAINT PK_AppSettings PRIMARY KEY (Id)
+)

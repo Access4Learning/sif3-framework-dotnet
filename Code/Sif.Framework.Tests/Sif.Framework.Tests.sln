@@ -5,11 +5,9 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFramework.Tests", "Sif.Framework.EntityFramework.Tests\Sif.Framework.EntityFramework.Tests.csproj", "{F4546D54-E46E-4D8D-9A8F-FFDC67C54E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Tests", "Sif.Framework.Tests\Sif.Framework.Tests.csproj", "{2BCC7798-CA9C-42B5-971B-4374DB30D4F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Tests", "Sif.Framework.Tests\Sif.Framework.Tests.csproj", "{2BCC7798-CA9C-42B5-971B-4374DB30D4F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Framework\Sif.Framework\Sif.Framework.csproj", "{2B13D050-AA2C-45A6-BA26-8B2706B7E227}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFramework", "..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj", "{01841A7C-0EA3-43C0-8D67-C97376D7442A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01841A7C-0EA3-43C0-8D67-C97376D7442A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01841A7C-0EA3-43C0-8D67-C97376D7442A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01841A7C-0EA3-43C0-8D67-C97376D7442A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01841A7C-0EA3-43C0-8D67-C97376D7442A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

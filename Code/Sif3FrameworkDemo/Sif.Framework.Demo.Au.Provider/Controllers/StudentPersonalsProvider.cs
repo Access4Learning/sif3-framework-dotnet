@@ -17,15 +17,19 @@
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Providers;
-using Sif.Framework.Utils;
+using Sif.Framework.Settings;
 using Sif.Framework.WebApi.ModelBinders;
 using System.Web.Http;
+using Tardigrade.Framework.Configurations;
+using Tardigrade.Framework.EntityFramework.Configurations;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
     public class StudentPersonalsProvider : BasicProvider<StudentPersonal>
     {
-        public StudentPersonalsProvider() : base(new StudentPersonalService(), SettingsManager.ProviderSettings)
+        public StudentPersonalsProvider() : base(
+            new StudentPersonalService(),
+            new ProviderSettings(new ApplicationConfiguration(new AppSettingsConfigurationSource("name=SettingsDb"))))
         {
         }
 

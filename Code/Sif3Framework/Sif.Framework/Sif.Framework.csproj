@@ -59,6 +59,7 @@
     <PackageReference Include="NHibernate" Version="5.3.5" />
     <PackageReference Include="Sif.Specification.Infrastructure" Version="3.2.1" />
     <PackageReference Include="slf4net" Version="1.1.0" />
+    <PackageReference Include="Tardigrade.Framework" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

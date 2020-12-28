@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.EntityFramework.Settings;
+using Sif.Framework.Settings;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Settings;
