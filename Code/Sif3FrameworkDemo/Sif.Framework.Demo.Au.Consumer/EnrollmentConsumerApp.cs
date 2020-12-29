@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ namespace Sif.Framework.Demo.Au.Consumer
                 SettingsManager.ConsumerSettings.ApplicationKey,
                 SettingsManager.ConsumerSettings.InstanceId,
                 SettingsManager.ConsumerSettings.UserToken,
-                SettingsManager.ConsumerSettings.SolutionId);
+                SettingsManager.ConsumerSettings.SolutionId,
+                SettingsManager.ConsumerSettings);
             consumer.Register();
             if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
 

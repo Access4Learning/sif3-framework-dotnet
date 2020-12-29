@@ -22,6 +22,7 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
@@ -41,38 +42,38 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public abstract class EventConsumer<TSingle, TMultiple, TPrimaryKey> : IEventConsumer where TSingle : ISifRefId<TPrimaryKey>
+    public abstract class EventConsumer<TSingle, TMultiple, TPrimaryKey>
+        : IEventConsumer where TSingle : ISifRefId<TPrimaryKey>
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly slf4net.ILogger log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private CancellationTokenSource cancellationTokenSource;
-        private Model.Infrastructure.Environment environment;
+        private Model.Infrastructure.Environment _environment;
         private Task task;
 
-        protected Accept Accept
-        {
-            get
-            {
-                return SettingsManager.ConsumerSettings.Accept;
-            }
-        }
+        /// <summary>
+        /// Accepted content type (XML or JSON) for a message payload.
+        /// </summary>
+        protected Accept Accept => ConsumerSettings.Accept;
 
-        protected ContentType ContentType
-        {
-            get
-            {
-                return SettingsManager.ConsumerSettings.ContentType;
-            }
-        }
+        /// <summary>
+        /// Application settings associated with the Consumer.
+        /// </summary>
+        protected IFrameworkSettings ConsumerSettings { get; }
+
+        /// <summary>
+        /// Content type (XML or JSON) of the message payload.
+        /// </summary>
+        protected ContentType ContentType => ConsumerSettings.ContentType;
 
         /// <summary>
         /// Consumer environment.
         /// </summary>
         protected Model.Infrastructure.Environment Environment
         {
-            get { return environment; }
-
-            private set { environment = value; }
+            get => _environment;
+            private set => _environment = value;
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Service for Consumer registration.
         /// </summary>
-        protected IRegistrationService RegistrationService { get; private set; }
+        protected IRegistrationService RegistrationService { get; }
 
         /// <summary>
         /// Subscription associated with Consumer SIF Events.
@@ -93,22 +94,19 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Name of the SIF data model that the Consumer is based on, e.g. SchoolInfo, StudentPersonal, etc.
         /// </summary>
-        protected virtual string TypeName
-        {
-            get
-            {
-                return typeof(TSingle).Name;
-            }
-        }
+        protected virtual string TypeName => typeof(TSingle).Name;
 
         /// <summary>
         /// Create a Consumer instance based upon the Environment passed.
         /// </summary>
         /// <param name="environment">Environment object.</param>
-        protected EventConsumer(Model.Infrastructure.Environment environment)
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        protected EventConsumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
         {
-            Environment = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
+
+            Environment = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
+            RegistrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -118,11 +116,15 @@ namespace Sif.Framework.Consumers
         /// <param name="instanceId">Instance ID.</param>
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
-        protected EventConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        protected EventConsumer(
+            string applicationKey,
+            string instanceId = null,
+            string userToken = null,
+            string solutionId = null,
+            IFrameworkSettings settings = null)
+            : this(new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId), settings)
         {
-            Model.Infrastructure.Environment environment = new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId);
-            Environment = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            RegistrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -132,14 +134,17 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Queue.</returns>
         private queueType CreateQueue(queueType queue)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}";
+            var url =
+                $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}";
             string requestBody = SerialiseQueue(queue);
             string responseBody = HttpUtils.PostRequest(
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -153,14 +158,17 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the created Subscription.</returns>
         private subscriptionType CreateSubscription(subscriptionType subscription)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}";
+            var url =
+                $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}";
             string requestBody = SerialiseSubscription(subscription);
             string responseBody = HttpUtils.PostRequest(
                 url,
                 RegistrationService.AuthorisationToken,
                 requestBody,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug($"Response from POST {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
@@ -179,12 +187,14 @@ namespace Sif.Framework.Consumers
 
             try
             {
-                XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s") { Namespace = SettingsManager.ConsumerSettings.DataModelNamespace, IsNullable = false };
+                var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+                    { Namespace = ConsumerSettings.DataModelNamespace, IsNullable = false };
                 obj = SerialiserFactory.GetSerialiser<TMultiple>(Accept, xmlRootAttribute).Deserialise(payload);
             }
             catch (Exception e)
             {
-                throw new SerializationException($"Error deserialising the following payload of multiple objects:\n{payload}", e);
+                throw new SerializationException(
+                    $"Error deserialising the following payload of multiple objects:\n{payload}", e);
             }
 
             return obj;
@@ -241,7 +251,11 @@ namespace Sif.Framework.Consumers
         /// <param name="partialUpdate">True if the objects associated with the update event only contained updated fields; false if the objects contain all fields (regardless of if they were changed).</param>
         /// <param name="zoneId">Zone associated with the update event.</param>
         /// <param name="contextId">Zone context.</param>
-        public abstract void OnUpdateEvent(TMultiple obj, bool partialUpdate, string zoneId = null, string contextId = null);
+        public abstract void OnUpdateEvent(
+            TMultiple obj,
+            bool partialUpdate,
+            string zoneId = null,
+            string contextId = null);
 
         /// <summary>
         /// Periodically process SIF Events.
@@ -256,9 +270,10 @@ namespace Sif.Framework.Consumers
                     break;
                 }
 
-                bool getEvents = true;
-                TimeSpan waitTime = TimeSpan.FromSeconds(SettingsManager.ConsumerSettings.EventProcessingWaitTime);
-                string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
+                var getEvents = true;
+                TimeSpan waitTime = TimeSpan.FromSeconds(ConsumerSettings.EventProcessingWaitTime);
+                var url =
+                    $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{Queue.id}/messages";
                 string deleteMessageId = null;
 
                 // Read from the message queue until no more messages are found.
@@ -266,11 +281,17 @@ namespace Sif.Framework.Consumers
                 {
                     try
                     {
-                        string deleteMessageIdMatrixParameter = (deleteMessageId == null ? "" : $";deleteMessageId={deleteMessageId.Trim()}");
-                        if (log.IsDebugEnabled) log.Debug($"Making a request for an event message from {url}{deleteMessageIdMatrixParameter}.");
+                        string deleteMessageIdMatrixParameter =
+                            (deleteMessageId == null ? "" : $";deleteMessageId={deleteMessageId.Trim()}");
+
+                        if (log.IsDebugEnabled)
+                            log.Debug(
+                                $"Making a request for an event message from {url}{deleteMessageIdMatrixParameter}.");
+
                         string responseBody = HttpUtils.GetRequestAndHeaders(
                             $"{url}{deleteMessageIdMatrixParameter}",
                             RegistrationService.AuthorisationToken,
+                            ConsumerSettings.CompressPayload,
                             out WebHeaderCollection responseHeaders,
                             contentTypeOverride: ContentType.ToDescription(),
                             acceptOverride: Accept.ToDescription(),
@@ -282,7 +303,8 @@ namespace Sif.Framework.Consumers
 
                         if (!string.IsNullOrWhiteSpace(minWaitTimeValue))
                         {
-                            if (double.TryParse(minWaitTimeValue, out double minWaitTime) && (TimeSpan.FromSeconds(minWaitTime) > waitTime))
+                            if (double.TryParse(minWaitTimeValue, out double minWaitTime) &&
+                                (TimeSpan.FromSeconds(minWaitTime) > waitTime))
                             {
                                 waitTime = TimeSpan.FromSeconds(minWaitTime);
                             }
@@ -298,60 +320,93 @@ namespace Sif.Framework.Consumers
 
                                 if (EventAction.CREATE.ToDescription().Equals(eventAction))
                                 {
-                                    if (log.IsDebugEnabled) log.Debug($"Received create event message.");
+                                    if (log.IsDebugEnabled) log.Debug("Received create event message.");
+
                                     OnCreateEvent(obj, zoneId, contextId);
                                 }
                                 else if (EventAction.DELETE.ToDescription().Equals(eventAction))
                                 {
-                                    if (log.IsDebugEnabled) log.Debug($"Received delete event message.");
+                                    if (log.IsDebugEnabled) log.Debug("Received delete event message.");
+
                                     OnDeleteEvent(obj, zoneId, contextId);
                                 }
                                 else if ("UPDATE".Equals(eventAction))
                                 {
-                                    string replacement = responseHeaders?[EventParameterType.Replacement.ToDescription()];
+                                    string replacement =
+                                        responseHeaders?[EventParameterType.Replacement.ToDescription()];
 
                                     if ("FULL".Equals(replacement))
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Received update (full) event message.");
+                                        if (log.IsDebugEnabled) log.Debug("Received update (full) event message.");
+
                                         OnUpdateEvent(obj, false, zoneId, contextId);
                                     }
                                     else if ("PARTIAL".Equals(replacement))
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
+                                        if (log.IsDebugEnabled) log.Debug("Received update (partial) event message.");
+
                                         OnUpdateEvent(obj, true, zoneId, contextId);
                                     }
                                     else
                                     {
-                                        if (log.IsDebugEnabled) log.Debug($"Received update (partial) event message.");
+                                        if (log.IsDebugEnabled) log.Debug("Received update (partial) event message.");
+
                                         OnUpdateEvent(obj, true, zoneId, contextId);
                                     }
                                 }
                                 else
                                 {
-                                    BaseException eventException = new EventException($"Event action {eventAction} not recognised for message received from {url}.");
+                                    BaseException eventException = new EventException(
+                                        $"Event action {eventAction} not recognised for message received from {url}.");
+
                                     if (log.IsWarnEnabled) log.Warn(eventException.Message);
-                                    ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = eventException.Message, Description = responseBody, Scope = TypeName };
+
+                                    var error = new ResponseError
+                                    {
+                                        Id = eventException.ExceptionReference,
+                                        Code = 500,
+                                        Message = eventException.Message,
+                                        Description = responseBody,
+                                        Scope = TypeName
+                                    };
+
                                     OnErrorEvent(error);
                                 }
                             }
                             catch (SerializationException e)
                             {
-                                BaseException eventException = new EventException($"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.", e);
+                                BaseException eventException = new EventException(
+                                    $"Event message received from {url} could not be processed due to the following error:\n{e.GetBaseException().Message}.",
+                                    e);
+
                                 if (log.IsWarnEnabled) log.Warn(e.Message);
-                                ResponseError error = new ResponseError { Id = eventException.ExceptionReference, Code = 500, Message = e.Message, Description = responseBody, Scope = TypeName };
+
+                                var error = new ResponseError
+                                {
+                                    Id = eventException.ExceptionReference,
+                                    Code = 500,
+                                    Message = e.Message,
+                                    Description = responseBody,
+                                    Scope = TypeName
+                                };
+
                                 OnErrorEvent(error);
                             }
                         }
                         else
                         {
-                            if (log.IsDebugEnabled) log.Debug($"No event messages.");
+                            if (log.IsDebugEnabled) log.Debug("No event messages.");
+
                             getEvents = false;
                         }
                     }
                     catch (Exception e)
                     {
-                        string errorMessage = $"Error processing event messages due to the following error:\n{e.GetBaseException().Message}.";
+                        var errorMessage =
+                            $"Error processing event messages due to the following error:\n{e.GetBaseException().Message}.";
+
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
+
                         getEvents = false;
                     }
                 } while (getEvents);
@@ -370,35 +425,19 @@ namespace Sif.Framework.Consumers
         /// <returns>Instance of the Queue if id is valid and queue is found, null otherwise.</returns>
         private queueType RetrieveQueue(string queueId)
         {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{queueId}";
+            var url =
+                $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.queues)}/{queueId}";
             string responseBody = HttpUtils.GetRequest(
                 url,
                 RegistrationService.AuthorisationToken,
+                ConsumerSettings.CompressPayload,
                 contentTypeOverride: ContentType.ToDescription(),
                 acceptOverride: Accept.ToDescription());
+
             if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
             if (log.IsDebugEnabled) log.Debug(responseBody);
 
             return DeserialiseQueue(responseBody);
-        }
-
-        /// <summary>
-        /// Retrieves a Queue that will be used by the Consumer using the subscription id.
-        /// </summary>
-        /// <param name="subscriptionId">The subscription's identifier.</param>
-        /// <returns>Instance of the Subscription if id is valid and subscription is found, null otherwise.</returns>
-        private subscriptionType RetrieveSubscription(string subscriptionId)
-        {
-            string url = $"{EnvironmentUtils.ParseServiceUrl(Environment, ServiceType.UTILITY, InfrastructureServiceNames.subscriptions)}/{subscriptionId}";
-            string responseBody = HttpUtils.GetRequest(
-                url,
-                RegistrationService.AuthorisationToken,
-                contentTypeOverride: ContentType.ToDescription(),
-                acceptOverride: Accept.ToDescription());
-            if (log.IsDebugEnabled) log.Debug($"Response from GET {url} request ...");
-            if (log.IsDebugEnabled) log.Debug(responseBody);
-
-            return DeserialiseSubscription(responseBody);
         }
 
         /// <summary>
@@ -431,7 +470,7 @@ namespace Sif.Framework.Consumers
             try
             {
                 // Register the Event Consumer with the SIF Broker.
-                RegistrationService.Register(ref environment);
+                RegistrationService.Register(ref _environment);
 
                 // Retrieve the Subscription identifier (if exist).
                 string subscriptionId = SessionsManager.ConsumerSessionService.RetrieveSubscriptionId(
@@ -443,17 +482,17 @@ namespace Sif.Framework.Consumers
                 // If the Subscription identifier does NOT exist, create a Subscription and associated Queue.
                 if (string.IsNullOrWhiteSpace(subscriptionId))
                 {
-                    string queueNameSuffix = DateTime.UtcNow.ToString("yyMMddHHmmssfff");
+                    var queueNameSuffix = DateTime.UtcNow.ToString("yyMMddHHmmssfff");
 
                     // For the SIF Broker, the name property is a mandatory.
-                    queueType queue = new queueType
+                    var queue = new queueType
                     {
                         name = $"{TypeName}-{queueNameSuffix}"
                     };
 
                     Queue = CreateQueue(queue);
 
-                    subscriptionType subscription = new subscriptionType()
+                    var subscription = new subscriptionType()
                     {
                         contextId = contextId,
                         queueId = Queue.id,
@@ -494,9 +533,12 @@ namespace Sif.Framework.Consumers
                     }
                     catch (Exception e)
                     {
-                        string errorMessage = $"Could not retrieve Queue details due to the following error:\n{e.GetBaseException().Message}.";
+                        var errorMessage =
+                            $"Could not retrieve Queue details due to the following error:\n{e.GetBaseException().Message}.";
+
                         if (log.IsErrorEnabled) log.Error($"{errorMessage}\n{e.StackTrace}");
-                        throw e;
+
+                        throw;
                     }
                 }
 
@@ -511,15 +553,21 @@ namespace Sif.Framework.Consumers
             }
             catch (RegistrationException e)
             {
-                string errorMessage = $"Error registering the Event Consumer:\n{e.GetBaseException().Message}.\n{e.StackTrace}";
+                var errorMessage =
+                    $"Error registering the Event Consumer:\n{e.GetBaseException().Message}.\n{e.StackTrace}";
+
                 if (log.IsErrorEnabled) log.Error(e, errorMessage);
-                throw e;
+
+                throw;
             }
             catch (Exception e)
             {
-                string errorMessage = $"Error starting the Event Consumer:\n{e.GetBaseException().Message}.\n{e.StackTrace}";
+                var errorMessage =
+                    $"Error starting the Event Consumer:\n{e.GetBaseException().Message}.\n{e.StackTrace}";
+
                 if (log.IsErrorEnabled) log.Error(e, errorMessage);
-                throw e;
+
+                throw;
             }
         }
 
@@ -536,11 +584,15 @@ namespace Sif.Framework.Consumers
             }
             catch (AggregateException e)
             {
-                if (log.IsErrorEnabled) log.Error(e, $"Error occurred stopping the Event Consumer for {TypeName} - {e.GetBaseException().Message}.");
+                if (log.IsErrorEnabled)
+                    log.Error(e,
+                        $"Error occurred stopping the Event Consumer for {TypeName} - {e.GetBaseException().Message}.");
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error(e, $"Error occurred stopping the Event Consumer for {TypeName} - {e.GetBaseException().Message}.");
+                if (log.IsErrorEnabled)
+                    log.Error(e,
+                        $"Error occurred stopping the Event Consumer for {TypeName} - {e.GetBaseException().Message}.");
             }
             finally
             {

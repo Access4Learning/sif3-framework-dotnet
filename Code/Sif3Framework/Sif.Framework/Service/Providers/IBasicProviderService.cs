@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ namespace Sif.Framework.Service.Providers
     /// single objects.
     /// </summary>
     /// <typeparam name="T">SIF data model object type.</typeparam>
-    public interface IBasicProviderService<T> : IObjectService<T, List<T>, string>
+    public interface IBasicProviderService<T> : IProviderService<T, List<T>>
     {
     }
 

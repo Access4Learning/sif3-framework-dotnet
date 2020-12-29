@@ -65,7 +65,8 @@ namespace Sif.Framework.Demo.Au.Consumer
                         SettingsManager.ConsumerSettings.ApplicationKey,
                         SettingsManager.ConsumerSettings.InstanceId,
                         SettingsManager.ConsumerSettings.UserToken,
-                        SettingsManager.ConsumerSettings.SolutionId);
+                        SettingsManager.ConsumerSettings.SolutionId,
+                        SettingsManager.ConsumerSettings);
                     studentPersonalConsumer.Start("Sif3DemoZone1", "DEFAULT");
                     if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
 

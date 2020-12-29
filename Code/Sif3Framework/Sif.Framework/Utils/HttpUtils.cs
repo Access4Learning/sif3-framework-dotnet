@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +72,7 @@ namespace Sif.Framework.Utils
         /// <param name="requestMethod">Request method, e.g. GET.</param>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
@@ -85,6 +86,7 @@ namespace Sif.Framework.Utils
         private static HttpWebRequest CreateHttpWebRequest(RequestMethod requestMethod,
             string url,
             AuthorisationToken authorisationToken,
+            bool compressPayload,
             ServiceType? serviceType = null,
             int? navigationPage = null,
             int? navigationPageSize = null,
@@ -104,7 +106,7 @@ namespace Sif.Framework.Utils
             request.Headers.Add("Authorization", authorisationToken.Token);
             request.Headers.Add("timestamp", authorisationToken.Timestamp ?? DateTime.UtcNow.ToString("o"));
 
-            if (SettingsManager.ConsumerSettings.CompressPayload)
+            if (compressPayload)
             {
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
@@ -185,6 +187,7 @@ namespace Sif.Framework.Utils
         /// <param name="requestMethod">Request method, e.g. GET.</param>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="responseHeaders">Response headers returned.</param>
         /// <param name="body">The data payload to send.</param>
         /// <param name="serviceType">Service type.</param>
@@ -203,6 +206,7 @@ namespace Sif.Framework.Utils
         private static string MakeRequest(RequestMethod requestMethod,
             string url,
             AuthorisationToken authorisationToken,
+            bool compressPayload,
             out WebHeaderCollection responseHeaders,
             string body = null,
             ServiceType? serviceType = null,
@@ -218,6 +222,7 @@ namespace Sif.Framework.Utils
             HttpWebRequest request = CreateHttpWebRequest(requestMethod,
                 url,
                 authorisationToken,
+                compressPayload,
                 serviceType,
                 navigationPage,
                 navigationPageSize,
@@ -312,6 +317,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
@@ -321,6 +327,7 @@ namespace Sif.Framework.Utils
         /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string DeleteRequest(string url,
             AuthorisationToken authorisationToken,
+            bool compressPayload,
             ServiceType serviceType = ServiceType.OBJECT,
             string contentTypeOverride = null,
             string acceptOverride = null)
@@ -330,6 +337,7 @@ namespace Sif.Framework.Utils
             return MakeRequest(RequestMethod.DELETE,
                 url,
                 authorisationToken,
+                compressPayload,
                 out responseHeaders,
                 serviceType: serviceType,
                 contentTypeOverride: contentTypeOverride,
@@ -342,6 +350,7 @@ namespace Sif.Framework.Utils
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="body">The data payload to send.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
         /// <param name="acceptOverride">Overrides the Accept header.</param>
@@ -352,6 +361,7 @@ namespace Sif.Framework.Utils
         public static string DeleteRequest(string url,
             AuthorisationToken authorisationToken,
             string body,
+            bool compressPayload,
             ServiceType serviceType = ServiceType.OBJECT,
             string contentTypeOverride = null,
             string acceptOverride = null)
@@ -361,6 +371,7 @@ namespace Sif.Framework.Utils
             return MakeRequest(RequestMethod.DELETE,
                 url,
                 authorisationToken,
+                compressPayload,
                 out responseHeaders,
                 body: body,
                 serviceType: serviceType,
@@ -373,6 +384,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="responseHeaders">Response headers returned.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="navigationPage">Current paging index.</param>
@@ -386,6 +398,7 @@ namespace Sif.Framework.Utils
         /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string GetRequestAndHeaders(string url,
             AuthorisationToken authorisationToken,
+            bool compressPayload,
             out WebHeaderCollection responseHeaders,
             ServiceType serviceType = ServiceType.OBJECT,
             int? navigationPage = null,
@@ -397,6 +410,7 @@ namespace Sif.Framework.Utils
             return MakeRequest(RequestMethod.GET,
                 url,
                 authorisationToken,
+                compressPayload,
                 out responseHeaders,
                 serviceType: serviceType,
                 navigationPage: navigationPage,
@@ -411,6 +425,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="navigationPage">Current paging index.</param>
         /// <param name="navigationPageSize">Page size.</param>
@@ -422,6 +437,7 @@ namespace Sif.Framework.Utils
         /// <exception cref="Exception">Unexpected error occurred.</exception>
         public static string GetRequest(string url,
             AuthorisationToken authorisationToken,
+            bool compressPayload,
             ServiceType serviceType = ServiceType.OBJECT,
             int? navigationPage = null,
             int? navigationPageSize = null,
@@ -433,6 +449,7 @@ namespace Sif.Framework.Utils
             return MakeRequest(RequestMethod.GET,
                 url,
                 authorisationToken,
+                compressPayload,
                 out responseHeaders,
                 serviceType: serviceType,
                 navigationPage: navigationPage,
@@ -446,14 +463,20 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <returns>Web response headers.</returns>
         /// <exception cref="AuthenticationException">Request is not authorised (authentication failed).</exception>
         /// <exception cref="UnauthorizedAccessException">Request is forbidden (access denied).</exception>
         /// <exception cref="Exception">Unexpected error occurred.</exception>
-        public static WebHeaderCollection HeadRequest(string url, AuthorisationToken authorisationToken, ServiceType serviceType = ServiceType.OBJECT)
+        public static WebHeaderCollection HeadRequest(
+            string url,
+            AuthorisationToken authorisationToken,
+            bool compressPayload,
+            ServiceType serviceType = ServiceType.OBJECT)
         {
-            HttpWebRequest request = CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, serviceType);
+            HttpWebRequest request =
+                CreateHttpWebRequest(RequestMethod.HEAD, url, authorisationToken, compressPayload, serviceType);
             WebHeaderCollection responseHeaders = new WebHeaderCollection();
 
             try
@@ -494,6 +517,7 @@ namespace Sif.Framework.Utils
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="body">The data payload to send.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="methodOverride">The method that can be used to override the POST, e.g. to issue a GET with a payload.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
@@ -507,6 +531,7 @@ namespace Sif.Framework.Utils
         public static string PostRequest(string url,
             AuthorisationToken authorisationToken,
             string body,
+            bool compressPayload,
             ServiceType serviceType = ServiceType.OBJECT,
             string methodOverride = null,
             string contentTypeOverride = null,
@@ -519,6 +544,7 @@ namespace Sif.Framework.Utils
             return MakeRequest(RequestMethod.POST,
                 url,
                 authorisationToken,
+                compressPayload,
                 out responseHeaders,
                 body: body,
                 serviceType: serviceType,
@@ -535,6 +561,7 @@ namespace Sif.Framework.Utils
         /// <param name="url">Request endpoint.</param>
         /// <param name="authorisationToken">The authorization token.</param>
         /// <param name="body">The data payload to send.</param>
+        /// <param name="compressPayload">Compress payload flag.</param>
         /// <param name="serviceType">Service type.</param>
         /// <param name="methodOverride">The method that can be used to override the PUT, e.g. to issue a DELETE with a payload.</param>
         /// <param name="contentTypeOverride">Overrides the ContentType header.</param>
@@ -546,6 +573,7 @@ namespace Sif.Framework.Utils
         public static string PutRequest(string url,
             AuthorisationToken authorisationToken,
             string body,
+            bool compressPayload,
             ServiceType serviceType = ServiceType.OBJECT,
             string methodOverride = null,
             string contentTypeOverride = null,
@@ -556,6 +584,7 @@ namespace Sif.Framework.Utils
             return MakeRequest(RequestMethod.PUT,
                 url,
                 authorisationToken,
+                compressPayload,
                 out responseHeaders,
                 body: body,
                 serviceType: serviceType,

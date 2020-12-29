@@ -40,6 +40,20 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
+**Dec 29, 2020 - 4.0.0 Enable application settings to be read from a database**
+
+- Added classes to enable application settings to be read from a database.
+- Re-designed the Provider classes to better accommodate passing of application settings.
+- Updated the Consumer and Provider constructors to accept the application settings to be used.
+- Updated the business layer to reference the application settings passed rather than inherently read them from the SifFramework.config file.
+- Create a Solution to manage unit test projects.
+- Updated the AU Demo Consumer and Provider projects to read the application settings from a database rather than the SifFramework.config file.
+- Created documentation to explain how to configure the Consumers and Providers to read application settings from a database.
+- Moved Markdown documentation to the Documentation directory.
+- Incorporated the Tardigrade.Framework NuGet packages into the SIF Framework projects.
+- Updated all third-party NuGet packages.
+- General code clean-up.
+
 **Sept 28, 2020 - 3.2.1.14 Updated to the official release of the SIF AU 3.4.7 Data Model**
 
 - Resolved issues with SIF_HMACSHA256 authentication.

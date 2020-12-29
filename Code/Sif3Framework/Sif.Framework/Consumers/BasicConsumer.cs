@@ -15,8 +15,9 @@
  */
 
 using Sif.Framework.Model.DataModels;
+using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -30,21 +31,22 @@ namespace Sif.Framework.Consumers
     public class BasicConsumer<T> : Consumer<T, List<T>, string>, IBasicConsumer<T> where T : ISifRefId<string>
     {
         /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.Consumer(Model.Infrastructure.Environment)">Consumer</see>
+        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}">Consumer</see>
         /// </summary>
-        public BasicConsumer(Model.Infrastructure.Environment environment) : base(environment)
+        protected BasicConsumer(Environment environment, IFrameworkSettings settings = null) : base(environment, settings)
         {
         }
 
         /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}.Consumer(string, string, string, string)">Consumer</see>
+        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}">Consumer</see>
         /// </summary>
         public BasicConsumer(
             string applicationKey,
             string instanceId = null,
             string userToken = null,
-            string solutionId = null)
-            : base(applicationKey, instanceId, userToken, solutionId)
+            string solutionId = null,
+            IFrameworkSettings settings = null)
+            : base(applicationKey, instanceId, userToken, solutionId, settings)
         {
         }
 
@@ -53,9 +55,9 @@ namespace Sif.Framework.Consumers
         /// </summary>
         protected override string SerialiseMultiple(List<T> obj)
         {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
-                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                Namespace = ConsumerSettings.DataModelNamespace,
                 IsNullable = false
             };
 
@@ -67,9 +69,9 @@ namespace Sif.Framework.Consumers
         /// </summary>
         protected override List<T> DeserialiseMultiple(string payload)
         {
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
+            var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
             {
-                Namespace = SettingsManager.ConsumerSettings.DataModelNamespace,
+                Namespace = ConsumerSettings.DataModelNamespace,
                 IsNullable = false
             };
 

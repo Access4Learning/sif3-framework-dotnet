@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,39 +31,43 @@ namespace Sif.Framework.Demo.Broker.Controllers
 {
     public class EventsProvider : BasicProvider<StudentPersonal>
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly slf4net.ILogger log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public EventsProvider() : base(new StudentPersonalService())
+        public EventsProvider() : base(new StudentPersonalService(), SettingsManager.ProviderSettings)
         {
         }
 
         [Route("~/api/Events/Event")]
-        public override IHttpActionResult Post(StudentPersonal obj, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public override IHttpActionResult Post(
+            StudentPersonal obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);
         }
 
-        public override IHttpActionResult Post(List<StudentPersonal> objs, [MatrixParameter] string[] zoneId = null, [MatrixParameter] string[] contextId = null)
+        public override IHttpActionResult Post(
+            List<StudentPersonal> objs,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
         {
             foreach (KeyValuePair<string, IEnumerable<string>> nameValues in Request.Headers)
             {
-                if (log.IsDebugEnabled) log.Debug($"*** Header field is [{nameValues.Key}:{string.Join(",", nameValues.Value)}]");
+                if (log.IsDebugEnabled)
+                    log.Debug($"*** Header field is [{nameValues.Key}:{string.Join(",", nameValues.Value)}]");
             }
 
-            //return base.Post(objs, zoneId, contextId);
-            string sessionToken;
-
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string _))
             {
                 return Unauthorized();
             }
 
             if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
             {
-                return BadRequest("Request failed for object " + typeof(StudentPersonal).Name + " as Zone and/or Context are invalid.");
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
-            IHttpActionResult result;
             ICollection<createType> createStatuses = new List<createType>();
 
             try
@@ -73,53 +77,73 @@ namespace Sif.Framework.Demo.Broker.Controllers
                 foreach (StudentPersonal obj in objs)
                 {
                     bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
-                    createType status = new createType();
-                    status.advisoryId = (hasAdvisoryId ? obj.RefId : null);
+                    var status = new createType { advisoryId = (hasAdvisoryId ? obj.RefId : null) };
 
                     try
                     {
-                        if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                        if (mustUseAdvisory.HasValue)
                         {
-                            if (hasAdvisoryId)
+                            if (mustUseAdvisory.Value && !hasAdvisoryId)
                             {
-                                status.id = service.Create(obj, mustUseAdvisory, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
-                                status.statusCode = ((int)HttpStatusCode.Created).ToString();
+                                status.error = ProviderUtils.CreateError(
+                                    HttpStatusCode.BadRequest,
+                                    TypeName,
+                                    "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
+                                status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                             }
                             else
                             {
-                                status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(StudentPersonal).Name, "Create request failed as object ID is not provided, but mustUseAdvisory is true.");
-                                status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
+                                status.id = Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0]).RefId;
+                                status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                         }
                         else
                         {
-                            status.id = service.Create(obj, zoneId: (zoneId == null ? null : zoneId[0]), contextId: (contextId == null ? null : contextId[0])).RefId;
+                            status.id = Service.Create(obj, null, zoneId?[0], contextId?[0]).RefId;
                             status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
                     }
                     catch (AlreadyExistsException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.Conflict, typeof(StudentPersonal).Name, "Object " + typeof(StudentPersonal).Name + " with ID of " + obj.RefId + " already exists.\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.Conflict,
+                            TypeName,
+                            $"Object {TypeName} with ID of {obj.RefId} already exists.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (ArgumentException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(StudentPersonal).Name, "Object to create of type " + typeof(StudentPersonal).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + " is invalid.\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Object to create of type {TypeName}" +
+                            (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $" is invalid.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (CreateException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.BadRequest, typeof(StudentPersonal).Name, "Request failed for object " + typeof(StudentPersonal).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Request failed for object {TypeName}" +
+                            (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $".\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (RejectedException e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.NotFound, typeof(StudentPersonal).Name, "Create request rejected for object " + typeof(StudentPersonal).Name + " with ID of " + obj.RefId + ".\n" + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.NotFound,
+                            TypeName,
+                            $"Create request rejected for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (Exception e)
                     {
-                        status.error = ProviderUtils.CreateError(HttpStatusCode.InternalServerError, typeof(StudentPersonal).Name, "Request failed for object " + typeof(StudentPersonal).Name + (hasAdvisoryId ? " with ID of " + obj.RefId : "") + ".\n " + e.Message);
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.InternalServerError,
+                            TypeName,
+                            $"Request failed for object {TypeName}" +
+                            (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $".\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 
@@ -131,10 +155,9 @@ namespace Sif.Framework.Demo.Broker.Controllers
                 // Need to ignore exceptions otherwise it would not be possible to return status records of processed objects.
             }
 
-            createResponseType createResponse = new createResponseType { creates = createStatuses.ToArray() };
-            result = Ok(createResponse);
+            var createResponse = new createResponseType { creates = createStatuses.ToArray() };
 
-            return result;
+            return Ok(createResponse);
         }
     }
 }

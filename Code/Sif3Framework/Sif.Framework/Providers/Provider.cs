@@ -23,15 +23,12 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Service;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Registration;
-using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -55,74 +52,65 @@ namespace Sif.Framework.Providers
         where TSingle : ISifRefId<string>
     {
         /// <summary>
+        /// Accepted content type (XML or JSON) for a message payload.
+        /// </summary>
+        protected Accept Accept => ProviderSettings.Accept;
+
+        /// <summary>
         /// Service used for request authentication.
         /// </summary>
-        protected IAuthenticationService authenticationService;
+        protected IAuthenticationService AuthenticationService { get; }
 
         /// <summary>
         /// Service used for request authorisation.
         /// </summary>
-        protected IAuthorisationService authorisationService;
+        protected IAuthorisationService AuthorisationService { get; }
+
+        /// <summary>
+        /// Content type (XML or JSON) of the message payload.
+        /// </summary>
+        protected ContentType ContentType => ProviderSettings.ContentType;
+
+        /// <summary>
+        /// Application settings associated with the Provider.
+        /// </summary>
+        protected IFrameworkSettings ProviderSettings { get; }
 
         /// <summary>
         /// Object service associated with this Provider.
         /// </summary>
-        protected IObjectService<TSingle, TMultiple, string> service;
-
-        protected Accept Accept
-        {
-            get
-            {
-                return SettingsManager.ProviderSettings.Accept;
-            }
-        }
-
-        protected ContentType ContentType
-        {
-            get
-            {
-                return SettingsManager.ProviderSettings.ContentType;
-            }
-        }
+        protected IProviderService<TSingle, TMultiple> Service { get; }
 
         /// <summary>
         /// Name of the SIF data model that the Provider is based on, e.g. SchoolInfo, StudentPersonal, etc.
         /// </summary>
-        protected virtual string TypeName
-        {
-            get
-            {
-                return typeof(TSingle).Name;
-            }
-        }
-
-        /// <summary>
-        /// Default constructor that is only available to derived instances of
-        /// this class.
-        /// </summary>
-        protected Provider()
-        {
-            if (EnvironmentType.DIRECT.Equals(SettingsManager.ProviderSettings.EnvironmentType))
-            {
-                authenticationService =
-                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-            else if (EnvironmentType.BROKERED.Equals(SettingsManager.ProviderSettings.EnvironmentType))
-            {
-                authenticationService =
-                    new BrokeredAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-
-            authorisationService = new AuthorisationService(authenticationService);
-        }
+        protected virtual string TypeName => typeof(TSingle).Name;
 
         /// <summary>
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
-        protected Provider(IProviderService<TSingle, TMultiple> service) : base()
+        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        protected Provider(IProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
         {
-            this.service = service;
+            Service = service;
+            ProviderSettings = settings ?? SettingsManager.ProviderSettings;
+
+            if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
+            {
+                AuthenticationService =
+                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+            }
+            else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
+            {
+                AuthenticationService = new BrokeredAuthenticationService(
+                    new ApplicationRegisterService(),
+                    new EnvironmentService(),
+                    settings,
+                    SessionsManager.ProviderSessionService);
+            }
+
+            AuthorisationService = new AuthorisationService(AuthenticationService);
         }
 
         /// <summary>
@@ -130,7 +118,7 @@ namespace Sif.Framework.Providers
         /// </summary>
         /// <param name="request">HTTP Request.</param>
         /// <returns>Query parameters if found; an empty collection otherwise.</returns>
-        private RequestParameter[] GetQueryParameters(HttpRequestMessage request)
+        protected RequestParameter[] GetQueryParameters(HttpRequestMessage request)
         {
             if (request == null)
             {
@@ -151,13 +139,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -174,29 +162,26 @@ namespace Sif.Framework.Providers
                 bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
                 bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
-                if (mustUseAdvisory.HasValue && mustUseAdvisory.Value == true)
+                if (mustUseAdvisory.HasValue)
                 {
-                    if (hasAdvisoryId)
+                    if (mustUseAdvisory.Value && !hasAdvisoryId)
                     {
-                        RequestParameter[] requestParameters = GetQueryParameters(Request);
-                        TSingle createdObject =
-                            service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
-                        string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
-                        result = Created(uri, createdObject);
+                        result = BadRequest(
+                            $"Request failed for object {TypeName} as object ID is not provided, but mustUseAdvisory is true.");
                     }
                     else
                     {
-                        result = BadRequest($"Request failed for object {TypeName} as object ID is not provided, but mustUseAdvisory is true.");
+                        RequestParameter[] requestParameters = GetQueryParameters(Request);
+                        TSingle createdObject =
+                            Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
+                        string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
+                        result = Created(uri, createdObject);
                     }
                 }
                 else
                 {
                     RequestParameter[] requestParameters = GetQueryParameters(Request);
-                    TSingle createdObject = service.Create(
-                        obj,
-                        zoneId: zoneId?[0],
-                        contextId: contextId?[0],
-                        requestParameters: requestParameters);
+                    TSingle createdObject = Service.Create(obj, null, zoneId?[0], contextId?[0], requestParameters);
                     string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                     result = Created(uri, createdObject);
                 }
@@ -233,41 +218,7 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
-        public virtual IHttpActionResult Post(
-            TMultiple obj,
-            [MatrixParameter] string[] zoneId = null,
-            [MatrixParameter] string[] contextId = null)
-        {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
-            {
-                return Unauthorized();
-            }
-
-            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
-            {
-                return StatusCode(HttpStatusCode.Forbidden);
-            }
-
-            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
-            {
-                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
-            }
-
-            bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
-            MultipleCreateResponse multipleCreateResponse = ((IProviderService<TSingle, TMultiple>)service).Create(
-                obj,
-                mustUseAdvisory,
-                zoneId?[0],
-                contextId?[0],
-                requestParameters);
-            createResponseType createResponse =
-                MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
-            IHttpActionResult result = Ok(createResponse);
-
-            return result;
-        }
+        public abstract IHttpActionResult Post(TMultiple obj, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TPrimaryKey, string[], string[])">Get</see>
@@ -277,13 +228,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -303,7 +254,7 @@ namespace Sif.Framework.Providers
             try
             {
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                TSingle obj = service.Retrieve(refId, zoneId?[0], contextId?[0], requestParameters);
+                TSingle obj = Service.Retrieve(refId, zoneId?[0], contextId?[0], requestParameters);
 
                 if (obj == null)
                 {
@@ -351,7 +302,7 @@ namespace Sif.Framework.Providers
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
             TMultiple objs =
-                service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
+                Service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
             if (objs == null)
@@ -385,7 +336,7 @@ namespace Sif.Framework.Providers
             }
 
             bool changesSinceRequested = !string.IsNullOrWhiteSpace(changesSinceMarker);
-            IChangesSinceService<TMultiple> changesSinceService = service as IChangesSinceService<TMultiple>;
+            var changesSinceService = Service as IChangesSinceService<TMultiple>;
             bool changesSinceSupported = (changesSinceService != null);
 
             if (changesSinceRequested && !changesSinceSupported)
@@ -429,7 +380,7 @@ namespace Sif.Framework.Providers
                 catch (Exception)
                 {
                     throw new QueryException(
-                        "Implementaton to retrieve the next Changes Since marker returned an error.");
+                        "Implementation to retrieve the next Changes Since marker returned an error.");
                 }
             }
 
@@ -458,7 +409,7 @@ namespace Sif.Framework.Providers
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
             TMultiple objs =
-                service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
+                Service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
             if (objs == null)
@@ -482,13 +433,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -509,14 +460,9 @@ namespace Sif.Framework.Providers
             {
                 if (obj == null)
                 {
-                    if (changesSinceMarker == null)
-                    {
-                        result = GetAll(zoneId?[0], contextId?[0]);
-                    }
-                    else
-                    {
-                        result = GetChangesSince(changesSinceMarker, zoneId?[0], contextId?[0]);
-                    }
+                    result = changesSinceMarker == null
+                        ? GetAll(zoneId?[0], contextId?[0])
+                        : GetChangesSince(changesSinceMarker, zoneId?[0], contextId?[0]);
                 }
                 else
                 {
@@ -525,7 +471,7 @@ namespace Sif.Framework.Providers
             }
             catch (ArgumentException e)
             {
-                result = BadRequest("One or more parameters of the GET request are invalid.\n{e.Message}");
+                result = BadRequest($"One or more parameters of the GET request are invalid.\n{e.Message}");
             }
             catch (QueryException e)
             {
@@ -546,7 +492,8 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(string, string, string, string, string, string, string[], string[])">Get</see>
         /// </summary>
-        public virtual IHttpActionResult Get(string object1,
+        public virtual IHttpActionResult Get(
+            string object1,
             [FromUri(Name = "id1")] string refId1,
             string object2 = null,
             [FromUri(Name = "id2")] string refId2 = null,
@@ -555,7 +502,7 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
@@ -576,7 +523,7 @@ namespace Sif.Framework.Providers
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, serviceName, RightType.QUERY))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, serviceName, RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -611,7 +558,7 @@ namespace Sif.Framework.Providers
                 uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
                 uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                TMultiple objs = service.Retrieve(
+                TMultiple objs = Service.Retrieve(
                     conditions,
                     navigationPage,
                     navigationPageSize,
@@ -657,13 +604,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.UPDATE))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.UPDATE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -684,7 +631,7 @@ namespace Sif.Framework.Providers
             try
             {
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                service.Update(obj, zoneId?[0], contextId?[0], requestParameters);
+                Service.Update(obj, zoneId?[0], contextId?[0], requestParameters);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -710,39 +657,7 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
-        public virtual IHttpActionResult Put(
-            TMultiple obj,
-            [MatrixParameter] string[] zoneId = null,
-            [MatrixParameter] string[] contextId = null)
-        {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
-            {
-                return Unauthorized();
-            }
-
-            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.UPDATE))
-            {
-                return StatusCode(HttpStatusCode.Forbidden);
-            }
-
-            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
-            {
-                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
-            }
-
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
-            MultipleUpdateResponse multipleUpdateResponse = ((IProviderService<TSingle, TMultiple>)service).Update(
-                obj,
-                zoneId?[0],
-                contextId?[0],
-                requestParameters);
-            updateResponseType updateResponse =
-                MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);
-            IHttpActionResult result = Ok(updateResponse);
-
-            return result;
-        }
+        public abstract IHttpActionResult Put(TMultiple obj, string[] zoneId = null, string[] contextId = null);
 
         /// <summary>
         /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(TPrimaryKey, string[], string[])">Delete</see>
@@ -752,13 +667,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -773,7 +688,7 @@ namespace Sif.Framework.Providers
             try
             {
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                service.Delete(refId, zoneId?[0], contextId?[0], requestParameters);
+                Service.Delete(refId, zoneId?[0], contextId?[0], requestParameters);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             catch (ArgumentException e)
@@ -804,13 +719,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -820,14 +735,13 @@ namespace Sif.Framework.Providers
                 return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
-            IHttpActionResult result;
             ICollection<deleteStatus> deleteStatuses = new List<deleteStatus>();
 
             try
             {
                 foreach (deleteIdType deleteId in deleteRequest.deletes)
                 {
-                    deleteStatus status = new deleteStatus
+                    var status = new deleteStatus
                     {
                         id = deleteId.id
                     };
@@ -835,7 +749,7 @@ namespace Sif.Framework.Providers
                     try
                     {
                         RequestParameter[] requestParameters = GetQueryParameters(Request);
-                        service.Delete(deleteId.id, zoneId?[0], contextId?[0], requestParameters);
+                        Service.Delete(deleteId.id, zoneId?[0], contextId?[0], requestParameters);
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
@@ -879,10 +793,9 @@ namespace Sif.Framework.Providers
                 // Need to ignore exceptions otherwise it would not be possible to return status records of processed objects.
             }
 
-            deleteResponseType deleteResponse = new deleteResponseType { deletes = deleteStatuses.ToArray() };
-            result = Ok(deleteResponse);
+            var deleteResponse = new deleteResponseType { deletes = deleteStatuses.ToArray() };
 
-            return result;
+            return Ok(deleteResponse);
         }
 
         /// <summary>
@@ -893,13 +806,13 @@ namespace Sif.Framework.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            if (!authenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
             {
                 return Unauthorized();
             }
 
             // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
-            if (!authorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
             {
                 return StatusCode(HttpStatusCode.Forbidden);
             }
@@ -920,7 +833,7 @@ namespace Sif.Framework.Providers
             {
                 result = GetAll(zoneId?[0], contextId?[0]).ClearContent();
 
-                if (service is ISupportsChangesSince supportsChangesSince)
+                if (Service is ISupportsChangesSince supportsChangesSince)
                 {
                     result = result.AddHeader(
                         "changesSinceMarker",
@@ -954,7 +867,7 @@ namespace Sif.Framework.Providers
         [HttpGet]
         public virtual IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
         {
-            IEventService<TMultiple> eventService = service as IEventService<TMultiple>;
+            var eventService = Service as IEventService<TMultiple>;
             bool eventsSupported = (eventService != null);
 
             if (!eventsSupported)
@@ -966,7 +879,9 @@ namespace Sif.Framework.Providers
 
             try
             {
-                IRegistrationService registrationService = RegistrationManager.ProviderRegistrationService;
+                IRegistrationService registrationService = RegistrationManager.GetProviderRegistrationService(
+                    ProviderSettings,
+                    SessionsManager.ProviderSessionService);
 
                 if (registrationService is NoRegistrationService)
                 {
@@ -997,7 +912,7 @@ namespace Sif.Framework.Providers
                         {
                             SifEvent<TMultiple> sifEvent = eventIterator.GetNext();
 
-                            NameValueCollection requestHeaders = new NameValueCollection()
+                            var requestHeaders = new NameValueCollection()
                             {
                                 { EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
                                 { EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString() },
@@ -1021,6 +936,7 @@ namespace Sif.Framework.Providers
                                 url,
                                 token,
                                 requestBody,
+                                ProviderSettings.CompressPayload,
                                 contentTypeOverride: ContentType.ToDescription(),
                                 acceptOverride: Accept.ToDescription(),
                                 requestHeaders: requestHeaders);
@@ -1041,10 +957,6 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// <see cref="IEventPayloadSerialisable{TMultiple}.SerialiseEvents(TMultiple)"/>
         /// </summary>
-        [NonAction]
-        public virtual string SerialiseEvents(TMultiple obj)
-        {
-            return SerialiserFactory.GetSerialiser<TMultiple>(ContentType).Serialise(obj);
-        }
+        public abstract string SerialiseEvents(TMultiple obj);
     }
 }

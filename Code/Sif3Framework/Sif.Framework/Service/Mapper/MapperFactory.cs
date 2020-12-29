@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2020 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,20 +25,18 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Mapper
 {
-
     /// <summary>
     /// Factory class for managing object to object mappings.
     /// </summary>
     public static class MapperFactory
     {
-        private static readonly IMapper mapper;
+        private static readonly IMapper Mapper;
 
-        class InfrastructureServicesConverter : ITypeConverter<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>
+        private class InfrastructureServicesConverter : ITypeConverter<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>
         {
-
             public IDictionary<InfrastructureServiceNames, InfrastructureService> Convert(infrastructureServiceType[] source, IDictionary<InfrastructureServiceNames, InfrastructureService> destination, ResolutionContext context)
             {
-                ICollection<InfrastructureService> values = mapper.Map<infrastructureServiceType[], ICollection<InfrastructureService>>(source);
+                ICollection<InfrastructureService> values = Mapper.Map<infrastructureServiceType[], ICollection<InfrastructureService>>(source);
                 IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
 
                 foreach (InfrastructureService infrastructureService in values)
@@ -48,15 +46,13 @@ namespace Sif.Framework.Service.Mapper
 
                 return infrastructureServices;
             }
-
         }
 
-        class PropertiesConverter : ITypeConverter<propertyType[], IDictionary<string, Property>>
+        private class PropertiesConverter : ITypeConverter<propertyType[], IDictionary<string, Property>>
         {
-
             public IDictionary<string, Property> Convert(propertyType[] source, IDictionary<string, Property> destination, ResolutionContext context)
             {
-                ICollection<Property> values = mapper.Map<propertyType[], ICollection<Property>>(source);
+                ICollection<Property> values = Mapper.Map<propertyType[], ICollection<Property>>(source);
                 IDictionary<string, Property> properties = new Dictionary<string, Property>();
 
                 foreach (Property property in values)
@@ -66,15 +62,13 @@ namespace Sif.Framework.Service.Mapper
 
                 return properties;
             }
-
         }
 
-        class ProvisionedZonesConverter : ITypeConverter<provisionedZoneType[], IDictionary<string, ProvisionedZone>>
+        private class ProvisionedZonesConverter : ITypeConverter<provisionedZoneType[], IDictionary<string, ProvisionedZone>>
         {
-
             public IDictionary<string, ProvisionedZone> Convert(provisionedZoneType[] source, IDictionary<string, ProvisionedZone> destination, ResolutionContext context)
             {
-                ICollection<ProvisionedZone> values = mapper.Map<provisionedZoneType[], ICollection<ProvisionedZone>>(source);
+                ICollection<ProvisionedZone> values = Mapper.Map<provisionedZoneType[], ICollection<ProvisionedZone>>(source);
                 IDictionary<string, ProvisionedZone> provisionedZones = new Dictionary<string, ProvisionedZone>();
 
                 foreach (ProvisionedZone provisionedZone in values)
@@ -84,15 +78,13 @@ namespace Sif.Framework.Service.Mapper
 
                 return provisionedZones;
             }
-
         }
 
-        class RightsConverter : ITypeConverter<rightType[], IDictionary<string, Right>>
+        private class RightsConverter : ITypeConverter<rightType[], IDictionary<string, Right>>
         {
-
             public IDictionary<string, Right> Convert(rightType[] source, IDictionary<string, Right> destination, ResolutionContext context)
             {
-                ICollection<Right> values = mapper.Map<rightType[], ICollection<Right>>(source);
+                ICollection<Right> values = Mapper.Map<rightType[], ICollection<Right>>(source);
                 IDictionary<string, Right> rights = new Dictionary<string, Right>();
 
                 foreach (Right right in values)
@@ -102,15 +94,13 @@ namespace Sif.Framework.Service.Mapper
 
                 return rights;
             }
-
         }
 
-        class PhasesConverter : ITypeConverter<phaseType[], IDictionary<string, Phase>>
+        private class PhasesConverter : ITypeConverter<phaseType[], IDictionary<string, Phase>>
         {
-
             public IDictionary<string, Phase> Convert(phaseType[] source, IDictionary<string, Phase> destination, ResolutionContext context)
             {
-                ICollection<Phase> values = mapper.Map<phaseType[], ICollection<Phase>>(source);
+                ICollection<Phase> values = Mapper.Map<phaseType[], ICollection<Phase>>(source);
                 IDictionary<string, Phase> phases = new Dictionary<string, Phase>();
 
                 foreach (Phase phase in values)
@@ -120,30 +110,28 @@ namespace Sif.Framework.Service.Mapper
 
                 return phases;
             }
-
         }
 
         static MapperFactory()
         {
-
-            MapperConfiguration config = new MapperConfiguration(cfg =>
+            var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ApplicationInfo, applicationInfoType>()
                     .ReverseMap();
 
                 cfg.CreateMap<InfrastructureService, infrastructureServiceType>()
-                    .ForMember(dest => dest.nameSpecified, opt => opt.UseValue(true))
+                    .ForMember(dest => dest.nameSpecified, opt => opt.MapFrom(src => true))
                     .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
                 cfg.CreateMap<infrastructureServiceType, InfrastructureService>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
                 cfg.CreateMap<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>()
-                    .ConvertUsing<InfrastructureServicesConverter>();
+                    .ConvertUsing(new InfrastructureServicesConverter());
 
                 cfg.CreateMap<Environment, environmentType>()
                     .ForMember(dest => dest.infrastructureServices, opt => opt.MapFrom(src => src.InfrastructureServices.Values))
                     .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values))
-                    .ForMember(dest => dest.typeSpecified, opt => opt.UseValue(true))
+                    .ForMember(dest => dest.typeSpecified, opt => opt.MapFrom(src => true))
                     .ForMember(dest => dest.fingerprint, opt => opt.Ignore());
                 cfg.CreateMap<environmentType, Environment>();
 
@@ -153,7 +141,7 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<Property, propertyType>()
                     .ReverseMap();
                 cfg.CreateMap<propertyType[], IDictionary<string, Property>>()
-                    .ConvertUsing<PropertiesConverter>();
+                    .ConvertUsing(new PropertiesConverter());
 
                 cfg.CreateMap<ProvisionedZone, provisionedZoneType>()
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.SifId));
@@ -161,12 +149,12 @@ namespace Sif.Framework.Service.Mapper
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.SifId, opt => opt.MapFrom(src => src.id));
                 cfg.CreateMap<provisionedZoneType[], IDictionary<string, ProvisionedZone>>()
-                    .ConvertUsing<ProvisionedZonesConverter>();
+                    .ConvertUsing(new ProvisionedZonesConverter());
 
                 cfg.CreateMap<Right, rightType>()
                     .ReverseMap();
                 cfg.CreateMap<rightType[], IDictionary<string, Right>>()
-                    .ConvertUsing<RightsConverter>();
+                    .ConvertUsing(new RightsConverter());
 
                 cfg.CreateMap<Model.Infrastructure.Service, serviceType>()
                     .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights.Values));
@@ -192,7 +180,7 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<phaseType, Phase>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
                 cfg.CreateMap<phaseType[], IDictionary<string, Phase>>()
-                    .ConvertUsing<PhasesConverter>();
+                    .ConvertUsing(new PhasesConverter());
 
                 cfg.CreateMap<Initialization, initializationType>()
                     .ReverseMap();
@@ -241,37 +229,31 @@ namespace Sif.Framework.Service.Mapper
             });
 
             config.AssertConfigurationIsValid();
-            mapper = config.CreateMapper();
+            Mapper = config.CreateMapper();
         }
 
         /// <summary>
         /// Map a source object to a destination object.
         /// </summary>
-        /// <typeparam name="S">Type of the source object.</typeparam>
-        /// <typeparam name="D">Type of the destination object.</typeparam>
+        /// <typeparam name="TSource">Type of the source object.</typeparam>
+        /// <typeparam name="TDestination">Type of the destination object.</typeparam>
         /// <param name="source">Source object.</param>
         /// <returns>Destination object.</returns>
-        public static D CreateInstance<S, D>(S source)
+        public static TDestination CreateInstance<TSource, TDestination>(TSource source)
         {
-            D destination = default(D);
-            destination = mapper.Map<S, D>(source);
-            return destination;
+            return Mapper.Map<TSource, TDestination>(source);
         }
 
         /// <summary>
         /// Map a source collection to a destination collection.
         /// </summary>
-        /// <typeparam name="S">Type of the source collection.</typeparam>
-        /// <typeparam name="D">Type of the destination collection.</typeparam>
+        /// <typeparam name="TSource">Type of the source collection.</typeparam>
+        /// <typeparam name="TDestination">Type of the destination collection.</typeparam>
         /// <param name="source">Source collection.</param>
         /// <returns>Destination collection.</returns>
-        public static ICollection<D> CreateInstances<S, D>(IEnumerable<S> source)
+        public static ICollection<TDestination> CreateInstances<TSource, TDestination>(IEnumerable<TSource> source)
         {
-            ICollection<D> destination = null;
-            destination = mapper.Map<IEnumerable<S>, ICollection<D>>(source);
-            return destination;
+            return Mapper.Map<IEnumerable<TSource>, ICollection<TDestination>>(source);
         }
-
     }
-
 }
