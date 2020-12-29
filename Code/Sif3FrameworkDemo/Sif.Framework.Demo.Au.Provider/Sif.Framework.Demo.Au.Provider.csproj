@@ -221,6 +221,12 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Tardigrade.Framework, Version=11.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tardigrade.Framework.11.1.0\lib\net461\Tardigrade.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Tardigrade.Framework.EntityFramework, Version=11.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tardigrade.Framework.EntityFramework.11.1.0\lib\net461\Tardigrade.Framework.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -256,9 +262,9 @@
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\SifFrameworkConfig.db">
+    <None Include="App_Data\SifFrameworkConfig.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="SifFramework.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -272,14 +278,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\tardigrade-framework\Code\Tardigrade.Framework\Tardigrade.Framework.EntityFramework\Tardigrade.Framework.EntityFramework.csproj">
-      <Project>{a34e197f-c68d-473d-85a5-6f81c7c01582}</Project>
-      <Name>Tardigrade.Framework.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\tardigrade-framework\Code\Tardigrade.Framework\Tardigrade.Framework\Tardigrade.Framework.csproj">
-      <Project>{951c9c09-16fc-4aa9-bb59-9fda374c6cbd}</Project>
-      <Name>Tardigrade.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
       <Project>{3682c668-02cd-40d5-867d-f019c116bddb}</Project>
       <Name>Sif.Framework</Name>

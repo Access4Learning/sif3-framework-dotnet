@@ -914,10 +914,10 @@ namespace Sif.Framework.Providers
 
                             var requestHeaders = new NameValueCollection()
                             {
-                                {EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription()},
-                                {EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString()},
-                                {EventParameterType.messageType.ToDescription(), "EVENT"},
-                                {EventParameterType.serviceName.ToDescription(), $"{TypeName}s"}
+                                { EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
+                                { EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString() },
+                                { EventParameterType.messageType.ToDescription(), "EVENT" },
+                                { EventParameterType.serviceName.ToDescription(), $"{TypeName}s" }
                             };
 
                             switch (sifEvent.EventAction)

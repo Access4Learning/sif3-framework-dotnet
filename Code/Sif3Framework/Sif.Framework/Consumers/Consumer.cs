@@ -691,7 +691,8 @@ namespace Sif.Framework.Consumers
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
                 .Append($"/{TypeName}s")
-                .Append($"/{refId}").Append(HttpUtils.MatrixParameters(zoneId, contextId))
+                .Append($"/{refId}")
+                .Append(HttpUtils.MatrixParameters(zoneId, contextId))
                 .Append(GenerateQueryParameterString(requestParameters))
                 .ToString();
             string responseBody = HttpUtils.DeleteRequest(

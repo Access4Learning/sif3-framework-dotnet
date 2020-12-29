@@ -40,9 +40,10 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
-**Dec 28, 2020 - 4.0.0 Enable application settings to be read from a database**
+**Dec 29, 2020 - 4.0.0 Enable application settings to be read from a database**
 
 - Added classes to enable application settings to be read from a database.
+- Re-designed the Provider classes to better accommodate passing of application settings.
 - Updated the Consumer and Provider constructors to accept the application settings to be used.
 - Updated the business layer to reference the application settings passed rather than inherently read them from the SifFramework.config file.
 - Create a Solution to manage unit test projects.
