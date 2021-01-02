@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Tests", "Sif.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Framework\Sif.Framework\Sif.Framework.csproj", "{2B13D050-AA2C-45A6-BA26-8B2706B7E227}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFramework", "..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj", "{983BB129-0FCF-4800-BC80-36DA09706A9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Shared", "Sif.Framework.Shared\Sif.Framework.Shared.csproj", "{76D0F674-1662-49B6-A2C2-E5A871562628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
