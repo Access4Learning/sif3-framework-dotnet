@@ -56,8 +56,8 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
                 .Any();
         }
 
-        /// <inheritdoc cref="ISessionService.HasSession(string)"/>
-        public bool HasSession(string sessionToken)
+        /// <inheritdoc cref="ISessionService.HasSessionToken(string)"/>
+        public bool HasSessionToken(string sessionToken)
         {
             if (sessionToken == null) throw new ArgumentNullException(nameof(sessionToken));
 
@@ -69,7 +69,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
         {
             if (sessionToken == null) throw new ArgumentNullException(nameof(sessionToken));
 
-            if (!HasSession(sessionToken))
+            if (!HasSessionToken(sessionToken))
             {
                 throw new NotFoundException($"Session with token of {sessionToken} does not exist.");
             }
@@ -227,7 +227,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
                 throw new AlreadyExistsException(
                     $"Session already exists for [applicationKey:{applicationKey}|solutionId:{solutionId}|userToken:{userToken}|instanceId:{instanceId}].");
 
-            if (HasSession(sessionToken: sessionToken))
+            if (HasSessionToken(sessionToken))
                 throw new AlreadyExistsException($"Session already exists for session token {sessionToken}.");
 
             var session = new Session

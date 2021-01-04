@@ -115,14 +115,14 @@ namespace Sif.Framework.EntityFramework.Tests
         public void HasSession_NullApplicationKey_ArgumentNullException()
         {
             // Assert.
-            Assert.Throws<ArgumentNullException>(() => service.HasSession(applicationKey: null));
+            Assert.Throws<ArgumentNullException>(() => service.HasSession(null));
         }
 
         [Fact]
         public void HasSessionToken_Exists_Success()
         {
             // Act.
-            bool exists = service.HasSession(sessionToken: reference.SessionToken);
+            bool exists = service.HasSessionToken(reference.SessionToken);
 
             // Assert.
             Assert.True(exists);
@@ -135,7 +135,7 @@ namespace Sif.Framework.EntityFramework.Tests
         public void HasSessionToken_NotExists_Failure(string sessionToken)
         {
             // Act.
-            bool exists = service.HasSession(sessionToken: sessionToken);
+            bool exists = service.HasSessionToken(sessionToken);
 
             // Assert.
             Assert.False(exists);
@@ -145,7 +145,7 @@ namespace Sif.Framework.EntityFramework.Tests
         public void HasSessionToken_NullApplicationKey_ArgumentNullException()
         {
             // Assert.
-            Assert.Throws<ArgumentNullException>(() => service.HasSession(sessionToken: null));
+            Assert.Throws<ArgumentNullException>(() => service.HasSessionToken(null));
         }
 
         [Fact]
@@ -500,10 +500,8 @@ namespace Sif.Framework.EntityFramework.Tests
         [InlineData(null, "Sif3Framework", null)]
         [InlineData(null, null, "http://localhost:62921/api/environments/bca76787-48ae-4532-b851-fd7099a4098b")]
         [InlineData("Sif3DemoConsumer", "Sif3Framework", null)]
-        [InlineData("Sif3DemoConsumer", null,
-            "http://localhost:62921/api/environments/bca76787-48ae-4532-b851-fd7099a4098b")]
-        [InlineData(null, "Sif3Framework",
-            "http://localhost:62921/api/environments/bca76787-48ae-4532-b851-fd7099a4098b")]
+        [InlineData("Sif3DemoConsumer", null, "http://localhost:62921/api/environments")]
+        [InlineData(null, "Sif3Framework", "http://localhost:62921/api/environments")]
         public void StoreSession_NullParameters_ArgumentNullException(
             string applicationKey,
             string sessionToken,

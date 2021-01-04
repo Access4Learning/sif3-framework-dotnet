@@ -42,7 +42,7 @@ namespace Sif.Framework.Service.Sessions
         /// <param name="sessionToken">Session token.</param>
         /// <returns>True if a session entry already exists; false otherwise.</returns>
         /// <exception cref="System.ArgumentNullException">sessionToken is null.</exception>
-        bool HasSession(string sessionToken);
+        bool HasSessionToken(string sessionToken);
 
         /// <summary>
         /// Remove a session entry.
