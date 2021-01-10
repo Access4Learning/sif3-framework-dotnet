@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2020 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
@@ -22,17 +21,16 @@ using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
+using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-
     /// <summary>
     /// Service class for Environment objects.
     /// </summary>
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
-
         /// <summary>
         /// Create a copy of a Zone object.
         /// </summary>
@@ -50,7 +48,6 @@ namespace Sif.Framework.Service.Infrastructure
                 {
                     destinationZone.Properties = CopyProperties(sourceZone.Properties);
                 }
-
             }
 
             return destinationZone;
@@ -59,50 +56,48 @@ namespace Sif.Framework.Service.Infrastructure
         /// <summary>
         /// Create a copy of a dictionary of InfrastructureService objects.
         /// </summary>
-        /// <param name="sourceInfrastructureServices">Dictionary of InfrastructureService objects to copy.</param>
-        /// <returns>New copy of the dictionary of InfrastructureService objects.</returns>
-        private IDictionary<InfrastructureServiceNames, InfrastructureService> CopyInfrastructureServices(IDictionary<InfrastructureServiceNames, InfrastructureService> sourceInfrastructureServices)
+        /// <param name="sourceServices">Dictionary of InfrastructureService objects to copy.</param>
+        /// <returns>New copy of the dictionary of InfrastructureService objects if not null; null otherwise.</returns>
+        private static IDictionary<InfrastructureServiceNames, InfrastructureService> CopyInfrastructureServices(
+            IDictionary<InfrastructureServiceNames, InfrastructureService> sourceServices)
         {
-            IDictionary<InfrastructureServiceNames, InfrastructureService> destinationInfrastructureServices = null;
+            if (sourceServices == null) return null;
 
-            if (sourceInfrastructureServices != null)
+            IDictionary<InfrastructureServiceNames, InfrastructureService> destinationServices =
+                new Dictionary<InfrastructureServiceNames, InfrastructureService>();
+
+            foreach (InfrastructureServiceNames key in sourceServices.Keys)
             {
-                destinationInfrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
-
-                foreach (InfrastructureServiceNames key in sourceInfrastructureServices.Keys)
+                if (sourceServices.TryGetValue(key, out InfrastructureService sourceService))
                 {
-                    InfrastructureService sourceInfrastructureService;
-                    sourceInfrastructureServices.TryGetValue(key, out sourceInfrastructureService);
-                    InfrastructureService destinationInfrastructureService = new InfrastructureService { Name = sourceInfrastructureService.Name, Value = sourceInfrastructureService.Value };
-                    destinationInfrastructureServices.Add(key, destinationInfrastructureService);
+                    var destinationService =
+                        new InfrastructureService { Name = sourceService.Name, Value = sourceService.Value };
+                    destinationServices.Add(key, destinationService);
                 }
-
             }
 
-            return destinationInfrastructureServices;
+            return destinationServices;
         }
 
         /// <summary>
         /// Create a copy of a dictionary of Property objects.
         /// </summary>
         /// <param name="sourceProperties">Dictionary of Property objects to copy.</param>
-        /// <returns>New copy of the dictionary of Property objects.</returns>
-        private IDictionary<string, Property> CopyProperties(IDictionary<string, Property> sourceProperties)
+        /// <returns>New copy of the dictionary of Property objects if not null; null otherwise.</returns>
+        private static IDictionary<string, Property> CopyProperties(IDictionary<string, Property> sourceProperties)
         {
-            IDictionary<string, Property> destinationProperties = null;
+            if (sourceProperties == null) return null;
 
-            if (sourceProperties != null)
+            IDictionary<string, Property> destinationProperties = new Dictionary<string, Property>();
+
+            foreach (string key in sourceProperties.Keys)
             {
-                destinationProperties = new Dictionary<string, Property>();
-
-                foreach (string key in sourceProperties.Keys)
+                if (sourceProperties.TryGetValue(key, out Property sourceProperty))
                 {
-                    Property sourceProperty;
-                    sourceProperties.TryGetValue(key, out sourceProperty);
-                    Property destinationProperty = new Property { Name = sourceProperty.Name, Value = sourceProperty.Value };
+                    var destinationProperty =
+                        new Property { Name = sourceProperty.Name, Value = sourceProperty.Value };
                     destinationProperties.Add(key, destinationProperty);
                 }
-
             }
 
             return destinationProperties;
@@ -111,56 +106,51 @@ namespace Sif.Framework.Service.Infrastructure
         /// <summary>
         /// Create a copy of a dictionary of ProvisionedZone objects.
         /// </summary>
-        /// <param name="sourceProvisionedZones">Dictionary of ProvisionedZone objects to copy.</param>
-        /// <returns>New copy of the dictionary of ProvisionedZone objects.</returns>
-        private IDictionary<string, ProvisionedZone> CopyProvisionedZones(IDictionary<string, ProvisionedZone> sourceProvisionedZones)
+        /// <param name="sourceZones">Dictionary of ProvisionedZone objects to copy.</param>
+        /// <returns>New copy of the dictionary of ProvisionedZone objects if not null; null otherwise.</returns>
+        private IDictionary<string, ProvisionedZone> CopyProvisionedZones(
+            IDictionary<string, ProvisionedZone> sourceZones)
         {
-            IDictionary<string, ProvisionedZone> destinationProvisionedZones = null;
+            if (sourceZones == null) return null;
 
-            if (sourceProvisionedZones != null)
+            IDictionary<string, ProvisionedZone> destinationZones = new Dictionary<string, ProvisionedZone>();
+
+            foreach (string key in sourceZones.Keys)
             {
-                destinationProvisionedZones = new Dictionary<string, ProvisionedZone>();
-
-                foreach (string key in sourceProvisionedZones.Keys)
+                if (sourceZones.TryGetValue(key, out ProvisionedZone sourceZone))
                 {
-                    ProvisionedZone sourceProvisionedZone;
-                    sourceProvisionedZones.TryGetValue(key, out sourceProvisionedZone);
-                    ProvisionedZone destinationProvisionedZone = new ProvisionedZone { SifId = sourceProvisionedZone.SifId };
+                    var destinationZone = new ProvisionedZone { SifId = sourceZone.SifId };
 
-                    if (sourceProvisionedZone.Services != null)
+                    if (sourceZone.Services != null)
                     {
-                        destinationProvisionedZone.Services = CopyServices(sourceProvisionedZone.Services);
+                        destinationZone.Services = CopyServices(sourceZone.Services);
                     }
 
-                    destinationProvisionedZones.Add(key, destinationProvisionedZone);
+                    destinationZones.Add(key, destinationZone);
                 }
-
             }
 
-            return destinationProvisionedZones;
+            return destinationZones;
         }
 
         /// <summary>
         /// Create a copy of a dictionary of Right objects.
         /// </summary>
         /// <param name="sourceRights">Dictionary of Right objects to copy.</param>
-        /// <returns>New copy of the dictionary of Right objects.</returns>
-        private IDictionary<string, Right> CopyRights(IDictionary<string, Right> sourceRights)
+        /// <returns>New copy of the dictionary of Right objects if not null; null otherwise.</returns>
+        private static IDictionary<string, Right> CopyRights(IDictionary<string, Right> sourceRights)
         {
-            IDictionary<string, Right> destinationRights = null;
+            if (sourceRights == null) return null;
 
-            if (sourceRights != null)
+            IDictionary<string, Right> destinationRights = new Dictionary<string, Right>();
+
+            foreach (string key in sourceRights.Keys)
             {
-                destinationRights = new Dictionary<string, Right>();
-
-                foreach (string key in sourceRights.Keys)
+                if (sourceRights.TryGetValue(key, out Right sourceRight))
                 {
-                    Right sourceRight;
-                    sourceRights.TryGetValue(key, out sourceRight);
-                    Right destinationRight = new Right { Type = sourceRight.Type, Value = sourceRight.Value };
+                    var destinationRight = new Right { Type = sourceRight.Type, Value = sourceRight.Value };
                     destinationRights.Add(key, destinationRight);
                 }
-
             }
 
             return destinationRights;
@@ -170,27 +160,29 @@ namespace Sif.Framework.Service.Infrastructure
         /// Create a copy of a collection of Service objects.
         /// </summary>
         /// <param name="sourceServices">Collection of Service objects to copy.</param>
-        /// <returns>New copy of the collection of Service objects.</returns>
-        private ICollection<Model.Infrastructure.Service> CopyServices(ICollection<Model.Infrastructure.Service> sourceServices)
+        /// <returns>New copy of the collection of Service objects if not null; null otherwise.</returns>
+        private static ICollection<Model.Infrastructure.Service> CopyServices(
+            ICollection<Model.Infrastructure.Service> sourceServices)
         {
-            ICollection<Model.Infrastructure.Service> destinationServices = null;
+            if (sourceServices == null) return null;
 
-            if (sourceServices != null)
+            ICollection<Model.Infrastructure.Service> destinationServices = new List<Model.Infrastructure.Service>();
+
+            foreach (Model.Infrastructure.Service sourceService in sourceServices)
             {
-                destinationServices = new List<Model.Infrastructure.Service>();
-
-                foreach (Model.Infrastructure.Service sourceService in sourceServices)
+                var destinationService = new Model.Infrastructure.Service
                 {
-                    Model.Infrastructure.Service destinationService = new Model.Infrastructure.Service { ContextId = sourceService.ContextId, Name = sourceService.Name, Type = sourceService.Type };
+                    ContextId = sourceService.ContextId,
+                    Name = sourceService.Name,
+                    Type = sourceService.Type
+                };
 
-                    if (sourceService.Rights != null)
-                    {
-                        destinationService.Rights = CopyRights(sourceService.Rights);
-                    }
-
-                    destinationServices.Add(destinationService);
+                if (sourceService.Rights != null)
+                {
+                    destinationService.Rights = CopyRights(sourceService.Rights);
                 }
 
+                destinationServices.Add(destinationService);
             }
 
             return destinationServices;
@@ -199,8 +191,7 @@ namespace Sif.Framework.Service.Infrastructure
         /// <summary>
         /// Create a default instance.
         /// </summary>
-        public EnvironmentService()
-            : base(new EnvironmentRepository())
+        public EnvironmentService() : base(new EnvironmentRepository())
         {
         }
 
@@ -209,30 +200,38 @@ namespace Sif.Framework.Service.Infrastructure
         /// </summary>
         public override Guid Create(environmentType item, string zoneId = null, string contextId = null)
         {
-            EnvironmentRegister environmentRegister =
-                (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers
-                    (item.applicationInfo.applicationKey, item.instanceId, item.userToken, item.solutionId);
+            EnvironmentRegister environmentRegister = (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers(
+                item.applicationInfo.applicationKey,
+                item.instanceId,
+                item.userToken,
+                item.solutionId);
 
             if (environmentRegister == null)
             {
-                string errorMessage = string.Format("Environment with application key of {0}, solution ID of {1}, instance ID of {2} and user token of {3} does NOT exist.",
-                    item.applicationInfo.applicationKey, (item.solutionId == null ? "[null]" : item.solutionId), (item.instanceId == null ? "[null]" : item.instanceId), (item.userToken == null ? "[null]" : item.userToken));
+                var errorMessage =
+                    $"Environment with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}] does NOT exist.";
                 throw new AlreadyExistsException(errorMessage);
             }
 
-            string sessionToken = AuthenticationUtils.GenerateSessionToken(item.applicationInfo.applicationKey, item.instanceId, item.userToken, item.solutionId);
+            string sessionToken = AuthenticationUtils.GenerateSessionToken(
+                item.applicationInfo.applicationKey,
+                item.instanceId,
+                item.userToken,
+                item.solutionId);
 
             environmentType environmentType = RetrieveBySessionToken(sessionToken);
 
             if (environmentType != null)
             {
-                string errorMessage = string.Format("A session token already exists for environment with application key of {0}, solution ID of {1}, instance ID of {2} and user token of {3}.",
-                    item.applicationInfo.applicationKey, (item.solutionId == null ? "[null]" : item.solutionId), (item.instanceId == null ? "[null]" : item.instanceId), (item.userToken == null ? "[null]" : item.userToken));
+                var errorMessage =
+                    $"A session token already exists for environment with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}].";
                 throw new AlreadyExistsException(errorMessage);
             }
 
-            IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
-            IDictionary<string, ProvisionedZone> provisionedZones = CopyProvisionedZones(environmentRegister.ProvisionedZones);
+            IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices =
+                CopyInfrastructureServices(environmentRegister.InfrastructureServices);
+            IDictionary<string, ProvisionedZone> provisionedZones =
+                CopyProvisionedZones(environmentRegister.ProvisionedZones);
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
 
             if (environmentRegister.DefaultZone != null)
@@ -242,7 +241,8 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (infrastructureServices.Count > 0)
             {
-                repoItem.InfrastructureServices = CopyInfrastructureServices(environmentRegister.InfrastructureServices);
+                repoItem.InfrastructureServices =
+                    CopyInfrastructureServices(environmentRegister.InfrastructureServices);
             }
 
             if (provisionedZones.Count > 0)
@@ -253,16 +253,16 @@ namespace Sif.Framework.Service.Infrastructure
             repoItem.SessionToken = sessionToken;
             Guid environmentId = repository.Save(repoItem);
 
-            if (repoItem.InfrastructureServices.Count > 0)
+            if (repoItem.InfrastructureServices != null && repoItem.InfrastructureServices.Count > 0)
             {
-                InfrastructureService infrastructureService = repoItem.InfrastructureServices[InfrastructureServiceNames.environment];
+                InfrastructureService infrastructureService =
+                    repoItem.InfrastructureServices[InfrastructureServiceNames.environment];
 
                 if (infrastructureService != null)
                 {
                     infrastructureService.Value = infrastructureService.Value + "/" + environmentId;
                     repository.Save(repoItem);
                 }
-
             }
 
             return environmentId;
@@ -274,9 +274,8 @@ namespace Sif.Framework.Service.Infrastructure
         public virtual environmentType RetrieveBySessionToken(string sessionToken)
         {
             Environment environment = ((EnvironmentRepository)repository).RetrieveBySessionToken(sessionToken);
+
             return MapperFactory.CreateInstance<Environment, environmentType>(environment);
         }
-
     }
-
 }

@@ -29,6 +29,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Xml.Serialization;
+using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.Providers
 {
@@ -53,7 +54,7 @@ namespace Sif.Framework.Providers
         /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string[], string[])">Post</see>
         /// </summary>
         public override IHttpActionResult Post(
-            List<T> objs,
+            List<T> items,
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
@@ -79,12 +80,12 @@ namespace Sif.Framework.Providers
             {
                 bool? mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
 
-                foreach (T obj in objs)
+                foreach (T item in items)
                 {
-                    bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
+                    bool hasAdvisoryId = !string.IsNullOrWhiteSpace(item.RefId);
                     var status = new createType
                     {
-                        advisoryId = (hasAdvisoryId ? obj.RefId : null)
+                        advisoryId = (hasAdvisoryId ? item.RefId : null)
                     };
 
                     try
@@ -101,13 +102,13 @@ namespace Sif.Framework.Providers
                             }
                             else
                             {
-                                status.id = Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0]).RefId;
+                                status.id = Service.Create(item, mustUseAdvisory, zoneId?[0], contextId?[0]).RefId;
                                 status.statusCode = ((int)HttpStatusCode.Created).ToString();
                             }
                         }
                         else
                         {
-                            status.id = Service.Create(obj, null, zoneId?[0], contextId?[0]).RefId;
+                            status.id = Service.Create(item, null, zoneId?[0], contextId?[0]).RefId;
                             status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
                     }
@@ -116,7 +117,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.Conflict,
                             TypeName,
-                            $"Object {TypeName} with ID of {obj.RefId} already exists.\n{e.Message}");
+                            $"Object {TypeName} with ID of {item.RefId} already exists.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (ArgumentException e)
@@ -124,7 +125,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.BadRequest,
                             TypeName,
-                            $"Object to create of type {TypeName}" + (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $" is invalid.\n {e.Message}");
+                            $"Object to create of type {TypeName}" + (hasAdvisoryId ? $" with ID of {item.RefId}" : "") + $" is invalid.\n {e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (CreateException e)
@@ -132,7 +133,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.BadRequest,
                             TypeName,
-                            $"Request failed for object {TypeName}" + (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $".\n{e.Message}");
+                            $"Request failed for object {TypeName}" + (hasAdvisoryId ? $" with ID of {item.RefId}" : "") + $".\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (RejectedException e)
@@ -140,7 +141,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.NotFound,
                             TypeName,
-                            $"Create request rejected for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
+                            $"Create request rejected for object {TypeName} with ID of {item.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.Conflict).ToString();
                     }
                     catch (Exception e)
@@ -148,7 +149,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.InternalServerError,
                             TypeName,
-                            $"Request failed for object {TypeName}" + (hasAdvisoryId ? $" with ID of {obj.RefId}" : "") + $".\n{e.Message}");
+                            $"Request failed for object {TypeName}" + (hasAdvisoryId ? $" with ID of {item.RefId}" : "") + $".\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 
@@ -169,7 +170,7 @@ namespace Sif.Framework.Providers
         /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string[], string[])">Put</see>
         /// </summary>
         public override IHttpActionResult Put(
-            List<T> objs,
+            List<T> items,
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
@@ -193,16 +194,16 @@ namespace Sif.Framework.Providers
 
             try
             {
-                foreach (T obj in objs)
+                foreach (T item in items)
                 {
                     var status = new updateType
                     {
-                        id = obj.RefId
+                        id = item.RefId
                     };
 
                     try
                     {
-                        Service.Update(obj, (zoneId?[0]), (contextId?[0]));
+                        Service.Update(item, (zoneId?[0]), (contextId?[0]));
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)
@@ -218,7 +219,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.NotFound,
                             TypeName,
-                            $"Object {TypeName} with ID of {obj.RefId} not found.\n{e.Message}");
+                            $"Object {TypeName} with ID of {item.RefId} not found.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.NotFound).ToString();
                     }
                     catch (UpdateException e)
@@ -226,7 +227,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.BadRequest,
                             TypeName,
-                            $"Request failed for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
+                            $"Request failed for object {TypeName} with ID of {item.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
                     }
                     catch (Exception e)
@@ -234,7 +235,7 @@ namespace Sif.Framework.Providers
                         status.error = ProviderUtils.CreateError(
                             HttpStatusCode.InternalServerError,
                             TypeName,
-                            $"Request failed for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
+                            $"Request failed for object {TypeName} with ID of {item.RefId}.\n{e.Message}");
                         status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                     }
 

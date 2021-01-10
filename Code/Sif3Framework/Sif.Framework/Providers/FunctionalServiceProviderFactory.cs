@@ -78,7 +78,7 @@ namespace Sif.Framework.Providers
                 {
                     classes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                from type in assembly.GetTypes()
-                               where ProviderUtils.isFunctionalService(type)
+                               where ProviderUtils.IsFunctionalService(type)
                                select type).ToArray();
 
                     foreach (Type t in classes)

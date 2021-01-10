@@ -32,6 +32,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Providers
@@ -110,7 +111,6 @@ namespace Sif.Framework.Providers
                 bool hasAdvisoryId = ProviderUtils.IsAdvisoryId(item.id);
                 bool? _mustUseAdvisory = HttpUtils.GetMustUseAdvisory(Request.Headers);
                 bool mustUseAdvisory = _mustUseAdvisory.HasValue && _mustUseAdvisory.Value;
-
                 IFunctionalService service = GetService(serviceName);
 
                 if (!service.AcceptJob(serviceName, jobName))
@@ -135,9 +135,7 @@ namespace Sif.Framework.Providers
                 }
 
                 jobType job = service.Retrieve(id, zoneId?[0], contextId?[0]);
-
                 string uri = Url.Link("ServicesRoute", new { controller = serviceName, id });
-
                 result = Request.CreateResponse(HttpStatusCode.Created, job);
                 result.Headers.Location = new Uri(uri);
             }
@@ -918,7 +916,7 @@ namespace Sif.Framework.Providers
                     $"No functional service found to support messages to {serviceName}.");
             }
 
-            if (!ProviderUtils.isFunctionalService(service.GetType()))
+            if (!ProviderUtils.IsFunctionalService(service.GetType()))
             {
                 throw new InvalidOperationException(
                     $"Service ({service.GetType().Name}) found for {serviceName} is not a functional service implementation");

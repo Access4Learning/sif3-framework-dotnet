@@ -45,7 +45,7 @@ namespace Sif.Framework.WebApi
         /// <returns>True if the endpoint defines a Controller; false otherwise.</returns>
         internal static bool IsHttpEndpoint(Type type)
         {
-            return ProviderUtils.isController(type);
+            return ProviderUtils.IsController(type);
         }
 
     }

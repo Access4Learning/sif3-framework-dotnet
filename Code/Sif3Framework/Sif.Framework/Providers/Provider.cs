@@ -39,6 +39,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.Providers
 {
@@ -91,9 +92,11 @@ namespace Sif.Framework.Providers
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
         /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        /// <exception cref="ArgumentNullException">service is null.</exception>
         protected Provider(IProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
         {
-            Service = service;
+            Service = service ?? throw new ArgumentNullException(nameof(service));
+
             ProviderSettings = settings ?? SettingsManager.ProviderSettings;
 
             if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
@@ -301,17 +304,17 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs =
+            TMultiple items =
                 Service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
-            if (objs == null)
+            if (items == null)
             {
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                result = Ok(objs);
+                result = Ok(items);
             }
 
             return result;
@@ -347,7 +350,7 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs = changesSinceService.RetrieveChangesSince(
+            TMultiple items = changesSinceService.RetrieveChangesSince(
                 changesSinceMarker,
                 navigationPage,
                 navigationPageSize,
@@ -356,13 +359,13 @@ namespace Sif.Framework.Providers
                 requestParameters);
             IHttpActionResult result;
 
-            if (objs == null)
+            if (items == null)
             {
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                result = Ok(objs);
+                result = Ok(items);
             }
 
             bool pagedRequest = navigationPage.HasValue && navigationPageSize.HasValue;
@@ -408,17 +411,17 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs =
+            TMultiple items =
                 Service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
-            if (objs == null)
+            if (items == null)
             {
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                result = Ok(objs);
+                result = Ok(items);
             }
 
             return result;
@@ -558,7 +561,7 @@ namespace Sif.Framework.Providers
                 uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
                 uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                TMultiple objs = Service.Retrieve(
+                TMultiple items = Service.Retrieve(
                     conditions,
                     navigationPage,
                     navigationPageSize,
@@ -566,13 +569,13 @@ namespace Sif.Framework.Providers
                     contextId?[0],
                     requestParameters);
 
-                if (objs == null)
+                if (items == null)
                 {
                     result = StatusCode(HttpStatusCode.NoContent);
                 }
                 else
                 {
-                    result = Ok(objs);
+                    result = Ok(items);
                 }
             }
             catch (ArgumentException e)
@@ -941,9 +944,9 @@ namespace Sif.Framework.Providers
                                 acceptOverride: Accept.ToDescription(),
                                 requestHeaders: requestHeaders);
                         }
-                    }
 
-                    result = Ok();
+                        result = Ok();
+                    }
                 }
             }
             catch (Exception e)
