@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Functional;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -67,7 +68,8 @@ namespace Sif.Framework.Providers
         /// Create an instance.
         /// </summary>
         /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
-        protected FunctionalServiceProvider(IFrameworkSettings settings = null)
+        /// <param name="sessionService">Provider session service. If null, the Provider session will be stored in the SifFramework.config file.</param>
+        protected FunctionalServiceProvider(IFrameworkSettings settings = null, ISessionService sessionService = null)
         {
             ProviderSettings = settings ?? SettingsManager.ProviderSettings;
 
@@ -82,7 +84,7 @@ namespace Sif.Framework.Providers
                     new ApplicationRegisterService(),
                     new EnvironmentService(),
                     settings,
-                    SessionsManager.ProviderSessionService);
+                    sessionService ?? SessionsManager.ProviderSessionService);
             }
         }
 
@@ -1005,8 +1007,8 @@ namespace Sif.Framework.Providers
         {
             Model.Infrastructure.Service service =
                 (from Model.Infrastructure.Service s in zone.Services
-                    where s.Type.Equals(ServiceType.FUNCTIONAL.ToString()) && s.Name.Equals(serviceName)
-                    select s)
+                 where s.Type.Equals(ServiceType.FUNCTIONAL.ToString()) && s.Name.Equals(serviceName)
+                 select s)
                 .FirstOrDefault();
 
             if (service == null)

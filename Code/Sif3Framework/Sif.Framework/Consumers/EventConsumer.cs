@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ using Sif.Framework.Model.Responses;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
@@ -33,6 +34,7 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
@@ -48,8 +50,10 @@ namespace Sif.Framework.Consumers
         private readonly slf4net.ILogger log =
             slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private readonly ISessionService sessionService;
+
         private CancellationTokenSource cancellationTokenSource;
-        private Model.Infrastructure.Environment _environment;
+        private Environment _environment;
         private Task task;
 
         /// <summary>
@@ -70,7 +74,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Consumer environment.
         /// </summary>
-        protected Model.Infrastructure.Environment Environment
+        protected Environment Environment
         {
             get => _environment;
             private set => _environment = value;
@@ -101,12 +105,16 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="environment">Environment object.</param>
         /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
-        protected EventConsumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
+        /// <param name="sessionService">Consumer session service. If null, the Consumer session will be stored in the SifFramework.config file.</param>
+        protected EventConsumer(
+            Environment environment,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
         {
             ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
-
+            this.sessionService = sessionService ?? SessionsManager.ConsumerSessionService;
             Environment = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
-            RegistrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
+            RegistrationService = new RegistrationService(ConsumerSettings, this.sessionService);
         }
 
         /// <summary>
@@ -117,13 +125,15 @@ namespace Sif.Framework.Consumers
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
         /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        /// <param name="sessionService">Consumer session service. If null, the Consumer session will be stored in the SifFramework.config file.</param>
         protected EventConsumer(
             string applicationKey,
             string instanceId = null,
             string userToken = null,
             string solutionId = null,
-            IFrameworkSettings settings = null)
-            : this(new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId), settings)
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : this(new Environment(applicationKey, instanceId, userToken, solutionId), settings, sessionService)
         {
         }
 
@@ -188,7 +198,7 @@ namespace Sif.Framework.Consumers
             try
             {
                 var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
-                    { Namespace = ConsumerSettings.DataModelNamespace, IsNullable = false };
+                { Namespace = ConsumerSettings.DataModelNamespace, IsNullable = false };
                 obj = SerialiserFactory.GetSerialiser<TMultiple>(Accept, xmlRootAttribute).Deserialise(payload);
             }
             catch (Exception e)
@@ -473,7 +483,7 @@ namespace Sif.Framework.Consumers
                 RegistrationService.Register(ref _environment);
 
                 // Retrieve the Subscription identifier (if exist).
-                string subscriptionId = SessionsManager.ConsumerSessionService.RetrieveSubscriptionId(
+                string subscriptionId = sessionService.RetrieveSubscriptionId(
                     Environment.ApplicationInfo.ApplicationKey,
                     Environment.SolutionId,
                     Environment.UserToken,
@@ -504,14 +514,14 @@ namespace Sif.Framework.Consumers
                     Subscription = CreateSubscription(subscription);
 
                     // Store Queue and Subscription identifiers.
-                    SessionsManager.ConsumerSessionService.UpdateQueueId(
+                    sessionService.UpdateQueueId(
                         Queue.id,
                         Environment.ApplicationInfo.ApplicationKey,
                         Environment.SolutionId,
                         Environment.UserToken,
                         Environment.InstanceId);
 
-                    SessionsManager.ConsumerSessionService.UpdateSubscriptionId(
+                    sessionService.UpdateSubscriptionId(
                         Subscription.id,
                         Environment.ApplicationInfo.ApplicationKey,
                         Environment.SolutionId,
@@ -523,7 +533,7 @@ namespace Sif.Framework.Consumers
                 {
                     try
                     {
-                        string queueId = SessionsManager.ConsumerSessionService.RetrieveQueueId(
+                        string queueId = sessionService.RetrieveQueueId(
                             Environment.ApplicationInfo.ApplicationKey,
                             Environment.SolutionId,
                             Environment.UserToken,

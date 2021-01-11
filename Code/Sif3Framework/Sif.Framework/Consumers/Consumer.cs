@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
@@ -32,6 +33,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
@@ -47,7 +49,7 @@ namespace Sif.Framework.Consumers
         private readonly slf4net.ILogger log =
             slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Model.Infrastructure.Environment environmentTemplate;
+        private Environment environmentTemplate;
 
         /// <summary>
         /// Accepted content type (XML or JSON) for a message payload.
@@ -67,7 +69,7 @@ namespace Sif.Framework.Consumers
         /// <summary>
         /// Consumer environment.
         /// </summary>
-        protected Model.Infrastructure.Environment EnvironmentTemplate => environmentTemplate;
+        protected Environment EnvironmentTemplate => environmentTemplate;
 
         /// <summary>
         /// Service for Consumer registration.
@@ -84,12 +86,16 @@ namespace Sif.Framework.Consumers
         /// </summary>
         /// <param name="environment">Environment object.</param>
         /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
-        protected Consumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
+        /// <param name="sessionService">Consumer session service. If null, the Consumer session will be stored in the SifFramework.config file.</param>
+        protected Consumer(
+            Environment environment,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
         {
             ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
-
             environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
-            RegistrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
+            RegistrationService =
+                new RegistrationService(ConsumerSettings, sessionService ?? SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -100,13 +106,15 @@ namespace Sif.Framework.Consumers
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
         /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        /// <param name="sessionService">Consumer session service. If null, the Consumer session will be stored in the SifFramework.config file.</param>
         public Consumer(
             string applicationKey,
             string instanceId = null,
             string userToken = null,
             string solutionId = null,
-            IFrameworkSettings settings = null)
-            : this(new Model.Infrastructure.Environment(applicationKey, instanceId, userToken, solutionId), settings)
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : this(new Environment(applicationKey, instanceId, userToken, solutionId), settings, sessionService)
         {
         }
 
@@ -199,7 +207,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -225,7 +233,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -262,7 +270,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -302,7 +310,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             TSingle obj = default;
@@ -359,7 +367,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -406,7 +414,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -444,7 +452,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var servicePath = new StringBuilder();
@@ -507,7 +515,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             RequestParameter[] messageParameters = (requestParameters ?? (new RequestParameter[0]));
@@ -565,7 +573,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             RequestParameter[] messageParameters = (requestParameters ?? (new RequestParameter[0]));
@@ -614,7 +622,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -647,7 +655,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -686,7 +694,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var url = new StringBuilder(EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate))
@@ -717,7 +725,7 @@ namespace Sif.Framework.Consumers
         {
             if (!RegistrationService.Registered)
             {
-                throw new InvalidOperationException("Consumer has not registered.");
+                throw new InvalidOperationException("Consumer has not been registered.");
             }
 
             var request =
