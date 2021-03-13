@@ -85,7 +85,7 @@ namespace Sif.Framework.Demo.Au.Consumer
         {
             try
             {
-                SettingsSource source = SelectSettingsSource();
+                SettingsSource source = SelectFrameworkConfigSource();
                 RunConsumer(GetSettings(source), GetSessionService(source));
             }
             catch (Exception e)

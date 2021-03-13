@@ -24,7 +24,10 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
     public class SchoolInfosProvider : BasicProvider<SchoolInfo>
     {
-        public SchoolInfosProvider() : base(new SchoolInfoService(), FrameworkConfigFactory.CreateSettings())
+        public SchoolInfosProvider() : base(
+            new SchoolInfoService(),
+            FrameworkConfigFactory.CreateSettings(),
+            FrameworkConfigFactory.CreateSessionService())
         {
         }
 

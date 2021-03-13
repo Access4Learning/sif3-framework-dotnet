@@ -25,7 +25,10 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
     public class StudentPersonalsProvider : BasicProvider<StudentPersonal>
     {
-        public StudentPersonalsProvider() : base(new StudentPersonalService(), FrameworkConfigFactory.CreateSettings())
+        public StudentPersonalsProvider() : base(
+            new StudentPersonalService(),
+            FrameworkConfigFactory.CreateSettings(),
+            FrameworkConfigFactory.CreateSessionService())
         {
         }
 

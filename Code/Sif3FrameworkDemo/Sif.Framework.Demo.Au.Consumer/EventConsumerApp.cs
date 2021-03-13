@@ -44,7 +44,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
             try
             {
-                SettingsSource source = SelectSettingsSource();
+                SettingsSource source = SelectFrameworkConfigSource();
                 IFrameworkSettings settings = GetSettings(source);
                 ISessionService sessionService = GetSessionService(source);
                 var consumer = new StudentPersonalEventConsumer(

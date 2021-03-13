@@ -24,8 +24,10 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
     public class StudentSchoolEnrollmentsProvider : BasicProvider<StudentSchoolEnrollment>
     {
-        public StudentSchoolEnrollmentsProvider()
-            : base(new StudentSchoolEnrollmentService(), FrameworkConfigFactory.CreateSettings())
+        public StudentSchoolEnrollmentsProvider() : base(
+            new StudentSchoolEnrollmentService(),
+            FrameworkConfigFactory.CreateSettings(),
+            FrameworkConfigFactory.CreateSessionService())
         {
         }
 

@@ -14,28 +14,62 @@
  * limitations under the License.
  */
 
+using Sif.Framework.EntityFramework.Data;
+using Sif.Framework.EntityFramework.Services.Sessions;
+using Sif.Framework.Model.Sessions;
 using Sif.Framework.Model.Settings;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Settings;
 using Sif.Framework.Utils;
 using System;
+using System.Data.Entity;
 using Tardigrade.Framework.Configurations;
+using Tardigrade.Framework.EntityFramework;
 using Tardigrade.Framework.EntityFramework.Configurations;
+using Tardigrade.Framework.Persistence;
+using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Demo.Au.Provider.Utils
 {
     internal static class FrameworkConfigFactory
     {
+        public static ISessionService CreateSessionService()
+        {
+            ISessionService sessionService;
+            string frameworkConfigSource =
+                System.Configuration.ConfigurationManager.AppSettings["demo.frameworkConfigSource"];
+
+            if ("Database".Equals(frameworkConfigSource, StringComparison.InvariantCultureIgnoreCase))
+            {
+                DbContext dbContext = new SessionDbContext("name=FrameworkConfigDb");
+                IRepository<Session, Guid> repository = new Repository<Session, Guid>(dbContext);
+                IObjectService<Session, Guid> service = new ObjectService<Session, Guid>(repository);
+                sessionService = new SessionService(service);
+            }
+            else if ("File".Equals(frameworkConfigSource, StringComparison.InvariantCultureIgnoreCase))
+            {
+                sessionService = SessionsManager.ProviderSessionService;
+            }
+            else
+            {
+                sessionService = SessionsManager.ProviderSessionService;
+            }
+
+            return sessionService;
+        }
+
         public static IFrameworkSettings CreateSettings()
         {
             IFrameworkSettings settings;
-            string settingsSource = System.Configuration.ConfigurationManager.AppSettings["demo.frameworkConfigSource"];
+            string frameworkConfigSource =
+                System.Configuration.ConfigurationManager.AppSettings["demo.frameworkConfigSource"];
 
-            if ("Database".Equals(settingsSource, StringComparison.InvariantCultureIgnoreCase))
+            if ("Database".Equals(frameworkConfigSource, StringComparison.InvariantCultureIgnoreCase))
             {
                 settings = new ProviderSettings(
                     new ApplicationConfiguration(new AppSettingsConfigurationSource("name=FrameworkConfigDb")));
             }
-            else if ("File".Equals(settingsSource, StringComparison.InvariantCultureIgnoreCase))
+            else if ("File".Equals(frameworkConfigSource, StringComparison.InvariantCultureIgnoreCase))
             {
                 settings = SettingsManager.ProviderSettings;
             }

@@ -37,7 +37,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
         protected static ISessionService GetSessionService(SettingsSource source)
         {
-            ISessionService settings;
+            ISessionService sessionService;
 
             switch (source)
             {
@@ -45,19 +45,19 @@ namespace Sif.Framework.Demo.Au.Consumer
                     DbContext dbContext = new SessionDbContext("name=FrameworkConfigDb");
                     IRepository<Session, Guid> repository = new Repository<Session, Guid>(dbContext);
                     IObjectService<Session, Guid> service = new ObjectService<Session, Guid>(repository);
-                    settings = new SessionService(service);
+                    sessionService = new SessionService(service);
                     break;
 
                 case SettingsSource.File:
-                    settings = SessionsManager.ConsumerSessionService;
+                    sessionService = SessionsManager.ConsumerSessionService;
                     break;
 
                 default:
-                    settings = SessionsManager.ConsumerSessionService;
+                    sessionService = SessionsManager.ConsumerSessionService;
                     break;
             }
 
-            return settings;
+            return sessionService;
         }
 
         protected static IFrameworkSettings GetSettings(SettingsSource source)
@@ -83,7 +83,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             return settings;
         }
 
-        protected static SettingsSource SelectSettingsSource()
+        protected static SettingsSource SelectFrameworkConfigSource()
         {
             Console.WriteLine();
             Console.Write(

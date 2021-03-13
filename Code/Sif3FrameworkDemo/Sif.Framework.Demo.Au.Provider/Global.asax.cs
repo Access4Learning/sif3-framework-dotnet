@@ -3,7 +3,7 @@ using Sif.Framework.Demo.Au.Provider.Utils;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Settings;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
 using Sif.Framework.WebApi.MediaTypeFormatters;
@@ -14,8 +14,6 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Xml.Serialization;
-using Tardigrade.Framework.Configurations;
-using Tardigrade.Framework.EntityFramework.Configurations;
 
 namespace Sif.Framework.Demo.Au.Provider
 {
@@ -97,7 +95,7 @@ namespace Sif.Framework.Demo.Au.Provider
                 .Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
 
             Trace.TraceInformation("********** Application_Start **********");
-            Register(settings);
+            Register(settings, FrameworkConfigFactory.CreateSessionService());
         }
 
         protected void Application_End(object sender, EventArgs e)
@@ -107,14 +105,13 @@ namespace Sif.Framework.Demo.Au.Provider
         }
 
         /// <summary>
-        /// Register this SIF Provider with the EnvironmentProvider based upon settings defined in the SIF 3.0
-        /// Framework configuration, e.g. SifFramework.config.
+        /// Register this SIF Provider with the EnvironmentProvider.
         /// </summary>
-        private void Register(IFrameworkSettings settings)
+        /// <param name="settings">Application settings associated with the Provider.</param>
+        /// <param name="sessionService">Service associated with Provider sessions.</param>
+        private void Register(IFrameworkSettings settings, ISessionService sessionService)
         {
-            registrationService = RegistrationManager.GetProviderRegistrationService(
-                settings,
-                SessionsManager.ProviderSessionService);
+            registrationService = RegistrationManager.GetProviderRegistrationService(settings, sessionService);
             registrationService.Register();
         }
 
