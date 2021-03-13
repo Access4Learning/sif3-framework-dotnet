@@ -42,7 +42,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             switch (source)
             {
                 case SettingsSource.Database:
-                    DbContext dbContext = new SessionDbContext("name=SettingsDb");
+                    DbContext dbContext = new SessionDbContext("name=FrameworkConfigDb");
                     IRepository<Session, Guid> repository = new Repository<Session, Guid>(dbContext);
                     IObjectService<Session, Guid> service = new ObjectService<Session, Guid>(repository);
                     settings = new SessionService(service);
@@ -68,7 +68,7 @@ namespace Sif.Framework.Demo.Au.Consumer
             {
                 case SettingsSource.Database:
                     settings = new ConsumerSettings(
-                        new ApplicationConfiguration(new AppSettingsConfigurationSource("name=SettingsDb")));
+                        new ApplicationConfiguration(new AppSettingsConfigurationSource("name=FrameworkConfigDb")));
                     break;
 
                 case SettingsSource.File:

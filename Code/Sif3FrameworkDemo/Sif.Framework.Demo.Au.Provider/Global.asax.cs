@@ -1,4 +1,5 @@
 ﻿using Sif.Framework.Demo.Au.Provider.Models;
+using Sif.Framework.Demo.Au.Provider.Utils;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
@@ -26,7 +27,7 @@ namespace Sif.Framework.Demo.Au.Provider
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            IFrameworkSettings settings = GetSettings();
+            IFrameworkSettings settings = FrameworkConfigFactory.CreateSettings();
 
             // URL Postfix Extension: Update the configuration to recognise postfix extensions and map known
             // extensions to MIME Types. Additional changes to WebApiConfig.cs are required to fully enable this
@@ -103,27 +104,6 @@ namespace Sif.Framework.Demo.Au.Provider
         {
             Trace.TraceInformation("********** Application_End **********");
             Unregister();
-        }
-
-        private IFrameworkSettings GetSettings()
-        {
-            IFrameworkSettings settings;
-            string settingsSource = System.Configuration.ConfigurationManager.AppSettings["demo.settingsSource"];
-
-            if ("Database".Equals(settingsSource, StringComparison.InvariantCultureIgnoreCase))
-            {
-                settings = new ProviderSettings(new ApplicationConfiguration(new AppSettingsConfigurationSource("name=SettingsDb")));
-            }
-            else if ("File".Equals(settingsSource, StringComparison.InvariantCultureIgnoreCase))
-            {
-                settings = SettingsManager.ProviderSettings;
-            }
-            else
-            {
-                settings = SettingsManager.ProviderSettings;
-            }
-
-            return settings;
         }
 
         /// <summary>

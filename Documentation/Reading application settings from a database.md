@@ -19,7 +19,7 @@ To read the application settings from a database, the following code is used:
 IFrameworkSettings settings =
     new ConsumerSettings(
         new ApplicationConfiguration(
-            new AppSettingsConfigurationSource("name=SettingsDb")));
+            new AppSettingsConfigurationSource("name=FrameworkConfigDb")));
 ```
 
 The AppSettingsConfigurationSource constructor takes a connection string name that has been configured in the App.config file. The database file is referenced by default from the `bin\Debug` directory with the `|DataDirectory|` substitution string.
@@ -35,7 +35,8 @@ The following modifications were required to allow the Demo AU Provider to read 
 > 1. Installed the Tardigrade.Framework.EntityFramework NuGet package.
 > 1. Added an SQLite database file to the App_Data directory. The application settings are defined in the AppSettings database table. Ensure that the `Build Action` is `None` and that the `Copy to Output Directory` is `Copy if newer`. An appropriate SQL script for the AppSettings databaes table can be found in the `Scripts\SQL\Application settings table` directory.
 > 1. Configured the Web.config file to support SQLite with EntityFramework 6, including defining the database file to be used.
-> 1. Updated the Global.asax.cs file to read the application settings from the database and then passed them to the new `RegistrationManager.GetProviderRegistrationService(IFrameworkSettings, ISessionService)` method in the updated `Register(IFrameworkSettings)` method. All previous references to `SettingsManager.ProviderSettings` were replaced.
+> 1. Added the `demo.frameworkConfigSource` application setting to the Web.config file and set it's value to `Database`.
+> 1. Updated the Global.asax.cs file to read the application settings from the database and pass them to the `RegistrationManager.GetProviderRegistrationService(IFrameworkSettings, ISessionService)` method. All previous references to `SettingsManager.ProviderSettings` were replaced.
 > 1. Updated the Demo AU Providers to implement the constructors that pass an IFrameworkSettings parameter.
 
 To read the application settings from a database, the following code is used:
@@ -44,7 +45,7 @@ To read the application settings from a database, the following code is used:
 IFrameworkSettings settings =
     new ProviderSettings(
         new ApplicationConfiguration(
-            new AppSettingsConfigurationSource("name=SettingsDb")));
+            new AppSettingsConfigurationSource("name=FrameworkConfigDb")));
 ```
 
 The AppSettingsConfigurationSource constructor takes a connection string name that has been configured in the App.config file. The database file is referenced by default from the `App_Data` directory with the `|DataDirectory|` substitution string.

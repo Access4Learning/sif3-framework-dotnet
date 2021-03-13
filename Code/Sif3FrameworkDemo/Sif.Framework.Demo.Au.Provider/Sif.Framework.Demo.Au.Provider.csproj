@@ -258,6 +258,7 @@
     <Compile Include="Services\StudentPersonalIterator.cs" />
     <Compile Include="Services\StudentPersonalService.cs" />
     <Compile Include="Services\StudentSchoolEnrollmentService.cs" />
+    <Compile Include="Utils\FrameworkConfigFactory.cs" />
     <Compile Include="Utils\RandomNameGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
