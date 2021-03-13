@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,34 +15,19 @@
  */
 
 using Sif.Framework.Demo.Au.Consumer.Consumers;
+using Sif.Framework.Model.Settings;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using System;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
-    internal class EventConsumerApp
+    internal class EventConsumerApp : ConsoleApp
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger Log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static bool RunDemo(string demoName)
-        {
-            Console.WriteLine();
-            Console.Write("Would you like run the " + demoName + " demo (Y/N)? - ");
-            ConsoleKeyInfo info = new ConsoleKeyInfo();
-
-            do
-            {
-                info = Console.ReadKey();
-            }
-            while (info.Key != ConsoleKey.N && info.Key != ConsoleKey.Y && info.Key != ConsoleKey.Enter);
-
-            Console.WriteLine();
-            Console.WriteLine();
-
-            return (info.Key == ConsoleKey.Y);
-        }
-
-        private static void Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine();
             Console.WriteLine("********************************************************************************");
@@ -57,29 +42,34 @@ namespace Sif.Framework.Demo.Au.Consumer
             Console.WriteLine();
             Console.WriteLine("********************************************************************************");
 
-            if (RunDemo("Student Personal Event Consumer"))
+            try
             {
-                try
-                {
-                    StudentPersonalEventConsumer studentPersonalConsumer = new StudentPersonalEventConsumer(
-                        SettingsManager.ConsumerSettings.ApplicationKey,
-                        SettingsManager.ConsumerSettings.InstanceId,
-                        SettingsManager.ConsumerSettings.UserToken,
-                        SettingsManager.ConsumerSettings.SolutionId,
-                        SettingsManager.ConsumerSettings);
-                    studentPersonalConsumer.Start("Sif3DemoZone1", "DEFAULT");
-                    if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
+                SettingsSource source = SelectSettingsSource();
+                IFrameworkSettings settings = GetSettings(source);
+                ISessionService sessionService = GetSessionService(source);
+                var consumer = new StudentPersonalEventConsumer(
+                    settings.ApplicationKey,
+                    settings.InstanceId,
+                    settings.UserToken,
+                    settings.SolutionId,
+                    settings,
+                    sessionService);
+                consumer.Start("Sif3DemoZone1", "DEFAULT");
 
-                    Console.WriteLine("Press any key to stop the Event Consumer (may take several seconds to complete) ...");
-                    Console.ReadKey();
+                if (Log.IsInfoEnabled) Log.Info("Started the Event Consumer.");
 
-                    studentPersonalConsumer.Stop();
-                    if (log.IsInfoEnabled) log.Info("Stopped the Event Consumer.");
-                }
-                catch (Exception e)
-                {
-                    if (log.IsErrorEnabled) log.Error("Error running the Student Personal Event Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
-                }
+                Console.WriteLine(
+                    "Press any key to stop the Event Consumer (may take several seconds to complete) ...");
+                Console.ReadKey();
+
+                consumer.Stop();
+
+                if (Log.IsInfoEnabled) Log.Info("Stopped the Event Consumer.");
+            }
+            catch (Exception e)
+            {
+                if (Log.IsErrorEnabled)
+                    Log.Error($"Error running the Event Consumer.\n{ExceptionUtils.InferErrorResponseMessage(e)}", e);
             }
 
             Console.WriteLine("Press any key to continue ...");

@@ -20,6 +20,7 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -40,13 +41,12 @@ namespace Sif.Framework.Providers
     /// <typeparam name="T">Type of object associated with the Service Provider.</typeparam>
     public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefId<string>
     {
-        /// <summary>
-        /// Create an instance based on the specified service.
-        /// </summary>
-        /// <param name="service">Service used for managing the object type.</param>
-        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
-        protected BasicProvider(IBasicProviderService<T> service, IFrameworkSettings settings = null)
-            : base(service, settings)
+        /// <inheritdoc />
+        protected BasicProvider(
+            IBasicProviderService<T> service,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(service, settings, sessionService)
         {
         }
 

@@ -1,12 +1,12 @@
 # Reading application settings from a database
 
-Both SIF Providers and Consumers now support the passing of SIF Framework application settings through a constructor parameter. This allows application settings to be read from any source and not just from the SifFramework.config file (which is used by default if no application settings are specified). This includes application settings stored in a database.
+Both SIF Consumers and Providers now support the passing of SIF Framework application settings through a constructor parameter. This allows application settings to be read from any source (including a database) and not just from the SifFramework.config file (which is used by default if no constructor parameter is specified).
 
 ## SIF Consumer
 
 The following modifications were required to allow the Demo AU Consumer to read appliations settings from a database:
 
-> 1. Installed the System.Data.SQLite NuGet package (not to be used for a production1system).
+> 1. Installed the System.Data.SQLite NuGet package (not to be used for a production system).
 > 1. Installed the Tardigrade.Framework.EntityFramework NuGet package.
 > 1. Added an SQLite database file where the application settings are stored in the AppSettings database table. Ensure that the `Build Action` is `None` and that the `Copy to Output Directory` is `Copy if newer`. An appropriate SQL script for the AppSettings databaes table can be found in the `Scripts\SQL\Application settings table` directory.
 > 1. Configured the App.config file to support SQLite with EntityFramework 6, including defining the database file to be used.
@@ -31,7 +31,7 @@ The AppSettingsConfigurationSource and ApplicationConfiguration classes are refe
 
 The following modifications were required to allow the Demo AU Provider to read appliations settings from a database:
 
-> 1. Installed the System.Data.SQLite NuGet package (not to be used for a production1system).
+> 1. Installed the System.Data.SQLite NuGet package (not to be used for a production system).
 > 1. Installed the Tardigrade.Framework.EntityFramework NuGet package.
 > 1. Added an SQLite database file to the App_Data directory. The application settings are defined in the AppSettings database table. Ensure that the `Build Action` is `None` and that the `Copy to Output Directory` is `Copy if newer`. An appropriate SQL script for the AppSettings databaes table can be found in the `Scripts\SQL\Application settings table` directory.
 > 1. Configured the Web.config file to support SQLite with EntityFramework 6, including defining the database file to be used.

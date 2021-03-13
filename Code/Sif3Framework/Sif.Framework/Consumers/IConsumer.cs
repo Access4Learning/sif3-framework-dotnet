@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public interface IConsumer<TSingle, TMultiple, TPrimaryKey>
+    public interface IConsumer<TSingle, TMultiple, in TPrimaryKey>
     {
         /// <summary>
         /// This method must be called before any other.
