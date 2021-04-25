@@ -1,4 +1,4 @@
-> Copyright 2020 Systemic Pty Ltd
+> Copyright 2021 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -39,6 +39,10 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 * the structure of the SIF 3 Framework repositories
 
 ## Version control history
+
+**Apr 25, 2021 - 4.0.1 Updated to the official release of the SIF AU 3.4.8 Data Model**
+
+- Updated to the official release of the SIF AU 3.4.8 Data Model.
 
 **Dec 29, 2020 - 4.0.0 Enable application settings to be read from a database**
 
