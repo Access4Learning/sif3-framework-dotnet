@@ -58,12 +58,6 @@
             <right type="ADMIN">REJECTED</right>
           </rights>
         </service>
-        <service name="FinancialQuestionnaireSubmissions" contextId="DEFAULT" type="OBJECT">
-          <rights>
-            <right type="QUERY">APPROVED</right>
-            <right type="CREATE">APPROVED</right>
-          </rights>
-        </service>
       </services>
     </provisionedZone>
     <provisionedZone id="Sif3DemoZone2">

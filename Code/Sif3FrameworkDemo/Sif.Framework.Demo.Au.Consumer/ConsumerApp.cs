@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,25 +19,30 @@ using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Demo.Au.Consumer.Utils;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Settings;
+using Sif.Framework.Settings;
 using Sif.Framework.Utils;
 using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tardigrade.Framework.Configurations;
+using Tardigrade.Framework.EntityFramework.Configurations;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
     internal class ConsumerApp
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger Log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Random Random = new Random();
 
-        private static Random random = new Random();
+        private enum SettingsSource { Database, File }
 
         private static StudentPersonal CreateStudent()
         {
             NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
             PersonInfoType personInfo = new PersonInfoType { Name = name };
-            StudentPersonal studentPersonal = new StudentPersonal { LocalId = random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
+            StudentPersonal studentPersonal = new StudentPersonal { LocalId = Random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
 
             return studentPersonal;
         }
@@ -54,15 +59,37 @@ namespace Sif.Framework.Demo.Au.Consumer
             return studentPersonalsCache;
         }
 
-        private void RunStudentPersonalConsumer()
+        private static IFrameworkSettings GetSettings(SettingsSource source)
         {
-            StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(
-                SettingsManager.ConsumerSettings.ApplicationKey,
-                SettingsManager.ConsumerSettings.InstanceId,
-                SettingsManager.ConsumerSettings.UserToken,
-                SettingsManager.ConsumerSettings.SolutionId);
+            IFrameworkSettings settings;
+
+            switch (source)
+            {
+                case SettingsSource.Database:
+                    settings = new ConsumerSettings(new ApplicationConfiguration(new AppSettingsConfigurationSource("name=SettingsDb")));
+                    break;
+
+                case SettingsSource.File:
+                    settings = SettingsManager.ConsumerSettings;
+                    break;
+
+                default:
+                    settings = SettingsManager.ConsumerSettings;
+                    break;
+            }
+            return settings;
+        }
+
+        private static void RunStudentPersonalConsumer(IFrameworkSettings settings)
+        {
+            var studentPersonalConsumer = new StudentPersonalConsumer(
+                settings.ApplicationKey,
+                settings.InstanceId,
+                settings.UserToken,
+                settings.SolutionId,
+                settings);
             studentPersonalConsumer.Register();
-            if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
+            if (Log.IsInfoEnabled) Log.Info("Registered the Consumer.");
 
             try
             {
@@ -70,11 +97,11 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 foreach (StudentPersonal student in queriedStudents)
                 {
-                    if (log.IsInfoEnabled) log.Info("Queried student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    if (Log.IsInfoEnabled) Log.Info("Queried student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                 }
 
                 // Retrieve Bart Simpson using QBE.
-                if (log.IsInfoEnabled) log.Info("*** Retrieve Bart Simpson using QBE.");
+                if (Log.IsInfoEnabled) Log.Info("*** Retrieve Bart Simpson using QBE.");
                 NameOfRecordType name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
                 PersonInfoType personInfo = new PersonInfoType { Name = name };
                 StudentPersonal studentPersonal = new StudentPersonal { PersonInfo = personInfo };
@@ -82,11 +109,11 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 foreach (StudentPersonal student in filteredStudents)
                 {
-                    if (log.IsInfoEnabled) log.Info("Filtered student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    if (Log.IsInfoEnabled) Log.Info("Filtered student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                 }
 
                 // Create a new student.
-                if (log.IsInfoEnabled) log.Info("*** Create a new student.");
+                if (Log.IsInfoEnabled) Log.Info("*** Create a new student.");
                 string[] text = new string[]
                 {
                     @"
@@ -108,15 +135,15 @@ namespace Sif.Framework.Demo.Au.Consumer
                 try
                 {
                     StudentPersonal retrievedNewStudent = studentPersonalConsumer.Create(newStudent, true);
-                    if (log.IsInfoEnabled) log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
+                    if (Log.IsInfoEnabled) Log.Info($"Created new student {newStudent.PersonInfo.Name.GivenName} {newStudent.PersonInfo.Name.FamilyName} with ID of {studentID}.");
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    if (log.IsInfoEnabled) log.Info($"Access to create a new student is rejected.");
+                    if (Log.IsInfoEnabled) Log.Info($"Access to create a new student is rejected.");
                 }
 
                 // Create multiple new students.
-                if (log.IsInfoEnabled) log.Info("*** Create multiple new students.");
+                if (Log.IsInfoEnabled) Log.Info("*** Create multiple new students.");
                 List<StudentPersonal> newStudents = CreateStudents(5);
 
                 try
@@ -126,12 +153,12 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                     foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
                     {
-                        if (log.IsInfoEnabled) log.Info("Create status code is " + status.StatusCode);
+                        if (Log.IsInfoEnabled) Log.Info("Create status code is " + status.StatusCode);
                         newStudents[count++].RefId = status.Id;
                     }
 
                     // Update multiple students.
-                    if (log.IsInfoEnabled) log.Info("*** Update multiple students.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Update multiple students.");
                     foreach (StudentPersonal student in newStudents)
                     {
                         student.PersonInfo.Name.GivenName += "o";
@@ -143,16 +170,16 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                         foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
                         {
-                            if (log.IsInfoEnabled) log.Info("Update status code is " + status.StatusCode);
+                            if (Log.IsInfoEnabled) Log.Info("Update status code is " + status.StatusCode);
                         }
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        if (log.IsInfoEnabled) log.Info($"Access to update multiple students is rejected.");
+                        if (Log.IsInfoEnabled) Log.Info($"Access to update multiple students is rejected.");
                     }
 
                     // Delete multiple students.
-                    if (log.IsInfoEnabled) log.Info("*** Delete multiple students.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Delete multiple students.");
                     ICollection<string> refIds = new List<string>();
 
                     foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
@@ -166,38 +193,38 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                         foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
                         {
-                            if (log.IsInfoEnabled) log.Info("Delete status code is " + status.StatusCode);
+                            if (Log.IsInfoEnabled) Log.Info("Delete status code is " + status.StatusCode);
                         }
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        if (log.IsInfoEnabled) log.Info($"Access to delete multiple students is rejected.");
+                        if (Log.IsInfoEnabled) Log.Info($"Access to delete multiple students is rejected.");
                     }
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    if (log.IsInfoEnabled) log.Info($"Access to create multiple new students is rejected.");
+                    if (Log.IsInfoEnabled) Log.Info($"Access to create multiple new students is rejected.");
                 }
 
                 // Retrieve all students from zone "Gov" and context "Curr".
-                if (log.IsInfoEnabled) log.Info("*** Retrieve all students from zone \"Gov\" and context \"Curr\".");
+                if (Log.IsInfoEnabled) Log.Info("*** Retrieve all students from zone \"Gov\" and context \"Curr\".");
                 IEnumerable<StudentPersonal> students = studentPersonalConsumer.Query(zoneId: "Gov", contextId: "Curr");
 
                 foreach (StudentPersonal student in students)
                 {
-                    if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                    if (Log.IsInfoEnabled) Log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                 }
 
                 if (students.Count() > 1)
                 {
                     // Retrieve a single student.
-                    if (log.IsInfoEnabled) log.Info("*** Retrieve a single student.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Retrieve a single student.");
                     string studentId = students.ElementAt(1).RefId;
                     StudentPersonal secondStudent = studentPersonalConsumer.Query(studentId);
-                    if (log.IsInfoEnabled) log.Info("Name of second student is " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+                    if (Log.IsInfoEnabled) Log.Info("Name of second student is " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
 
                     // Update that student and confirm.
-                    if (log.IsInfoEnabled) log.Info("*** Update that student and confirm.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Update that student and confirm.");
                     secondStudent.PersonInfo.Name.GivenName = "Homer";
                     secondStudent.PersonInfo.Name.FamilyName = "Simpson";
 
@@ -205,15 +232,15 @@ namespace Sif.Framework.Demo.Au.Consumer
                     {
                         studentPersonalConsumer.Update(secondStudent);
                         secondStudent = studentPersonalConsumer.Query(studentId);
-                        if (log.IsInfoEnabled) log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
+                        if (Log.IsInfoEnabled) Log.Info("Name of second student has been changed to " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName);
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        if (log.IsInfoEnabled) log.Info($"Access to update a student is rejected.");
+                        if (Log.IsInfoEnabled) Log.Info($"Access to update a student is rejected.");
                     }
 
                     // Delete that student and confirm.
-                    if (log.IsInfoEnabled) log.Info("*** Delete that student and confirm.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Delete that student and confirm.");
 
                     try
                     {
@@ -223,21 +250,21 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                         if (studentDeleted)
                         {
-                            if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
+                            if (Log.IsInfoEnabled) Log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was successfully deleted.");
                         }
                         else
                         {
-                            if (log.IsInfoEnabled) log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
+                            if (Log.IsInfoEnabled) Log.Info("Student " + secondStudent.PersonInfo.Name.GivenName + " " + secondStudent.PersonInfo.Name.FamilyName + " was NOT deleted.");
                         }
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        if (log.IsInfoEnabled) log.Info($"Access to delete a student is rejected.");
+                        if (Log.IsInfoEnabled) Log.Info($"Access to delete a student is rejected.");
                     }
                 }
 
                 // Retrieve students based on Teaching Group using Service Paths.
-                if (log.IsInfoEnabled) log.Info("*** Retrieve students based on Teaching Group using Service Paths.");
+                if (Log.IsInfoEnabled) Log.Info("*** Retrieve students based on Teaching Group using Service Paths.");
                 EqualCondition condition = new EqualCondition() { Left = "TeachingGroups", Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0" };
                 IList<EqualCondition> conditions = new List<EqualCondition>
                 {
@@ -250,7 +277,7 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                     foreach (StudentPersonal student in teachingGroupStudents)
                     {
-                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                        if (Log.IsInfoEnabled) Log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
 
                         if (student.SIF_ExtendedElements != null && student.SIF_ExtendedElements.Length > 0)
                         {
@@ -258,7 +285,7 @@ namespace Sif.Framework.Demo.Au.Consumer
                             {
                                 foreach (string content in element.Text)
                                 {
-                                    if (log.IsInfoEnabled) log.Info("Extended element text is ...\n" + content);
+                                    if (Log.IsInfoEnabled) Log.Info("Extended element text is ...\n" + content);
                                 }
                             }
                         }
@@ -266,87 +293,103 @@ namespace Sif.Framework.Demo.Au.Consumer
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    if (log.IsInfoEnabled) log.Info("Access to query students by Service Path TeachingGroups/{}/StudentPersonals is rejected.");
+                    if (Log.IsInfoEnabled) Log.Info("Access to query students by Service Path TeachingGroups/{}/StudentPersonals is rejected.");
                 }
 
                 // Retrieve student changes since a particular point as defined by the Changes Since marker.
-                if (log.IsInfoEnabled) log.Info("*** Retrieve student changes since a particular point as defined by the Changes Since marker.");
+                if (Log.IsInfoEnabled) Log.Info("*** Retrieve student changes since a particular point as defined by the Changes Since marker.");
                 string changesSinceMarker = studentPersonalConsumer.GetChangesSinceMarker();
                 IEnumerable<StudentPersonal> changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out string nextChangesSinceMarker);
-                if (log.IsInfoEnabled) log.Info("Iteration 1 - Student changes based on Changes Since marker - " + changesSinceMarker);
+                if (Log.IsInfoEnabled) Log.Info("Iteration 1 - Student changes based on Changes Since marker - " + changesSinceMarker);
 
                 if (changedStudents == null || changedStudents.Count() == 0)
                 {
-                    if (log.IsInfoEnabled) log.Info("No student changes");
+                    if (Log.IsInfoEnabled) Log.Info("No student changes");
                 }
                 else
                 {
                     foreach (StudentPersonal student in changedStudents)
                     {
-                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                        if (Log.IsInfoEnabled) Log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
                 }
 
                 changesSinceMarker = nextChangesSinceMarker;
                 nextChangesSinceMarker = null;
                 changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
-                if (log.IsInfoEnabled) log.Info("Iteration 2 - Student changes based on Changes Since marker - " + changesSinceMarker);
+                if (Log.IsInfoEnabled) Log.Info("Iteration 2 - Student changes based on Changes Since marker - " + changesSinceMarker);
 
                 if (changedStudents == null || changedStudents.Count() == 0)
                 {
-                    if (log.IsInfoEnabled) log.Info("No student changes");
+                    if (Log.IsInfoEnabled) Log.Info("No student changes");
                 }
                 else
                 {
                     foreach (StudentPersonal student in changedStudents)
                     {
-                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                        if (Log.IsInfoEnabled) Log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
                 }
 
                 changesSinceMarker = nextChangesSinceMarker;
                 nextChangesSinceMarker = null;
                 changedStudents = studentPersonalConsumer.QueryChangesSince(changesSinceMarker, out nextChangesSinceMarker);
-                if (log.IsInfoEnabled) log.Info("Iteration 3 - Student changes based on Changes Since marker - " + changesSinceMarker);
+                if (Log.IsInfoEnabled) Log.Info("Iteration 3 - Student changes based on Changes Since marker - " + changesSinceMarker);
 
                 if (changedStudents == null || changedStudents.Count() == 0)
                 {
-                    if (log.IsInfoEnabled) log.Info("No student changes");
+                    if (Log.IsInfoEnabled) Log.Info("No student changes");
                 }
                 else
                 {
                     foreach (StudentPersonal student in changedStudents)
                     {
-                        if (log.IsInfoEnabled) log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
+                        if (Log.IsInfoEnabled) Log.Info("Student name is " + student.PersonInfo.Name.GivenName + " " + student.PersonInfo.Name.FamilyName);
                     }
                 }
             }
             catch (UnauthorizedAccessException)
             {
-                if (log.IsInfoEnabled) log.Info($"Access to query students is rejected.");
+                if (Log.IsInfoEnabled) Log.Info($"Access to query students is rejected.");
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the StudentPersonal Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (Log.IsErrorEnabled) Log.Error("Error running the StudentPersonal Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
             finally
             {
                 studentPersonalConsumer.Unregister();
-                if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
+                if (Log.IsInfoEnabled) Log.Info("Unregistered the Consumer.");
             }
         }
 
-        private static void Main(string[] args)
+        private static SettingsSource SelectSettingsSource()
         {
-            ConsumerApp app = new ConsumerApp();
+            Console.WriteLine();
+            Console.Write("Would you like to read the application settings from the SifFramework.config (F)ile or from the SifFrameworkConfig.db (D)atabase? Pressing enter defaults to (F)ile. - ");
+            ConsoleKeyInfo info;
 
+            do
+            {
+                info = Console.ReadKey();
+            }
+            while (info.Key != ConsoleKey.D && info.Key != ConsoleKey.F && info.Key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            return info.Key == ConsoleKey.D ? SettingsSource.Database : SettingsSource.File;
+        }
+
+        private static void Main()
+        {
             try
             {
-                app.RunStudentPersonalConsumer();
+                RunStudentPersonalConsumer(GetSettings(SelectSettingsSource()));
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the Student Personal CRUD Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (Log.IsErrorEnabled) Log.Error("Error running the Student Personal CRUD Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
             }
 
             Console.WriteLine("Press any key to continue ...");

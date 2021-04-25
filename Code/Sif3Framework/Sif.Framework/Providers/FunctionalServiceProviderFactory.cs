@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,11 @@ namespace Sif.Framework.Providers
         private Timer eventTimer = null;
         private Timer timeoutTimer = null;
 
+        /// <summary>
+        /// Application settings associated with the Provider.
+        /// </summary>
+        private IFrameworkSettings ProviderSettings { get; }
+
         // Active Providers for event publishing. These providers run in the background as an independent thread.
         private Dictionary<string, IFunctionalService> providers = new Dictionary<string, IFunctionalService>();
 
@@ -59,7 +64,7 @@ namespace Sif.Framework.Providers
                     return classes;
                 }
 
-                string classesStr = SettingsManager.ProviderSettings.JobClasses;
+                string classesStr = ProviderSettings.JobClasses;
 
                 log.Debug("Attempting to load named providers: " + classesStr);
 
@@ -107,7 +112,7 @@ namespace Sif.Framework.Providers
         /// Creates and configures the factory singleton instance.
         /// </summary>
         /// <returns>The factory singleton</returns>
-        public static FunctionalServiceProviderFactory CreateFactory()
+        public static FunctionalServiceProviderFactory CreateFactory(IFrameworkSettings settings = null)
         {
             lock (locked)
             {
@@ -116,7 +121,7 @@ namespace Sif.Framework.Providers
                 {
                     try
                     {
-                        factory = new FunctionalServiceProviderFactory();
+                        factory = new FunctionalServiceProviderFactory(settings);
                     }
                     catch (Exception ex)
                     {
@@ -193,11 +198,11 @@ namespace Sif.Framework.Providers
          * 
          * @return See Desc.
          */
-        public static FunctionalServiceProviderFactory GetInstance()
+        public static FunctionalServiceProviderFactory GetInstance(IFrameworkSettings settings = null)
         {
             if (factory == null)
             {
-                return CreateFactory();
+                return CreateFactory(settings);
             }
             return factory;
         }
@@ -235,22 +240,22 @@ namespace Sif.Framework.Providers
         /*---------------------*/
         /*-- Private Methods --*/
         /*---------------------*/
-        private FunctionalServiceProviderFactory()
+        private FunctionalServiceProviderFactory(IFrameworkSettings settings = null)
         {
-            ProviderSettings settings = SettingsManager.ProviderSettings as ProviderSettings;
-            InitialiseProviders(settings);
-            StartProviders(settings);
-            StartEventing(settings);
-            StartTimeout(settings);
+            ProviderSettings = settings ?? SettingsManager.ProviderSettings;
+            InitialiseProviders();
+            StartProviders(ProviderSettings);
+            StartEventing();
+            StartTimeout(ProviderSettings);
         }
 
-        private void InitialiseProviders(ProviderSettings settings)
+        private void InitialiseProviders()
         {
             log.Debug("Initialising ProviderFactory (currently only supports Functional Services)");
             // settings.Classes only returns functional services at the moment, but can easily be extended to other types of services.
             foreach (Type type in Classes)
             {
-                log.Debug("Provider class to initialse: " + type.FullName);
+                log.Debug("Provider class to initialise: " + type.FullName);
                 try
                 {
                     ServiceClassInfo providerClassInfo = new ServiceClassInfo(type, Type.EmptyTypes);
@@ -285,7 +290,7 @@ namespace Sif.Framework.Providers
             }
         }
 
-        private void StartProviders(ProviderSettings settings)
+        private void StartProviders(IFrameworkSettings settings)
         {
             int delay = settings.StartupDelay;  //delay between threads in seconds
             log.Debug("Start up delay between providers is: " + delay + " seconds");
@@ -301,7 +306,7 @@ namespace Sif.Framework.Providers
             }
         }
 
-        private void StartEventing(ProviderSettings settings)
+        private void StartEventing()
         {
             // Incomplete and removed from current version of framework
             /*
@@ -332,7 +337,7 @@ namespace Sif.Framework.Providers
             */
         }
 
-        private void StartTimeout(ProviderSettings settings)
+        private void StartTimeout(IFrameworkSettings settings)
         {
             log.Info("Setting up job timeout...");
             if (!settings.JobTimeoutEnabled)

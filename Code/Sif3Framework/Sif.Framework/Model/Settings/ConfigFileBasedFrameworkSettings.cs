@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Requests;
 using System;
 using System.Configuration;
 using System.IO;
@@ -27,7 +28,7 @@ namespace Sif.Framework.Model.Settings
     /// </summary>
     internal abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
     {
-        private Configuration configuration;
+        private readonly Configuration configuration;
 
         /// <summary>
         /// Retrieve the setting (boolean) value associated with the key.
@@ -103,7 +104,7 @@ namespace Sif.Framework.Model.Settings
         protected string GetStringSetting(string key)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
-            return setting != null ? setting.Value : null;
+            return setting?.Value;
         }
 
         /// <summary>
@@ -139,19 +140,48 @@ namespace Sif.Framework.Model.Settings
                 ExeConfigFilename = configurationFilePath
             };
 
-            configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
+            configuration =
+                ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
 
             if (!configuration.HasFile)
             {
                 string fullPath = Assembly.GetExecutingAssembly().Location;
                 exeConfigurationFileMap.ExeConfigFilename = Path.GetDirectoryName(fullPath) + "\\SifFramework.config";
-                configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
+                configuration = ConfigurationManager.OpenMappedExeConfiguration(
+                    exeConfigurationFileMap,
+                    ConfigurationUserLevel.None);
             }
 
             if (!configuration.HasFile)
             {
                 string message = $"Missing configuration file {configurationFilePath}.";
                 throw new ConfigurationErrorsException(message);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IFrameworkSettings.Accept"/>
+        /// </summary>
+        public Accept Accept
+        {
+            get
+            {
+                string settingKey = $"{SettingsPrefix}.payload.accept";
+                string settingValue = GetStringSetting(settingKey, "XML");
+
+                if (Accept.XML.ToString().Equals(settingValue.ToUpper()))
+                {
+                    return Accept.XML;
+                }
+                else if (ContentType.JSON.ToString().Equals(settingValue.ToUpper()))
+                {
+                    return Accept.JSON;
+                }
+                else
+                {
+                    string message = $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
+                    throw new ConfigurationErrorsException(message);
+                }
             }
         }
 
@@ -200,6 +230,32 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
+        /// <see cref="IFrameworkSettings.ContentType"/>
+        /// </summary>
+        public ContentType ContentType
+        {
+            get
+            {
+                string settingKey = $"{SettingsPrefix}.payload.contentType";
+                string settingValue = GetStringSetting(settingKey, "XML");
+
+                if (ContentType.XML.ToString().Equals(settingValue.ToUpper()))
+                {
+                    return ContentType.XML;
+                }
+                else if (ContentType.JSON.ToString().Equals(settingValue.ToUpper()))
+                {
+                    return ContentType.JSON;
+                }
+                else
+                {
+                    string message = $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
+                    throw new ConfigurationErrorsException(message);
+                }
+            }
+        }
+
+        /// <summary>
         /// <see cref="IFrameworkSettings.DataModelNamespace"/>
         /// </summary>
         public string DataModelNamespace
@@ -239,27 +295,22 @@ namespace Sif.Framework.Model.Settings
         {
             get
             {
-                KeyValueConfigurationElement setting = configuration.AppSettings.Settings[SettingsPrefix + ".environmentType"];
-                EnvironmentType value = EnvironmentType.DIRECT;
+                string settingKey = $"{SettingsPrefix}.environmentType";
+                string settingValue = GetStringSetting(settingKey, "DIRECT");
 
-                if (setting != null)
+                if (EnvironmentType.BROKERED.ToString().Equals(settingValue))
                 {
-                    if (EnvironmentType.BROKERED.ToString().Equals(setting.Value.ToUpper()))
-                    {
-                        value = EnvironmentType.BROKERED;
-                    }
-                    else if (EnvironmentType.DIRECT.ToString().Equals(setting.Value.ToUpper()))
-                    {
-                        value = EnvironmentType.DIRECT;
-                    }
-                    else
-                    {
-                        string message = $"The valid values for the {setting.Key} setting are \"BROKERED\" or \"DIRECT\". The value \"{setting.Value}\" is not valid.";
-                        throw new ConfigurationErrorsException(message);
-                    }
+                    return EnvironmentType.BROKERED;
                 }
-
-                return value;
+                else if (EnvironmentType.DIRECT.ToString().Equals(settingValue))
+                {
+                    return EnvironmentType.DIRECT;
+                }
+                else
+                {
+                    string message = $"The valid values for the {settingKey} setting are \"BROKERED\" or \"DIRECT\". The value \"{settingValue}\" is not valid.";
+                    throw new ConfigurationErrorsException(message);
+                }
             }
         }
 

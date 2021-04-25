@@ -1,4 +1,4 @@
-> Copyright 2020 Systemic Pty Ltd
+> Copyright 2021 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -40,11 +40,55 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
+**Apr 25, 2021 - 4.0.1 Updated to the official release of the SIF AU 3.4.8 Data Model**
+
+- Updated to the official release of the SIF AU 3.4.8 Data Model.
+
+**Dec 29, 2020 - 4.0.0 Enable application settings to be read from a database**
+
+- Added classes to enable application settings to be read from a database.
+- Re-designed the Provider classes to better accommodate passing of application settings.
+- Updated the Consumer and Provider constructors to accept the application settings to be used.
+- Updated the business layer to reference the application settings passed rather than inherently read them from the SifFramework.config file.
+- Create a Solution to manage unit test projects.
+- Updated the AU Demo Consumer and Provider projects to read the application settings from a database rather than the SifFramework.config file.
+- Created documentation to explain how to configure the Consumers and Providers to read application settings from a database.
+- Moved Markdown documentation to the Documentation directory.
+- Incorporated the Tardigrade.Framework NuGet packages into the SIF Framework projects.
+- Updated all third-party NuGet packages.
+- General code clean-up.
+
+**Sept 28, 2020 - 3.2.1.14 Updated to the official release of the SIF AU 3.4.7 Data Model**
+
+- Resolved issues with SIF_HMACSHA256 authentication.
+- Updated to the official release of the SIF AU 3.4.7 Data Model.
+- Updated the Demo projects with the latest version of the SIF Framework.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
+
+**May 27, 2020 - 3.2.1.13.2 Corrected the SIF AU 3.4.6 Data Model**
+
+- Corrected the SIF AU 3.4.6 Data Model release provided with the SIF Framework.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
+
+**Apr 29, 2020 - 3.2.1.13.1 Updated to the official release of the SIF AU 3.4.6 Data Model**
+
+- Updated to the official release of the SIF AU 3.4.6 Data Model.
+- Refactored the AU Demo Consumer and Provider to reflect the data model updates.
+- Added the SIF NA Unity 4.0 Data Model to the Sif.Specification project.
+
+**Mar 01, 2020 - 3.2.1.13 Enable Goessner notation JSON for Consumers and SIF Events**
+
+- Created a custom (XML to) JSON serialiser complying with Goessner notation that can be used by SIF Consumers.
+- Configured the Sif.Framework.EnvironmentProvider project to use the new JSON Media Type Formatter.
+- Enhanced SIF Providers to enable JSON payloads with SIF Events.
+- Updated demo projects to use the new JSON formatters and serialisers.
+- Created/updated documentation and templates regarding configuration for JSON usage.
+
 **Feb 18, 2020 - 3.2.1.12 Created a custom JSON Formatter which complies with Goessner notation**
 
 - Created a custom JSON Media Type Formatter that complies with Goessner notation that can be used by SIF Providers.
 - Configured the Sif.Framework.Demo.Au.Provider project to use the new JSON Media Type Formatter.
-- Created/updated documentation and templates regarding the new JSON Media Type Formatter
+- Created/updated documentation and templates regarding the new JSON Media Type Formatter.
 
 **Nov 3, 2019 - 3.2.1.11.2 Updated to the official release of the SIF AU 3.4.5 Data Model**
 

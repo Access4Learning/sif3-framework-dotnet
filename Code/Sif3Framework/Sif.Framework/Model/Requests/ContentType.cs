@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
-using Sif.Specification.DataModel.Au;
-using System.Xml.Serialization;
+using System.ComponentModel;
 
-namespace Sif.Framework.Demo.Au.Consumer.Models
+namespace Sif.Framework.Model.Requests
 {
-    [XmlRoot("FinancialQuestionnaireSubmission", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
-    [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
-    public class FinancialQuestionnaireSubmission : FinancialQuestionnaireSubmissionType, IDataModel
+    /// <summary>
+    /// Enumeration of content types.
+    /// </summary>
+    public enum ContentType
     {
+        [Description("application/xml")]
+        XML,
+
+        [Description("application/json")]
+        JSON
     }
 }

@@ -3,6 +3,7 @@ using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi;
+using Sif.Framework.WebApi.MediaTypeFormatters;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Formatting;
@@ -12,7 +13,6 @@ using System.Xml.Serialization;
 
 namespace Sif.Framework.Demo.Broker
 {
-
     public class WebApiApplication : System.Web.HttpApplication
     {
         private IRegistrationService registrationService;
@@ -24,7 +24,8 @@ namespace Sif.Framework.Demo.Broker
             // URL Postfix Extension: Update the configuration to recognise postfix extensions and map known
             // extensions to MIME Types. Additional changes to WebApiConfig.cs are required to fully enable this
             // feature.
-            GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping("json", "application/json");
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter
+                .AddUriPathExtensionMapping("json", "application/json");
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.AddUriPathExtensionMapping("xml", "text/xml");
 
             // XML Serialisation: Define the specific XML serialiser to use to ensure that SIF Data Model Objects (as
@@ -34,23 +35,40 @@ namespace Sif.Framework.Demo.Broker
 
             // XML Serialisation: For each SIF Data Model Object used by each SIF Provider, the following entries are
             // required to define the root element for each collection object.
-            XmlRootAttribute queuesXmlRootAttribute = new XmlRootAttribute("Queues") { Namespace = SettingsManager.ProviderSettings.InfrastructureNamespace, IsNullable = false };
-            ISerialiser<List<Queue>> queuesSerialiser = SerialiserFactory.GetXmlSerialiser<List<Queue>>(queuesXmlRootAttribute);
+            var queuesXmlRootAttribute = new XmlRootAttribute("Queues")
+            { Namespace = SettingsManager.ProviderSettings.InfrastructureNamespace, IsNullable = false };
+            ISerialiser<List<Queue>> queuesSerialiser =
+                SerialiserFactory.GetXmlSerialiser<List<Queue>>(queuesXmlRootAttribute);
             formatter.SetSerializer<List<Queue>>((XmlSerializer)queuesSerialiser);
 
-            XmlRootAttribute subscriptionsXmlRootAttribute = new XmlRootAttribute("Subscriptions") { Namespace = SettingsManager.ProviderSettings.InfrastructureNamespace, IsNullable = false };
-            ISerialiser<List<Queue>> subscriptionsSerialiser = SerialiserFactory.GetXmlSerialiser<List<Queue>>(subscriptionsXmlRootAttribute);
-            formatter.SetSerializer<List<Queue>>((XmlSerializer)subscriptionsSerialiser);
+            var subscriptionsXmlRootAttribute = new XmlRootAttribute("Subscriptions")
+            { Namespace = SettingsManager.ProviderSettings.InfrastructureNamespace, IsNullable = false };
+            ISerialiser<List<Subscription>> subscriptionsSerialiser =
+                SerialiserFactory.GetXmlSerialiser<List<Subscription>>(subscriptionsXmlRootAttribute);
+            formatter.SetSerializer<List<Subscription>>((XmlSerializer)subscriptionsSerialiser);
 
-            XmlRootAttribute studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals") { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
-            ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser = SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
+            var studentPersonalsXmlRootAttribute = new XmlRootAttribute("StudentPersonals")
+            { Namespace = SettingsManager.ProviderSettings.DataModelNamespace, IsNullable = false };
+            ISerialiser<List<StudentPersonal>> studentPersonalsSerialiser =
+                SerialiserFactory.GetXmlSerialiser<List<StudentPersonal>>(studentPersonalsXmlRootAttribute);
             formatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+
+            // Replacement custom JSON formatter (compliant with Goessner notation).
+            var xmlToJsonFormatter = new XmlToJsonFormatter { UseXmlSerializer = true };
+            xmlToJsonFormatter.AddUriPathExtensionMapping("json", "application/json");
+            xmlToJsonFormatter.SetSerializer<List<Queue>>((XmlSerializer)queuesSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<Subscription>>((XmlSerializer)subscriptionsSerialiser);
+            xmlToJsonFormatter.SetSerializer<List<StudentPersonal>>((XmlSerializer)studentPersonalsSerialiser);
+            GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
+            GlobalConfiguration.Configuration.Formatters
+                .Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
 
             // Configure global exception loggers for unexpected errors.
             GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
 
             // Configure a global exception handler for unexpected errors.
-            GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler),
+                new GlobalUnexpectedExceptionHandler());
 
             Trace.TraceInformation("********** Application_Start **********");
             Register();
@@ -68,7 +86,9 @@ namespace Sif.Framework.Demo.Broker
         /// </summary>
         private void Register()
         {
-            registrationService = RegistrationManager.ProviderRegistrationService;
+            registrationService = RegistrationManager.GetProviderRegistrationService(
+                SettingsManager.ProviderSettings,
+                SessionsManager.ProviderSessionService);
             registrationService.Register();
         }
 
@@ -79,7 +99,5 @@ namespace Sif.Framework.Demo.Broker
         {
             registrationService.Unregister();
         }
-
     }
-
 }

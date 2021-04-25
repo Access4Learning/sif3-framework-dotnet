@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
- * 
+ * Copyright 2020 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
@@ -30,24 +31,26 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Registration
 {
-
     /// <summary>
     /// <see cref="IRegistrationService">IRegistrationService</see>
     /// </summary>
-    class RegistrationService : IRegistrationService
+    internal class RegistrationService : IRegistrationService
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly slf4net.ILogger log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private IAuthorisationTokenService authorisationTokenService;
+        private readonly IAuthorisationTokenService authorisationTokenService;
+        private readonly ISessionService sessionService;
+        private readonly IFrameworkSettings settings;
+
+        private AuthorisationToken authorisationToken;
         private string environmentUrl;
-        private ISessionService sessionService;
         private string sessionToken;
-        private IFrameworkSettings settings;
 
         /// <summary>
         /// <see cref="IRegistrationService.AuthorisationToken">AuthorisationToken</see>
         /// </summary>
-        public AuthorisationToken AuthorisationToken { get; private set; }
+        public AuthorisationToken AuthorisationToken => GetAuthorisationToken();
 
         /// <summary>
         /// <see cref="IRegistrationService.Registered">Registered</see>
@@ -60,29 +63,63 @@ namespace Sif.Framework.Service.Registration
         public Environment CurrentEnvironment { get; private set; }
 
         /// <summary>
+        /// Get the current authorisation token to use.
+        /// </summary>
+        /// <returns>The current authorisation token to use.</returns>
+        private AuthorisationToken GetAuthorisationToken()
+        {
+            if (!Registered)
+            {
+                return null;
+            }
+
+            if (authorisationTokenService is HmacShaAuthorisationTokenService)
+            {
+                string storedSessionToken = sessionService.RetrieveSessionToken(
+                    CurrentEnvironment.ApplicationInfo.ApplicationKey,
+                    CurrentEnvironment.SolutionId,
+                    CurrentEnvironment.UserToken,
+                    CurrentEnvironment.InstanceId);
+                authorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
+            }
+
+            if (log.IsDebugEnabled)
+                log.Debug(
+                    $"Authorisation token is {authorisationToken.Token} with a timestamp of {authorisationToken.Timestamp ?? "<null>"}.");
+
+            return authorisationToken;
+        }
+
+        /// <summary>
         /// Parse the URL of the Environment infrastructure service from the XML.
         /// </summary>
         /// <param name="environmentXml">Serialised Environment object as XML.</param>
         /// <returns>URL of the Environment infrastructure service.</returns>
         private string TryParseEnvironmentUrl(string environmentXml)
         {
+            string url = null;
 
-            if (string.IsNullOrWhiteSpace(environmentXml))
+            try
             {
-                return null;
+                if (!string.IsNullOrWhiteSpace(environmentXml))
+                {
+                    var xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
+                    xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0.1");
+                    var environmentDoc = new XmlDocument();
+                    environmentDoc.LoadXml(environmentXml);
+                    url = environmentDoc
+                        .SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager)
+                        ?.InnerText;
+
+                    if (log.IsDebugEnabled) log.Debug($"Parsed environment URL is {url}.");
+                }
+            }
+            catch (Exception)
+            {
+                // Return null if unable to parse for an environment URL.
             }
 
-            XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
-            xmlNamespaceManager.AddNamespace("ns", "http://www.sifassociation.org/infrastructure/3.0.1");
-
-            XmlDocument environmentDoc = new XmlDocument();
-            environmentDoc.LoadXml(environmentXml);
-
-            string environmentUrl = environmentDoc.SelectSingleNode("//ns:infrastructureService[@name='environment']", xmlNamespaceManager).InnerText;
-            if (log.IsDebugEnabled) log.Debug("Parsed environment URL is " + environmentUrl + ".");
-
-            return environmentUrl;
-
+            return url;
         }
 
         /// <summary>
@@ -95,11 +132,13 @@ namespace Sif.Framework.Service.Registration
             this.settings = settings;
             this.sessionService = sessionService;
 
-            if (AuthenticationMethod.Basic.ToString().Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))
+            if (AuthenticationMethod.Basic.ToString()
+                .Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))
             {
                 authorisationTokenService = new BasicAuthorisationTokenService();
             }
-            else if (AuthenticationMethod.SIF_HMACSHA256.ToString().Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))
+            else if (AuthenticationMethod.SIF_HMACSHA256.ToString()
+                .Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))
             {
                 authorisationTokenService = new HmacShaAuthorisationTokenService();
             }
@@ -110,12 +149,13 @@ namespace Sif.Framework.Service.Registration
 
             Registered = false;
         }
+
         /// <summary>
         /// <see cref="IRegistrationService.Register()">Register</see>
         /// </summary>
         public Environment Register()
         {
-            Environment environment = EnvironmentUtils.LoadFromSettings(SettingsManager.ProviderSettings);
+            Environment environment = EnvironmentUtils.LoadFromSettings(settings);
             return Register(ref environment);
         }
 
@@ -124,84 +164,129 @@ namespace Sif.Framework.Service.Registration
         /// </summary>
         public Environment Register(ref Environment environment)
         {
-
             if (Registered)
             {
                 return CurrentEnvironment;
             }
 
-            if (sessionService.HasSession(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId))
+            if (sessionService.HasSession(
+                environment.ApplicationInfo.ApplicationKey,
+                environment.SolutionId,
+                environment.UserToken,
+                environment.InstanceId))
             {
-                if (log.IsDebugEnabled) log.Debug("Session token already exists for this object service (Consumer/Provider).");
+                if (log.IsDebugEnabled)
+                    log.Debug("Session token already exists for this object service (Consumer/Provider).");
 
-                string storedSessionToken = sessionService.RetrieveSessionToken(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
-                AuthorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
-                string storedEnvironmentUrl = sessionService.RetrieveEnvironmentUrl(environment.ApplicationInfo.ApplicationKey, environment.SolutionId, environment.UserToken, environment.InstanceId);
-                string environmentXml = HttpUtils.GetRequest(storedEnvironmentUrl, AuthorisationToken);
+                string storedSessionToken = sessionService.RetrieveSessionToken(
+                    environment.ApplicationInfo.ApplicationKey,
+                    environment.SolutionId,
+                    environment.UserToken,
+                    environment.InstanceId);
+                authorisationToken = authorisationTokenService.Generate(storedSessionToken, settings.SharedSecret);
+                string storedEnvironmentUrl = sessionService.RetrieveEnvironmentUrl(
+                    environment.ApplicationInfo.ApplicationKey,
+                    environment.SolutionId,
+                    environment.UserToken,
+                    environment.InstanceId);
+                string environmentBody = HttpUtils.GetRequest(
+                    storedEnvironmentUrl,
+                    authorisationToken,
+                    settings.CompressPayload,
+                    contentTypeOverride: settings.ContentType.ToDescription(),
+                    acceptOverride: settings.Accept.ToDescription());
 
-                if (log.IsDebugEnabled) log.Debug("Environment XML from GET request ...");
-                if (log.IsDebugEnabled) log.Debug(environmentXml);
+                if (log.IsDebugEnabled) log.Debug($"Environment response from GET request ...\n{environmentBody}");
 
-                environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
-                Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
+                environmentType environmentTypeToDeserialise =
+                    SerialiserFactory.GetSerialiser<environmentType>(settings.Accept).Deserialise(environmentBody);
+                Environment environmentResponse =
+                    MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
 
                 sessionToken = environmentResponse.SessionToken;
-                environmentUrl = environmentResponse.InfrastructureServices[InfrastructureServiceNames.environment].Value;
+                environmentUrl =
+                    environmentResponse.InfrastructureServices[InfrastructureServiceNames.environment].Value;
 
-                if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
+                if (log.IsDebugEnabled) log.Debug($"Environment URL is {environmentUrl}.");
 
                 if (!storedSessionToken.Equals(sessionToken) || !storedEnvironmentUrl.Equals(environmentUrl))
                 {
-                    AuthorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
+                    authorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
                     sessionService.RemoveSession(storedSessionToken);
-                    sessionService.StoreSession(environmentResponse.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
+                    sessionService.StoreSession(
+                        environmentResponse.ApplicationInfo.ApplicationKey,
+                        sessionToken,
+                        environmentUrl,
+                        environmentResponse.SolutionId,
+                        environmentResponse.UserToken,
+                        environmentResponse.InstanceId);
                 }
 
                 environment = environmentResponse;
             }
             else
             {
-                if (log.IsDebugEnabled) log.Debug("Session token does not exist for this object service (Consumer/Provider).");
+                if (log.IsDebugEnabled)
+                    log.Debug("Session token does not exist for this object service (Consumer/Provider).");
 
-                string environmentXml = null;
+                string environmentBody = null;
 
                 try
                 {
-                    AuthorisationToken initialToken = authorisationTokenService.Generate(environment.ApplicationInfo.ApplicationKey, settings.SharedSecret);
-                    environmentType environmentTypeToSerialise = MapperFactory.CreateInstance<Environment, environmentType>(environment);
-                    string body = SerialiserFactory.GetXmlSerialiser<environmentType>().Serialise(environmentTypeToSerialise);
-                    environmentXml = HttpUtils.PostRequest(settings.EnvironmentUrl, initialToken, body);
+                    AuthorisationToken initialToken = authorisationTokenService.Generate(
+                        environment.ApplicationInfo.ApplicationKey,
+                        settings.SharedSecret);
+                    environmentType environmentTypeToSerialise =
+                        MapperFactory.CreateInstance<Environment, environmentType>(environment);
+                    string body = SerialiserFactory.GetSerialiser<environmentType>(settings.ContentType)
+                        .Serialise(environmentTypeToSerialise);
+                    environmentBody = HttpUtils.PostRequest(
+                        settings.EnvironmentUrl,
+                        initialToken,
+                        body,
+                        settings.CompressPayload,
+                        contentTypeOverride: settings.ContentType.ToDescription(),
+                        acceptOverride: settings.Accept.ToDescription());
 
-                    if (log.IsDebugEnabled) log.Debug("Environment XML from POST request ...");
-                    if (log.IsDebugEnabled) log.Debug(environmentXml);
+                    if (log.IsDebugEnabled) log.Debug($"Environment response from POST request ...\n{environmentBody}");
 
-                    environmentType environmentTypeToDeserialise = SerialiserFactory.GetXmlSerialiser<environmentType>().Deserialise(environmentXml);
-                    Environment environmentResponse = MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
+                    environmentType environmentTypeToDeserialise =
+                        SerialiserFactory.GetSerialiser<environmentType>(settings.Accept).Deserialise(environmentBody);
+                    Environment environmentResponse =
+                        MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
 
                     sessionToken = environmentResponse.SessionToken;
-                    environmentUrl = environmentResponse.InfrastructureServices[InfrastructureServiceNames.environment].Value;
+                    environmentUrl =
+                        environmentResponse.InfrastructureServices[InfrastructureServiceNames.environment].Value;
 
-                    if (log.IsDebugEnabled) log.Debug("Environment URL is " + environmentUrl + ".");
+                    if (log.IsDebugEnabled) log.Debug($"Environment URL is {environmentUrl}.");
 
-                    AuthorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
-                    sessionService.StoreSession(environment.ApplicationInfo.ApplicationKey, sessionToken, environmentUrl, environmentResponse.SolutionId, environmentResponse.UserToken, environmentResponse.InstanceId);
+                    authorisationToken = authorisationTokenService.Generate(sessionToken, settings.SharedSecret);
+                    sessionService.StoreSession(
+                        environment.ApplicationInfo.ApplicationKey,
+                        sessionToken,
+                        environmentUrl,
+                        environmentResponse.SolutionId,
+                        environmentResponse.UserToken,
+                        environmentResponse.InstanceId);
                     environment = environmentResponse;
                 }
                 catch (Exception e)
                 {
-
                     if (environmentUrl != null)
                     {
-                        HttpUtils.DeleteRequest(environmentUrl, AuthorisationToken);
+                        HttpUtils.DeleteRequest(environmentUrl, authorisationToken, settings.CompressPayload);
                     }
-                    else if (!string.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentXml)))
+                    else if (!string.IsNullOrWhiteSpace(TryParseEnvironmentUrl(environmentBody)))
                     {
-                        HttpUtils.DeleteRequest(TryParseEnvironmentUrl(environmentXml), AuthorisationToken);
+                        HttpUtils.DeleteRequest(
+                            TryParseEnvironmentUrl(environmentBody),
+                            authorisationToken,
+                            settings.CompressPayload);
                     }
 
                     throw new RegistrationException("Registration failed.", e);
                 }
-
             }
 
             CurrentEnvironment = environment;
@@ -214,21 +299,21 @@ namespace Sif.Framework.Service.Registration
         /// </summary>
         public void Unregister(bool? deleteOnUnregister = null)
         {
-
             if (Registered)
             {
-
                 if (deleteOnUnregister ?? settings.DeleteOnUnregister)
                 {
-                    string xml = HttpUtils.DeleteRequest(environmentUrl, AuthorisationToken);
+                    HttpUtils.DeleteRequest(
+                        environmentUrl,
+                        authorisationToken,
+                        settings.CompressPayload,
+                        contentTypeOverride: settings.ContentType.ToDescription(),
+                        acceptOverride: settings.Accept.ToDescription());
                     sessionService.RemoveSession(sessionToken);
                 }
 
                 Registered = false;
             }
-
         }
-
     }
-
 }

@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Responses;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Serialisation;
@@ -43,6 +44,11 @@ namespace Sif.Framework.Consumers
         private RegistrationService registrationService;
 
         /// <summary>
+        /// Application settings associated with the Consumer.
+        /// </summary>
+        protected IFrameworkSettings ConsumerSettings { get; }
+
+        /// <summary>
         /// Consumer environment template
         /// </summary>
         protected Environment EnvironmentTemplate
@@ -62,10 +68,13 @@ namespace Sif.Framework.Consumers
         /// Create a Consumer instance based upon the Environment passed.
         /// </summary>
         /// <param name="environment">Environment object.</param>
-        public FunctionalServiceConsumer(Environment environment)
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        public FunctionalServiceConsumer(Environment environment, IFrameworkSettings settings = null)
         {
-            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, SettingsManager.ConsumerSettings);
-            registrationService = new RegistrationService(SettingsManager.ConsumerSettings, SessionsManager.ConsumerSessionService);
+            ConsumerSettings = settings ?? SettingsManager.ConsumerSettings;
+
+            environmentTemplate = EnvironmentUtils.MergeWithSettings(environment, ConsumerSettings);
+            registrationService = new RegistrationService(ConsumerSettings, SessionsManager.ConsumerSessionService);
         }
 
         /// <summary>
@@ -75,7 +84,14 @@ namespace Sif.Framework.Consumers
         /// <param name="instanceId">Instance ID.</param>
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
-        public FunctionalServiceConsumer(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null): this(new Environment(applicationKey, instanceId, userToken, solutionId))
+        /// <param name="settings">Consumer settings. If null, Consumer settings will be read from the SifFramework.config file.</param>
+        public FunctionalServiceConsumer(
+            string applicationKey,
+            string instanceId = null,
+            string userToken = null,
+            string solutionId = null,
+            IFrameworkSettings settings = null)
+            : this(new Environment(applicationKey, instanceId, userToken, solutionId), settings)
         {
         }
 
@@ -181,7 +197,12 @@ namespace Sif.Framework.Consumers
 
             string url = GetURLPrefix(job.Name) + "/" + job.Name + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiseSingle<Job, jobType>(job);
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL);
+            string xml = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
@@ -203,7 +224,12 @@ namespace Sif.Framework.Consumers
 
             string url = GetURLPrefix(jobName) + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiseMultiple(jobs);
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL);
+            string xml = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL);
             if (log.IsDebugEnabled) log.Debug("XML from POST request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
             createResponseType createResponseType = SerialiserFactory.GetXmlSerialiser<createResponseType>().Deserialise(xml);
@@ -260,7 +286,11 @@ namespace Sif.Framework.Consumers
             try
             {
                 string url = GetURLPrefix(job.Name) + "/" + job.Id + HttpUtils.MatrixParameters(zoneId, contextId);
-                string xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.FUNCTIONAL);
+                string xml = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
+                    ServiceType.FUNCTIONAL);
                 if (log.IsDebugEnabled) log.Debug("XML from GET request ...");
                 if (log.IsDebugEnabled) log.Debug(xml);
                 return DeserialiseSingle<Job, jobType>(xml);
@@ -308,11 +338,21 @@ namespace Sif.Framework.Consumers
 
             if (navigationPage.HasValue && navigationPageSize.HasValue)
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.FUNCTIONAL, (int)navigationPage, (int)navigationPageSize);
+                xml = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
+                    ServiceType.FUNCTIONAL,
+                    (int)navigationPage,
+                    (int)navigationPageSize);
             }
             else
             {
-                xml = HttpUtils.GetRequest(url, RegistrationService.AuthorisationToken, ServiceType.FUNCTIONAL);
+                xml = HttpUtils.GetRequest(
+                    url,
+                    RegistrationService.AuthorisationToken,
+                    ConsumerSettings.CompressPayload,
+                    ServiceType.FUNCTIONAL);
             }
 
             return DeserialiseMultiple<Job, jobType>(xml);
@@ -336,7 +376,13 @@ namespace Sif.Framework.Consumers
             string url = GetURLPrefix(job.Name) + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiseSingle<Job, jobType>(job);
             // TODO: Update PostRequest to accept paging parameters.
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL, "GET");
+            string xml = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL,
+                "GET");
             if (log.IsDebugEnabled) log.Debug("XML from POST (Query by Example) request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
 
@@ -387,7 +433,11 @@ namespace Sif.Framework.Consumers
             checkJob(job, RightType.DELETE, zoneId);
 
             string url = GetURLPrefix(job.Name) + "/" + job.Id + HttpUtils.MatrixParameters(zoneId, contextId);
-            string xml = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken, ServiceType.FUNCTIONAL);
+            string xml = HttpUtils.DeleteRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL);
             if (log.IsDebugEnabled) log.Debug("XML from DELETE request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
         }
@@ -415,7 +465,13 @@ namespace Sif.Framework.Consumers
             deleteRequestType request = new deleteRequestType { deletes = deleteIds.ToArray() };
             string url = GetURLPrefix(jobName) + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiserFactory.GetXmlSerialiser<deleteRequestType>().Serialise(request);
-            string xml = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL, "DELETE");
+            string xml = HttpUtils.PutRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL,
+                "DELETE");
             if (log.IsDebugEnabled) log.Debug("XML from PUT (DELETE) request ...");
             if (log.IsDebugEnabled) log.Debug(xml);
             deleteResponseType updateResponseType = SerialiserFactory.GetXmlSerialiser<deleteResponseType>().Deserialise(xml);
@@ -443,7 +499,14 @@ namespace Sif.Framework.Consumers
 
             string response = null;
             string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zoneId, contextId);
-            response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+            response = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from CREATE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
@@ -468,7 +531,14 @@ namespace Sif.Framework.Consumers
 
             string response = null;
             string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zoneId, contextId);
-            response = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL, "GET", contentTypeOverride, acceptOverride);
+            response = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL,
+                "GET",
+                contentTypeOverride, acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from GET request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
@@ -493,7 +563,14 @@ namespace Sif.Framework.Consumers
             
             string response = null;
             string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zoneId, contextId);
-            response = HttpUtils.PutRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL, contentTypeOverride: contentTypeOverride, acceptOverride: acceptOverride);
+            response = HttpUtils.PutRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL,
+                contentTypeOverride: contentTypeOverride,
+                acceptOverride: acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from PUT request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
@@ -518,7 +595,14 @@ namespace Sif.Framework.Consumers
             
             string response = null;
             string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + HttpUtils.MatrixParameters(zoneId, contextId);
-            response = HttpUtils.DeleteRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL, contentTypeOverride, acceptOverride);
+            response = HttpUtils.DeleteRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL,
+                contentTypeOverride,
+                acceptOverride);
             if (log.IsDebugEnabled) log.Debug("String from DELETE request to phase ...");
             if (log.IsDebugEnabled) log.Debug(response);
             return response;
@@ -541,7 +625,12 @@ namespace Sif.Framework.Consumers
 
             string url = GetURLPrefix(job.Name) + "/" + job.Id + "/" + phaseName + "/states/state" + HttpUtils.MatrixParameters(zoneId, contextId);
             string body = SerialiseSingle<PhaseState, stateType>(item);
-            string xml = HttpUtils.PostRequest(url, RegistrationService.AuthorisationToken, body, ServiceType.FUNCTIONAL);
+            string xml = HttpUtils.PostRequest(
+                url,
+                RegistrationService.AuthorisationToken,
+                body,
+                ConsumerSettings.CompressPayload,
+                ServiceType.FUNCTIONAL);
             if (log.IsDebugEnabled) log.Debug("Guid from CREATE request to state on phase ...");
             if (log.IsDebugEnabled) log.Debug(xml);
             return DeserialiseSingle<PhaseState, stateType>(xml);

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2020 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,10 +47,13 @@ namespace Sif.Framework.Demo.Au.Consumer
             Console.WriteLine();
             Console.WriteLine("********************************************************************************");
             Console.WriteLine();
-            Console.WriteLine("To run the following Event Consumer demo, the following is required:");
+            Console.WriteLine("To run this Event Consumer demo, the following is required:");
             Console.WriteLine();
-            Console.WriteLine("  1) The consumer.environment.url app setting in the SifFramework.config file needs to reference the BROKERED environment endpoint.");
-            Console.WriteLine("  2) The Sif.Framework.Demo.Broker needs to be run instead of the Sif.Framework.EnvironmentProvider.");
+            Console.WriteLine("  1) The consumer.environment.url app setting in the SifFramework.config file of this Consumer needs to reference the BROKERED environment endpoint.");
+            Console.WriteLine("  2) The provider.environment.url app setting in the SifFramework.config file of the Sif.Framework.Demo.Au.Provider project needs to reference the BROKERED environment endpoint.");
+            Console.WriteLine("  3) The Sif.Framework.Demo.Broker needs to be run instead of the Sif.Framework.EnvironmentProvider.");
+            Console.WriteLine("  4) The Sif.Framework.Demo.Au.Provider needs to be run.");
+            Console.WriteLine("  5) This EventConsumerApp needs to be configured to be the Startup object for this project.");
             Console.WriteLine();
             Console.WriteLine("********************************************************************************");
 
@@ -62,7 +65,8 @@ namespace Sif.Framework.Demo.Au.Consumer
                         SettingsManager.ConsumerSettings.ApplicationKey,
                         SettingsManager.ConsumerSettings.InstanceId,
                         SettingsManager.ConsumerSettings.UserToken,
-                        SettingsManager.ConsumerSettings.SolutionId);
+                        SettingsManager.ConsumerSettings.SolutionId,
+                        SettingsManager.ConsumerSettings);
                     studentPersonalConsumer.Start("Sif3DemoZone1", "DEFAULT");
                     if (log.IsInfoEnabled) log.Info("Started the Event Consumer.");
 

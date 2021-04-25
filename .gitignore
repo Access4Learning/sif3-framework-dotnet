@@ -97,7 +97,6 @@ AppPackages/
 [Bb]in
 [Oo]bj
 # sql
-TestResults
 [Tt]est[Rr]esult*
 *.Cache
 ClientBin
@@ -113,5 +112,6 @@ Backup*/
 UpgradeLog*.XML
 
 # Log files
-*.log
 *.log.[123456789]
+*.db-shm
+*.db-wal

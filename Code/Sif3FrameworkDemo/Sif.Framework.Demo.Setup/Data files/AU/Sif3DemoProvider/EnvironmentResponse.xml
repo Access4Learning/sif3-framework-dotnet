@@ -8,12 +8,12 @@
     <infrastructureService name="environment">http://localhost:59586/api/environments</infrastructureService>
     <infrastructureService name="requestsConnector">http://localhost:50617/api</infrastructureService>
     <!-- These two Services support the reception of delayed Responses and asynchronous Events. They are mandatory for all Brokered Architectures. -->
-    <infrastructureService name="queues">http://localhost:62921/api/queues</infrastructureService>
-    <infrastructureService name="subscriptions">http://localhost:62921/api/subscriptions</infrastructureService>
+    <infrastructureService name="queues">http://localhost:59586/api/queues</infrastructureService>
+    <infrastructureService name="subscriptions">http://localhost:59586/api/subscriptions</infrastructureService>
     <!-- This Service is necessary to support self-configuring Consumers. -->
     <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
     <!-- After provisioning itself as a Provider, this service allows a Consumer to post Events. It is mandatory for all Brokered Architectures and never included in a Direct Architecture. -->
-    <infrastructureService name="eventsConnector">http://localhost:62837/api/events</infrastructureService>
+    <infrastructureService name="eventsConnector">http://localhost:59586/api/events</infrastructureService>
     <!-- This Service is necessary to support Functional Services. -->
     <infrastructureService name="servicesConnector">http://localhost:50617/services</infrastructureService>
   </infrastructureServices>

@@ -1,0 +1,5 @@
+<xsd xmlns='http://microsoft.com/dotnet/tools/xsd/' output='output'>
+    <generateClasses language='CS' namespace='Sif.Specification.DataModel.Unity'>
+        <schema>input\SIF_Message.xsd</schema>
+    </generateClasses>
+</xsd>
