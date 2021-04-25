@@ -6,7 +6,7 @@ rem ============================================================================
 
 set OUTPUT=output
 
-set EXECUTABLE="C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\xsd.exe"
+set EXECUTABLE="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\xsd.exe"
 
 echo EXECUTABLE=%EXECUTABLE%
 
