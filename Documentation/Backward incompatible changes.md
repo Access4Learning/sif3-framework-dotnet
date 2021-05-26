@@ -1,6 +1,5 @@
 # Backward incompatible changes
 
-
 ### **3.2.1.14 -> 4.0.0**
 
 - The public Consumer(Environment) constructor has been made protected.
@@ -13,3 +12,8 @@
 - The empty default constructor of the AuthorisationService class has been removed.
 - The Sif.Framework project only targets .NET Standard 2.0, .NET Framework 4.7.2 and .NET Framework 4.6.1. It no longer targets .NET Frameworks 4.6.2, 4.7 and 4.7.1.
 - The ConsumerRegistrationService  and ProviderRegistrationService static properties of the static RegistrationManager class have been made obsolete.
+
+### **4.0.1 -> 5.0.0**
+
+- Renamed the ISessionService method HasSession(string) to HasSessionToken(string).
+- Various methods in the ISessionService interface have been modified to throw AlreadyExistsException, ArgumentNullException, DuplicateFoundException and NotFoundException as appropriate.

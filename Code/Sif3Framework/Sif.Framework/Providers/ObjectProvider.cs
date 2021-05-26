@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -30,18 +31,22 @@ using System.Web.Http;
 
 namespace Sif.Framework.Providers
 {
+    /// <summary>
+    /// This class defines a Provider of SIF data model objects whereby the primary key is of type System.String.
+    /// </summary>
+    /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
+    /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     public abstract class ObjectProvider<TSingle, TMultiple>
         : Provider<TSingle, TMultiple> where TSingle : ISifRefId<string>
     {
         private readonly IObjectProviderService<TSingle, TMultiple> service;
 
-        /// <summary>
-        /// Create an instance based on the specified service.
-        /// </summary>
-        /// <param name="service">Service used for managing the object type.</param>
-        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
-        protected ObjectProvider(IObjectProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
-            : base(service, settings)
+        /// <inheritdoc />
+        protected ObjectProvider(
+            IObjectProviderService<TSingle, TMultiple> service,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(service, settings, sessionService)
         {
             this.service = service;
         }

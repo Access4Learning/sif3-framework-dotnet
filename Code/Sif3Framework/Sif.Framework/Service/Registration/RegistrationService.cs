@@ -127,10 +127,11 @@ namespace Sif.Framework.Service.Registration
         /// </summary>
         /// <param name="settings">Framework settings.</param>
         /// <param name="sessionService">Service used for managing sessions.</param>
+        /// <exception cref="ArgumentNullException">Either settings and/or sessionService are null.</exception>
         public RegistrationService(IFrameworkSettings settings, ISessionService sessionService)
         {
-            this.settings = settings;
-            this.sessionService = sessionService;
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             if (AuthenticationMethod.Basic.ToString()
                 .Equals(settings.AuthenticationMethod, StringComparison.OrdinalIgnoreCase))

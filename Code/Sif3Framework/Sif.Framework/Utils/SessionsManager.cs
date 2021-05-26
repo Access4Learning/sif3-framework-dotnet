@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2021 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,6 @@ using Sif.Framework.Service.Sessions;
 
 namespace Sif.Framework.Utils
 {
-
     /// <summary>
     /// Factory class to ensure that the appropriate session service is provided.
     /// </summary>
@@ -30,41 +29,13 @@ namespace Sif.Framework.Utils
         /// <summary>
         /// Singleton instance of the Consumer session service.
         /// </summary>
-        public static ISessionService ConsumerSessionService
-        {
-
-            get
-            {
-
-                if (consumerSessionService == null)
-                {
-                    consumerSessionService = new ConsumerSessionService();
-                }
-
-                return consumerSessionService;
-            }
-
-        }
+        public static ISessionService ConsumerSessionService =>
+            consumerSessionService ?? (consumerSessionService = new ConsumerSessionService());
 
         /// <summary>
         /// Singleton instance of the Provider session service.
         /// </summary>
-        public static ISessionService ProviderSessionService
-        {
-
-            get
-            {
-
-                if (providerSessionService == null)
-                {
-                    providerSessionService = new ProviderSessionService();
-                }
-
-                return providerSessionService;
-            }
-
-        }
-
+        public static ISessionService ProviderSessionService =>
+            providerSessionService ?? (providerSessionService = new ProviderSessionService());
     }
-
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 using Sif.Framework.Demo.Au.Consumer.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
+using Sif.Framework.Model.Settings;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.DataModel.Au;
 using System;
@@ -23,26 +25,31 @@ using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Consumer
 {
-    internal class EnrollmentConsumerApp
+    internal class EnrollmentConsumerApp : ConsoleApp
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger Log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private void RunConsumer()
+        private static void RunConsumer(IFrameworkSettings settings, ISessionService sessionService)
         {
-            StudentSchoolEnrollmentConsumer consumer = new StudentSchoolEnrollmentConsumer(
-                SettingsManager.ConsumerSettings.ApplicationKey,
-                SettingsManager.ConsumerSettings.InstanceId,
-                SettingsManager.ConsumerSettings.UserToken,
-                SettingsManager.ConsumerSettings.SolutionId,
-                SettingsManager.ConsumerSettings);
+            var consumer = new StudentSchoolEnrollmentConsumer(
+                settings.ApplicationKey,
+                settings.InstanceId,
+                settings.UserToken,
+                settings.SolutionId,
+                settings,
+                sessionService);
             consumer.Register();
-            if (log.IsInfoEnabled) log.Info("Registered the Consumer.");
+
+            if (Log.IsInfoEnabled) Log.Info("Registered the Consumer.");
 
             try
             {
                 // Retrieve object using QBE.
-                if (log.IsInfoEnabled) log.Info("*** Retrieve object using QBE.");
-                StudentSchoolEnrollment enrollmentExample = new StudentSchoolEnrollment
+
+                if (Log.IsInfoEnabled) Log.Info("*** Retrieve object using QBE.");
+
+                var enrollmentExample = new StudentSchoolEnrollment
                 {
                     YearLevel = new YearLevelType
 
@@ -55,35 +62,36 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 foreach (StudentSchoolEnrollment enrollment in filteredEnrollments)
                 {
-                    if (log.IsInfoEnabled) log.Info($"Filtered year level is {enrollment?.YearLevel.Code}");
+                    if (Log.IsInfoEnabled) Log.Info($"Filtered year level is {enrollment?.YearLevel.Code}");
                 }
             }
             catch (UnauthorizedAccessException)
             {
-                if (log.IsInfoEnabled) log.Info($"Access to query objects is rejected.");
+                if (Log.IsInfoEnabled) Log.Info("Access to query objects is rejected.");
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (Log.IsErrorEnabled)
+                    Log.Error($"Error running the Consumer.\n{ExceptionUtils.InferErrorResponseMessage(e)}", e);
             }
             finally
             {
                 consumer.Unregister();
-                if (log.IsInfoEnabled) log.Info("Unregistered the Consumer.");
+                if (Log.IsInfoEnabled) Log.Info("Unregistered the Consumer.");
             }
         }
 
-        private static void Main(string[] args)
+        public static void Main()
         {
-            EnrollmentConsumerApp app = new EnrollmentConsumerApp();
-
             try
             {
-                app.RunConsumer();
+                SettingsSource source = SelectFrameworkConfigSource();
+                RunConsumer(GetSettings(source), GetSessionService(source));
             }
             catch (Exception e)
             {
-                if (log.IsErrorEnabled) log.Error("Error running the Consumer.\n" + ExceptionUtils.InferErrorResponseMessage(e), e);
+                if (Log.IsErrorEnabled)
+                    Log.Error($"Error running the Consumer.\n{ExceptionUtils.InferErrorResponseMessage(e)}", e);
             }
 
             Console.WriteLine("Press any key to continue ...");
