@@ -36,18 +36,15 @@ namespace Sif.Framework.Service.Infrastructure
         /// </summary>
         /// <param name="sourceZone">Zone object to copy.</param>
         /// <returns>New copy of the Zone object.</returns>
-        private Zone CopyDefaultZone(Zone sourceZone)
+        private static Zone CopyDefaultZone(Zone sourceZone)
         {
-            Zone destinationZone = null;
+            if (sourceZone == null) return null;
 
-            if (sourceZone != null)
+            var destinationZone = new Zone { Description = sourceZone.Description, SifId = sourceZone.SifId };
+
+            if (sourceZone.Properties != null)
             {
-                destinationZone = new Zone { Description = sourceZone.Description, SifId = sourceZone.SifId };
-
-                if (sourceZone.Properties != null)
-                {
-                    destinationZone.Properties = CopyProperties(sourceZone.Properties);
-                }
+                destinationZone.Properties = CopyProperties(sourceZone.Properties);
             }
 
             return destinationZone;
@@ -63,8 +60,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
             if (sourceServices == null) return null;
 
-            IDictionary<InfrastructureServiceNames, InfrastructureService> destinationServices =
-                new Dictionary<InfrastructureServiceNames, InfrastructureService>();
+            var destinationServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
 
             foreach (InfrastructureServiceNames key in sourceServices.Keys)
             {
@@ -88,7 +84,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
             if (sourceProperties == null) return null;
 
-            IDictionary<string, Property> destinationProperties = new Dictionary<string, Property>();
+            var destinationProperties = new Dictionary<string, Property>();
 
             foreach (string key in sourceProperties.Keys)
             {
@@ -108,12 +104,12 @@ namespace Sif.Framework.Service.Infrastructure
         /// </summary>
         /// <param name="sourceZones">Dictionary of ProvisionedZone objects to copy.</param>
         /// <returns>New copy of the dictionary of ProvisionedZone objects if not null; null otherwise.</returns>
-        private IDictionary<string, ProvisionedZone> CopyProvisionedZones(
+        private static IDictionary<string, ProvisionedZone> CopyProvisionedZones(
             IDictionary<string, ProvisionedZone> sourceZones)
         {
             if (sourceZones == null) return null;
 
-            IDictionary<string, ProvisionedZone> destinationZones = new Dictionary<string, ProvisionedZone>();
+            var destinationZones = new Dictionary<string, ProvisionedZone>();
 
             foreach (string key in sourceZones.Keys)
             {
@@ -142,7 +138,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
             if (sourceRights == null) return null;
 
-            IDictionary<string, Right> destinationRights = new Dictionary<string, Right>();
+            var destinationRights = new Dictionary<string, Right>();
 
             foreach (string key in sourceRights.Keys)
             {
@@ -166,7 +162,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
             if (sourceServices == null) return null;
 
-            ICollection<Model.Infrastructure.Service> destinationServices = new List<Model.Infrastructure.Service>();
+            var destinationServices = new List<Model.Infrastructure.Service>();
 
             foreach (Model.Infrastructure.Service sourceService in sourceServices)
             {
@@ -200,7 +196,8 @@ namespace Sif.Framework.Service.Infrastructure
         /// </summary>
         public override Guid Create(environmentType item, string zoneId = null, string contextId = null)
         {
-            EnvironmentRegister environmentRegister = (new EnvironmentRegisterService()).RetrieveByUniqueIdentifiers(
+            var environmentRegisterService = new EnvironmentRegisterService();
+            EnvironmentRegister environmentRegister = environmentRegisterService.RetrieveByUniqueIdentifiers(
                 item.applicationInfo.applicationKey,
                 item.instanceId,
                 item.userToken,

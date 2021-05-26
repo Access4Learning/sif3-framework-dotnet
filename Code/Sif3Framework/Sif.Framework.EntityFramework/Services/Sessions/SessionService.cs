@@ -96,7 +96,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
         /// <exception cref="DuplicateFoundException">Multiple session entries exist for the passed criteria parameters.</exception>
         /// <exception cref="NotFoundException">No session entry exists for the passed criteria parameters.</exception>
         /// <returns>The matched session entry.</returns>
-        public Session Retrieve(
+        private Session Retrieve(
             string applicationKey,
             string solutionId = null,
             string userToken = null,

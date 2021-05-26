@@ -116,7 +116,7 @@ namespace Sif.Framework.Providers
                 AuthenticationService = new BrokeredAuthenticationService(
                     new ApplicationRegisterService(),
                     new EnvironmentService(),
-                    settings,
+                    ProviderSettings,
                     this.sessionService);
             }
 

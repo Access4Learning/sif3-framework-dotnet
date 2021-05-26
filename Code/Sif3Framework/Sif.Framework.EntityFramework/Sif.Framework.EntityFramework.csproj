@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;net461</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Rafidzal Rafiq</Authors>
+    <Company>Systemic Pty Ltd</Company>
+    <Product>SIF Framework library (Entity Framework Integration)</Product>
+    <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
+    <Copyright>Copyright © Systemic Pty Ltd 2021</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>SIF framework</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -83,7 +83,7 @@ namespace Sif.Framework.Providers
                 authService = new BrokeredAuthenticationService(
                     new ApplicationRegisterService(),
                     new EnvironmentService(),
-                    settings,
+                    ProviderSettings,
                     sessionService ?? SessionsManager.ProviderSessionService);
             }
         }

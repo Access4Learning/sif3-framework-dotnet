@@ -198,7 +198,11 @@ namespace Sif.Framework.Consumers
             try
             {
                 var xmlRootAttribute = new XmlRootAttribute(TypeName + "s")
-                { Namespace = ConsumerSettings.DataModelNamespace, IsNullable = false };
+                {
+                    Namespace = ConsumerSettings.DataModelNamespace,
+                    IsNullable = false
+                };
+
                 obj = SerialiserFactory.GetSerialiser<TMultiple>(Accept, xmlRootAttribute).Deserialise(payload);
             }
             catch (Exception e)

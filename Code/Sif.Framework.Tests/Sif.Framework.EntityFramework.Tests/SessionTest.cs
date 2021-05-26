@@ -66,7 +66,7 @@ namespace Sif.Framework.EntityFramework.Tests
         public void Crud_NewObject_Success()
         {
             int originalCount = repository.Count();
-            output.WriteLine($"Total number of sessions before executing CRUD operation is {originalCount}.");
+            output.WriteLine($"Total number of sessions before executing CRUD operations is {originalCount}.");
 
             // Create.
             Session original = DataFactory.CreateSession();
