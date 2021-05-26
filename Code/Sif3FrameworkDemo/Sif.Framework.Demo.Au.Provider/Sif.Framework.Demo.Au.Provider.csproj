@@ -115,6 +115,12 @@
     <Reference Include="Remotion.Linq.EagerFetching, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.EagerFetching.2.2.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
+    <Reference Include="Sif.Framework, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.5.0.0\lib\net461\Sif.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Framework.EntityFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.EntityFramework.1.0.0\lib\net461\Sif.Framework.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.7\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
     </Reference>
@@ -276,16 +282,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj">
-      <Project>{1a926191-955e-4da1-ab71-b333660cc49a}</Project>
-      <Name>Sif.Framework.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
-      <Project>{5d4b26bf-8e6e-4c9b-9def-32a12aec90d5}</Project>
-      <Name>Sif.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

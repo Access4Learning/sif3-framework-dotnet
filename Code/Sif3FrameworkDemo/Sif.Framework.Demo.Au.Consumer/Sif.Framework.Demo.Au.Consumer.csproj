@@ -74,6 +74,9 @@
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
+    <PackageReference Include="Sif.Framework.EntityFramework">
+      <Version>1.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Sif.Specification.DataModel.Au">
       <Version>3.4.7</Version>
     </PackageReference>
@@ -86,16 +89,6 @@
     <PackageReference Include="Tardigrade.Framework.EntityFramework">
       <Version>11.1.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj">
-      <Project>{1a926191-955e-4da1-ab71-b333660cc49a}</Project>
-      <Name>Sif.Framework.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
-      <Project>{5d4b26bf-8e6e-4c9b-9def-32a12aec90d5}</Project>
-      <Name>Sif.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
