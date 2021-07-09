@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Sif.Framework.Demo.Uk.Provider")]
 [assembly: AssemblyDescription("Provider created to demonstrate SIF 3 Framework usage.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ZiNET Data Solutions Limited")]
+[assembly: AssemblyCompany("Systemic Pty Ltd")]
 [assembly: AssemblyProduct("Sif.Framework.Demo.Uk.Provider")]
-[assembly: AssemblyCopyright("Crown Copyright © Department for Education (UK) 2016")]
+[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.2.1.11")]
-[assembly: AssemblyFileVersion("3.2.1.11")]
+[assembly: AssemblyVersion("5.0.0.0")]
+[assembly: AssemblyFileVersion("5.0.0.0")]

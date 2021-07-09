@@ -115,8 +115,11 @@
     <Reference Include="Remotion.Linq.EagerFetching, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.EagerFetching.2.2.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
-    <Reference Include="Sif.Framework, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sif.Framework.4.0.0\lib\net461\Sif.Framework.dll</HintPath>
+    <Reference Include="Sif.Framework, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.5.0.0\lib\net461\Sif.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Framework.EntityFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.EntityFramework.1.0.0\lib\net461\Sif.Framework.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.7\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
@@ -258,6 +261,7 @@
     <Compile Include="Services\StudentPersonalIterator.cs" />
     <Compile Include="Services\StudentPersonalService.cs" />
     <Compile Include="Services\StudentSchoolEnrollmentService.cs" />
+    <Compile Include="Utils\FrameworkConfigFactory.cs" />
     <Compile Include="Utils\RandomNameGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -279,7 +283,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

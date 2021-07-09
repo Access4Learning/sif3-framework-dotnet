@@ -1,6 +1,21 @@
-﻿using Sif.Framework.Controllers;
+﻿/*
+ * Copyright 2021 Systemic Pty Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using Sif.Framework.Controllers;
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Providers;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Functional;
@@ -8,13 +23,12 @@ using Sif.Specification.Infrastructure;
 using System;
 using System.Net;
 using System.Web.Http.Controllers;
+using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.Utils
 {
-
     public class ProviderUtils
     {
-
         /// <summary>
         /// Infer the name of the Object/Functional Service type
         /// </summary>
@@ -22,18 +36,21 @@ namespace Sif.Framework.Utils
         {
             try
             {
-                if (isFunctionalService(service.GetType()))
+                if (IsFunctionalService(service.GetType()))
                 {
                     return ((IFunctionalService)service).GetServiceName();
                 }
 
-                if (isDataModelService(service.GetType()))
+                if (IsDataModelService(service.GetType()))
                 {
                     return service.GetType().GenericTypeArguments[0].Name;
                 }
             }
-            catch(Exception e) {
-                throw new NotFoundException("Could not infer the name of the service with type " + service.GetType().Name, e);
+            catch (Exception e)
+            {
+                throw new NotFoundException(
+                    "Could not infer the name of the service with type " + service.GetType().Name,
+                    e);
             }
 
             throw new NotFoundException("Could not infer the name of the service with type " + service.GetType().Name);
@@ -44,14 +61,14 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="type">The type to check</param>
         /// <returns>See def.</returns>
-        public static Boolean isFunctionalService(Type type)
+        public static bool IsFunctionalService(Type type)
         {
             if (type == null)
             {
-                throw new ArgumentNullException("Argument type cannot be null");
+                throw new ArgumentNullException(nameof(type));
             }
 
-            Boolean isFService = type.IsClass
+            bool isFService = type.IsClass
                 && type.IsVisible
                 && !type.IsAbstract
                 && typeof(IFunctionalService).IsAssignableFrom(type);
@@ -64,15 +81,15 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="type">The type to check</param>
         /// <returns>See def.</returns>
-        public static Boolean isDataModelService(Type type)
+        public static bool IsDataModelService(Type type)
         {
             if (type == null)
             {
-                throw new ArgumentNullException("Argument type cannot be null");
+                throw new ArgumentNullException(nameof(type));
             }
 
             return type.IsClass
-                && type.IsVisible 
+                && type.IsVisible
                 && !type.IsAbstract
                 && type.IsAssignableToGenericType(typeof(IObjectService<,,>));
         }
@@ -82,14 +99,14 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="type">The type to check</param>
         /// <returns>See def.</returns>
-        public static Boolean isController(Type type)
+        public static bool IsController(Type type)
         {
             if (type == null)
             {
-                throw new ArgumentNullException("Argument type cannot be null");
+                throw new ArgumentNullException(nameof(type));
             }
 
-            Boolean iscontroller = type.IsClass &&
+            bool isController = type.IsClass &&
                 type.IsVisible &&
                 !type.IsAbstract &&
                 (type.IsAssignableToGenericType(typeof(IProvider<,,>)) ||
@@ -97,8 +114,8 @@ namespace Sif.Framework.Utils
                 typeof(FunctionalServiceProvider).IsAssignableFrom(type)) &&
                 typeof(IHttpController).IsAssignableFrom(type) &&
                 type.Name.EndsWith("Provider");
-            
-            return iscontroller;
+
+            return isController;
         }
 
         /// <summary>
@@ -106,7 +123,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="id">The Guid instance to check.</param>
         /// <returns>See def.</returns>
-        public static Boolean IsAdvisoryId(Guid id)
+        public static bool IsAdvisoryId(Guid id)
         {
             return StringUtils.NotEmpty(id) && Guid.Empty != id;
         }
@@ -116,7 +133,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="id">The string representation of a Guid to check.</param>
         /// <returns>See def.</returns>
-        public static Boolean IsAdvisoryId(string id)
+        public static bool IsAdvisoryId(string id)
         {
             return StringUtils.NotEmpty(id) && Guid.Empty != Guid.Parse(id);
         }
@@ -130,10 +147,7 @@ namespace Sif.Framework.Utils
         /// <returns>Error record.</returns>
         public static errorType CreateError(HttpStatusCode statusCode, string scope, string message = null)
         {
-            errorType error = new errorType();
-            error.id = Guid.NewGuid().ToString();
-            error.code = (uint)statusCode;
-            error.scope = scope;
+            var error = new errorType { id = Guid.NewGuid().ToString(), code = (uint)statusCode, scope = scope };
 
             if (!string.IsNullOrWhiteSpace(message))
             {
@@ -143,59 +157,64 @@ namespace Sif.Framework.Utils
             return error;
         }
 
-        public static createType CreateCreate(HttpStatusCode statusCode, string id, string advisoryId = null, errorType error = null)
+        public static createType CreateCreate(
+            HttpStatusCode statusCode,
+            string id,
+            string advisoryId = null,
+            errorType error = null)
         {
-            createType create = new createType();
-            create.statusCode = ((int)statusCode).ToString();
-            create.id = id;
+            var create = new createType { statusCode = ((int)statusCode).ToString(), id = id };
+
             if (StringUtils.NotEmpty(advisoryId))
             {
                 create.advisoryId = advisoryId;
             }
+
             if (error != null)
             {
                 create.error = error;
             }
+
             return create;
         }
 
         public static createResponseType CreateCreateResponse(createType[] creates)
         {
-            createResponseType createResponse = new createResponseType();
-            createResponse.creates = creates;
+            var createResponse = new createResponseType { creates = creates };
+
             return createResponse;
         }
 
         public static createResponseType CreateCreateResponse(createType create)
         {
-            createResponseType createResponse = new createResponseType();
-            createResponse.creates = new createType[] { create } ;
+            var createResponse = new createResponseType { creates = new[] { create } };
+
             return createResponse;
         }
 
         public static deleteStatus CreateDelete(HttpStatusCode statusCode, string id, errorType error = null)
         {
-            deleteStatus status = new deleteStatus();
-            status.statusCode = ((int)statusCode).ToString();
-            status.id = id;
+            var status = new deleteStatus { statusCode = ((int)statusCode).ToString(), id = id };
+
             if (error != null)
             {
                 status.error = error;
             }
+
             return status;
         }
 
         public static deleteResponseType CreateDeleteResponse(deleteStatus[] statuses)
         {
-            deleteResponseType deleteResponse = new deleteResponseType();
-            deleteResponse.deletes = statuses;
+            var deleteResponse = new deleteResponseType { deletes = statuses };
+
             return deleteResponse;
         }
 
         public static deleteResponseType CreateDeleteResponse(deleteStatus status)
         {
-            deleteResponseType deleteResponse = new deleteResponseType();
-            deleteResponse.deletes = new deleteStatus[] { status };
+            var deleteResponse = new deleteResponseType { deletes = new[] { status } };
+
             return deleteResponse;
         }
     }

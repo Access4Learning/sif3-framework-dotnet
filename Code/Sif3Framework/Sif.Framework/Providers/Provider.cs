@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Registration;
+using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
@@ -39,6 +40,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.Providers
 {
@@ -51,6 +53,8 @@ namespace Sif.Framework.Providers
         : ApiController, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple>
         where TSingle : ISifRefId<string>
     {
+        private readonly ISessionService sessionService;
+
         /// <summary>
         /// Accepted content type (XML or JSON) for a message payload.
         /// </summary>
@@ -91,10 +95,16 @@ namespace Sif.Framework.Providers
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
         /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
-        protected Provider(IProviderService<TSingle, TMultiple> service, IFrameworkSettings settings = null)
+        /// <param name="sessionService">Provider session service. If null, the Provider session will be stored in the SifFramework.config file.</param>
+        /// <exception cref="ArgumentNullException">service is null.</exception>
+        protected Provider(
+            IProviderService<TSingle, TMultiple> service,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
         {
-            Service = service;
+            Service = service ?? throw new ArgumentNullException(nameof(service));
             ProviderSettings = settings ?? SettingsManager.ProviderSettings;
+            this.sessionService = sessionService ?? SessionsManager.ProviderSessionService;
 
             if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
@@ -106,8 +116,8 @@ namespace Sif.Framework.Providers
                 AuthenticationService = new BrokeredAuthenticationService(
                     new ApplicationRegisterService(),
                     new EnvironmentService(),
-                    settings,
-                    SessionsManager.ProviderSessionService);
+                    ProviderSettings,
+                    this.sessionService);
             }
 
             AuthorisationService = new AuthorisationService(AuthenticationService);
@@ -301,17 +311,17 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs =
+            TMultiple items =
                 Service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
-            if (objs == null)
+            if (items == null)
             {
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                result = Ok(objs);
+                result = Ok(items);
             }
 
             return result;
@@ -347,7 +357,7 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs = changesSinceService.RetrieveChangesSince(
+            TMultiple items = changesSinceService.RetrieveChangesSince(
                 changesSinceMarker,
                 navigationPage,
                 navigationPageSize,
@@ -356,13 +366,13 @@ namespace Sif.Framework.Providers
                 requestParameters);
             IHttpActionResult result;
 
-            if (objs == null)
+            if (items == null)
             {
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                result = Ok(objs);
+                result = Ok(items);
             }
 
             bool pagedRequest = navigationPage.HasValue && navigationPageSize.HasValue;
@@ -408,17 +418,17 @@ namespace Sif.Framework.Providers
             uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
             uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
             RequestParameter[] requestParameters = GetQueryParameters(Request);
-            TMultiple objs =
+            TMultiple items =
                 Service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
 
-            if (objs == null)
+            if (items == null)
             {
                 result = StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                result = Ok(objs);
+                result = Ok(items);
             }
 
             return result;
@@ -558,7 +568,7 @@ namespace Sif.Framework.Providers
                 uint? navigationPage = HttpUtils.GetNavigationPage(Request.Headers);
                 uint? navigationPageSize = HttpUtils.GetNavigationPageSize(Request.Headers);
                 RequestParameter[] requestParameters = GetQueryParameters(Request);
-                TMultiple objs = Service.Retrieve(
+                TMultiple items = Service.Retrieve(
                     conditions,
                     navigationPage,
                     navigationPageSize,
@@ -566,13 +576,13 @@ namespace Sif.Framework.Providers
                     contextId?[0],
                     requestParameters);
 
-                if (objs == null)
+                if (items == null)
                 {
                     result = StatusCode(HttpStatusCode.NoContent);
                 }
                 else
                 {
-                    result = Ok(objs);
+                    result = Ok(items);
                 }
             }
             catch (ArgumentException e)
@@ -881,7 +891,7 @@ namespace Sif.Framework.Providers
             {
                 IRegistrationService registrationService = RegistrationManager.GetProviderRegistrationService(
                     ProviderSettings,
-                    SessionsManager.ProviderSessionService);
+                    sessionService);
 
                 if (registrationService is NoRegistrationService)
                 {
@@ -941,9 +951,9 @@ namespace Sif.Framework.Providers
                                 acceptOverride: Accept.ToDescription(),
                                 requestHeaders: requestHeaders);
                         }
-                    }
 
-                    result = Ok();
+                        result = Ok();
+                    }
                 }
             }
             catch (Exception e)

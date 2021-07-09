@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
+using Sif.Framework.Demo.Au.Provider.Utils;
 using Sif.Framework.Providers;
-using Sif.Framework.Settings;
 using System.Web.Http;
-using Tardigrade.Framework.Configurations;
-using Tardigrade.Framework.EntityFramework.Configurations;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {
@@ -28,7 +26,8 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
     {
         public SchoolInfosProvider() : base(
             new SchoolInfoService(),
-            new ProviderSettings(new ApplicationConfiguration(new AppSettingsConfigurationSource("name=SettingsDb"))))
+            FrameworkConfigFactory.CreateSettings(),
+            FrameworkConfigFactory.CreateSessionService())
         {
         }
 

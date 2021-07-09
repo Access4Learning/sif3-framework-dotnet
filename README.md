@@ -40,11 +40,20 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
+**May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
+
+- Created a service for storing session tokens in a database using Entity Framework.
+- Created a new Sif.Framework.EntityFramework project containing the Entity Framework implementation of the session service.
+- Updated the Consumer and Provider classes to utilise the session service.
+- Updated the AU Demo Consumer and Provider projects to enable the use of the session service.
+- Created unit tests for the session service.
+- Performed general code improvements based upon ReSharper recommendations.
+
 **Apr 25, 2021 - 4.0.1 Updated to the official release of the SIF AU 3.4.8 Data Model**
 
 - Updated to the official release of the SIF AU 3.4.8 Data Model.
 
-**Dec 29, 2020 - 4.0.0 Enable application settings to be read from a database**
+**Dec 29, 2020 - 4.0.0 Enabled application settings to be read from a database**
 
 - Added classes to enable application settings to be read from a database.
 - Re-designed the Provider classes to better accommodate passing of application settings.
