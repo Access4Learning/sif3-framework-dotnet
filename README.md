@@ -44,6 +44,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 - Made the IEnvironmentRepository interface public.
 - _***Backward Incompatibility***_ Updated the EnvironmentService class constructor to add an IEnvironmentRepository interface.
+- _***Backward Incompatibility***_ Deprecated the IPersistable interface for the IHasUniqueIdentitifer interface from the Tardigrade.Framework NuGet package.
 - General code clean-up.
 
 **May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
