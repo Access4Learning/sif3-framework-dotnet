@@ -40,6 +40,12 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 
 ## Version control history
 
+**??? ??, 2022 - 6.0.0 Upgraded to support .NET 6 and Entity Framework Core**
+
+- Made the IEnvironmentRepository interface public.
+- _***Backward Incompatibility***_ Updated the EnvironmentService class constructor to add an IEnvironmentRepository interface.
+- General code clean-up.
+
 **May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
 
 - Created a service for storing session tokens in a database using Entity Framework.

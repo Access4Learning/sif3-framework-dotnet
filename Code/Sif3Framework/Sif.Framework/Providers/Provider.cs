@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Settings;
+using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
@@ -106,18 +107,22 @@ namespace Sif.Framework.Providers
             ProviderSettings = settings ?? SettingsManager.ProviderSettings;
             this.sessionService = sessionService ?? SessionsManager.ProviderSessionService;
 
-            if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
+            switch (ProviderSettings.EnvironmentType)
             {
-                AuthenticationService =
-                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
-            }
-            else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
-            {
-                AuthenticationService = new BrokeredAuthenticationService(
-                    new ApplicationRegisterService(),
-                    new EnvironmentService(),
-                    ProviderSettings,
-                    this.sessionService);
+                case EnvironmentType.BROKERED:
+                    AuthenticationService = new BrokeredAuthenticationService(
+                        new ApplicationRegisterService(),
+                        new EnvironmentService(new EnvironmentRepository()),
+                        ProviderSettings,
+                        this.sessionService);
+                    break;
+
+                case EnvironmentType.DIRECT:
+                default:
+                    AuthenticationService = new DirectAuthenticationService(
+                        new ApplicationRegisterService(),
+                        new EnvironmentService(new EnvironmentRepository()));
+                    break;
             }
 
             AuthorisationService = new AuthorisationService(AuthenticationService);
@@ -130,10 +135,7 @@ namespace Sif.Framework.Providers
         /// <returns>Query parameters if found; an empty collection otherwise.</returns>
         protected RequestParameter[] GetQueryParameters(HttpRequestMessage request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            if (request == null) throw new ArgumentNullException(nameof(request));
 
             return request
                 .GetQueryNameValuePairs()
@@ -376,22 +378,21 @@ namespace Sif.Framework.Providers
             }
 
             bool pagedRequest = navigationPage.HasValue && navigationPageSize.HasValue;
-            bool firstPage = (navigationPage.HasValue && navigationPage.Value == 1);
+            bool firstPage = navigationPage == 1;
+
+            if (pagedRequest && !firstPage) return result;
 
             // Changes Since marker is only returned for non-paged requests or the first page of a paged request.
-            if (!pagedRequest || firstPage)
+            try
             {
-                try
-                {
-                    result = result.AddHeader(
-                        "changesSinceMarker",
-                        changesSinceService.NextChangesSinceMarker ?? string.Empty);
-                }
-                catch (Exception)
-                {
-                    throw new QueryException(
-                        "Implementation to retrieve the next Changes Since marker returned an error.");
-                }
+                result = result.AddHeader(
+                    "changesSinceMarker",
+                    changesSinceService.NextChangesSinceMarker ?? string.Empty);
+            }
+            catch (Exception)
+            {
+                throw new QueryException(
+                    "Implementation to retrieve the next Changes Since marker returned an error.");
             }
 
             return result;
@@ -553,15 +554,15 @@ namespace Sif.Framework.Providers
             try
             {
                 IList<EqualCondition> conditions =
-                    new List<EqualCondition>() { new EqualCondition() { Left = object1, Right = refId1 } };
+                    new List<EqualCondition> { new EqualCondition { Left = object1, Right = refId1 } };
 
                 if (!string.IsNullOrWhiteSpace(object2))
                 {
-                    conditions.Add(new EqualCondition() { Left = object2, Right = refId2 });
+                    conditions.Add(new EqualCondition { Left = object2, Right = refId2 });
 
                     if (!string.IsNullOrWhiteSpace(object3))
                     {
-                        conditions.Add(new EqualCondition() { Left = object3, Right = refId3 });
+                        conditions.Add(new EqualCondition { Left = object3, Right = refId3 });
                     }
                 }
 
@@ -922,7 +923,7 @@ namespace Sif.Framework.Providers
                         {
                             SifEvent<TMultiple> sifEvent = eventIterator.GetNext();
 
-                            var requestHeaders = new NameValueCollection()
+                            var requestHeaders = new NameValueCollection
                             {
                                 { EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
                                 { EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString() },

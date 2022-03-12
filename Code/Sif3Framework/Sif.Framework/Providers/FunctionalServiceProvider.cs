@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using Sif.Framework.Persistence.NHibernate;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -45,7 +46,7 @@ namespace Sif.Framework.Providers
     public class FunctionalServiceProvider : ApiController
     {
         private readonly slf4net.ILogger log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         /// <summary>
         /// Authentication (BROKERED or DIRECT) service against which requests will be checked.
@@ -76,13 +77,13 @@ namespace Sif.Framework.Providers
             if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
                 authService =
-                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService());
+                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService(new EnvironmentRepository()));
             }
             else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
             {
                 authService = new BrokeredAuthenticationService(
                     new ApplicationRegisterService(),
-                    new EnvironmentService(),
+                    new EnvironmentService(new EnvironmentRepository()),
                     ProviderSettings,
                     sessionService ?? SessionsManager.ProviderSessionService);
             }

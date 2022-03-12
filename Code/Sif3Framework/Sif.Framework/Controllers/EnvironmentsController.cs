@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
@@ -116,7 +117,7 @@ namespace Sif.Framework.Controllers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        protected EnvironmentsController() : base(new EnvironmentService())
+        protected EnvironmentsController() : base(new EnvironmentService(new EnvironmentRepository()))
         {
         }
 
@@ -193,7 +194,7 @@ namespace Sif.Framework.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            if (!authService.VerifyInitialAuthenticationHeader(Request.Headers, out string initialToken))
+            if (!AuthService.VerifyInitialAuthenticationHeader(Request.Headers, out string initialToken))
             {
                 const string errorMessage =
                     "The POST request failed for Environment creation due to invalid authentication credentials.";
@@ -216,8 +217,8 @@ namespace Sif.Framework.Controllers
 
                 try
                 {
-                    Guid id = service.Create(item);
-                    environmentType newItem = service.Retrieve(id);
+                    Guid id = Service.Create(item);
+                    environmentType newItem = Service.Retrieve(id);
                     responseMessage = Request.CreateResponse(HttpStatusCode.Created, newItem);
                     //string uri = Url.Link("DefaultApi", new { id = id });
                     //responseMessage.Headers.Location = new Uri(uri);

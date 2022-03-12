@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
@@ -64,12 +65,15 @@ namespace Sif.Framework.Service.Infrastructure
 
             foreach (InfrastructureServiceNames key in sourceServices.Keys)
             {
-                if (sourceServices.TryGetValue(key, out InfrastructureService sourceService))
+                if (!sourceServices.TryGetValue(key, out InfrastructureService sourceService)) continue;
+
+                var destinationService = new InfrastructureService
                 {
-                    var destinationService =
-                        new InfrastructureService { Name = sourceService.Name, Value = sourceService.Value };
-                    destinationServices.Add(key, destinationService);
-                }
+                    Name = sourceService.Name,
+                    Value = sourceService.Value
+                };
+
+                destinationServices.Add(key, destinationService);
             }
 
             return destinationServices;
@@ -88,12 +92,15 @@ namespace Sif.Framework.Service.Infrastructure
 
             foreach (string key in sourceProperties.Keys)
             {
-                if (sourceProperties.TryGetValue(key, out Property sourceProperty))
+                if (!sourceProperties.TryGetValue(key, out Property sourceProperty)) continue;
+
+                var destinationProperty = new Property
                 {
-                    var destinationProperty =
-                        new Property { Name = sourceProperty.Name, Value = sourceProperty.Value };
-                    destinationProperties.Add(key, destinationProperty);
-                }
+                    Name = sourceProperty.Name,
+                    Value = sourceProperty.Value
+                };
+
+                destinationProperties.Add(key, destinationProperty);
             }
 
             return destinationProperties;
@@ -113,17 +120,16 @@ namespace Sif.Framework.Service.Infrastructure
 
             foreach (string key in sourceZones.Keys)
             {
-                if (sourceZones.TryGetValue(key, out ProvisionedZone sourceZone))
+                if (!sourceZones.TryGetValue(key, out ProvisionedZone sourceZone)) continue;
+
+                var destinationZone = new ProvisionedZone { SifId = sourceZone.SifId };
+
+                if (sourceZone.Services != null)
                 {
-                    var destinationZone = new ProvisionedZone { SifId = sourceZone.SifId };
-
-                    if (sourceZone.Services != null)
-                    {
-                        destinationZone.Services = CopyServices(sourceZone.Services);
-                    }
-
-                    destinationZones.Add(key, destinationZone);
+                    destinationZone.Services = CopyServices(sourceZone.Services);
                 }
+
+                destinationZones.Add(key, destinationZone);
             }
 
             return destinationZones;
@@ -142,11 +148,15 @@ namespace Sif.Framework.Service.Infrastructure
 
             foreach (string key in sourceRights.Keys)
             {
-                if (sourceRights.TryGetValue(key, out Right sourceRight))
+                if (!sourceRights.TryGetValue(key, out Right sourceRight)) continue;
+
+                var destinationRight = new Right
                 {
-                    var destinationRight = new Right { Type = sourceRight.Type, Value = sourceRight.Value };
-                    destinationRights.Add(key, destinationRight);
-                }
+                    Type = sourceRight.Type,
+                    Value = sourceRight.Value
+                };
+
+                destinationRights.Add(key, destinationRight);
             }
 
             return destinationRights;
@@ -187,7 +197,7 @@ namespace Sif.Framework.Service.Infrastructure
         /// <summary>
         /// Create a default instance.
         /// </summary>
-        public EnvironmentService() : base(new EnvironmentRepository())
+        public EnvironmentService(IEnvironmentRepository environmentRepository) : base(environmentRepository)
         {
         }
 
