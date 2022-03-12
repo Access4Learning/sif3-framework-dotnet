@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,94 +14,90 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using Sif.Framework.Model.Query;
 using System.Collections.Generic;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Service
 {
-
-    public interface IGenericService<T, PK> where T : IPersistable<PK>
+    public interface IGenericService<TEntity, TKey> where TEntity : IHasUniqueIdentifier<TKey>
     {
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        PK Create(T obj);
+        TKey Create(TEntity obj);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="objs"></param>
-        void Create(IEnumerable<T> objs);
+        void Create(IEnumerable<TEntity> objs);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
-        void Delete(PK id);
+        void Delete(TKey id);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
-        void Delete(T obj);
+        void Delete(TEntity obj);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="objs"></param>
-        void Delete(IEnumerable<T> objs);
+        void Delete(IEnumerable<TEntity> objs);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        T Retrieve(PK id);
+        TEntity Retrieve(TKey id);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        ICollection<T> Retrieve();
+        ICollection<TEntity> Retrieve();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        ICollection<T> Retrieve(T obj);
+        ICollection<TEntity> Retrieve(TEntity obj);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        ICollection<T> Retrieve(int pageIndex, int pageSize);
+        ICollection<TEntity> Retrieve(int pageIndex, int pageSize);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        ICollection<T> Retrieve(IEnumerable<EqualCondition> conditions);
+        ICollection<TEntity> Retrieve(IEnumerable<EqualCondition> conditions);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
-        void Update(T obj);
+        void Update(TEntity obj);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="objs"></param>
-        void Update(IEnumerable<T> objs);
-
+        void Update(IEnumerable<TEntity> objs);
     }
-
 }

@@ -1,12 +1,13 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,15 +15,15 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using System;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
     /// <summary>
     /// Object representing the state of a phase
     /// </summary>
-    public class PhaseState : IPersistable<Guid>
+    public class PhaseState : IHasUniqueIdentifier<Guid>
     {
         /// <summary>
         /// The RefId of this object
@@ -52,7 +53,8 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// Basic constructor that sets logical defaults of this phase state
         /// </summary>
-        public PhaseState() {
+        public PhaseState()
+        {
             Type = PhaseStateType.NOTSTARTED;
             Created = DateTime.UtcNow;
             LastModified = Created;

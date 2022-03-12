@@ -201,9 +201,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
         }
 
-        /// <summary>
-        /// <see cref="SifService{UI, DB}.Create(UI, string, string)"/>
-        /// </summary>
+        /// <inheritdoc cref="SifService{TDto, TEntity}.Create(TDto, string, string)" />
         public override Guid Create(environmentType item, string zoneId = null, string contextId = null)
         {
             var environmentRegisterService = new EnvironmentRegisterService();
@@ -258,7 +256,7 @@ namespace Sif.Framework.Service.Infrastructure
             }
 
             repoItem.SessionToken = sessionToken;
-            Guid environmentId = repository.Save(repoItem);
+            Guid environmentId = Repository.Save(repoItem);
 
             if (repoItem.InfrastructureServices != null && repoItem.InfrastructureServices.Count > 0)
             {
@@ -268,19 +266,17 @@ namespace Sif.Framework.Service.Infrastructure
                 if (infrastructureService != null)
                 {
                     infrastructureService.Value = infrastructureService.Value + "/" + environmentId;
-                    repository.Save(repoItem);
+                    Repository.Save(repoItem);
                 }
             }
 
             return environmentId;
         }
 
-        /// <summary>
-        /// <see cref="IEnvironmentService.RetrieveBySessionToken(string)"/>
-        /// </summary>
+        /// <inheritdoc cref="IEnvironmentService.RetrieveBySessionToken(string)" />
         public virtual environmentType RetrieveBySessionToken(string sessionToken)
         {
-            Environment environment = ((EnvironmentRepository)repository).RetrieveBySessionToken(sessionToken);
+            Environment environment = ((EnvironmentRepository)Repository).RetrieveBySessionToken(sessionToken);
 
             return MapperFactory.CreateInstance<Environment, environmentType>(environment);
         }

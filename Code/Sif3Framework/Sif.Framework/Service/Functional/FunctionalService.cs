@@ -1,13 +1,13 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,21 +33,23 @@ namespace Sif.Framework.Service.Functional
     /// </summary>
     public abstract class FunctionalService : SifService<jobType, Job>, IFunctionalService
     {
-        private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger Log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        private GenericRepository<SifObjectBinding, long> bindings;
+        private readonly GenericRepository<SifObjectBinding, long> bindings;
 
         /// <summary>
-        /// The disctionary of phases this service contains, with the actions each can perform
+        /// The dictionary of phases this service contains, with the actions each can perform
         /// </summary>
-        protected IDictionary<string, IPhaseActions> phaseActions;
+        protected IDictionary<string, IPhaseActions> PhaseActions;
 
         /// <summary>
         /// Basic constructor
         /// </summary>
-        public FunctionalService() : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
+        protected FunctionalService()
+            : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
         {
-            phaseActions = new Dictionary<string, IPhaseActions>();
+            PhaseActions = new Dictionary<string, IPhaseActions>();
             bindings = new GenericRepository<SifObjectBinding, long>(EnvironmentProviderSessionFactory.Instance);
         }
 
@@ -67,7 +69,7 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Startup()
         {
-            log.Info("Starting thread for " + GetServiceName() + " service.");
+            Log.Info("Starting thread for " + GetServiceName() + " service.");
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Shutdown()
         {
-            log.Info("Shutting down thread for " + GetServiceName() + " service.");
+            Log.Info("Shutting down thread for " + GetServiceName() + " service.");
         }
 
         /// <summary>
@@ -83,12 +85,13 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Bind(Guid objectId, string ownerId)
         {
-            long id = bindings.Save(new SifObjectBinding()
+            long id = bindings.Save(new SifObjectBinding
             {
                 OwnerId = ownerId,
                 RefId = objectId
             });
-            log.Info("Bound object " + objectId + " with session token " + ownerId + ". ID = " + id);
+
+            Log.Info("Bound object " + objectId + " with session token " + ownerId + ". ID = " + id);
         }
 
         /// <summary>
@@ -96,11 +99,12 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Unbind(string ownerId)
         {
-            bindings.Delete(bindings.Retrieve(new SifObjectBinding()
+            bindings.Delete(bindings.Retrieve(new SifObjectBinding
             {
                 OwnerId = ownerId
             }));
-            log.Info("Unbound all objects from the session token " + ownerId);
+
+            Log.Info("Unbound all objects from the session token " + ownerId);
         }
 
         /// <summary>
@@ -108,11 +112,12 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Unbind(Guid objectId)
         {
-            bindings.Delete(bindings.Retrieve(new SifObjectBinding()
+            bindings.Delete(bindings.Retrieve(new SifObjectBinding
             {
                 RefId = objectId
             }));
-            log.Info("Unbound object " + objectId + " from its session token");
+
+            Log.Info("Unbound object " + objectId + " from its session token");
         }
 
         /// <summary>
@@ -120,39 +125,46 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual string GetBinding(Guid objectId)
         {
-            ICollection<SifObjectBinding> candidates = bindings.Retrieve(new SifObjectBinding()
+            ICollection<SifObjectBinding> candidates = bindings.Retrieve(new SifObjectBinding
             {
                 RefId = objectId
             });
+
             if (candidates == null || candidates.Count == 0)
             {
-                log.Debug("Could not find any bindings for the object " + objectId + ".");
+                Log.Debug("Could not find any bindings for the object " + objectId + ".");
+
                 return null;
             }
-            string sessionToken = candidates.FirstOrDefault().OwnerId;
-            log.Info("Binding for object " + objectId + " is session token " + sessionToken + ".");
+
+            string sessionToken = candidates.FirstOrDefault()?.OwnerId;
+            Log.Info("Binding for object " + objectId + " is session token " + sessionToken + ".");
+
             return sessionToken;
         }
 
         /// <summary>
         /// <see cref="IFunctionalService.IsBound(Guid, string)"/>
         /// </summary>
-        public virtual Boolean IsBound(Guid objectId, string ownerId)
+        public virtual bool IsBound(Guid objectId, string ownerId)
         {
-            ICollection<SifObjectBinding> candidates = bindings.Retrieve(new SifObjectBinding()
+            ICollection<SifObjectBinding> candidates = bindings.Retrieve(new SifObjectBinding
             {
                 OwnerId = ownerId,
                 RefId = objectId
             });
-            Boolean bound = candidates != null && candidates.Count > 0;
+
+            bool bound = candidates != null && candidates.Count > 0;
+
             if (bound)
             {
-                log.Info("Found binding for object " + objectId + " with session token " + ownerId + ".");
+                Log.Info("Found binding for object " + objectId + " with session token " + ownerId + ".");
             }
             else
             {
-                log.Debug("Cound not find binding for object " + objectId + " with session token " + ownerId + ".");
+                Log.Debug("Could not find binding for object " + objectId + " with session token " + ownerId + ".");
             }
+
             return bound;
         }
 
@@ -161,31 +173,34 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
 
-            if (StringUtils.NotEmpty(job.Id) && repository.Exists(job.Id))
+            if (StringUtils.NotEmpty(job.Id) && Repository.Exists(job.Id))
             {
                 throw new CreateException("Create failed, an object with the id " + job.Id + "already exists.");
             }
 
-            checkJob(job);
+            CheckJob(job);
             Configure(job);
-            return repository.Save(job);
+
+            return Repository.Save(job);
         }
 
         /// <see cref="ISifService{UI, DB}.Create(IEnumerable{UI}, string, string)"/>
         public override void Create(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
         {
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
+
             foreach (Job job in jobs)
             {
-                if (StringUtils.NotEmpty(job.Id) && repository.Exists(job.Id))
+                if (StringUtils.NotEmpty(job.Id) && Repository.Exists(job.Id))
                 {
                     throw new CreateException("Create failed, an object with the id " + job.Id + "already exists.");
                 }
 
-                checkJob(job);
+                CheckJob(job);
                 Configure(job);
             }
-            repository.Save(jobs);
+
+            Repository.Save(jobs);
         }
 
         /// <see cref="ISifService{UI, DB}.Update(UI, string, string)"/>
@@ -203,8 +218,9 @@ namespace Sif.Framework.Service.Functional
         /// <see cref="ISifService{UI, DB}.Retrieve(Guid, string, string)"/>
         public override jobType Retrieve(Guid id, string zoneId = null, string contextId = null)
         {
-            Job job = repository.Retrieve(id);
+            Job job = Repository.Retrieve(id);
             AcceptJob(job);
+
             return MapperFactory.CreateInstance<Job, jobType>(job);
         }
 
@@ -212,18 +228,20 @@ namespace Sif.Framework.Service.Functional
         public override ICollection<jobType> Retrieve(jobType item, string zoneId = null, string contextId = null)
         {
             Job repoItem = MapperFactory.CreateInstance<jobType, Job>(item);
-            IList<Job> repoItems = (from Job job in repository.Retrieve(repoItem)
+            IList<Job> repoItems = (from Job job in Repository.Retrieve(repoItem)
                                     where AcceptJob(job)
                                     select job).ToList();
+
             return MapperFactory.CreateInstances<Job, jobType>(repoItems);
         }
 
         /// <see cref="ISifService{UI, DB}.Retrieve(string, string)"/>
         public override ICollection<jobType> Retrieve(string zoneId = null, string contextId = null)
         {
-            IList<Job> repoItems = (from Job job in repository.Retrieve()
+            IList<Job> repoItems = (from Job job in Repository.Retrieve()
                                     where AcceptJob(job)
                                     select job).ToList();
+
             return MapperFactory.CreateInstances<Job, jobType>(repoItems);
         }
 
@@ -232,10 +250,10 @@ namespace Sif.Framework.Service.Functional
         {
             try
             {
-                Job job = repository.Retrieve(id);
-                checkJob(job);
+                Job job = Repository.Retrieve(id);
+                CheckJob(job);
                 JobShutdown(job);
-                repository.Delete(id);
+                Repository.Delete(id);
             }
             catch (Exception e)
             {
@@ -248,10 +266,10 @@ namespace Sif.Framework.Service.Functional
         {
             try
             {
-                Job job = repository.Retrieve(Guid.Parse(item.id));
-                checkJob(job);
+                Job job = Repository.Retrieve(Guid.Parse(item.id));
+                CheckJob(job);
                 JobShutdown(job);
-                repository.Delete(job);
+                Repository.Delete(job);
             }
             catch (Exception e)
             {
@@ -263,11 +281,12 @@ namespace Sif.Framework.Service.Functional
         public override void Delete(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
         {
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
+
             foreach (Job job in jobs)
             {
                 try
                 {
-                    checkJob(job);
+                    CheckJob(job);
                     JobShutdown(job);
                 }
                 catch (Exception e)
@@ -275,9 +294,10 @@ namespace Sif.Framework.Service.Functional
                     throw new DeleteException("Unable to shutdown job with ID " + job.Id + ", delete failed", e);
                 }
             }
+
             try
             {
-                repository.Delete(jobs);
+                Repository.Delete(jobs);
             }
             catch (Exception e)
             {
@@ -286,74 +306,112 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.CreateToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string CreateToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
+        public virtual string CreateToPhase(
+            Guid id,
+            string phaseName,
+            string body = null,
+            string zoneId = null,
+            string contextId = null,
+            string contentType = null,
+            string accept = null)
         {
-            Job job = repository.Retrieve(id);
-            Phase phase = getPhase(job, phaseName);
+            Job job = Repository.Retrieve(id);
+            Phase phase = GetPhase(job, phaseName);
             RightsUtils.CheckRight(phase.Rights, new Right(RightType.CREATE, RightValue.APPROVED));
 
-            IPhaseActions action = getActions(phaseName);
+            IPhaseActions action = GetActions(phaseName);
             string result = action.Create(job, phase, body, contentType, accept);
-            repository.Save(job);
+            Repository.Save(job);
+
             return result;
         }
 
         /// <see cref="IFunctionalService.RetrieveToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string RetrieveToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
+        public virtual string RetrieveToPhase(
+            Guid id,
+            string phaseName,
+            string body = null,
+            string zoneId = null,
+            string contextId = null,
+            string contentType = null,
+            string accept = null)
         {
-            Job job = repository.Retrieve(id);
-            Phase phase = getPhase(job, phaseName);
+            Job job = Repository.Retrieve(id);
+            Phase phase = GetPhase(job, phaseName);
             RightsUtils.CheckRight(phase.Rights, new Right(RightType.QUERY, RightValue.APPROVED));
 
-            IPhaseActions action = getActions(phaseName);
+            IPhaseActions action = GetActions(phaseName);
             string result = action.Retrieve(job, phase, body, contentType, accept);
-            repository.Save(job);
+            Repository.Save(job);
+
             return result;
         }
 
         /// <see cref="IFunctionalService.UpdateToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string UpdateToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
+        public virtual string UpdateToPhase(
+            Guid id,
+            string phaseName,
+            string body = null,
+            string zoneId = null,
+            string contextId = null,
+            string contentType = null,
+            string accept = null)
         {
-            Job job = repository.Retrieve(id);
-            Phase phase = getPhase(job, phaseName);
+            Job job = Repository.Retrieve(id);
+            Phase phase = GetPhase(job, phaseName);
             RightsUtils.CheckRight(phase.Rights, new Right(RightType.UPDATE, RightValue.APPROVED));
 
-            IPhaseActions action = getActions(phaseName);
+            IPhaseActions action = GetActions(phaseName);
             string result = action.Update(job, phase, body, contentType, accept);
-            repository.Save(job);
+            Repository.Save(job);
+
             return result;
         }
 
         /// <see cref="IFunctionalService.DeleteToPhase(Guid, string, string, string, string, string, string)"/>
-        public virtual string DeleteToPhase(Guid id, string phaseName, string body = null, string zoneId = null, string contextId = null, string contentType = null, string accept = null)
+        public virtual string DeleteToPhase(
+            Guid id,
+            string phaseName,
+            string body = null,
+            string zoneId = null,
+            string contextId = null,
+            string contentType = null,
+            string accept = null)
         {
-            Job job = repository.Retrieve(id);
-            Phase phase = getPhase(job, phaseName);
+            Job job = Repository.Retrieve(id);
+            Phase phase = GetPhase(job, phaseName);
             RightsUtils.CheckRight(phase.Rights, new Right(RightType.DELETE, RightValue.APPROVED));
 
-            IPhaseActions action = getActions(phaseName);
+            IPhaseActions action = GetActions(phaseName);
             string result = action.Delete(job, phase, body, contentType, accept);
-            repository.Save(job);
+            Repository.Save(job);
+
             return result;
         }
 
         /// <see cref="IFunctionalService.CreateToState(Guid, string, stateType, string, string)"/>
-        public virtual stateType CreateToState(Guid id, string phaseName, stateType item = null, string zoneId = null, string contextId = null)
+        public virtual stateType CreateToState(
+            Guid id,
+            string phaseName,
+            stateType item = null,
+            string zoneId = null,
+            string contextId = null)
         {
-            Job job = repository.Retrieve(id);
-            Phase phase = getPhase(job, phaseName);
+            Job job = Repository.Retrieve(id);
+            Phase phase = GetPhase(job, phaseName);
             RightsUtils.CheckRight(phase.StatesRights, new Right(RightType.CREATE, RightValue.APPROVED));
 
             PhaseState state = MapperFactory.CreateInstance<stateType, PhaseState>(item);
 
             job.UpdatePhaseState(phaseName, state.Type, state.Description);
-            repository.Save(job);
+            Repository.Save(job);
 
             return MapperFactory.CreateInstance<PhaseState, stateType>(phase.GetCurrentState());
         }
 
         /// <summary>
-        /// Override this method to perform actions when a job of this type is deleted. Should throw a exception if it cannot be deleted.
+        /// Override this method to perform actions when a job of this type is deleted. Should throw a exception if it
+        /// cannot be deleted.
         /// </summary>
         /// <param name="job">The job instance to configure</param>
         protected virtual void JobShutdown(Job job)
@@ -361,24 +419,27 @@ namespace Sif.Framework.Service.Functional
         }
 
         /// <see cref="IFunctionalService.AcceptJob(Job)"/>
-        public virtual Boolean AcceptJob(Job job)
+        public virtual bool AcceptJob(Job job)
         {
             return AcceptJob(job.Name);
         }
 
         /// <see cref="IFunctionalService.AcceptJob(string)"/>
-        public virtual Boolean AcceptJob(string jobName)
+        public virtual bool AcceptJob(string jobName)
         {
             return AcceptJob(GetServiceName(), jobName);
         }
 
         /// <see cref="IFunctionalService.AcceptJob(string, string)"/>
-        public virtual Boolean AcceptJob(string serviceName, string jobName)
+        public virtual bool AcceptJob(string serviceName, string jobName)
         {
-            if (StringUtils.IsEmpty(GetServiceName()) || StringUtils.IsEmpty(serviceName) || StringUtils.IsEmpty(jobName))
+            if (StringUtils.IsEmpty(GetServiceName()) ||
+                StringUtils.IsEmpty(serviceName) ||
+                StringUtils.IsEmpty(jobName))
             {
                 return false;
             }
+
             return GetServiceName().Equals(serviceName) && GetServiceName().Equals(jobName + "s");
         }
 
@@ -388,7 +449,7 @@ namespace Sif.Framework.Service.Functional
             return GetServiceName().Substring(0, GetServiceName().Length - 1);
         }
 
-        private void checkJob(Job job)
+        private void CheckJob(Job job)
         {
             if (job == null)
             {
@@ -410,14 +471,15 @@ namespace Sif.Framework.Service.Functional
         public void ExtendJobTimeout(Job job, TimeSpan duration)
         {
             job.Timeout = job.Timeout.Add(duration);
-            repository.Save(job);
+            Repository.Save(job);
         }
 
         /// <see cref="IFunctionalService.JobTimeout()"/>
         public virtual void JobTimeout()
         {
-            log.Info("++++++++++++++++++++++++++++++ JobTimeout() called for service " + GetServiceName());
-            IList<Job> jobs = (from Job job in repository.Retrieve()
+            Log.Info("++++++++++++++++++++++++++++++ JobTimeout() called for service " + GetServiceName());
+
+            IList<Job> jobs = (from Job job in Repository.Retrieve()
                                where AcceptJob(job)
                                && job.Timeout.TotalSeconds != 0
                                && DateTime.UtcNow.CompareTo((job.Created ?? DateTime.UtcNow).Add(job.Timeout)) > 0
@@ -438,58 +500,66 @@ namespace Sif.Framework.Service.Functional
 
             if (jobs.Count == 0)
             {
-                log.Info("No jobs have timed out.");
-            } else
+                Log.Info("No jobs have timed out.");
+            }
+            else
             {
-                int count = 0;
+                var count = 0;
 
                 foreach (Job job in jobs)
                 {
-                    log.Info("Job " + job.Id + " has timed out, requesting its deletion.");
+                    Log.Info("Job " + job.Id + " has timed out, requesting its deletion.");
+
                     try
                     {
                         JobShutdown(job);
                     }
                     catch (Exception e)
                     {
-                        log.Debug("Job " + job.Id + " has timed out, but could not be shut down. Will try again later.", e);
+                        Log.Debug($"Job {job.Id} has timed out, but could not be shut down. Will try again later.", e);
+
                         continue;
                     }
+
                     Unbind(job.Id);
-                    repository.Delete(job.Id);
+                    Repository.Delete(job.Id);
                     count += 1;
                 }
 
-                log.Info("Successfully timed out " + count + " / " + jobs.Count + " jobs.");
+                Log.Info("Successfully timed out " + count + " / " + jobs.Count + " jobs.");
             }
 
-            log.Info("++++++++++++++++++++++++++++++ Finished JobTimeout() for service " + GetServiceName());
+            Log.Info("++++++++++++++++++++++++++++++ Finished JobTimeout() for service " + GetServiceName());
         }
 
         /// <summary>
         /// Internal method to get a named phase from a job, throwing an appropriate exception if not found
         /// </summary>
-        private Phase getPhase(Job job, string phaseName)
+        private Phase GetPhase(Job job, string phaseName)
         {
-            checkJob(job);
+            CheckJob(job);
             Phase phase = job.Phases[phaseName];
+
             if (phase == null)
             {
                 throw new ArgumentException("Unknown phase name");
             }
+
             return phase;
         }
 
         /// <summary>
         /// Internal method to get the PhaseAction object for a named phase, throwing an appropriate exception if none are found.
         /// </summary>
-        private IPhaseActions getActions(string phaseName)
+        private IPhaseActions GetActions(string phaseName)
         {
-            IPhaseActions actions = phaseActions[phaseName];
+            IPhaseActions actions = PhaseActions[phaseName];
+
             if (actions == null)
             {
                 throw new ArgumentException("Unknown phase actions");
             }
+
             return actions;
         }
     }

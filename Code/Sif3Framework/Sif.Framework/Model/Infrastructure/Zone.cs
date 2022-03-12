@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using System.Collections.Generic;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-
-    public class Zone : IPersistable<long>
+    public class Zone : IHasUniqueIdentifier<long>
     {
-
         public virtual long Id { get; set; }
 
         public virtual string Description { get; set; }
@@ -30,7 +28,5 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual IDictionary<string, Property> Properties { get; set; }
 
         public virtual string SifId { get; set; }
-
     }
-
 }

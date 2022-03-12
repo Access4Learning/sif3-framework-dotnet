@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,84 +14,82 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Persistence;
 using System;
 using System.Collections.Generic;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Service
 {
-
-    public class GenericService<T, PK> : IGenericService<T, PK> where T : IPersistable<PK>, new()
+    public class GenericService<TEntity, TKey> : IGenericService<TEntity, TKey>
+        where TEntity : IHasUniqueIdentifier<TKey>, new()
     {
-        protected IGenericRepository<T, PK> repository;
+        protected IGenericRepository<TEntity, TKey> Repository;
 
-        public GenericService(IGenericRepository<T, PK> repository)
+        public GenericService(IGenericRepository<TEntity, TKey> repository)
         {
-            this.repository = repository;
+            Repository = repository;
         }
 
-        public virtual PK Create(T obj)
+        public virtual TKey Create(TEntity obj)
         {
-            return repository.Save(obj);
+            return Repository.Save(obj);
         }
 
-        public virtual void Create(IEnumerable<T> objs)
+        public virtual void Create(IEnumerable<TEntity> objs)
         {
-            repository.Save(objs);
+            Repository.Save(objs);
         }
 
-        public virtual void Delete(PK id)
+        public virtual void Delete(TKey id)
         {
-            repository.Delete(id);
+            Repository.Delete(id);
         }
 
-        public virtual void Delete(T obj)
+        public virtual void Delete(TEntity obj)
         {
-            repository.Delete(obj);
+            Repository.Delete(obj);
         }
 
-        public virtual void Delete(IEnumerable<T> objs)
+        public virtual void Delete(IEnumerable<TEntity> objs)
         {
-            repository.Delete(objs);
+            Repository.Delete(objs);
         }
 
-        public virtual T Retrieve(PK id)
+        public virtual TEntity Retrieve(TKey id)
         {
-            return repository.Retrieve(id);
+            return Repository.Retrieve(id);
         }
 
-        public virtual ICollection<T> Retrieve()
+        public virtual ICollection<TEntity> Retrieve()
         {
-            return repository.Retrieve();
+            return Repository.Retrieve();
         }
 
-        public virtual ICollection<T> Retrieve(T obj)
+        public virtual ICollection<TEntity> Retrieve(TEntity obj)
         {
-            return repository.Retrieve(obj);
+            return Repository.Retrieve(obj);
         }
 
-        public virtual ICollection<T> Retrieve(int pageIndex, int pageSize)
+        public virtual ICollection<TEntity> Retrieve(int pageIndex, int pageSize)
         {
-            return repository.Retrieve(pageIndex, pageSize);
+            return Repository.Retrieve(pageIndex, pageSize);
         }
 
-        public virtual ICollection<T> Retrieve(IEnumerable<EqualCondition> conditions)
+        public virtual ICollection<TEntity> Retrieve(IEnumerable<EqualCondition> conditions)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void Update(T obj)
+        public virtual void Update(TEntity obj)
         {
-            repository.Save(obj);
+            Repository.Save(obj);
         }
 
-        public virtual void Update(IEnumerable<T> objs)
+        public virtual void Update(IEnumerable<TEntity> objs)
         {
-            repository.Save(objs);
+            Repository.Save(objs);
         }
-
     }
-
 }

@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using System;
 using System.Collections.Generic;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-
-    public class Service : IPersistable<long>, IComparable<Service>
+    public class Service : IHasUniqueIdentifier<long>, IComparable<Service>
     {
-
         public virtual long Id { get; set; }
 
         /// <summary>
@@ -45,7 +43,7 @@ namespace Sif.Framework.Model.Infrastructure
 
         public virtual int CompareTo(Service service)
         {
-            int comparison = 0;
+            var comparison = 0;
 
             if (service == null)
             {
@@ -53,18 +51,15 @@ namespace Sif.Framework.Model.Infrastructure
             }
             else if (!service.Equals(this))
             {
-                comparison = string.Compare(this.Name, service.Name);
+                comparison = string.CompareOrdinal(Name, service.Name);
 
                 if (comparison == 0)
                 {
-                    comparison = string.Compare(this.ContextId, service.ContextId);
+                    comparison = string.CompareOrdinal(ContextId, service.ContextId);
                 }
-
             }
 
             return comparison;
         }
-
     }
-
 }

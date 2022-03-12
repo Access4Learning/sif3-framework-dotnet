@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
@@ -25,6 +24,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Controllers
 {
@@ -35,7 +35,7 @@ namespace Sif.Framework.Controllers
     /// <typeparam name="TEntity">Object type used in the business layer.</typeparam>
     public abstract class SifController<TDto, TEntity> : ApiController
         where TDto : new()
-        where TEntity : IPersistable<Guid>, new()
+        where TEntity : IHasUniqueIdentifier<Guid>, new()
     {
         /// <summary>
         /// Authentication service.

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.EntityFramework.Services.Sessions
 {
-    /// <inheritdoc cref="ISessionService"/>
+    /// <inheritdoc />
     public class SessionService : ISessionService
     {
         private readonly IObjectService<Session, Guid> service;
@@ -38,7 +38,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             this.service = service;
         }
 
-        /// <inheritdoc cref="ISessionService.HasSession(string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.HasSession(string,string,string,string)" />
         public bool HasSession(
             string applicationKey,
             string solutionId = null,
@@ -56,7 +56,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
                 .Any();
         }
 
-        /// <inheritdoc cref="ISessionService.HasSessionToken(string)"/>
+        /// <inheritdoc cref="ISessionService.HasSessionToken(string)" />
         public bool HasSessionToken(string sessionToken)
         {
             if (sessionToken == null) throw new ArgumentNullException(nameof(sessionToken));
@@ -64,7 +64,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             return service.Retrieve(s => s.SessionToken == sessionToken).Any();
         }
 
-        /// <inheritdoc cref="ISessionService.RemoveSession(string)"/>
+        /// <inheritdoc cref="ISessionService.RemoveSession(string)" />
         public void RemoveSession(string sessionToken)
         {
             if (sessionToken == null) throw new ArgumentNullException(nameof(sessionToken));
@@ -168,7 +168,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             return sessionValues.FirstOrDefault();
         }
 
-        /// <inheritdoc cref="ISessionService.RetrieveEnvironmentUrl(string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.RetrieveEnvironmentUrl(string,string,string,string)" />
         public string RetrieveEnvironmentUrl(
             string applicationKey,
             string solutionId = null,
@@ -178,7 +178,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             return RetrieveBySelector(s => s.EnvironmentUrl, applicationKey, solutionId, userToken, instanceId);
         }
 
-        /// <inheritdoc cref="ISessionService.RetrieveQueueId(string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.RetrieveQueueId(string,string,string,string)" />
         public string RetrieveQueueId(
             string applicationKey,
             string solutionId = null,
@@ -188,7 +188,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             return RetrieveBySelector(s => s.QueueId, applicationKey, solutionId, userToken, instanceId);
         }
 
-        /// <inheritdoc cref="ISessionService.RetrieveSessionToken(string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.RetrieveSessionToken(string,string,string,string)" />
         public string RetrieveSessionToken(
             string applicationKey,
             string solutionId = null,
@@ -198,7 +198,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             return RetrieveBySelector(s => s.SessionToken, applicationKey, solutionId, userToken, instanceId);
         }
 
-        /// <inheritdoc cref="ISessionService.RetrieveSubscriptionId(string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.RetrieveSubscriptionId(string,string,string,string)" />
         public string RetrieveSubscriptionId(
             string applicationKey,
             string solutionId = null,
@@ -208,7 +208,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             return RetrieveBySelector(s => s.SubscriptionId, applicationKey, solutionId, userToken, instanceId);
         }
 
-        /// <inheritdoc cref="ISessionService.StoreSession(string,string,string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.StoreSession(string,string,string,string,string,string)" />
         public void StoreSession(
             string applicationKey,
             string sessionToken,
@@ -244,7 +244,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             _ = service.Create(session);
         }
 
-        /// <inheritdoc cref="ISessionService.UpdateQueueId(string,string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.UpdateQueueId(string,string,string,string,string)" />
         public void UpdateQueueId(
             string queueId,
             string applicationKey,
@@ -259,7 +259,7 @@ namespace Sif.Framework.EntityFramework.Services.Sessions
             service.Update(session);
         }
 
-        /// <inheritdoc cref="ISessionService.UpdateSubscriptionId(string,string,string,string,string)"/>
+        /// <inheritdoc cref="ISessionService.UpdateSubscriptionId(string,string,string,string,string)" />
         public void UpdateSubscriptionId(
             string subscriptionId,
             string applicationKey,

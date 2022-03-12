@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using System;
 using System.Collections.Generic;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-
     /// <summary>
     /// The following Environment elements/properties are mandatory according to the SIF specification:
     /// /environment[@type]
@@ -31,9 +30,8 @@ namespace Sif.Framework.Model.Infrastructure
     /// /environment/applicationInfo/supportedDataModel
     /// /environment/applicationInfo/supportedDataModelVersion
     /// </summary>
-    public class Environment : IPersistable<Guid>
+    public class Environment : IHasUniqueIdentifier<Guid>
     {
-
         /// <summary>
         /// The ID of the Environment as managed by the Environment Provider.
         /// </summary>
@@ -59,11 +57,15 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual Zone DefaultZone { get; set; }
 
         /// <summary>
-        /// There must be an InfrastructureService element present for each defined Infrastructure Service.   The value
-        /// of each InfrastructureService Property value subelement defines the URL location of that Infrastructure
+        /// There must be an InfrastructureService element present for each defined Infrastructure Service. The value
+        /// of each InfrastructureService Property value sub-element defines the URL location of that Infrastructure
         /// Service.
         /// </summary>
-        public virtual IDictionary<InfrastructureServiceNames, InfrastructureService> InfrastructureServices { get; set; }
+        public virtual IDictionary<InfrastructureServiceNames, InfrastructureService> InfrastructureServices
+        {
+            get;
+            set;
+        }
 
         public virtual string InstanceId { get; set; }
 
@@ -89,46 +91,47 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual string UserToken { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Environment()
         {
-
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="applicationKey"></param>
         /// <param name="instanceId"></param>
         /// <param name="userToken"></param>
         /// <param name="solutionId"></param>
-        public Environment(string applicationKey, string instanceId = null, string userToken = null, string solutionId = null)
+        public Environment(
+            string applicationKey,
+            string instanceId = null,
+            string userToken = null,
+            string solutionId = null)
         {
-
-            if (!String.IsNullOrWhiteSpace(applicationKey))
+            if (!string.IsNullOrWhiteSpace(applicationKey))
             {
-                ApplicationInfo = new ApplicationInfo();
-                ApplicationInfo.ApplicationKey = applicationKey;
+                ApplicationInfo = new ApplicationInfo
+                {
+                    ApplicationKey = applicationKey
+                };
             }
 
-            if (!String.IsNullOrWhiteSpace(instanceId))
+            if (!string.IsNullOrWhiteSpace(instanceId))
             {
                 InstanceId = instanceId;
             }
 
-            if (!String.IsNullOrWhiteSpace(userToken))
+            if (!string.IsNullOrWhiteSpace(userToken))
             {
                 UserToken = userToken;
             }
 
-            if (!String.IsNullOrWhiteSpace(solutionId))
+            if (!string.IsNullOrWhiteSpace(solutionId))
             {
                 SolutionId = solutionId;
             }
-
         }
-
     }
-
 }

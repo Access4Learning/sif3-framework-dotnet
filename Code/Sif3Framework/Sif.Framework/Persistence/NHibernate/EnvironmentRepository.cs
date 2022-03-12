@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,32 +20,21 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence.NHibernate
 {
-
     public class EnvironmentRepository : GenericRepository<Environment, Guid>, IEnvironmentRepository
     {
-
-        public EnvironmentRepository()
-            : base(EnvironmentProviderSessionFactory.Instance)
+        public EnvironmentRepository() : base(EnvironmentProviderSessionFactory.Instance)
         {
-
         }
 
-        /// <see cref="Sif.Framework.Persistence.IEnvironmentRepository{T}.RetrieveBySessionToken(string)">RetrieveBySessionToken</see>
+        /// <inheritdoc cref="IEnvironmentRepository.RetrieveBySessionToken(string)" />
         public virtual Environment RetrieveBySessionToken(string sessionToken)
         {
+            if (string.IsNullOrWhiteSpace(sessionToken)) throw new ArgumentNullException(nameof(sessionToken));
 
-            if (string.IsNullOrWhiteSpace(sessionToken))
-            {
-                throw new ArgumentNullException("sessionToken");
-            }
-
-            using (ISession session = sessionFactory.OpenSession())
+            using (ISession session = SessionFactory.OpenSession())
             {
                 return session.QueryOver<Environment>().Where(e => e.SessionToken == sessionToken).SingleOrDefault();
             }
-
         }
-
     }
-
 }

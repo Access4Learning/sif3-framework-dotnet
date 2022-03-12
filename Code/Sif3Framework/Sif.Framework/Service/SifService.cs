@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,125 +14,104 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Persistence;
 using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
 using System;
 using System.Collections.Generic;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Service
 {
-
-    /// <summary>
-    /// <see cref="ISifService{UI, DB}"/>
-    /// </summary>
-    public abstract class SifService<UI, DB> : ISifService<UI, DB> where DB : IPersistable<Guid>, new()
+    /// <inheritdoc />
+    public abstract class SifService<TDto, TEntity> : ISifService<TDto, TEntity>
+        where TEntity : IHasUniqueIdentifier<Guid>, new()
     {
-
         /// <summary>
         /// Generic repository.
         /// </summary>
-        protected IGenericRepository<DB, Guid> repository;
+        protected IGenericRepository<TEntity, Guid> Repository;
 
         /// <summary>
         /// Create an instance based upon the provided repository.
         /// </summary>
         /// <param name="repository">Repository associated with the service.</param>
-        public SifService(IGenericRepository<DB, Guid> repository)
+        protected SifService(IGenericRepository<TEntity, Guid> repository)
         {
-            this.repository = repository;
+            Repository = repository;
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Create(UI, string, string)"/>
-        /// </summary>
-        public virtual Guid Create(UI item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Create(TDto, string, string)" />
+        public virtual Guid Create(TDto item, string zoneId = null, string contextId = null)
         {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            return repository.Save(repoItem);
+            TEntity repoItem = MapperFactory.CreateInstance<TDto, TEntity>(item);
+
+            return Repository.Save(repoItem);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Create(IEnumerable{UI}, string, string)"/>
-        /// </summary>
-        public virtual void Create(IEnumerable<UI> items, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Create(IEnumerable{TDto}, string, string)" />
+        public virtual void Create(IEnumerable<TDto> items, string zoneId = null, string contextId = null)
         {
-            ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
-            repository.Save(repoItems);
+            ICollection<TEntity> repoItems = MapperFactory.CreateInstances<TDto, TEntity>(items);
+            Repository.Save(repoItems);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Delete(Guid, string, string)"/>
-        /// </summary>
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Delete(Guid, string, string)" />
         public virtual void Delete(Guid id, string zoneId = null, string contextId = null)
         {
-            repository.Delete(id);
+            Repository.Delete(id);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Delete(UI, string, string)"/>
-        /// </summary>
-        public virtual void Delete(UI item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Delete(TDto, string, string)" />
+        public virtual void Delete(TDto item, string zoneId = null, string contextId = null)
         {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            repository.Delete(repoItem);
+            TEntity repoItem = MapperFactory.CreateInstance<TDto, TEntity>(item);
+            Repository.Delete(repoItem);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Delete(IEnumerable{UI}, string, string)"/>
-        /// </summary>
-        public virtual void Delete(IEnumerable<UI> items, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Delete(IEnumerable{TDto}, string, string)" />
+        public virtual void Delete(IEnumerable<TDto> items, string zoneId = null, string contextId = null)
         {
-            ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
-            repository.Delete(repoItems);
+            ICollection<TEntity> repoItems = MapperFactory.CreateInstances<TDto, TEntity>(items);
+            Repository.Delete(repoItems);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Retrieve(Guid, string, string)"/>
-        /// </summary>
-        public virtual UI Retrieve(Guid id, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Retrieve(Guid, string, string)" />
+        public virtual TDto Retrieve(Guid id, string zoneId = null, string contextId = null)
         {
-            DB repoItem = repository.Retrieve(id);
-            return MapperFactory.CreateInstance<DB, UI>(repoItem);
+            TEntity repoItem = Repository.Retrieve(id);
+
+            return MapperFactory.CreateInstance<TEntity, TDto>(repoItem);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Retrieve(UI, string, string)"/>
-        /// </summary>
-        public virtual ICollection<UI> Retrieve(UI item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Retrieve(TDto, string, string)" />
+        public virtual ICollection<TDto> Retrieve(TDto item, string zoneId = null, string contextId = null)
         {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            ICollection<DB> repoItems = repository.Retrieve(repoItem);
-            return MapperFactory.CreateInstances<DB, UI>(repoItems);
+            TEntity repoItem = MapperFactory.CreateInstance<TDto, TEntity>(item);
+            ICollection<TEntity> repoItems = Repository.Retrieve(repoItem);
+
+            return MapperFactory.CreateInstances<TEntity, TDto>(repoItems);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Retrieve(string, string)"/>
-        /// </summary>
-        public virtual ICollection<UI> Retrieve(string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Retrieve(string, string)" />
+        public virtual ICollection<TDto> Retrieve(string zoneId = null, string contextId = null)
         {
-            ICollection<DB> repoItems = repository.Retrieve();
-            return MapperFactory.CreateInstances<DB, UI>(repoItems);
+            ICollection<TEntity> repoItems = Repository.Retrieve();
+
+            return MapperFactory.CreateInstances<TEntity, TDto>(repoItems);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Update(UI, string, string)"/>
-        /// </summary>
-        public virtual void Update(UI item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Update(TDto, string, string)" />
+        public virtual void Update(TDto item, string zoneId = null, string contextId = null)
         {
-            DB repoItem = MapperFactory.CreateInstance<UI, DB>(item);
-            repository.Save(repoItem);
+            TEntity repoItem = MapperFactory.CreateInstance<TDto, TEntity>(item);
+            Repository.Save(repoItem);
         }
 
-        /// <summary>
-        /// <see cref="ISifService{UI, DB}.Update(IEnumerable{UI}, string, string)"/>
-        /// </summary>
-        public virtual void Update(IEnumerable<UI> items, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto, TEntity}.Update(IEnumerable{TDto}, string, string)" />
+        public virtual void Update(IEnumerable<TDto> items, string zoneId = null, string contextId = null)
         {
-            ICollection<DB> repoItems = MapperFactory.CreateInstances<UI, DB>(items);
-            repository.Save(repoItems);
+            ICollection<TEntity> repoItems = MapperFactory.CreateInstances<TDto, TEntity>(items);
+            Repository.Save(repoItems);
         }
-
     }
-
 }

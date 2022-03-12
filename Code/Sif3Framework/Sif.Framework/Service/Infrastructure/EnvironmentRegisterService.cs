@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,12 +19,9 @@ using Sif.Framework.Persistence.NHibernate;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-
     public class EnvironmentRegisterService : GenericService<EnvironmentRegister, long>, IEnvironmentRegisterService
     {
-
-        public EnvironmentRegisterService()
-            : base(new EnvironmentRegisterRepository())
+        public EnvironmentRegisterService() : base(new EnvironmentRegisterRepository())
         {
         }
 
@@ -49,9 +46,13 @@ namespace Sif.Framework.Service.Infrastructure
         /// <param name="userToken">User token.</param>
         /// <param name="solutionId">Solution ID.</param>
         /// <returns>Environment template that matches the specified keys.</returns>
-        public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(string applicationKey, string instanceId, string userToken, string solutionId)
+        public virtual EnvironmentRegister RetrieveByUniqueIdentifiers(
+            string applicationKey,
+            string instanceId,
+            string userToken,
+            string solutionId)
         {
-            EnvironmentRegisterRepository repo = (EnvironmentRegisterRepository)repository;
+            var repo = (EnvironmentRegisterRepository)Repository;
 
             EnvironmentRegister environmentRegister =
                 // Let's try the lowest level first. Remember solutionId is optional.
@@ -59,13 +60,11 @@ namespace Sif.Framework.Service.Infrastructure
                 // Try the next level up. We have no result, yet.
                 ?? repo.RetrieveByUniqueIdentifiers(applicationKey, null, userToken, solutionId)
                 // And finally try the top level. We still have no result.
-                ?? repo.RetrieveByUniqueIdentifiers(applicationKey, null, null, solutionId)
-                // If we get here then there is no template listed for the given keys.
-                ;
+                ?? repo.RetrieveByUniqueIdentifiers(applicationKey, null, null, solutionId);
+
+            // If we get here then there is no template listed for the given keys.
 
             return environmentRegister;
         }
-
     }
-
 }

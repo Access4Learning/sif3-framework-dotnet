@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,82 +32,82 @@ namespace Sif.Framework.Settings
         /// </summary>
         protected IConfiguration Configuration { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Accept Accept => Configuration.GetAsEnum<Accept>($"{SettingsPrefix}payload.accept") ?? Accept.XML;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ApplicationKey =>
             Configuration.GetAsString($"{SettingsPrefix}environment.template.applicationKey");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string AuthenticationMethod =>
             Configuration.GetAsString($"{SettingsPrefix}environment.template.authenticationMethod");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool CompressPayload => Configuration.GetAsBoolean($"{SettingsPrefix}payload.compress") ?? false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ConsumerName => Configuration.GetAsString($"{SettingsPrefix}environment.template.consumerName");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ContentType ContentType =>
             Configuration.GetAsEnum<ContentType>($"{SettingsPrefix}payload.contentType") ?? ContentType.XML;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DataModelNamespace =>
             Configuration.GetAsString($"{SettingsPrefix}environment.template.dataModelNamespace");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool DeleteOnUnregister =>
             Configuration.GetAsBoolean($"{SettingsPrefix}environment.deleteOnUnregister") ?? false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public EnvironmentType EnvironmentType =>
             Configuration.GetAsEnum<EnvironmentType>($"{SettingsPrefix}environmentType") ?? EnvironmentType.DIRECT;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string EnvironmentUrl => Configuration.GetAsString($"{SettingsPrefix}environment.url");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int EventProcessingWaitTime =>
             Configuration.GetAsInt($"{SettingsPrefix}events.minWaitTimeSeconds") ?? 60;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string InfrastructureNamespace =>
             "http://www.sifassociation.org/infrastructure/" + SupportedInfrastructureVersion;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string InstanceId => Configuration.GetAsString($"{SettingsPrefix}environment.template.instanceId");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool JobBinding => Configuration.GetAsBoolean($"{SettingsPrefix}job.binding") ?? true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string JobClasses => Configuration.GetAsString($"{SettingsPrefix}job.classes", "any");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool JobTimeoutEnabled => Configuration.GetAsBoolean($"{SettingsPrefix}job.timeout.enabled") ?? true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int JobTimeoutFrequency => Configuration.GetAsInt($"{SettingsPrefix}job.timeout.frequency") ?? 60;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int NavigationPageSize => Configuration.GetAsInt($"{SettingsPrefix}paging.navigationPageSize") ?? 100;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SharedSecret => Configuration.GetAsString($"{SettingsPrefix}environment.sharedSecret");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SolutionId => Configuration.GetAsString($"{SettingsPrefix}environment.template.solutionId");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int StartupDelay => Configuration.GetAsInt($"{SettingsPrefix}startup.delay") ?? 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SupportedInfrastructureVersion =>
             Configuration.GetAsString($"{SettingsPrefix}environment.template.supportedInfrastructureVersion");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UserToken => Configuration.GetAsString($"{SettingsPrefix}environment.template.userToken");
 
         /// <summary>

@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,21 +19,15 @@ using Sif.Framework.Persistence.NHibernate;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-
     public class ApplicationRegisterService : GenericService<ApplicationRegister, long>, IApplicationRegisterService
     {
-
-        public ApplicationRegisterService()
-            : base(new ApplicationRegisterRepository())
+        public ApplicationRegisterService() : base(new ApplicationRegisterRepository())
         {
-
         }
 
         public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
         {
-            return ((ApplicationRegisterRepository)repository).RetrieveByApplicationKey(applicationKey);
+            return ((ApplicationRegisterRepository)Repository).RetrieveByApplicationKey(applicationKey);
         }
-
     }
-
 }

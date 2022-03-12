@@ -1,10 +1,10 @@
 ﻿using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Persistence;
 using System;
+using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-    class SifObjectBinding : IPersistable<long>, ISifRefId<Guid>
+    internal class SifObjectBinding : IHasUniqueIdentifier<long>, ISifRefId<Guid>
     {
         /// <summary>
         /// Internal identifier used by hibernate. Do not use/alter this.
