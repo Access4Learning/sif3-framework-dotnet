@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,13 +24,11 @@ using System.Web.Http;
 
 namespace Sif.Framework.Extensions
 {
-
     /// <summary>
     /// This class defines extension methods used throughout this framework.
     /// </summary>
-    static class Extension
+    public static class Extension
     {
-
         /// <summary>
         /// Extension to add a custom header to an action result.
         /// </summary>
@@ -38,7 +36,10 @@ namespace Sif.Framework.Extensions
         /// <param name="headerName">Name of the header.</param>
         /// <param name="headerValue">Value associated with the header.</param>
         /// <returns>Action result with a custom header.</returns>
-        public static IHttpActionResult AddHeader(this IHttpActionResult actionResult, string headerName, string headerValue)
+        public static IHttpActionResult AddHeader(
+            this IHttpActionResult actionResult,
+            string headerName,
+            string headerValue)
         {
             return AddHeader(actionResult, headerName, new[] { headerValue });
         }
@@ -50,7 +51,10 @@ namespace Sif.Framework.Extensions
         /// <param name="headerName">Name of the header.</param>
         /// <param name="headerValues">Values associated with the header.</param>
         /// <returns>Action result with a custom header.</returns>
-        public static IHttpActionResult AddHeader(this IHttpActionResult actionResult, string headerName, ICollection<string> headerValues)
+        public static IHttpActionResult AddHeader(
+            this IHttpActionResult actionResult,
+            string headerName,
+            ICollection<string> headerValues)
         {
             return new CustomHeaderResult(actionResult, headerName, headerValues);
         }
@@ -73,7 +77,8 @@ namespace Sif.Framework.Extensions
         /// <returns></returns>
         public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
         {
-            bool isAssignable = givenType.GetInterfaces().Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType) ||
+            bool isAssignable =
+                givenType.GetInterfaces().Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType) ||
                 (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) ||
                 (givenType.BaseType != null && IsAssignableToGenericType(givenType.BaseType, genericType));
 
@@ -88,7 +93,7 @@ namespace Sif.Framework.Extensions
         /// <returns></returns>
         public static NotFoundErrorMessageResult NotFound(this ApiController controller, string message)
         {
-            NotFoundErrorMessageResult result = new NotFoundErrorMessageResult(controller.Request, message);
+            var result = new NotFoundErrorMessageResult(controller.Request, message);
 
             return result;
         }
@@ -100,16 +105,15 @@ namespace Sif.Framework.Extensions
         /// <returns>Description attribute if it exists; result of ToString() otherwise.</returns>
         public static string ToDescription(this Enum enumeration)
         {
-            DescriptionAttribute descriptionAttribute = (DescriptionAttribute)enumeration.GetType()
+            var descriptionAttribute = (DescriptionAttribute)enumeration
+                .GetType()
                 .GetField(enumeration.ToString())
-                .GetCustomAttributes(false)
-                .Where(a => a is DescriptionAttribute)
-                .FirstOrDefault();
-            string description = (descriptionAttribute != null ? descriptionAttribute.Description : enumeration.ToString());
+                ?.GetCustomAttributes(false)
+                .FirstOrDefault(a => a is DescriptionAttribute);
+            string description =
+                descriptionAttribute != null ? descriptionAttribute.Description : enumeration.ToString();
 
             return description;
         }
-
     }
-
 }

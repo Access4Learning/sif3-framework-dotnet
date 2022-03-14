@@ -349,6 +349,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.AspNet\Sif.Framework.AspNet.csproj">
+      <Project>{1d206098-c59a-4a91-9898-e9eb83cb3290}</Project>
+      <Name>Sif.Framework.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj">
       <Project>{f7887a59-f773-4b75-946d-0376dc3c9c62}</Project>
       <Name>Sif.Framework.EntityFramework</Name>

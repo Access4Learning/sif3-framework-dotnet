@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFramewo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Framework\Sif.Framework\Sif.Framework.csproj", "{39603F9E-58BC-4FB0-A5B5-243C4C4EA08C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNet", "..\Sif3Framework\Sif.Framework.AspNet\Sif.Framework.AspNet.csproj", "{1D206098-C59A-4A91-9898-E9EB83CB3290}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{39603F9E-58BC-4FB0-A5B5-243C4C4EA08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39603F9E-58BC-4FB0-A5B5-243C4C4EA08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39603F9E-58BC-4FB0-A5B5-243C4C4EA08C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

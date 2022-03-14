@@ -180,6 +180,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sif.Framework.AspNet\Sif.Framework.AspNet.csproj">
+      <Project>{a46dbd9b-e96c-415c-aa86-2b606085f741}</Project>
+      <Name>Sif.Framework.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj">
       <Project>{202e8cb9-9aed-4034-908f-0b3bb04b171a}</Project>
       <Name>Sif.Framework</Name>

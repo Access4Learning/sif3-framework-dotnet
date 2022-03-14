@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2016 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,14 +20,12 @@ using System.Web.Http;
 
 namespace Sif.Framework.EnvironmentProvider.Controllers
 {
-
     /// <summary>
     /// Valid single operations: POST, GET, DELETE.
     /// Valid multiple operations: none.
     /// </summary>
-    public class EnvironmentsController : Sif.Framework.Controllers.EnvironmentsController
+    public class EnvironmentsController : AspNet.Controllers.EnvironmentsController
     {
-
         // POST api/{controller}
         [HttpPost]
         [Route("api/environments/environment")]
@@ -41,9 +39,15 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
              string transport = null,
              string productName = null)
         {
-            return base.Create(item, authenticationMethod, consumerName, solutionId, dataModelNamespace, supportedInfrastructureVersion, transport, productName);
+            return base.Create(
+                item,
+                authenticationMethod,
+                consumerName,
+                solutionId,
+                dataModelNamespace,
+                supportedInfrastructureVersion,
+                transport,
+                productName);
         }
-
     }
-
 }

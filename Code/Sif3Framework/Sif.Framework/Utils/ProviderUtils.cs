@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Controllers;
 using Sif.Framework.Extensions;
-using Sif.Framework.Providers;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Functional;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Net;
-using System.Web.Http.Controllers;
 using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.Utils
@@ -95,37 +92,13 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// Returns true if the given type is a controller, false otherwise.
-        /// </summary>
-        /// <param name="type">The type to check</param>
-        /// <returns>See def.</returns>
-        public static bool IsController(Type type)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            bool isController = type.IsClass &&
-                type.IsVisible &&
-                !type.IsAbstract &&
-                (type.IsAssignableToGenericType(typeof(IProvider<,,>)) ||
-                type.IsAssignableToGenericType(typeof(SifController<,>)) ||
-                typeof(FunctionalServiceProvider).IsAssignableFrom(type)) &&
-                typeof(IHttpController).IsAssignableFrom(type) &&
-                type.Name.EndsWith("Provider");
-
-            return isController;
-        }
-
-        /// <summary>
-        /// Returns true if the given Guid instance is not null/empty or an empty Guid, false otherwise.
+        /// Returns true if the given Guid instance is not an empty Guid, false otherwise.
         /// </summary>
         /// <param name="id">The Guid instance to check.</param>
         /// <returns>See def.</returns>
         public static bool IsAdvisoryId(Guid id)
         {
-            return StringUtils.NotEmpty(id) && Guid.Empty != id;
+            return Guid.Empty != id;
         }
 
         /// <summary>
@@ -135,7 +108,7 @@ namespace Sif.Framework.Utils
         /// <returns>See def.</returns>
         public static bool IsAdvisoryId(string id)
         {
-            return StringUtils.NotEmpty(id) && Guid.Empty != Guid.Parse(id);
+            return !string.IsNullOrWhiteSpace(id) && Guid.Empty != Guid.Parse(id);
         }
 
         /// <summary>
@@ -165,7 +138,7 @@ namespace Sif.Framework.Utils
         {
             var create = new createType { statusCode = ((int)statusCode).ToString(), id = id };
 
-            if (StringUtils.NotEmpty(advisoryId))
+            if (!string.IsNullOrWhiteSpace(advisoryId))
             {
                 create.advisoryId = advisoryId;
             }
