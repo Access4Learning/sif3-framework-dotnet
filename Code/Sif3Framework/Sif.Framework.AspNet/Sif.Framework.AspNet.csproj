@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <Authors>Rafidzal Rafiq</Authors>
     <Company>Systemic Pty Ltd</Company>
-    <Product>SIF Framework library (Entity Framework Integration)</Product>
+    <Product>SIF Framework library (ASP.NET Integration)</Product>
     <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
     <Copyright>Copyright © Systemic Pty Ltd 2022</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -14,13 +14,5 @@
     <PackageTags>SIF framework</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Tardigrade.Framework.EntityFramework" Version="12.0.2" />
-  </ItemGroup>
 
 </Project>
