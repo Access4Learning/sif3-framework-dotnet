@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
@@ -117,7 +116,7 @@ namespace Sif.Framework.AspNet.Controllers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        protected EnvironmentsController() : base(new EnvironmentService(new EnvironmentRepository()))
+        protected EnvironmentsController(IEnvironmentService environmentService) : base(environmentService)
         {
         }
 

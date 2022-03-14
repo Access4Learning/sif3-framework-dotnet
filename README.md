@@ -46,7 +46,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - _***Backward Incompatibility***_ Updated the EnvironmentService class constructor to add an IEnvironmentRepository interface.
 - _***Backward Incompatibility***_ Deprecated the IPersistable interface for the IHasUniqueIdentitifer interface from the Tardigrade.Framework NuGet package.
 - Created a new project to hold ASP.NET (.NET Framework) specific code - Sif.Framework.AspNet. Moved all ASP.NET specific code from the Sif.Framework to this new project.
-- _***Backward Incompatibility***_ Updated the EnvironmentsController.cs class from the Sif.Framework.EnvironmentProvider project to reference the Sif.Framework.AspNet project.
+- _***Backward Incompatibility***_ Updated the EnvironmentsController.cs class from the Sif.Framework.EnvironmentProvider project to reference the Sif.Framework.AspNet project. The constructor now accepts an IEnvironmentServicer interface rather then constructing it's own.
 - _***Backward Incompatibility***_ Added .NET 6 as a Target Framework to the Sif.Framework project.
 - _***Backward Incompatibility***_ Removed .NET Framework 4.6.1 as a Target Framework from all SDK-style library projects.
 - _***Backward Incompatibility***_ Upgraded all ASP.NET Web API, Demo and Unit Test projects from .NET Framework 4.6.1 to 4.7.2.
