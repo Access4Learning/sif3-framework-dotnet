@@ -15,13 +15,13 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Persistence.NHibernate;
+using Sif.Framework.Persistence;
 
 namespace Sif.Framework.Service.Infrastructure
 {
     public class EnvironmentRegisterService : GenericService<EnvironmentRegister, long>, IEnvironmentRegisterService
     {
-        public EnvironmentRegisterService() : base(new EnvironmentRegisterRepository())
+        public EnvironmentRegisterService(IEnvironmentRegisterRepository repository) : base(repository)
         {
         }
 
@@ -52,7 +52,7 @@ namespace Sif.Framework.Service.Infrastructure
             string userToken,
             string solutionId)
         {
-            var repo = (EnvironmentRegisterRepository)Repository;
+            var repo = (IEnvironmentRegisterRepository)Repository;
 
             EnvironmentRegister environmentRegister =
                 // Let's try the lowest level first. Remember solutionId is optional.

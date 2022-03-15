@@ -204,7 +204,7 @@ namespace Sif.Framework.Service.Infrastructure
         /// <inheritdoc cref="SifService{TDto, TEntity}.Create(TDto, string, string)" />
         public override Guid Create(environmentType item, string zoneId = null, string contextId = null)
         {
-            var environmentRegisterService = new EnvironmentRegisterService();
+            var environmentRegisterService = new EnvironmentRegisterService(new EnvironmentRegisterRepository());
             EnvironmentRegister environmentRegister = environmentRegisterService.RetrieveByUniqueIdentifiers(
                 item.applicationInfo.applicationKey,
                 item.instanceId,
