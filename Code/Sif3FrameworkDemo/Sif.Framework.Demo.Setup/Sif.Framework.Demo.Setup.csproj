@@ -355,6 +355,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj">
+      <Project>{0e6f775a-adda-4cb0-bd05-c40760976a6e}</Project>
+      <Name>Sif.Framework.NHibernate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
       <Project>{39603f9e-58bc-4fb0-a5b5-243c4c4ea08c}</Project>
       <Name>Sif.Framework</Name>

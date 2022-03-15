@@ -15,8 +15,8 @@
  */
 
 using NHibernate;
-using NHibernate.Dialect;
 using NHibernate.Tool.hbm2ddl;
+using System;
 using System.Configuration;
 using System.IO;
 using NHibernateConfiguration = NHibernate.Cfg.Configuration;
@@ -51,7 +51,13 @@ namespace Sif.Framework.NHibernate.Persistence
                         configFilePath = "SifFramework.cfg.xml";
                     }
 #else
-                    Configuration systemConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    var map = new ExeConfigurationFileMap
+                    {
+                        ExeConfigFilename = $"{AppDomain.CurrentDomain.BaseDirectory}Web.Config"
+                    };
+
+                    Configuration systemConfig =
+                        ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
 
                     if (systemConfig.HasFile && !string.IsNullOrWhiteSpace(systemConfig.FilePath))
                     {
@@ -64,7 +70,7 @@ namespace Sif.Framework.NHibernate.Persistence
 #endif
 
                     NHibernateConfiguration nHibernateConfig = new NHibernateConfiguration().Configure(configFilePath);
-                    SchemaMetadataUpdater.QuoteTableAndColumns(nHibernateConfig, Dialect.GetDialect());
+                    SchemaMetadataUpdater.QuoteTableAndColumns(nHibernateConfig);
                     _sessionFactory.SessionFactory = nHibernateConfig.BuildSessionFactory();
                 }
 

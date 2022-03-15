@@ -12,6 +12,6 @@
     <property name="show_sql">true</property>
 
     <!-- Mapping files -->
-    <mapping assembly="Sif.Framework"/>
+    <mapping assembly="SifFramework.cfg.xml"/>
   </session-factory>
 </hibernate-configuration>

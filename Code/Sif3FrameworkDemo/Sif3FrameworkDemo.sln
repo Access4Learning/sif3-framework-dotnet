@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Fra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNet", "..\Sif3Framework\Sif.Framework.AspNet\Sif.Framework.AspNet.csproj", "{1D206098-C59A-4A91-9898-E9EB83CB3290}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.NHibernate", "..\Sif3Framework\Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj", "{0E6F775A-ADDA-4CB0-BD05-C40760976A6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D206098-C59A-4A91-9898-E9EB83CB3290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E6F775A-ADDA-4CB0-BD05-C40760976A6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6F775A-ADDA-4CB0-BD05-C40760976A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6F775A-ADDA-4CB0-BD05-C40760976A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6F775A-ADDA-4CB0-BD05-C40760976A6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

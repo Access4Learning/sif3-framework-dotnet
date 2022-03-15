@@ -57,6 +57,10 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
    - ApplicationRegisterService
    - EnvironmentRegisterService
    - EnvironmentService
+- Deleted the NHibernate mapping files and repositories from the Sif.Framework project.
+- Updated the NHibernate mapping files to reference the new Sif.Framework.NHibernate assembly.
+- References to NHibernate specific code now use Sif.Framework.NHibernate.
+- Updated the way the EnvironmentProviderSessionFactory class finds the SifFramework.cfg.xml file.
 - Updated third-party NuGet packages.
 - General code clean-up.
 

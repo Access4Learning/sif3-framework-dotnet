@@ -16,7 +16,6 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
-using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
@@ -281,7 +280,7 @@ namespace Sif.Framework.Service.Infrastructure
         /// <inheritdoc cref="IEnvironmentService.RetrieveBySessionToken(string)" />
         public virtual environmentType RetrieveBySessionToken(string sessionToken)
         {
-            Environment environment = ((EnvironmentRepository)Repository).RetrieveBySessionToken(sessionToken);
+            Environment environment = ((IEnvironmentRepository)Repository).RetrieveBySessionToken(sessionToken);
 
             return MapperFactory.CreateInstance<Environment, environmentType>(environment);
         }

@@ -17,48 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Job.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Property.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Right.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Service.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" Condition="'$(TargetFramework)' == 'net472'" />
     <PackageReference Include="AutoMapper" Version="10.1.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="AutoMapper" Version="11.0.1" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
-    <PackageReference Include="NHibernate" Version="5.3.11" />
     <PackageReference Include="Sif.Specification.Infrastructure" Version="3.2.1" />
     <PackageReference Include="slf4net" Version="1.1.0" />
     <PackageReference Include="Tardigrade.Framework" Version="15.0.0" />

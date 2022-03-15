@@ -4,7 +4,7 @@ using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-    internal class SifObjectBinding : IHasUniqueIdentifier<long>, ISifRefId<Guid>
+    public class SifObjectBinding : IHasUniqueIdentifier<long>, ISifRefId<Guid>
     {
         /// <summary>
         /// Internal identifier used by hibernate. Do not use/alter this.

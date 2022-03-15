@@ -17,7 +17,7 @@
 
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Persistence.NHibernate;
+using Sif.Framework.Persistence;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
@@ -36,7 +36,7 @@ namespace Sif.Framework.Service.Functional
         private static readonly slf4net.ILogger Log =
             slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        private readonly GenericRepository<SifObjectBinding, long> bindings;
+        private readonly IGenericRepository<SifObjectBinding, long> bindings;
 
         /// <summary>
         /// The dictionary of phases this service contains, with the actions each can perform
@@ -46,12 +46,21 @@ namespace Sif.Framework.Service.Functional
         /// <summary>
         /// Basic constructor
         /// </summary>
-        protected FunctionalService()
-            : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
+        protected FunctionalService(
+            IGenericRepository<Job, Guid> jobRepository,
+            IGenericRepository<SifObjectBinding, long> objectBindingRepository)
+            : base(jobRepository)
         {
             PhaseActions = new Dictionary<string, IPhaseActions>();
-            bindings = new GenericRepository<SifObjectBinding, long>(EnvironmentProviderSessionFactory.Instance);
+            bindings = objectBindingRepository;
         }
+
+        //protected FunctionalService()
+        //    : base(new GenericRepository<Job, Guid>(EnvironmentProviderSessionFactory.Instance))
+        //{
+        //    PhaseActions = new Dictionary<string, IPhaseActions>();
+        //    bindings = new GenericRepository<SifObjectBinding, long>(EnvironmentProviderSessionFactory.Instance);
+        //}
 
         /// <summary>
         /// Method that must be extended to add phases to a given job when it has been created.

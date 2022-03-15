@@ -16,8 +16,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.NHibernate.Persistence;
 using Sif.Framework.Persistence;
-using Sif.Framework.Persistence.NHibernate;
 using Sif.Specification.Infrastructure;
 using System;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;

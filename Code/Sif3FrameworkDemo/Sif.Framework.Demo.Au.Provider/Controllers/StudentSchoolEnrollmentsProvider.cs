@@ -17,7 +17,7 @@
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Demo.Au.Provider.Utils;
-using Sif.Framework.Persistence.NHibernate;
+using Sif.Framework.NHibernate.Persistence;
 using Sif.Framework.Providers;
 using Sif.Framework.Service.Infrastructure;
 using System.Web.Http;

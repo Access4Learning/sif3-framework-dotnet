@@ -271,6 +271,10 @@
     <Compile Include="Utils\SettingsManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj">
+      <Project>{d979bbda-71ed-4856-b69f-c89ef643fdea}</Project>
+      <Name>Sif.Framework.NHibernate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj">
       <Project>{202e8cb9-9aed-4034-908f-0b3bb04b171a}</Project>
       <Name>Sif.Framework</Name>
