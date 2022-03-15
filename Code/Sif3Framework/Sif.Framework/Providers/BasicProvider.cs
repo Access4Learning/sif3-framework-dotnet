@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
+using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Service.Sessions;
@@ -44,9 +45,11 @@ namespace Sif.Framework.Providers
         /// <inheritdoc />
         protected BasicProvider(
             IBasicProviderService<T> service,
+            IApplicationRegisterService applicationRegisterService,
+            IEnvironmentService environmentService,
             IFrameworkSettings settings = null,
             ISessionService sessionService = null)
-            : base(service, settings, sessionService)
+            : base(service, applicationRegisterService, environmentService, settings, sessionService)
         {
         }
 

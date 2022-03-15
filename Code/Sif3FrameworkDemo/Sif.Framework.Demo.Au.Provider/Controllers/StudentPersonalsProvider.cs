@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Demo.Au.Provider.Utils;
+using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Providers;
+using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.WebApi.ModelBinders;
 using System.Web.Http;
 
@@ -27,13 +29,17 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
     {
         public StudentPersonalsProvider() : base(
             new StudentPersonalService(),
+            new ApplicationRegisterService(new ApplicationRegisterRepository()),
+            new EnvironmentService(new EnvironmentRepository()),
             FrameworkConfigFactory.CreateSettings(),
             FrameworkConfigFactory.CreateSessionService())
         {
         }
 
         [Route("~/api/StudentPersonals/StudentPersonal")]
-        public override IHttpActionResult Post(StudentPersonal obj, [MatrixParameter] string[] zoneId = null,
+        public override IHttpActionResult Post(
+            StudentPersonal obj,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);

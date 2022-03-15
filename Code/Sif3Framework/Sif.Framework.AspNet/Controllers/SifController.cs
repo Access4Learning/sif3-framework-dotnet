@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.WebApi.ModelBinders;
 using System;
 using System.Collections.Generic;
@@ -51,12 +49,11 @@ namespace Sif.Framework.AspNet.Controllers
         /// Create an instance.
         /// </summary>
         /// <param name="service">Service used for managing conversion between the object types.</param>
-        protected SifController(ISifService<TDto, TEntity> service)
+        /// <param name="authService">Authentication service.</param>
+        protected SifController(ISifService<TDto, TEntity> service, IAuthenticationService authService)
         {
             Service = service;
-            AuthService = new DirectAuthenticationService(
-                new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                new EnvironmentService(new EnvironmentRepository()));
+            AuthService = authService;
         }
 
         /// <summary>

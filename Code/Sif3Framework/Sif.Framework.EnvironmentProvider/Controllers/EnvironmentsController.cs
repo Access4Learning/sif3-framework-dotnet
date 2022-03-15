@@ -18,6 +18,7 @@ using Sif.Specification.Infrastructure;
 using System.Net.Http;
 using System.Web.Http;
 using Sif.Framework.Persistence.NHibernate;
+using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 
 namespace Sif.Framework.EnvironmentProvider.Controllers
@@ -28,7 +29,11 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     /// </summary>
     public class EnvironmentsController : AspNet.Controllers.EnvironmentsController
     {
-        public EnvironmentsController() : base(new EnvironmentService(new EnvironmentRepository()))
+        public EnvironmentsController() : base(
+            new EnvironmentService(new EnvironmentRepository()),
+            new DirectAuthenticationService(
+                new ApplicationRegisterService(new ApplicationRegisterRepository()),
+                new EnvironmentService(new EnvironmentRepository())))
         {
         }
 

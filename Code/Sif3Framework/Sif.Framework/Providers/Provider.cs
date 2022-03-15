@@ -24,7 +24,6 @@ using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Settings;
-using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
@@ -95,11 +94,15 @@ namespace Sif.Framework.Providers
         /// Create an instance based on the specified service.
         /// </summary>
         /// <param name="service">Service used for managing the object type.</param>
+        /// <param name="applicationRegisterService">Application register service.</param>
+        /// <param name="environmentService">Environment service.</param>
         /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
         /// <param name="sessionService">Provider session service. If null, the Provider session will be stored in the SifFramework.config file.</param>
         /// <exception cref="ArgumentNullException">service is null.</exception>
         protected Provider(
             IProviderService<TSingle, TMultiple> service,
+            IApplicationRegisterService applicationRegisterService,
+            IEnvironmentService environmentService,
             IFrameworkSettings settings = null,
             ISessionService sessionService = null)
         {
@@ -111,17 +114,16 @@ namespace Sif.Framework.Providers
             {
                 case EnvironmentType.BROKERED:
                     AuthenticationService = new BrokeredAuthenticationService(
-                        new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                        new EnvironmentService(new EnvironmentRepository()),
+                        applicationRegisterService,
+                        environmentService,
                         ProviderSettings,
                         this.sessionService);
                     break;
 
                 case EnvironmentType.DIRECT:
                 default:
-                    AuthenticationService = new DirectAuthenticationService(
-                        new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                        new EnvironmentService(new EnvironmentRepository()));
+                    AuthenticationService =
+                        new DirectAuthenticationService(applicationRegisterService, environmentService);
                     break;
             }
 

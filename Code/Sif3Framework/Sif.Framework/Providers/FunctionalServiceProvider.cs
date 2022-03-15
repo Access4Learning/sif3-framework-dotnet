@@ -33,7 +33,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
-using Sif.Framework.Persistence.NHibernate;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -61,29 +60,27 @@ namespace Sif.Framework.Providers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        public FunctionalServiceProvider() : this(null)
-        {
-        }
-
-        /// <summary>
-        /// Create an instance.
-        /// </summary>
+        /// <param name="applicationRegisterService">Application register service.</param>
+        /// <param name="environmentService">Environment service.</param>
         /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
         /// <param name="sessionService">Provider session service. If null, the Provider session will be stored in the SifFramework.config file.</param>
-        protected FunctionalServiceProvider(IFrameworkSettings settings = null, ISessionService sessionService = null)
+        protected FunctionalServiceProvider(
+            IApplicationRegisterService applicationRegisterService,
+            IEnvironmentService environmentService,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
         {
             ProviderSettings = settings ?? SettingsManager.ProviderSettings;
 
             if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
-                authService =
-                    new DirectAuthenticationService(new ApplicationRegisterService(new ApplicationRegisterRepository()), new EnvironmentService(new EnvironmentRepository()));
+                authService = new DirectAuthenticationService(applicationRegisterService, environmentService);
             }
             else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
             {
                 authService = new BrokeredAuthenticationService(
-                    new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                    new EnvironmentService(new EnvironmentRepository()),
+                    applicationRegisterService,
+                    environmentService,
                     ProviderSettings,
                     sessionService ?? SessionsManager.ProviderSessionService);
             }
@@ -566,7 +563,7 @@ namespace Sif.Framework.Providers
             string sessionToken =
                 CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
             PreventPagingHeaders();
-            string body = Request.Content.ReadAsStringAsync().Result;
+            string body = Request.Content?.ReadAsStringAsync().Result;
 
             try
             {
@@ -635,7 +632,7 @@ namespace Sif.Framework.Providers
             string sessionToken =
                 CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
             PreventPagingHeaders();
-            string _ = Request.Content.ReadAsStringAsync().Result;
+            string _ = Request.Content?.ReadAsStringAsync().Result;
 
             try
             {
@@ -702,7 +699,7 @@ namespace Sif.Framework.Providers
         {
             string sessionToken =
                 CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
-            string body = Request.Content.ReadAsStringAsync().Result;
+            string body = Request.Content?.ReadAsStringAsync().Result;
 
             try
             {
@@ -771,7 +768,7 @@ namespace Sif.Framework.Providers
             string sessionToken =
                 CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
             PreventPagingHeaders();
-            string body = Request.Content.ReadAsStringAsync().Result;
+            string body = Request.Content?.ReadAsStringAsync().Result;
 
             try
             {
@@ -1043,7 +1040,7 @@ namespace Sif.Framework.Providers
         /// <returns>A response message</returns>
         protected HttpResponseMessage OkResult(string payload = null)
         {
-            if (StringUtils.IsEmpty(payload))
+            if (string.IsNullOrWhiteSpace(payload))
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }

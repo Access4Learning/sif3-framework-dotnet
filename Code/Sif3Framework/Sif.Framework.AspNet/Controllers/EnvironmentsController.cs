@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Utils;
 using Sif.Framework.WebApi.ModelBinders;
@@ -116,7 +117,8 @@ namespace Sif.Framework.AspNet.Controllers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        protected EnvironmentsController(IEnvironmentService environmentService) : base(environmentService)
+        protected EnvironmentsController(IEnvironmentService environmentService, IAuthenticationService authService)
+            : base(environmentService, authService)
         {
         }
 
