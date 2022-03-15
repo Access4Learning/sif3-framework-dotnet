@@ -14,20 +14,31 @@
  * limitations under the License.
  */
 
+using NHibernate;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
+using System;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.NHibernate.Persistence
 {
-    public class ApplicationRegisterService : GenericService<ApplicationRegister, long>, IApplicationRegisterService
+    public class ApplicationRegisterRepository
+        : GenericRepository<ApplicationRegister, long>, IApplicationRegisterRepository
     {
-        public ApplicationRegisterService(IApplicationRegisterRepository repository) : base(repository)
+        public ApplicationRegisterRepository() : base(EnvironmentProviderSessionFactory.Instance)
         {
         }
 
+        /// <inheritdoc cref="IApplicationRegisterRepository.RetrieveByApplicationKey(string)" />
         public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
         {
-            return ((IApplicationRegisterRepository)Repository).RetrieveByApplicationKey(applicationKey);
+            if (string.IsNullOrWhiteSpace(applicationKey)) throw new ArgumentNullException(nameof(applicationKey));
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                return session.QueryOver<ApplicationRegister>()
+                    .Where(e => e.ApplicationKey == applicationKey)
+                    .SingleOrDefault();
+            }
         }
     }
 }

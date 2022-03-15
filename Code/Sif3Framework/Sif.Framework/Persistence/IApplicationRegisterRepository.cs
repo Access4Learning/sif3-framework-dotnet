@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2014 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,17 +18,13 @@ using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.Persistence
 {
-
-    interface IApplicationRegisterRepository : IGenericRepository<ApplicationRegister, long>
+    public interface IApplicationRegisterRepository : IGenericRepository<ApplicationRegister, long>
     {
-
         /// <summary>
         /// Retrieve the Application Register based upon it's application key.
         /// </summary>
         /// <param name="applicationKey">Application key for the Application Register.</param>
         /// <returns>Application Register defined by the passed application key.</returns>
         ApplicationRegister RetrieveByApplicationKey(string applicationKey);
-
     }
-
 }

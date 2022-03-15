@@ -55,7 +55,7 @@ namespace Sif.Framework.AspNet.Controllers
         {
             Service = service;
             AuthService = new DirectAuthenticationService(
-                new ApplicationRegisterService(),
+                new ApplicationRegisterService(new ApplicationRegisterRepository()),
                 new EnvironmentService(new EnvironmentRepository()));
         }
 

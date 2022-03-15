@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFramewo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNet", "Sif.Framework.AspNet\Sif.Framework.AspNet.csproj", "{A46DBD9B-E96C-415C-AA86-2B606085F741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.AspNetCore.EnvironmentProvider", "Sif.Framework.AspNetCore.EnvironmentProvider\Sif.Framework.AspNetCore.EnvironmentProvider.csproj", "{B5A4182E-978E-4933-9E99-6045E4B77A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNetCore.EnvironmentProvider", "Sif.Framework.AspNetCore.EnvironmentProvider\Sif.Framework.AspNetCore.EnvironmentProvider.csproj", "{B5A4182E-978E-4933-9E99-6045E4B77A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.NHibernate", "Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj", "{D979BBDA-71ED-4856-B69F-C89EF643FDEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B5A4182E-978E-4933-9E99-6045E4B77A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5A4182E-978E-4933-9E99-6045E4B77A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5A4182E-978E-4933-9E99-6045E4B77A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D979BBDA-71ED-4856-B69F-C89EF643FDEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D979BBDA-71ED-4856-B69F-C89EF643FDEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D979BBDA-71ED-4856-B69F-C89EF643FDEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D979BBDA-71ED-4856-B69F-C89EF643FDEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

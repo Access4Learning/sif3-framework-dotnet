@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Mappings\ApplicationInfo.hbm.xml" />
+    <None Remove="Mappings\ApplicationRegister.hbm.xml" />
+    <None Remove="Mappings\Environment.hbm.xml" />
+    <None Remove="Mappings\EnvironmentRegister.hbm.xml" />
+    <None Remove="Mappings\InfrastructureService.hbm.xml" />
+    <None Remove="Mappings\Job.hbm.xml" />
+    <None Remove="Mappings\Phase.hbm.xml" />
+    <None Remove="Mappings\PhaseState.hbm.xml" />
+    <None Remove="Mappings\ProductIdentity.hbm.xml" />
+    <None Remove="Mappings\Property.hbm.xml" />
+    <None Remove="Mappings\ProvisionedZone.hbm.xml" />
+    <None Remove="Mappings\Right.hbm.xml" />
+    <None Remove="Mappings\Service.hbm.xml" />
+    <None Remove="Mappings\SifObjectBinding.hbm.xml" />
+    <None Remove="Mappings\Zone.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\ApplicationInfo.hbm.xml" />
+    <EmbeddedResource Include="Mappings\ApplicationRegister.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Environment.hbm.xml" />
+    <EmbeddedResource Include="Mappings\EnvironmentRegister.hbm.xml" />
+    <EmbeddedResource Include="Mappings\InfrastructureService.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Job.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Phase.hbm.xml" />
+    <EmbeddedResource Include="Mappings\PhaseState.hbm.xml" />
+    <EmbeddedResource Include="Mappings\ProductIdentity.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Property.hbm.xml" />
+    <EmbeddedResource Include="Mappings\ProvisionedZone.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Right.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Service.hbm.xml" />
+    <EmbeddedResource Include="Mappings\SifObjectBinding.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Zone.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj" />
+  </ItemGroup>
+
+</Project>

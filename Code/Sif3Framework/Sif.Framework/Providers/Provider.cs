@@ -111,7 +111,7 @@ namespace Sif.Framework.Providers
             {
                 case EnvironmentType.BROKERED:
                     AuthenticationService = new BrokeredAuthenticationService(
-                        new ApplicationRegisterService(),
+                        new ApplicationRegisterService(new ApplicationRegisterRepository()),
                         new EnvironmentService(new EnvironmentRepository()),
                         ProviderSettings,
                         this.sessionService);
@@ -120,7 +120,7 @@ namespace Sif.Framework.Providers
                 case EnvironmentType.DIRECT:
                 default:
                     AuthenticationService = new DirectAuthenticationService(
-                        new ApplicationRegisterService(),
+                        new ApplicationRegisterService(new ApplicationRegisterRepository()),
                         new EnvironmentService(new EnvironmentRepository()));
                     break;
             }

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="ProvisionedZone" table="PROVISIONED_ZONE">
+    <id name="Id" column="PROVISIONED_ZONE_ID">
+      <generator class="native"/>
+    </id>
+    <property name="SifId" column="SIF_ID" length="32"/>
+    <set name="Services" table="PROVISIONED_ZONE_SERVICES" cascade="all" lazy="false">
+      <key column="PROVISIONED_ZONE_ID"/>
+      <many-to-many column="SERVICE_ID" class="Sif.Framework.Model.Infrastructure.Service"/>
+    </set>
+  </class>
+</hibernate-mapping>

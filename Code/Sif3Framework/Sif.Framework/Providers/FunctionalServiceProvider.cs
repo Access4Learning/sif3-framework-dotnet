@@ -77,12 +77,12 @@ namespace Sif.Framework.Providers
             if (EnvironmentType.DIRECT.Equals(ProviderSettings.EnvironmentType))
             {
                 authService =
-                    new DirectAuthenticationService(new ApplicationRegisterService(), new EnvironmentService(new EnvironmentRepository()));
+                    new DirectAuthenticationService(new ApplicationRegisterService(new ApplicationRegisterRepository()), new EnvironmentService(new EnvironmentRepository()));
             }
             else if (EnvironmentType.BROKERED.Equals(ProviderSettings.EnvironmentType))
             {
                 authService = new BrokeredAuthenticationService(
-                    new ApplicationRegisterService(),
+                    new ApplicationRegisterService(new ApplicationRegisterRepository()),
                     new EnvironmentService(new EnvironmentRepository()),
                     ProviderSettings,
                     sessionService ?? SessionsManager.ProviderSessionService);

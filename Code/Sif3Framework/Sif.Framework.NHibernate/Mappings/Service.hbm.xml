@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="Service" table="SERVICE">
+    <id name="Id" column="SERVICE_ID">
+      <generator class="native"/>
+    </id>
+    <property name="ContextId" column="CONTEXTID" length="128"/>
+    <property name="Name" column="NAME" length="128"/>
+    <property name="Type" column="TYPE" length="32"/>
+    <map name="Rights" table="SERVICE_RIGHTS" cascade="all" lazy="false">
+      <key column="SERVICE_ID"/>
+      <index column="TYPE" type="string"/>
+      <many-to-many column="RIGHT_ID" class="Sif.Framework.Model.Infrastructure.Right"/>
+    </map>
+  </class>
+</hibernate-mapping>

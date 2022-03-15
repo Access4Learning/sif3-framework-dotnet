@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="Environment" table="ENVIRONMENT" lazy="false">
+    <id name="Id" type="Guid" column="ENVIRONMENT_ID">
+      <generator class="guid"/>
+    </id>
+    <property name="AuthenticationMethod" column="AUTHENTICATION_METHOD" length="16"/>
+    <property name="ConsumerName" column="CONSUMER_NAME" length="256"/>
+    <property name="InstanceId" column="INSTANCE_ID" length="256"/>
+    <property name="SessionToken" column="SESSION_TOKEN" length="64"/>
+    <property name="SolutionId" column="SOLUTION_ID" length="256"/>
+    <property name="Type" column="TYPE"/>
+    <property name="UserToken" column="USER_TOKEN" length="256"/>
+    <many-to-one name="ApplicationInfo" column="APPLICATION_INFO_ID" class="Sif.Framework.Model.Infrastructure.ApplicationInfo" cascade="all" fetch="join" unique="true"/>
+    <many-to-one name="DefaultZone" column="ZONE_ID" class="Sif.Framework.Model.Infrastructure.Zone" cascade="all" fetch="join"/>
+    <map name="InfrastructureServices" table="ENVIRONMENT_INFRASTRUCTURE_SERVICES" cascade="all" lazy="false">
+      <key column="ENVIRONMENT_ID"/>
+      <index column="NAME" type="InfrastructureServiceNames"/>
+      <many-to-many column="INFRASTRUCTURE_SERVICE_ID" class="Sif.Framework.Model.Infrastructure.InfrastructureService"/>
+    </map>
+    <map name="ProvisionedZones" table="ENVIRONMENT_PROVISIONED_ZONES" cascade="all" lazy="false">
+      <key column="ENVIRONMENT_ID"/>
+      <index column="SIF_ID" type="string"/>
+      <many-to-many column="PROVISIONED_ZONE_ID" class="Sif.Framework.Model.Infrastructure.ProvisionedZone"/>
+    </map>
+  </class>
+</hibernate-mapping>

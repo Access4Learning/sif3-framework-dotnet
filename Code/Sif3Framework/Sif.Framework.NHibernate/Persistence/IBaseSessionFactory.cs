@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using NHibernate;
 
-namespace Sif.Framework.Persistence
+namespace Sif.Framework.NHibernate.Persistence
 {
-    public interface IEnvironmentRegisterRepository : IGenericRepository<EnvironmentRegister, long>
+    /// <summary>
+    /// This interface defines base operations associated with session factories.
+    /// </summary>
+    public interface IBaseSessionFactory
     {
-        EnvironmentRegister RetrieveByUniqueIdentifiers(
-            string applicationKey,
-            string instanceId,
-            string userToken,
-            string solutionId);
+        ISession OpenSession();
     }
 }

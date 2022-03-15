@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="PhaseState" table="PHASE_STATE">
+    <id name="Id" type="Guid" column="PHASE_STATE_ID">
+      <generator class="guid"/>
+    </id>
+    <property name="Type" column="TYPE"/>
+    <property name="Created" column="CREATED" /><!-- type="UtcDateTime" />-->
+    <property name="LastModified" column="LASTMODIFIED" /><!-- type="UtcDateTime" />-->
+    <property name="Description" column="DESCRIPTION" length="256" />
+  </class>
+</hibernate-mapping>

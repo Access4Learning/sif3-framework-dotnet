@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+  <class name="Property" table="PROPERTY">
+    <id name="Id" column="PROPERTY_ID">
+      <generator class="native"/>
+    </id>
+    <property name="Name" column="NAME" length="80"/>
+    <property name="Value" column="VALUE" length="256"/>
+  </class>
+</hibernate-mapping>
