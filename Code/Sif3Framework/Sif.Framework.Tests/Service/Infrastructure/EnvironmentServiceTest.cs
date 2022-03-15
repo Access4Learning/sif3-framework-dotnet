@@ -58,7 +58,9 @@ namespace Sif.Framework.Service.Infrastructure
         public void TestInitialize()
         {
             environmentRepository = new EnvironmentRepository();
-            environmentService = new EnvironmentService(environmentRepository);
+            environmentService = new EnvironmentService(
+                environmentRepository,
+                new EnvironmentRegisterService(new EnvironmentRegisterRepository()));
         }
 
         /// <summary>

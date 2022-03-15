@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using Sif.Specification.Infrastructure;
-using System.Net.Http;
-using System.Web.Http;
 using Sif.Framework.Persistence.NHibernate;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Specification.Infrastructure;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace Sif.Framework.EnvironmentProvider.Controllers
 {
@@ -30,10 +30,14 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     public class EnvironmentsController : AspNet.Controllers.EnvironmentsController
     {
         public EnvironmentsController() : base(
-            new EnvironmentService(new EnvironmentRepository()),
+            new EnvironmentService(
+                new EnvironmentRepository(),
+                new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
             new DirectAuthenticationService(
                 new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                new EnvironmentService(new EnvironmentRepository())))
+                new EnvironmentService(
+                    new EnvironmentRepository(),
+                    new EnvironmentRegisterService(new EnvironmentRegisterRepository()))))
         {
         }
 

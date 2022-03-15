@@ -32,6 +32,8 @@ namespace Sif.Framework.Service.Infrastructure
     /// </summary>
     public class EnvironmentService : SifService<environmentType, Environment>, IEnvironmentService
     {
+        private readonly IEnvironmentRegisterService _environmentRegisterService;
+
         /// <summary>
         /// Create a copy of a Zone object.
         /// </summary>
@@ -197,15 +199,18 @@ namespace Sif.Framework.Service.Infrastructure
         /// <summary>
         /// Create a default instance.
         /// </summary>
-        public EnvironmentService(IEnvironmentRepository environmentRepository) : base(environmentRepository)
+        public EnvironmentService(
+            IEnvironmentRepository environmentRepository,
+            IEnvironmentRegisterService environmentRegisterService)
+            : base(environmentRepository)
         {
+            _environmentRegisterService = environmentRegisterService;
         }
 
         /// <inheritdoc cref="SifService{TDto, TEntity}.Create(TDto, string, string)" />
         public override Guid Create(environmentType item, string zoneId = null, string contextId = null)
         {
-            var environmentRegisterService = new EnvironmentRegisterService(new EnvironmentRegisterRepository());
-            EnvironmentRegister environmentRegister = environmentRegisterService.RetrieveByUniqueIdentifiers(
+            EnvironmentRegister environmentRegister = _environmentRegisterService.RetrieveByUniqueIdentifiers(
                 item.applicationInfo.applicationKey,
                 item.instanceId,
                 item.userToken,
@@ -213,9 +218,9 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (environmentRegister == null)
             {
-                var errorMessage =
-                    $"Environment with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}] does NOT exist.";
-                throw new AlreadyExistsException(errorMessage);
+                string errorMessage =
+                    $"Environment register with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}] does NOT exist.";
+                throw new NotFoundException(errorMessage);
             }
 
             string sessionToken = AuthenticationUtils.GenerateSessionToken(
@@ -228,7 +233,7 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (environmentType != null)
             {
-                var errorMessage =
+                string errorMessage =
                     $"A session token already exists for environment with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}].";
                 throw new AlreadyExistsException(errorMessage);
             }
