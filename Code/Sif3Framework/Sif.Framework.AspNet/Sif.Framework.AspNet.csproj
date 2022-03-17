@@ -23,4 +23,17 @@
     <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contents\" />
+    <Folder Include="ControllerSelectors\" />
+    <Folder Include="Handlers\" />
+    <Folder Include="MediaTypeFormatters\" />
+    <Folder Include="ModelBinders\" />
+    <Folder Include="RouteConstraints\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
 </Project>

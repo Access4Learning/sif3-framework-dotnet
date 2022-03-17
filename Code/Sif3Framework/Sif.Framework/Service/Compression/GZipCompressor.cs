@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,18 @@ namespace Sif.Framework.Service.Compression
     /// <summary>
     /// Compressor for handling the "gzip" encoding type.
     /// </summary>
-    internal class GZipCompressor : ICompressor
+    public class GZipCompressor : ICompressor
     {
-        /// <summary>
-        /// <see cref="ICompressor.EncodingType"/>
-        /// </summary>
+        /// <inheritdoc cref="ICompressor.EncodingType" />
         public string EncodingType => "gzip";
 
-        /// <summary>
-        /// <see cref="ICompressor.Compress(Stream)"/>
-        /// </summary>
+        /// <inheritdoc cref="ICompressor.Compress(Stream)" />
         public Stream Compress(Stream stream)
         {
             return new GZipStream(stream, CompressionMode.Compress, true);
         }
 
-        /// <summary>
-        /// <see cref="ICompressor.Decompress(Stream)"/>
-        /// </summary>
+        /// <inheritdoc cref="ICompressor.Decompress(Stream)" />
         public Stream Decompress(Stream stream)
         {
             return new GZipStream(stream, CompressionMode.Decompress, true);

@@ -30,6 +30,7 @@ namespace Sif.Framework.Utils
         /// </summary>
         /// <param name="content">String content to parse.</param>
         /// <returns>Null if content is null; content with no new line characters otherwise.</returns>
+        [Obsolete("Replaced by the RemoveNewLines extension method.")]
         public static string RemoveNewLines(string content)
         {
             return (content == null ? null : content.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " "));

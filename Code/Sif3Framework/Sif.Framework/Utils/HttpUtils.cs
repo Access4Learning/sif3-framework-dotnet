@@ -602,7 +602,7 @@ namespace Sif.Framework.Utils
             HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, exception);
 
             // The ReasonPhrase may not contain new line characters.
-            response.ReasonPhrase = StringUtils.RemoveNewLines(exceptionMessage);
+            response.ReasonPhrase = exceptionMessage.RemoveNewLines();
 
             return response;
         }
@@ -615,7 +615,7 @@ namespace Sif.Framework.Utils
             HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, message);
 
             // The ReasonPhrase may not contain new line characters.
-            response.ReasonPhrase = StringUtils.RemoveNewLines(message);
+            response.ReasonPhrase = message.RemoveNewLines();
 
             return response;
         }

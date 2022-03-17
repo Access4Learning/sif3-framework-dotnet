@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,18 @@ namespace Sif.Framework.Service.Compression
     /// <summary>
     /// Compressor for handling the "deflate" encoding type.
     /// </summary>
-    internal class DeflateCompressor : ICompressor
+    public class DeflateCompressor : ICompressor
     {
-        /// <summary>
-        /// <see cref="ICompressor.EncodingType"/>
-        /// </summary>
+        /// <inheritdoc cref="ICompressor.EncodingType" />
         public string EncodingType => "deflate";
 
-        /// <summary>
-        /// <see cref="ICompressor.Compress(Stream)"/>
-        /// </summary>
+        /// <inheritdoc cref="ICompressor.Compress(Stream)" />
         public Stream Compress(Stream stream)
         {
             return new DeflateStream(stream, CompressionMode.Compress, true);
         }
 
-        /// <summary>
-        /// <see cref="ICompressor.Decompress(Stream)"/>
-        /// </summary>
+        /// <inheritdoc cref="ICompressor.Decompress(Stream)" />
         public Stream Decompress(Stream stream)
         {
             return new DeflateStream(stream, CompressionMode.Decompress, true);
