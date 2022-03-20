@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.Providers;
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Demo.Au.Provider.Utils;
 using Sif.Framework.NHibernate.Persistence;
-using Sif.Framework.Providers;
 using Sif.Framework.Service.Infrastructure;
 using System.Web.Http;
-using Sif.Framework.AspNet.Providers;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {

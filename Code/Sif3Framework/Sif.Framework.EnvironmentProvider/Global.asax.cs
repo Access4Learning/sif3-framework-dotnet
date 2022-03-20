@@ -1,6 +1,6 @@
 ﻿using Sif.Framework.AspNet.Handlers;
+using Sif.Framework.AspNet.Loggers;
 using Sif.Framework.AspNet.MediaTypeFormatters;
-using Sif.Framework.Utils;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;

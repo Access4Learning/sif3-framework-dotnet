@@ -61,9 +61,13 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Refactored methods from the EnvironmentUtils.cs and HttpUtils.cs classes into corresponding extension methods.
 - Removed the StringUtils.cs class.
 - Code clean-up of SIF Consumers.
-- Deleted the Providers and WebApi directory (and associated ASP.NET Web API specific code) from the Sif.Framework project. Refactored all referenced code from the Sif.Framework and demo projects.
+- _***Backward Incompatibility***_ Deleted the Providers and WebApi directory (and associated ASP.NET Web API specific code) from the Sif.Framework project. Refactored all referenced code from the Sif.Framework and demo projects.
 - Returned the IProvider.cs interface from the Sif.Framework.AspNet project back to the Sif.Framework project.
 - Moved ASP.NET Web API specific extension code from the Sif.Framework project to the Sif.Framework.AspNet project.
+- _***Backward Incompatibility***_ Dropped support for the .NET Framework 4.7.2 target from the Sif.Framework project.
+- _***Backward Incompatibility***_ Removed the ASP.NET Web API specific NuGet packages from the Sif.Framework project - Microsoft.AspNet.WebApi.Core, Microsoft.AspNet.WebApi.WebHost.
+- _***Backward Incompatibility***_ Moved remaining ASP.NET Web API specific classes from the Sif.Framework project to the Sif.Framework.AspNet project.
+- Moved the IProvider.cs interface back from the Sif.Framework project to the Sif.Framework.AspNet project.
 - Deleted the NHibernate mapping files and repositories from the Sif.Framework project.
 - Updated the NHibernate mapping files to reference the new Sif.Framework.NHibernate assembly.
 - References to NHibernate specific code now use Sif.Framework.NHibernate.

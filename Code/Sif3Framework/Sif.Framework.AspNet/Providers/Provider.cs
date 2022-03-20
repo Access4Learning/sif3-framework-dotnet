@@ -26,7 +26,6 @@ using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Settings;
-using Sif.Framework.Providers;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;

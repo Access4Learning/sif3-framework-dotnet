@@ -100,12 +100,12 @@ namespace Sif.Framework.Utils
 
             if (!string.IsNullOrWhiteSpace(methodOverride))
             {
-                request.Headers.Add("X-HTTP-Method-Override", methodOverride?.Trim());
+                request.Headers.Add("X-HTTP-Method-Override", methodOverride.Trim());
             }
 
             if (!string.IsNullOrWhiteSpace(methodOverride))
             {
-                request.Headers.Add("methodOverride", methodOverride?.Trim());
+                request.Headers.Add("methodOverride", methodOverride.Trim());
             }
 
             if (!string.IsNullOrWhiteSpace(deleteMessageId))
@@ -533,39 +533,6 @@ namespace Sif.Framework.Utils
         }
 
         /// <summary>
-        /// This method will add the exception message to the reason phrase of the error response.
-        /// </summary>
-        public static HttpResponseMessage CreateErrorResponse(
-            HttpRequestMessage request,
-            HttpStatusCode httpStatusCode,
-            Exception exception)
-        {
-            string exceptionMessage = exception.Message == null ? "" : exception.Message.Trim();
-            HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, exception);
-
-            // The ReasonPhrase may not contain new line characters.
-            response.ReasonPhrase = exceptionMessage.RemoveNewLines();
-
-            return response;
-        }
-
-        /// <summary>
-        /// This method will add the message specified to the reason phrase of the error response.
-        /// </summary>
-        public static HttpResponseMessage CreateErrorResponse(
-            HttpRequestMessage request,
-            HttpStatusCode httpStatusCode,
-            string message)
-        {
-            HttpResponseMessage response = request.CreateErrorResponse(httpStatusCode, message);
-
-            // The ReasonPhrase may not contain new line characters.
-            response.ReasonPhrase = message.RemoveNewLines();
-
-            return response;
-        }
-
-        /// <summary>
         /// Gets the accept type from the request headers.
         /// </summary>
         /// <param name="request">HTTP Request</param>
@@ -593,12 +560,12 @@ namespace Sif.Framework.Utils
 
             if (!string.IsNullOrWhiteSpace(zoneId))
             {
-                matrixParameters += ";zoneId=" + zoneId?.Trim();
+                matrixParameters += ";zoneId=" + zoneId.Trim();
             }
 
             if (!string.IsNullOrWhiteSpace(contextId))
             {
-                matrixParameters += ";contextId=" + contextId?.Trim();
+                matrixParameters += ";contextId=" + contextId.Trim();
             }
 
             return matrixParameters;

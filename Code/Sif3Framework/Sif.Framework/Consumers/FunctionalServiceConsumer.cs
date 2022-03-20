@@ -16,6 +16,7 @@
  */
 
 using Sif.Framework.Extensions;
+using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Model.Settings;
@@ -29,7 +30,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Http;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
@@ -414,7 +414,7 @@ namespace Sif.Framework.Consumers
             CheckRegistered();
             CheckJob(job, RightType.UPDATE, zoneId);
 
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
+            throw new UpdateException("HttpStatusCode.Forbidden");
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace Sif.Framework.Consumers
             CheckRegistered();
             CheckJobs(jobs, RightType.UPDATE, zoneId);
 
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
+            throw new UpdateException("HttpStatusCode.Forbidden");
         }
 
         /// <summary>

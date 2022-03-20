@@ -1,4 +1,5 @@
 ﻿using Sif.Framework.AspNet.Handlers;
+using Sif.Framework.AspNet.Loggers;
 using Sif.Framework.AspNet.MediaTypeFormatters;
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Utils;

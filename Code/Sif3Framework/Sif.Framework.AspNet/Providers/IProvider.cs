@@ -17,7 +17,7 @@
 using Sif.Specification.Infrastructure;
 using System.Web.Http;
 
-namespace Sif.Framework.Providers
+namespace Sif.Framework.AspNet.Providers
 {
     /// <summary>
     /// This interface defines the operations available for Providers of SIF data model objects.

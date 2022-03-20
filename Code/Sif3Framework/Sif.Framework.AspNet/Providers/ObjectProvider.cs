@@ -54,7 +54,7 @@ namespace Sif.Framework.AspNet.Providers
             this.service = service;
         }
 
-        /// <inheritdoc cref="Framework.Providers.IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])" />
+        /// <inheritdoc cref="IProvider{TSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])" />
         public override IHttpActionResult Post(
             TMultiple obj,
             [MatrixParameter] string[] zoneId = null,
@@ -90,7 +90,7 @@ namespace Sif.Framework.AspNet.Providers
             return Ok(createResponse);
         }
 
-        /// <inheritdoc cref="Framework.Providers.IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])" />
+        /// <inheritdoc cref="IProvider{TSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])" />
         public override IHttpActionResult Put(
             TMultiple obj,
             [MatrixParameter] string[] zoneId = null,
