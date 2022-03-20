@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,13 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Authentication
 {
-    /// <summary>
-    /// <see cref="AuthenticationService">AuthenticationService</see>
-    /// </summary>
-    internal class BrokeredAuthenticationService : AuthenticationService
+    /// <inheritdoc />
+    public class BrokeredAuthenticationService : AuthenticationService
     {
-        private readonly IApplicationRegisterService applicationRegisterService;
-        private readonly IEnvironmentService environmentService;
-        private readonly IFrameworkSettings settings;
-        private readonly ISessionService sessionService;
+        private readonly IApplicationRegisterService _applicationRegisterService;
+        private readonly IEnvironmentService _environmentService;
+        private readonly ISessionService _sessionService;
+        private readonly IFrameworkSettings _settings;
 
         /// <summary>
         /// Create an instance of this service.
@@ -51,39 +49,34 @@ namespace Sif.Framework.Service.Authentication
             IFrameworkSettings settings,
             ISessionService sessionService)
         {
-            this.applicationRegisterService = applicationRegisterService ?? throw new ArgumentNullException(nameof(applicationRegisterService));
-            this.environmentService = environmentService ?? throw new ArgumentNullException(nameof(environmentService));
-            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            _applicationRegisterService =
+                applicationRegisterService ?? throw new ArgumentNullException(nameof(applicationRegisterService));
+            _environmentService = environmentService ?? throw new ArgumentNullException(nameof(environmentService));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
-        /// <summary>
-        /// <see cref="AuthenticationService.GetEnvironmentBySessionToken(string)">GetEnvironmentBySessionToken</see>
-        /// </summary>
+        /// <inheritdoc cref="AuthenticationService.GetEnvironmentBySessionToken(string)" />
         public override Environment GetEnvironmentBySessionToken(string sessionToken)
         {
-            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
+            environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
 
             return MapperFactory.CreateInstance<environmentType, Environment>(environment);
         }
 
-        /// <summary>
-        /// <see cref="AuthenticationService.InitialSharedSecret(string)">InitialSharedSecret</see>
-        /// </summary>
+        /// <inheritdoc cref="AuthenticationService.InitialSharedSecret(string)" />
         protected override string InitialSharedSecret(string applicationKey)
         {
             ApplicationRegister applicationRegister =
-                applicationRegisterService.RetrieveByApplicationKey(applicationKey);
+                _applicationRegisterService.RetrieveByApplicationKey(applicationKey);
 
             return applicationRegister?.SharedSecret;
         }
 
-        /// <summary>
-        /// <see cref="AuthenticationService.SharedSecret(string)">SharedSecret</see>
-        /// </summary>
+        /// <inheritdoc cref="AuthenticationService.SharedSecret(string)" />
         protected override string SharedSecret(string sessionToken)
         {
-            environmentType environment = environmentService.RetrieveBySessionToken(sessionToken);
+            environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
 
             if (environment == null)
             {
@@ -91,21 +84,19 @@ namespace Sif.Framework.Service.Authentication
             }
 
             ApplicationRegister applicationRegister =
-                applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
+                _applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
 
             return applicationRegister?.SharedSecret;
         }
 
-        /// <summary>
-        /// <see cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders)">VerifyAuthenticationHeader</see>
-        /// </summary>
+        /// <inheritdoc cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders)" />
         public override bool VerifyAuthenticationHeader(HttpRequestHeaders headers)
         {
-            string storedSessionToken = sessionService.RetrieveSessionToken(
-                settings.ApplicationKey,
-                settings.SolutionId,
-                settings.UserToken,
-                settings.UserToken);
+            string storedSessionToken = _sessionService.RetrieveSessionToken(
+                _settings.ApplicationKey,
+                _settings.SolutionId,
+                _settings.UserToken,
+                _settings.UserToken);
             bool verified = VerifyAuthenticationHeader(headers, false, out string sessionToken);
 
             return (verified && sessionToken.Equals(storedSessionToken));

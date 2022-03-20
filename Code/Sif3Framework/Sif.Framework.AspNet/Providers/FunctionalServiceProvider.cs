@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
@@ -25,7 +26,6 @@ using Sif.Framework.Service.Functional;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
-using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Providers
+namespace Sif.Framework.AspNet.Providers
 {
     /// <summary>
     /// Services Connector implementation

@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Utils;
 using System;
 using System.Collections.Generic;
 using Tardigrade.Framework.Models.Domain;
@@ -29,6 +28,9 @@ namespace Sif.Framework.Model.Infrastructure
     /// </summary>
     public class Job : IHasUniqueIdentifier<Guid>
     {
+        private string _description;
+        private string _name;
+
         /// <summary>
         /// The ID of the Job as managed by the Functional Service.
         /// </summary>
@@ -37,12 +39,20 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// The name of the job, e.g. "grading" or "sre".
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string Name
+        {
+            get => _name;
+            set => _name = value;
+        }
 
         /// <summary>
         /// A description of the job, e.g. "Bowers Elementary School Final Marks"
         /// </summary>
-        public virtual string Description { get; set; }
+        public virtual string Description
+        {
+            get => _description;
+            set => _description = value;
+        }
 
         /// <summary>
         /// The current enumerable state of the job.
@@ -58,22 +68,22 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// The datetime this job was created.
         /// </summary>
-        public virtual DateTime? Created { get; set; }
+        public virtual DateTime? Created { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// The datetime this job was last modified.
         /// </summary>
-        public virtual DateTime? LastModified { get; set; }
+        public virtual DateTime? LastModified { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// The amount of time after creation before this job is automatically deleted.
         /// </summary>
-        public virtual TimeSpan Timeout { get; set; }
+        public virtual TimeSpan Timeout { get; set; } = new TimeSpan(0, 0, 0, 0);
 
         /// <summary>
         /// Collection of phase objects
         /// </summary>
-        public virtual IDictionary<string, Phase> Phases { get; set; }
+        public virtual IDictionary<string, Phase> Phases { get; set; } = new Dictionary<string, Phase>();
 
         /// <summary>
         /// Initialisation object associated with the job.
@@ -85,10 +95,6 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         public Job()
         {
-            Created = DateTime.UtcNow;
-            LastModified = Created;
-            Phases = new Dictionary<string, Phase>();
-            Timeout = new TimeSpan(0, 0, 0, 0);
         }
 
         /// <summary>
@@ -96,12 +102,10 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         public Job(string name, string description = null) : this()
         {
-            if (StringUtils.IsEmpty(name))
-            {
-                throw new ArgumentException("Job should be created with a name");
-            }
-            Name = name;
-            Description = description;
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Job should be created with a name");
+
+            _name = name;
+            _description = description;
         }
 
         /// <summary>

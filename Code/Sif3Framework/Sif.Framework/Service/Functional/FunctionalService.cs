@@ -182,7 +182,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
 
-            if (StringUtils.NotEmpty(job.Id) && Repository.Exists(job.Id))
+            if (Repository.Exists(job.Id))
             {
                 throw new CreateException("Create failed, an object with the id " + job.Id + "already exists.");
             }
@@ -200,7 +200,7 @@ namespace Sif.Framework.Service.Functional
 
             foreach (Job job in jobs)
             {
-                if (StringUtils.NotEmpty(job.Id) && Repository.Exists(job.Id))
+                if (Repository.Exists(job.Id))
                 {
                     throw new CreateException("Create failed, an object with the id " + job.Id + "already exists.");
                 }
@@ -442,9 +442,9 @@ namespace Sif.Framework.Service.Functional
         /// <see cref="IFunctionalService.AcceptJob(string, string)"/>
         public virtual bool AcceptJob(string serviceName, string jobName)
         {
-            if (StringUtils.IsEmpty(GetServiceName()) ||
-                StringUtils.IsEmpty(serviceName) ||
-                StringUtils.IsEmpty(jobName))
+            if (string.IsNullOrWhiteSpace(GetServiceName()) ||
+                string.IsNullOrWhiteSpace(serviceName) ||
+                string.IsNullOrWhiteSpace(jobName))
             {
                 return false;
             }
@@ -465,7 +465,7 @@ namespace Sif.Framework.Service.Functional
                 throw new ArgumentException("Job cannot be null.");
             }
 
-            if (StringUtils.IsEmpty(job.Name))
+            if (string.IsNullOrWhiteSpace(job.Name))
             {
                 throw new ArgumentException("Unsupported operation, job name not supplied.");
             }

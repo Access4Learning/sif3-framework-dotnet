@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Extensions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Model.Settings;
@@ -39,7 +40,7 @@ namespace Sif.Framework.Consumers
     public class FunctionalServiceConsumer
     {
         private static readonly slf4net.ILogger Log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private readonly RegistrationService registrationService;
 
@@ -183,7 +184,7 @@ namespace Sif.Framework.Consumers
         /// <returns>A string in the form {http/https}://{domain:port}/{servicesConnectorPath}/{jobName}s.</returns>
         protected virtual string GetUrlPrefix(string jobName)
         {
-            return EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + jobName + "s";
+            return $"{EnvironmentTemplate.ParseServiceUrl(ServiceType.FUNCTIONAL)}/{jobName}s";
         }
 
         /// <summary>
@@ -682,13 +683,13 @@ namespace Sif.Framework.Consumers
                 throw new ArgumentException("Job cannot be null.");
             }
 
-            if (StringUtils.IsEmpty(job.Name))
+            if (string.IsNullOrWhiteSpace(job.Name))
             {
                 throw new ArgumentException("Job name must be specified.");
             }
 
             Model.Infrastructure.Service service = ZoneUtils.GetService(
-                EnvironmentUtils.GetTargetZone(registrationService.CurrentEnvironment, zoneId),
+                registrationService.CurrentEnvironment.GetTargetZone(zoneId),
                 job.Name + "s",
                 ServiceType.FUNCTIONAL);
 
@@ -730,7 +731,7 @@ namespace Sif.Framework.Consumers
             {
                 CheckJob(job, right, zoneId);
 
-                if (StringUtils.IsEmpty(name))
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     name = job.Name;
                 }

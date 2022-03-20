@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Utils;
 using System;
 using System.Net.Http.Headers;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -86,7 +86,7 @@ namespace Sif.Framework.Service.Authentication
                                  headers.Authorization.Scheme,
                                  StringComparison.OrdinalIgnoreCase))
                     {
-                        string timestamp = HttpUtils.GetTimestamp(headers);
+                        string timestamp = headers.GetTimestamp();
 
                         var authorisationToken = new AuthorisationToken
                         {

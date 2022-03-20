@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace Sif.Framework.Providers
+namespace Sif.Framework.AspNet.Providers
 {
     /// <summary>
     /// A factory for functional services. Manages timeouts, etc.

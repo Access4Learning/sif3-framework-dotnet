@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,13 @@ using System.Net.Http.Headers;
 
 namespace Sif.Framework.Service.Authorisation
 {
-    /// <summary>
-    /// <see cref="IAuthorisationService">IAuthorisationService</see>
-    /// </summary>
+    /// <inheritdoc />
     public class AuthorisationService : IAuthorisationService
     {
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
-        private readonly IAuthenticationService authenticationService;
+        private readonly IAuthenticationService _authenticationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
@@ -42,12 +40,10 @@ namespace Sif.Framework.Service.Authorisation
         ///  <see cref="DirectAuthenticationService" /> classes.</param>
         public AuthorisationService(IAuthenticationService authenticationService)
         {
-            this.authenticationService = authenticationService;
+            _authenticationService = authenticationService;
         }
 
-        /// <summary>
-        /// <see cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, string, RightType, RightValue, string)">IsAuthorised</see>
-        /// </summary>
+        /// <inheritdoc cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, string, RightType, RightValue, string)" />
         public virtual bool IsAuthorised(HttpRequestHeaders headers,
             string sessionToken,
             string serviceName,
@@ -56,21 +52,19 @@ namespace Sif.Framework.Service.Authorisation
             string zoneId = null)
         {
             var isAuthorised = true;
-            Environment environment = authenticationService.GetEnvironmentBySessionToken(sessionToken);
+            Environment environment = _authenticationService.GetEnvironmentBySessionToken(sessionToken);
 
-            if (environment == null)
-            {
-                throw new InvalidSessionException("Session token does not have an associated environment definition.");
-            }
+            if (environment == null) throw
+                new InvalidSessionException("Session token does not have an associated environment definition.");
 
             var operationPolicy = new Right(permission, privilege);
-            string serviceType = HttpUtils.GetHeaderValue(headers, "serviceType") ?? ServiceType.OBJECT.ToDescription();
+            string serviceType = headers.GetHeaderValue("serviceType") ?? ServiceType.OBJECT.ToDescription();
 
             // Retrieving permissions for requester.
             IDictionary<string, Right> requesterPermissions = GetRightsForService(
                 serviceType,
                 serviceName,
-                EnvironmentUtils.GetTargetZone(environment, zoneId));
+                environment.GetTargetZone(zoneId));
 
             if (requesterPermissions == null)
             {

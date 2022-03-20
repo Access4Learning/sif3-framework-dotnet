@@ -97,23 +97,5 @@ namespace Sif.Framework.Extensions
 
             return result;
         }
-
-        /// <summary>
-        /// Extension to enumerated types that recognise the description attribute.
-        /// </summary>
-        /// <param name="enumeration">Enumerated type.</param>
-        /// <returns>Description attribute if it exists; result of ToString() otherwise.</returns>
-        public static string ToDescription(this Enum enumeration)
-        {
-            var descriptionAttribute = (DescriptionAttribute)enumeration
-                .GetType()
-                .GetField(enumeration.ToString())
-                ?.GetCustomAttributes(false)
-                .FirstOrDefault(a => a is DescriptionAttribute);
-            string description =
-                descriptionAttribute != null ? descriptionAttribute.Description : enumeration.ToString();
-
-            return description;
-        }
     }
 }

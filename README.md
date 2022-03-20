@@ -57,6 +57,10 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
    - ApplicationRegisterService
    - EnvironmentRegisterService
    - EnvironmentService
+- Copied the SIF Provider code from the Sif.Framework project to the Sif.Framework.AspNet project.
+- Refactored methods from the EnvironmentUtils.cs and HttpUtils.cs classes into corresponding extension methods.
+- Removed the StringUtils.cs class.
+- Code clean-up of SIF Consumers.
 - Deleted the NHibernate mapping files and repositories from the Sif.Framework project.
 - Updated the NHibernate mapping files to reference the new Sif.Framework.NHibernate assembly.
 - References to NHibernate specific code now use Sif.Framework.NHibernate.

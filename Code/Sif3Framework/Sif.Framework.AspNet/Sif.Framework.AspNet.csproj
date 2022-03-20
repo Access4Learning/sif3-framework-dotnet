@@ -29,6 +29,7 @@
     <Folder Include="Handlers\" />
     <Folder Include="MediaTypeFormatters\" />
     <Folder Include="ModelBinders\" />
+    <Folder Include="Providers\" />
     <Folder Include="RouteConstraints\" />
   </ItemGroup>
 

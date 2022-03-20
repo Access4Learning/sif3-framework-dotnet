@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
 using Sif.Framework.Model.Infrastructure;
@@ -25,12 +26,11 @@ using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Service.Sessions;
-using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
 using System.Net;
 using System.Web.Http;
 
-namespace Sif.Framework.Providers
+namespace Sif.Framework.AspNet.Providers
 {
     /// <summary>
     /// This class defines a Provider of SIF data model objects whereby the primary key is of type System.String.

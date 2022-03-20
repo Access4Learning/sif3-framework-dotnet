@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.DataModels;
@@ -31,7 +32,6 @@ using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Registration;
 using Sif.Framework.Service.Sessions;
 using Sif.Framework.Utils;
-using Sif.Framework.WebApi.ModelBinders;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
 
-namespace Sif.Framework.Providers
+namespace Sif.Framework.AspNet.Providers
 {
     /// <summary>
     /// This class defines a Provider of SIF data model objects.
