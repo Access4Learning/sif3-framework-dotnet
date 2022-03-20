@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-using Sif.Framework.WebApi;
-using Sif.Framework.WebApi.ActionResults;
-using System;
+using Sif.Framework.AspNet.ActionResults;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Web.Http;
 
-namespace Sif.Framework.Extensions
+namespace Sif.Framework.AspNet.Extensions
 {
     /// <summary>
-    /// This class defines extension methods used throughout this framework.
+    /// This static class contains extension methods for the HttpActionResult class.
     /// </summary>
-    public static class Extension
+    public static class HttpActionResultExtension
     {
         /// <summary>
         /// Extension to add a custom header to an action result.
@@ -67,35 +63,6 @@ namespace Sif.Framework.Extensions
         public static IHttpActionResult ClearContent(this IHttpActionResult actionResult)
         {
             return new EmptyContentResult(actionResult);
-        }
-
-        /// <summary>
-        /// Extension of types to check whether one is assignable from a generic type.
-        /// </summary>
-        /// <param name="givenType">Given type to check.</param>
-        /// <param name="genericType">Generic type assignable from.</param>
-        /// <returns></returns>
-        public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
-        {
-            bool isAssignable =
-                givenType.GetInterfaces().Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType) ||
-                (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) ||
-                (givenType.BaseType != null && IsAssignableToGenericType(givenType.BaseType, genericType));
-
-            return isAssignable;
-        }
-
-        /// <summary>
-        /// Extension to the ApiController that adds an error message to the NotFound result.
-        /// </summary>
-        /// <param name="controller">Web API Rest Controller.</param>
-        /// <param name="message">Error message.</param>
-        /// <returns></returns>
-        public static NotFoundErrorMessageResult NotFound(this ApiController controller, string message)
-        {
-            var result = new NotFoundErrorMessageResult(controller.Request, message);
-
-            return result;
         }
     }
 }

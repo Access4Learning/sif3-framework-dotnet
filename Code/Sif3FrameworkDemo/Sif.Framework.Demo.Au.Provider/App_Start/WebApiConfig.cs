@@ -1,8 +1,7 @@
-﻿using Sif.Framework.AspNet.ControllerTypeResolvers;
-using Sif.Framework.WebApi;
-using Sif.Framework.WebApi.ControllerSelectors;
-using Sif.Framework.WebApi.Handlers;
-using Sif.Framework.WebApi.RouteConstraints;
+﻿using Sif.Framework.AspNet.ControllerSelectors;
+using Sif.Framework.AspNet.ControllerTypeResolvers;
+using Sif.Framework.AspNet.Handlers;
+using Sif.Framework.AspNet.RouteConstraints;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;

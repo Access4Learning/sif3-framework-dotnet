@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.Extensions;
 using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
@@ -25,6 +26,7 @@ using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Requests;
 using Sif.Framework.Model.Settings;
+using Sif.Framework.Providers;
 using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Service.Infrastructure;
@@ -145,9 +147,7 @@ namespace Sif.Framework.AspNet.Providers
                 .ToArray();
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TTSingle, string[], string[])">Post</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TTSingle, string[], string[])" />
         public virtual IHttpActionResult Post(
             TSingle obj,
             [MatrixParameter] string[] zoneId = null,
@@ -229,14 +229,10 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])">Post</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])" />
         public abstract IHttpActionResult Post(TMultiple obj, string[] zoneId = null, string[] contextId = null);
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TPrimaryKey, string[], string[])">Get</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TPrimaryKey, string[], string[])" />
         public virtual IHttpActionResult Get(
             [FromUri(Name = "id")] string refId,
             [MatrixParameter] string[] zoneId = null,
@@ -351,7 +347,7 @@ namespace Sif.Framework.AspNet.Providers
 
             bool changesSinceRequested = !string.IsNullOrWhiteSpace(changesSinceMarker);
             var changesSinceService = Service as IChangesSinceService<TMultiple>;
-            bool changesSinceSupported = (changesSinceService != null);
+            bool changesSinceSupported = changesSinceService != null;
 
             if (changesSinceRequested && !changesSinceSupported)
             {
@@ -437,9 +433,7 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TTSingle, string, string[], string[])">Get</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TTSingle, string, string[], string[])" />
         public virtual IHttpActionResult Get(
             TSingle obj,
             string changesSinceMarker = null,
@@ -502,9 +496,7 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(string, string, string, string, string, string, string[], string[])">Get</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(string, string, string, string, string, string, string[], string[])" />
         public virtual IHttpActionResult Get(
             string object1,
             [FromUri(Name = "id1")] string refId1,
@@ -608,9 +600,7 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TPrimaryKey, TTSingle, string[], string[])">Put</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TPrimaryKey, TTSingle, string[], string[])" />
         public virtual IHttpActionResult Put(
             [FromUri(Name = "id")] string refId,
             TSingle obj,
@@ -667,14 +657,10 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])">Put</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])" />
         public abstract IHttpActionResult Put(TMultiple obj, string[] zoneId = null, string[] contextId = null);
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(TPrimaryKey, string[], string[])">Delete</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(TPrimaryKey, string[], string[])" />
         public virtual IHttpActionResult Delete(
             [FromUri(Name = "id")] string refId,
             [MatrixParameter] string[] zoneId = null,
@@ -724,9 +710,7 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(deleteRequestType, string[], string[])">Delete</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(deleteRequestType, string[], string[])" />
         public virtual IHttpActionResult Delete(
             deleteRequestType deleteRequest,
             [MatrixParameter] string[] zoneId = null,
@@ -811,9 +795,7 @@ namespace Sif.Framework.AspNet.Providers
             return Ok(deleteResponse);
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Head(string[], string[])">Head</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Head(string[], string[])" />
         [HttpHead]
         public virtual IHttpActionResult Head(
             [MatrixParameter] string[] zoneId = null,
@@ -874,14 +856,12 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.BroadcastEvents(string, string)">BroadcastEvents</see>
-        /// </summary>
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.BroadcastEvents(string, string)" />
         [HttpGet]
         public virtual IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
         {
             var eventService = Service as IEventService<TMultiple>;
-            bool eventsSupported = (eventService != null);
+            bool eventsSupported = eventService != null;
 
             if (!eventsSupported)
             {
@@ -966,9 +946,7 @@ namespace Sif.Framework.AspNet.Providers
             return result;
         }
 
-        /// <summary>
-        /// <see cref="IEventPayloadSerialisable{TMultiple}.SerialiseEvents(TMultiple)"/>
-        /// </summary>
+        /// <inheritdoc cref="IEventPayloadSerialisable{TMultiple}.SerialiseEvents(TMultiple)" />
         public abstract string SerialiseEvents(TMultiple obj);
     }
 }

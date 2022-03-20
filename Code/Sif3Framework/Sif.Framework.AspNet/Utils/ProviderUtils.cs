@@ -15,6 +15,7 @@
  */
 
 using Sif.Framework.AspNet.Controllers;
+using Sif.Framework.AspNet.Providers;
 using Sif.Framework.Extensions;
 using Sif.Framework.Providers;
 using System;

@@ -21,6 +21,7 @@ using Sif.Framework.NHibernate.Persistence;
 using Sif.Framework.Providers;
 using Sif.Framework.Service.Infrastructure;
 using System.Web.Http;
+using Sif.Framework.AspNet.Providers;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
 {

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Service;
 using Sif.Framework.Service.Authentication;
-using Sif.Framework.WebApi.ModelBinders;
 using System;
 using System.Collections.Generic;
 using System.Net;

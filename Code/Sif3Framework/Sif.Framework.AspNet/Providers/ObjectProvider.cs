@@ -54,9 +54,7 @@ namespace Sif.Framework.AspNet.Providers
             this.service = service;
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])">Post</see>
-        /// </summary>
+        /// <inheritdoc cref="Framework.Providers.IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])" />
         public override IHttpActionResult Post(
             TMultiple obj,
             [MatrixParameter] string[] zoneId = null,
@@ -92,9 +90,7 @@ namespace Sif.Framework.AspNet.Providers
             return Ok(createResponse);
         }
 
-        /// <summary>
-        /// <see cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])">Put</see>
-        /// </summary>
+        /// <inheritdoc cref="Framework.Providers.IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])" />
         public override IHttpActionResult Put(
             TMultiple obj,
             [MatrixParameter] string[] zoneId = null,
@@ -128,9 +124,7 @@ namespace Sif.Framework.AspNet.Providers
             return Ok(updateResponse);
         }
 
-        /// <summary>
-        /// <see cref="Provider{TSingle, TMultiple}.SerialiseEvents(TMultiple)">SerialiseEvents</see>
-        /// </summary>
+        /// <inheritdoc cref="Provider{TSingle, TMultiple}.SerialiseEvents(TMultiple)" />
         [NonAction]
         public override string SerialiseEvents(TMultiple obj)
         {
