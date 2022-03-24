@@ -18,15 +18,16 @@ using Sif.Framework.Extensions;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Authentication;
+using Sif.Framework.Service.Authorisation;
 using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 
-namespace Sif.Framework.Service.Authorisation
+namespace Sif.Framework.AspNet.Services.Authorisation
 {
     /// <inheritdoc />
-    public class AuthorisationService : IAuthorisationService
+    public class AuthorisationService : IAuthorisationService<HttpRequestHeaders>
     {
         /// <summary>
         /// Service used for request authentication.
@@ -36,14 +37,13 @@ namespace Sif.Framework.Service.Authorisation
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorisationService" /> class.
         /// </summary>
-        /// <param name="authenticationService">An instance of either the <see cref="BrokeredAuthenticationService" /> or the
-        ///  <see cref="DirectAuthenticationService" /> classes.</param>
+        /// <param name="authenticationService">An instance of either a Brokered or Direct authentication service.</param>
         public AuthorisationService(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
 
-        /// <inheritdoc cref="IAuthorisationService.IsAuthorised(HttpRequestHeaders, string, string, RightType, RightValue, string)" />
+        /// <inheritdoc cref="IAuthorisationService{THeaders}.IsAuthorised(THeaders, string, string, RightType, RightValue, string)" />
         public virtual bool IsAuthorised(HttpRequestHeaders headers,
             string sessionToken,
             string serviceName,
@@ -93,7 +93,9 @@ namespace Sif.Framework.Service.Authorisation
         /// <param name="serviceName">The service name.</param>
         /// <param name="zone">The zone to retrieve the rights for.</param>
         /// <returns>An array of declared rights</returns>
-        private static IDictionary<string, Right> GetRightsForService(string serviceType, string serviceName,
+        private static IDictionary<string, Right> GetRightsForService(
+            string serviceType,
+            string serviceName,
             ProvisionedZone zone)
         {
             Model.Infrastructure.Service service =

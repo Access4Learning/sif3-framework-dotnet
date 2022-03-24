@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -117,7 +118,7 @@ namespace Sif.Framework.AspNet.Controllers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        protected EnvironmentsController(IEnvironmentService environmentService, IAuthenticationService authService)
+        protected EnvironmentsController(IEnvironmentService environmentService, IAuthenticationService<HttpRequestHeaders> authService)
             : base(environmentService, authService)
         {
         }

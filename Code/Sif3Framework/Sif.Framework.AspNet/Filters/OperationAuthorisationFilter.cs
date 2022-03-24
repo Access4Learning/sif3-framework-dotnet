@@ -20,6 +20,7 @@ using Sif.Framework.Service.Authorisation;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -33,7 +34,7 @@ namespace Sif.Framework.AspNet.Filters
     [AttributeUsage(AttributeTargets.Method)]
     public class OperationAuthorisationFilter : ActionFilterAttribute
     {
-        private readonly IAuthorisationService _authorisationService;
+        private readonly IAuthorisationService<HttpRequestHeaders> _authorisationService;
         private readonly RightType _permission;
         private readonly RightValue _privilege;
         private readonly string _serviceName;
@@ -42,13 +43,13 @@ namespace Sif.Framework.AspNet.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationAuthorisationFilter" /> class.
         /// </summary>
-        /// <param name="authorisationService">An instance of either the <see cref="IAuthorisationService" /> class.</param>
+        /// <param name="authorisationService">An instance of either the <see cref="IAuthorisationService{THeader}" /> class.</param>
         /// <param name="sessionToken">Session token.</param>
         /// <param name="serviceName">The service name to check permissions.</param>
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>
         public OperationAuthorisationFilter(
-            IAuthorisationService authorisationService,
+            IAuthorisationService<HttpRequestHeaders> authorisationService,
             string sessionToken,
             string serviceName,
             RightType permission,

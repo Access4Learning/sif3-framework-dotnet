@@ -16,6 +16,7 @@
  */
 
 using Sif.Framework.AspNet.ModelBinders;
+using Sif.Framework.AspNet.Services.Authentication;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
@@ -32,6 +33,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
@@ -51,7 +53,7 @@ namespace Sif.Framework.AspNet.Providers
         /// <summary>
         /// Authentication (BROKERED or DIRECT) service against which requests will be checked.
         /// </summary>
-        private readonly IAuthenticationService authService;
+        private readonly IAuthenticationService<HttpRequestHeaders> authService;
 
         /// <summary>
         /// Application settings associated with the Provider.
@@ -110,8 +112,8 @@ namespace Sif.Framework.AspNet.Providers
             try
             {
                 bool hasAdvisoryId = ProviderUtils.IsAdvisoryId(item.id);
-                bool? _mustUseAdvisory = Request.Headers.GetMustUseAdvisory();
-                bool mustUseAdvisory = _mustUseAdvisory.HasValue && _mustUseAdvisory.Value;
+                bool? mustUseAdvisoryHeader = Request.Headers.GetMustUseAdvisory();
+                bool mustUseAdvisory = mustUseAdvisoryHeader.HasValue && mustUseAdvisoryHeader.Value;
                 IFunctionalService service = GetService(serviceName);
 
                 if (!service.AcceptJob(serviceName, jobName))

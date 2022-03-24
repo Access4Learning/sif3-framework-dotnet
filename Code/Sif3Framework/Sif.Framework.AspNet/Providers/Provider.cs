@@ -16,6 +16,8 @@
 
 using Sif.Framework.AspNet.Extensions;
 using Sif.Framework.AspNet.ModelBinders;
+using Sif.Framework.AspNet.Services.Authentication;
+using Sif.Framework.AspNet.Services.Authorisation;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.DataModels;
@@ -39,7 +41,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
 
@@ -64,12 +66,12 @@ namespace Sif.Framework.AspNet.Providers
         /// <summary>
         /// Service used for request authentication.
         /// </summary>
-        protected IAuthenticationService AuthenticationService { get; }
+        protected IAuthenticationService<HttpRequestHeaders> AuthenticationService { get; }
 
         /// <summary>
         /// Service used for request authorisation.
         /// </summary>
-        protected IAuthorisationService AuthorisationService { get; }
+        protected IAuthorisationService<HttpRequestHeaders> AuthorisationService { get; }
 
         /// <summary>
         /// Content type (XML or JSON) of the message payload.
@@ -131,21 +133,6 @@ namespace Sif.Framework.AspNet.Providers
             AuthorisationService = new AuthorisationService(AuthenticationService);
         }
 
-        /// <summary>
-        /// Get the query parameters associated with the HTTP Request.
-        /// </summary>
-        /// <param name="request">HTTP Request.</param>
-        /// <returns>Query parameters if found; an empty collection otherwise.</returns>
-        protected RequestParameter[] GetQueryParameters(HttpRequestMessage request)
-        {
-            if (request == null) throw new ArgumentNullException(nameof(request));
-
-            return request
-                .GetQueryNameValuePairs()
-                .Select(kv => new RequestParameter(kv.Key, ConveyanceType.QueryParameter, kv.Value))
-                .ToArray();
-        }
-
         /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TTSingle, string[], string[])" />
         public virtual IHttpActionResult Post(
             TSingle obj,
@@ -184,7 +171,7 @@ namespace Sif.Framework.AspNet.Providers
                     }
                     else
                     {
-                        RequestParameter[] requestParameters = GetQueryParameters(Request);
+                        RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                         TSingle createdObject =
                             Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
                         string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
@@ -193,7 +180,7 @@ namespace Sif.Framework.AspNet.Providers
                 }
                 else
                 {
-                    RequestParameter[] requestParameters = GetQueryParameters(Request);
+                    RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                     TSingle createdObject = Service.Create(obj, null, zoneId?[0], contextId?[0], requestParameters);
                     string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
                     result = Created(uri, createdObject);
@@ -262,7 +249,7 @@ namespace Sif.Framework.AspNet.Providers
 
             try
             {
-                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                 TSingle obj = Service.Retrieve(refId, zoneId?[0], contextId?[0], requestParameters);
 
                 if (obj == null)
@@ -309,7 +296,7 @@ namespace Sif.Framework.AspNet.Providers
 
             uint? navigationPage = Request.Headers.GetNavigationPage();
             uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
             TMultiple items =
                 Service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
@@ -355,7 +342,7 @@ namespace Sif.Framework.AspNet.Providers
 
             uint? navigationPage = Request.Headers.GetNavigationPage();
             uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
             TMultiple items = changesSinceService.RetrieveChangesSince(
                 changesSinceMarker,
                 navigationPage,
@@ -415,7 +402,7 @@ namespace Sif.Framework.AspNet.Providers
 
             uint? navigationPage = Request.Headers.GetNavigationPage();
             uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
             TMultiple items =
                 Service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
             IHttpActionResult result;
@@ -561,7 +548,7 @@ namespace Sif.Framework.AspNet.Providers
 
                 uint? navigationPage = Request.Headers.GetNavigationPage();
                 uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
-                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                 TMultiple items = Service.Retrieve(
                     conditions,
                     navigationPage,
@@ -632,7 +619,7 @@ namespace Sif.Framework.AspNet.Providers
 
             try
             {
-                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                 Service.Update(obj, zoneId?[0], contextId?[0], requestParameters);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
@@ -685,7 +672,7 @@ namespace Sif.Framework.AspNet.Providers
 
             try
             {
-                RequestParameter[] requestParameters = GetQueryParameters(Request);
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                 Service.Delete(refId, zoneId?[0], contextId?[0], requestParameters);
                 result = StatusCode(HttpStatusCode.NoContent);
             }
@@ -744,7 +731,7 @@ namespace Sif.Framework.AspNet.Providers
 
                     try
                     {
-                        RequestParameter[] requestParameters = GetQueryParameters(Request);
+                        RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
                         Service.Delete(deleteId.id, zoneId?[0], contextId?[0], requestParameters);
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }

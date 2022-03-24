@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.Services.Authentication;
 using Sif.Framework.NHibernate.Persistence;
-using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System.Net.Http;

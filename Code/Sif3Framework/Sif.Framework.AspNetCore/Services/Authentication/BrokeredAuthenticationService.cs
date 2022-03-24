@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Microsoft.AspNetCore.Http;
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
@@ -21,11 +22,9 @@ using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Sessions;
 using Sif.Specification.Infrastructure;
-using System;
-using System.Net.Http.Headers;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.AspNetCore.Services.Authentication
 {
     /// <inheritdoc />
     public class BrokeredAuthenticationService : AuthenticationService
@@ -65,7 +64,7 @@ namespace Sif.Framework.Service.Authentication
         }
 
         /// <inheritdoc cref="AuthenticationService.InitialSharedSecret(string)" />
-        protected override string InitialSharedSecret(string applicationKey)
+        protected override string? InitialSharedSecret(string applicationKey)
         {
             ApplicationRegister applicationRegister =
                 _applicationRegisterService.RetrieveByApplicationKey(applicationKey);
@@ -74,7 +73,7 @@ namespace Sif.Framework.Service.Authentication
         }
 
         /// <inheritdoc cref="AuthenticationService.SharedSecret(string)" />
-        protected override string SharedSecret(string sessionToken)
+        protected override string? SharedSecret(string sessionToken)
         {
             environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
 
@@ -89,17 +88,17 @@ namespace Sif.Framework.Service.Authentication
             return applicationRegister?.SharedSecret;
         }
 
-        /// <inheritdoc cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders)" />
-        public override bool VerifyAuthenticationHeader(HttpRequestHeaders headers)
+        /// <inheritdoc cref="Framework.Service.Authentication.IAuthenticationService{THeaders}.VerifyAuthenticationHeader(THeaders)" />
+        public override bool VerifyAuthenticationHeader(IHeaderDictionary headers)
         {
             string storedSessionToken = _sessionService.RetrieveSessionToken(
                 _settings.ApplicationKey,
                 _settings.SolutionId,
                 _settings.UserToken,
                 _settings.UserToken);
-            bool verified = VerifyAuthenticationHeader(headers, false, out string sessionToken);
+            bool verified = VerifyAuthenticationHeader(headers, false, out string? sessionToken);
 
-            return (verified && sessionToken.Equals(storedSessionToken));
+            return verified && (sessionToken?.Equals(storedSessionToken) ?? false);
         }
     }
 }

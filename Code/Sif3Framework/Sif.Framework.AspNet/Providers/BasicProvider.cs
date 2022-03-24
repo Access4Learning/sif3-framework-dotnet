@@ -207,7 +207,7 @@ namespace Sif.Framework.AspNet.Providers
 
                     try
                     {
-                        Service.Update(item, (zoneId?[0]), (contextId?[0]));
+                        Service.Update(item, zoneId?[0], contextId?[0]);
                         status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                     }
                     catch (ArgumentException e)

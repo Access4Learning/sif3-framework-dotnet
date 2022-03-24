@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Tardigrade.Framework.Models.Domain;
 
@@ -38,7 +39,7 @@ namespace Sif.Framework.AspNet.Controllers
         /// <summary>
         /// Authentication service.
         /// </summary>
-        protected IAuthenticationService AuthService;
+        protected IAuthenticationService<HttpRequestHeaders> AuthService;
 
         /// <summary>
         /// Service for SIF Object operations.
@@ -50,7 +51,9 @@ namespace Sif.Framework.AspNet.Controllers
         /// </summary>
         /// <param name="service">Service used for managing conversion between the object types.</param>
         /// <param name="authService">Authentication service.</param>
-        protected SifController(ISifService<TDto, TEntity> service, IAuthenticationService authService)
+        protected SifController(
+            ISifService<TDto, TEntity> service,
+            IAuthenticationService<HttpRequestHeaders> authService)
         {
             Service = service;
             AuthService = authService;

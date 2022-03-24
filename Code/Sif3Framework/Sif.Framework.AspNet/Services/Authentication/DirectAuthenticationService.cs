@@ -20,7 +20,7 @@ using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Mapper;
 using Sif.Specification.Infrastructure;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.AspNet.Services.Authentication
 {
     /// <inheritdoc />
     public class DirectAuthenticationService : AuthenticationService
@@ -36,7 +36,7 @@ namespace Sif.Framework.Service.Authentication
             _environmentService = environmentService;
         }
 
-        /// <inheritdoc cref="IAuthenticationService.GetEnvironmentBySessionToken(string)" />
+        /// <inheritdoc cref="Framework.Service.Authentication.IAuthenticationService{THeaders}.GetEnvironmentBySessionToken(string)" />
         public override Environment GetEnvironmentBySessionToken(string sessionToken)
         {
             environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);

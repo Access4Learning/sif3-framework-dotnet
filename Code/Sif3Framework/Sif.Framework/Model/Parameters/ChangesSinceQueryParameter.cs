@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace Sif.Framework.Model.Parameters
         /// <param name="value">Value associated with the message parameter.</param>
         /// <exception cref="System.ArgumentNullException">The value parameter is null or empty.</exception>
         public ChangesSinceQueryParameter(string value)
-            : base(RequestParameterType.changesSinceMarker.ToDescription(), ConveyanceType.QueryParameter, value)
+            : base(RequestParameterType.changesSinceMarker.ToDescription(), value, ConveyanceType.QueryParameter)
         {
         }
     }

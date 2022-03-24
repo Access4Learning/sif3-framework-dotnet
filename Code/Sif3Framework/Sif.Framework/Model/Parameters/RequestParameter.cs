@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ namespace Sif.Framework.Model.Parameters
         /// Create an instance of a request parameter.
         /// </summary>
         /// <param name="name">Name of the request parameter.</param>
-        /// <param name="type">Conveyance type for the request parameter.</param>
         /// <param name="value">Value associated with the request parameter.</param>
+        /// <param name="type">Conveyance type for the request parameter.</param>
         /// <exception cref="ArgumentNullException">Either name and/or value are null or empty.</exception>
-        public RequestParameter(string name, ConveyanceType type, string value) : base(name, value)
+        public RequestParameter(string name, string value, ConveyanceType type) : base(name, value)
         {
             Type = type;
         }

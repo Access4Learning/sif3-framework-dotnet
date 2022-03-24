@@ -17,16 +17,17 @@
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.Authentication;
 using Sif.Framework.Model.Exceptions;
+using Sif.Framework.Service.Authentication;
 using System;
 using System.Net.Http.Headers;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.AspNet.Services.Authentication
 {
-    /// <inheritdoc cref="IAuthenticationService"/>
-    public abstract class AuthenticationService : IAuthenticationService
+    /// <inheritdoc cref="IAuthenticationService{THeaders}"/>
+    public abstract class AuthenticationService : IAuthenticationService<HttpRequestHeaders>
     {
-        /// <inheritdoc cref="IAuthenticationService.GetEnvironmentBySessionToken(string)" />
+        /// <inheritdoc cref="IAuthenticationService{THeaders}.GetEnvironmentBySessionToken(string)" />
         public abstract Environment GetEnvironmentBySessionToken(string sessionToken);
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Sif.Framework.Service.Authentication
 
                         var authorisationToken = new AuthorisationToken
                         {
-                            Token = headers.Authorization.ToString(),
+                            Token = headers.Authorization?.ToString(),
                             Timestamp = timestamp
                         };
 
@@ -112,19 +113,19 @@ namespace Sif.Framework.Service.Authentication
             return verified;
         }
 
-        /// <inheritdoc cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders)" />
+        /// <inheritdoc cref="IAuthenticationService{THeaders}.VerifyAuthenticationHeader(THeaders)" />
         public virtual bool VerifyAuthenticationHeader(HttpRequestHeaders headers)
         {
             return VerifyAuthenticationHeader(headers, false, out string _);
         }
 
-        /// <inheritdoc cref="IAuthenticationService.VerifyAuthenticationHeader(HttpRequestHeaders, out string)" />
+        /// <inheritdoc cref="IAuthenticationService{THeaders}.VerifyAuthenticationHeader(THeaders, out string)" />
         public virtual bool VerifyAuthenticationHeader(HttpRequestHeaders headers, out string sessionToken)
         {
             return VerifyAuthenticationHeader(headers, false, out sessionToken);
         }
 
-        /// <inheritdoc cref="IAuthenticationService.VerifyInitialAuthenticationHeader(HttpRequestHeaders, out string)" />
+        /// <inheritdoc cref="IAuthenticationService{THeaders}.VerifyInitialAuthenticationHeader(THeaders, out string)" />
         public virtual bool VerifyInitialAuthenticationHeader(HttpRequestHeaders header, out string sessionToken)
         {
             return VerifyAuthenticationHeader(header, true, out sessionToken);

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.Extensions;
 using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Extensions;
 using Sif.Framework.Model.DataModels;
@@ -27,6 +28,7 @@ using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Serialisation;
 using Sif.Framework.Service.Sessions;
 using Sif.Specification.Infrastructure;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 
@@ -77,7 +79,7 @@ namespace Sif.Framework.AspNet.Providers
             }
 
             bool? mustUseAdvisory = Request.Headers.GetMustUseAdvisory();
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
             MultipleCreateResponse multipleCreateResponse = service.Create(
                 obj,
                 mustUseAdvisory,
@@ -112,7 +114,7 @@ namespace Sif.Framework.AspNet.Providers
                 return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
             }
 
-            RequestParameter[] requestParameters = GetQueryParameters(Request);
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
             MultipleUpdateResponse multipleUpdateResponse = service.Update(
                 obj,
                 zoneId?[0],
