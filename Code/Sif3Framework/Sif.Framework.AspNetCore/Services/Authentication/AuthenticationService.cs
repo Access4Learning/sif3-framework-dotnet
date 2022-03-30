@@ -80,7 +80,7 @@ public abstract class AuthenticationService : IAuthenticationService<IHeaderDict
                         headerValue.Scheme,
                         StringComparison.OrdinalIgnoreCase))
                 {
-                    var authorisationToken = new AuthorisationToken { Token = headerValue.Parameter };
+                    var authorisationToken = new AuthorisationToken { Token = headerValue.ToString() };
                     IAuthorisationTokenService authorisationTokenService = new BasicAuthorisationTokenService();
                     verified = authorisationTokenService.Verify(
                         authorisationToken,

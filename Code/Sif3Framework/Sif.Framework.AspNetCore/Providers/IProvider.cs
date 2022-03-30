@@ -43,7 +43,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Object created (TSingle).</returns>
-    IActionResult Post(TSingle obj, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Post(TSingle obj, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Create multiple objects.
@@ -59,7 +59,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Response containing status of each object created (createResponseType).</returns>
-    IActionResult Post(TMultiple obj, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Post(TMultiple obj, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Retrieve a single object.
@@ -77,14 +77,29 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Object with that SIF identifier (TSingle).</returns>
-    IActionResult Get(TPrimaryKey refId, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult GetById(TPrimaryKey refId, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Retrieve all objects.
-    /// <para>GET api/{controller} -> where obj is null</para>
+    /// <para>GET api/{controller}</para>
     /// <para/>
-    /// <para>Retrieve multiple objects using Query by Example.</para>
-    /// <para>GET api/{controller} -> POST api/{controller} where methodOverride=GET and obj is not null</para>
+    /// <para>200 - Success, ok</para>
+    /// <para>204 - Success, no content</para>
+    /// <para>400 - Failure, bad request</para>
+    /// <para>401 - Failure, unauthorised</para>
+    /// <para>403 - Failure, forbidden</para>
+    /// <para>413 - Failure, response too large</para>
+    /// <para>500 - Failure, internal service error</para>
+    /// </summary>
+    /// <param name="changesSinceMarker">Changes Since marker.</param>
+    /// <param name="zoneId">Zone associated with the request.</param>
+    /// <param name="contextId">Zone context.</param>
+    /// <returns>All objects if any; no objects otherwise (TMultiple).</returns>
+    IActionResult Get(string? changesSinceMarker = null, string? zoneId = null, string? contextId = null);
+
+    /// <summary>
+    /// Retrieve multiple objects using Query by Example.
+    /// <para>GET api/{controller} -> POST api/{controller} where methodOverride=GET</para>
     /// <para/>
     /// <para>200 - Success, ok</para>
     /// <para>204 - Success, no content</para>
@@ -98,12 +113,12 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="changesSinceMarker">Changes Since marker.</param>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
-    /// <returns>All objects, objects that match the properties of the example object or no objects (TMultiple).</returns>
-    IActionResult Get(
-        TSingle? obj,
-        string? changesSinceMarker = null,
-        string[]? zoneId = null,
-        string[]? contextId = null);
+    /// <returns>Objects that match the properties of the example object if any; no objects otherwise (TMultiple).</returns>
+    //IActionResult Get(
+    //    TSingle obj,
+    //    string? changesSinceMarker = null,
+    //    string? zoneId = null,
+    //    string? contextId = null);
 
     /// <summary>
     /// Retrieve multiple objects using Service Paths.
@@ -130,15 +145,15 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Objects that meet the associated object and identifier pairs (TMultiple).</returns>
-    IActionResult Get(
-        string object1,
-        string id1,
-        string? object2 = null,
-        string? id2 = null,
-        string? object3 = null,
-        string? id3 = null,
-        string[]? zoneId = null,
-        string[]? contextId = null);
+    //IActionResult Get(
+    //    string object1,
+    //    string id1,
+    //    string? object2 = null,
+    //    string? id2 = null,
+    //    string? object3 = null,
+    //    string? id3 = null,
+    //    string[]? zoneId = null,
+    //    string[]? contextId = null);
 
     /// <summary>
     /// Update a single object.
@@ -156,7 +171,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Result of the update request (void).</returns>
-    IActionResult Put(TPrimaryKey refId, TSingle obj, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Put(TPrimaryKey refId, TSingle obj, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Update multiple objects.
@@ -172,7 +187,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Response containing status of each object updated (updateResponseType).</returns>
-    IActionResult Put(TMultiple obj, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Put(TMultiple obj, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Delete a single object.
@@ -189,7 +204,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Result of the delete request (void).</returns>
-    IActionResult Delete(TPrimaryKey refId, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Delete(TPrimaryKey refId, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Delete multiple objects.
@@ -205,7 +220,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>Response containing status of each object deleted (deleteResponseType).</returns>
-    IActionResult Delete(deleteRequestType deleteRequest, string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Delete(deleteRequestType deleteRequest, string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Retrieve the message headers associated with a call to retrieve all objects.
@@ -222,7 +237,7 @@ public interface IProvider<in TSingle, in TMultiple, in TPrimaryKey>
     /// <param name="zoneId">Zone associated with the request.</param>
     /// <param name="contextId">Zone context.</param>
     /// <returns>No objects, just message header information (void).</returns>
-    IActionResult Head(string[]? zoneId = null, string[]? contextId = null);
+    IActionResult Head(string? zoneId = null, string? contextId = null);
 
     /// <summary>
     /// Broadcast SIF Events.

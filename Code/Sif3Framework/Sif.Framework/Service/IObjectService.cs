@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace Sif.Framework.Service
     /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
     /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Primary key type of the SIF data model object.</typeparam>
-    public interface IObjectService<TSingle, TMultiple, TPrimaryKey> : IService
+    public interface IObjectService<TSingle, out TMultiple, in TPrimaryKey> : IService
     {
         /// <summary>
         /// Create an object.
@@ -36,7 +36,7 @@ namespace Sif.Framework.Service
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
-        /// <exception cref="Model.Exceptions.AlreadyExistsException">Object already exists.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.AlreadyExistsException">Object already exists.</exception>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.CreateException">Error creating object.</exception>
         /// <exception cref="Model.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
@@ -57,7 +57,7 @@ namespace Sif.Framework.Service
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Model.Exceptions.DeleteException">Error deleting object.</exception>
-        /// <exception cref="Model.Exceptions.NotFoundException">Object to delete not found.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.NotFoundException">Object to delete not found.</exception>
         void Delete(
             TPrimaryKey refId,
             string zoneId = null,
@@ -149,7 +149,7 @@ namespace Sif.Framework.Service
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.NotFoundException">Object to update not found.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.NotFoundException">Object to update not found.</exception>
         /// <exception cref="Model.Exceptions.UpdateException">Error updating objects.</exception>
         void Update(
             TSingle obj,

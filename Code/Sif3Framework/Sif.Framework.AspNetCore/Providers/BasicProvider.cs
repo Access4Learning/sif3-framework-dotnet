@@ -38,6 +38,7 @@ namespace Sif.Framework.AspNetCore.Providers;
 /// type System.String and the multiple objects entity is represented as a list of single objects.
 /// </summary>
 /// <typeparam name="T">Type of object associated with the Service Provider.</typeparam>
+[ApiController]
 public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefId<string>
 {
     /// <inheritdoc />
@@ -52,12 +53,13 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
     }
 
     /// <summary>
-    /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string[], string[])">Post</see>
+    /// <see cref="Provider{TSingle, TMultiple}.Post(TMultiple, string, string)">Post</see>
     /// </summary>
+    [HttpPost]
     public override IActionResult Post(
         List<T> items,
-        string[]? zoneId = null,
-        string[]? contextId = null)
+        [FromQuery] string? zoneId = null,
+        [FromQuery] string? contextId = null)
     {
         if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
         {
@@ -68,11 +70,6 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
         if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
         {
             return StatusCode(StatusCodes.Status403Forbidden);
-        }
-
-        if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
-        {
-            return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
         }
 
         ICollection<createType> createStatuses = new List<createType>();
@@ -86,7 +83,7 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
                 bool hasAdvisoryId = !string.IsNullOrWhiteSpace(item.RefId);
                 var status = new createType
                 {
-                    advisoryId = (hasAdvisoryId ? item.RefId : null)
+                    advisoryId = hasAdvisoryId ? item.RefId : null
                 };
 
                 try
@@ -103,13 +100,13 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
                         }
                         else
                         {
-                            status.id = Service.Create(item, mustUseAdvisory, zoneId?[0], contextId?[0]).RefId;
+                            status.id = Service.Create(item, mustUseAdvisory, zoneId, contextId).RefId;
                             status.statusCode = ((int)HttpStatusCode.Created).ToString();
                         }
                     }
                     else
                     {
-                        status.id = Service.Create(item, null, zoneId?[0], contextId?[0]).RefId;
+                        status.id = Service.Create(item, null, zoneId, contextId).RefId;
                         status.statusCode = ((int)HttpStatusCode.Created).ToString();
                     }
                 }
@@ -168,12 +165,13 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
     }
 
     /// <summary>
-    /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string[], string[])">Put</see>
+    /// <see cref="Provider{TSingle, TMultiple}.Put(TMultiple, string, string)">Put</see>
     /// </summary>
+    [HttpPut]
     public override IActionResult Put(
         List<T> items,
-        string[]? zoneId = null,
-        string[]? contextId = null)
+        [FromQuery] string? zoneId = null,
+        [FromQuery] string? contextId = null)
     {
         if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
         {
@@ -184,11 +182,6 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
         if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
         {
             return StatusCode(StatusCodes.Status403Forbidden);
-        }
-
-        if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
-        {
-            return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
         }
 
         ICollection<updateType> updateStatuses = new List<updateType>();
@@ -204,7 +197,7 @@ public abstract class BasicProvider<T> : Provider<T, List<T>> where T : ISifRefI
 
                 try
                 {
-                    Service.Update(item, zoneId?[0], contextId?[0]);
+                    Service.Update(item, zoneId, contextId);
                     status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
                 }
                 catch (ArgumentException e)

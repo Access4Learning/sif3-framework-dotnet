@@ -67,6 +67,9 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - _***Backward Incompatibility***_ Dropped support for the .NET Framework 4.7.2 target from the Sif.Framework project.
 - _***Backward Incompatibility***_ Removed the ASP.NET Web API specific NuGet packages from the Sif.Framework project - Microsoft.AspNet.WebApi.Core, Microsoft.AspNet.WebApi.WebHost.
 - _***Backward Incompatibility***_ Moved remaining ASP.NET Web API specific classes from the Sif.Framework project to the Sif.Framework.AspNet project.
+- Resolved runtime issues with the ASP.NET Core Providers.
+- Temporarily commented out code associated with Query by Example and Query by Service Path.
+- Created an ASP.NET Core Provider demo project that uses NHibernate.
 - Moved the IProvider.cs interface back from the Sif.Framework project to the Sif.Framework.AspNet project.
 - Deleted the NHibernate mapping files and repositories from the Sif.Framework project.
 - Updated the NHibernate mapping files to reference the new Sif.Framework.NHibernate assembly.

@@ -36,6 +36,7 @@ namespace Sif.Framework.AspNetCore.Providers;
 /// </summary>
 /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
 /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
+[ApiController]
 public abstract class ObjectProvider<TSingle, TMultiple>
     : Provider<TSingle, TMultiple> where TSingle : ISifRefId<string>
 {
@@ -53,11 +54,12 @@ public abstract class ObjectProvider<TSingle, TMultiple>
         this.service = service;
     }
 
-    /// <inheritdoc cref="IProvider{TSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])" />
+    /// <inheritdoc cref="IProvider{TSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string, string)" />
+    [HttpPost]
     public override IActionResult Post(
         TMultiple obj,
-        string[]? zoneId = null,
-        string[]? contextId = null)
+        [FromQuery] string? zoneId = null,
+        [FromQuery] string? contextId = null)
     {
         if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
         {
@@ -70,18 +72,13 @@ public abstract class ObjectProvider<TSingle, TMultiple>
             return StatusCode(StatusCodes.Status403Forbidden);
         }
 
-        if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
-        {
-            return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
-        }
-
         bool? mustUseAdvisory = Request.Headers.GetMustUseAdvisory();
         RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
         MultipleCreateResponse multipleCreateResponse = service.Create(
             obj,
             mustUseAdvisory,
-            zoneId?[0],
-            contextId?[0],
+            zoneId,
+            contextId,
             requestParameters);
         createResponseType createResponse =
             MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(multipleCreateResponse);
@@ -89,11 +86,12 @@ public abstract class ObjectProvider<TSingle, TMultiple>
         return Ok(createResponse);
     }
 
-    /// <inheritdoc cref="IProvider{TSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])" />
+    /// <inheritdoc cref="IProvider{TSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string, string)" />
+    [HttpPut]
     public override IActionResult Put(
         TMultiple obj,
-        string[]? zoneId = null,
-        string[]? contextId = null)
+        [FromQuery] string? zoneId = null,
+        [FromQuery] string? contextId = null)
     {
         if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
         {
@@ -106,16 +104,11 @@ public abstract class ObjectProvider<TSingle, TMultiple>
             return StatusCode(StatusCodes.Status403Forbidden);
         }
 
-        if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
-        {
-            return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
-        }
-
         RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
         MultipleUpdateResponse multipleUpdateResponse = service.Update(
             obj,
-            zoneId?[0],
-            contextId?[0],
+            zoneId,
+            contextId,
             requestParameters);
         updateResponseType updateResponse =
             MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(multipleUpdateResponse);

@@ -65,7 +65,7 @@ namespace Sif.Framework.NHibernate.Persistence
                     }
                     else
                     {
-                        configFilePath = "SifFramework.cfg.xml";
+                        configFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}SifFramework.cfg.xml";
                     }
 #endif
 

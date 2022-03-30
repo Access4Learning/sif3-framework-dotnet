@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Service.Providers
+using Sif.Framework.Model.DataModels;
+using Sif.Specification.DataModel.Au;
+using System.Xml.Serialization;
+
+namespace Sif.Framework.Demo.AspNet.Provider.Models;
+
+[XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+[XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
+public class SchoolInfo : SchoolInfoType, IDataModel
 {
-    /// <summary>
-    /// This interface defines the services available for Providers of SIF data model objects.
-    /// </summary>
-    /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
-    /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
-    public interface IProviderService<TSingle, out TMultiple> : IObjectService<TSingle, TMultiple, string>
-    {
-    }
 }
