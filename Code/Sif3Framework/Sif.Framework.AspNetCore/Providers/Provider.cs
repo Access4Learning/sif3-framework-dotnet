@@ -48,6 +48,7 @@ namespace Sif.Framework.AspNetCore.Providers;
 /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
 /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
 [ApiController]
+[FormatFilter]
 public abstract class Provider<TSingle, TMultiple>
     : ControllerBase, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple>
     where TSingle : ISifRefId<string>
@@ -206,6 +207,7 @@ public abstract class Provider<TSingle, TMultiple>
 
     /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.GetById(TPrimaryKey, string, string)" />
     [HttpGet("{id}")]
+    [HttpGet("{id}.{format?}")]
     public virtual IActionResult GetById(
         [FromRoute(Name = "id")] string refId,
         [FromQuery] string? zoneId = null,
@@ -403,6 +405,7 @@ public abstract class Provider<TSingle, TMultiple>
 
     /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(string, string, string)" />
     [HttpGet]
+    [HttpGet(".{format?}")]
     public virtual IActionResult Get(
         string? changesSinceMarker = null,
         [FromQuery] string? zoneId = null,
@@ -831,9 +834,7 @@ public abstract class Provider<TSingle, TMultiple>
             result = GetAll(zoneId, contextId);
 
             // Clear the body content.
-            // TODO Set the body content length to that of the original body before it was cleared.
-            byte[] emptyByteArray = Array.Empty<byte>();
-            Response.Body.WriteAsync(emptyByteArray, 0, emptyByteArray.Length);
+            // TODO Clear the body content, but set the body content length to that of the original body before it was cleared.
 
             if (Service is ISupportsChangesSince supportsChangesSince)
             {

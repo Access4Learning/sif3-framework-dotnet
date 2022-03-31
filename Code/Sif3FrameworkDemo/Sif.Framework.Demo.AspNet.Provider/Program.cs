@@ -1,10 +1,23 @@
-var builder = WebApplication.CreateBuilder(args);
+using Sif.Framework.AspNetCore.Formatters;
+using Sif.Framework.Demo.AspNet.Provider.Models;
+using Sif.Framework.Demo.AspNet.Provider.Utils;
+using Sif.Framework.Model.Settings;
+
+IFrameworkSettings settings = FrameworkConfigFactory.CreateSettings();
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers(options =>
+    {
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>(settings));
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>(settings));
+    })
+    .AddXmlSerializerFormatters();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 

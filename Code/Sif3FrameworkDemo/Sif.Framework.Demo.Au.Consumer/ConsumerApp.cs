@@ -93,18 +93,19 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Retrieve Bart Simpson using QBE.
 
-                if (Log.IsInfoEnabled) Log.Info("*** Retrieve Bart Simpson using QBE.");
+                // TODO Uncomment once the ASP.NET Core Provider has been fully implemented.
+                //if (Log.IsInfoEnabled) Log.Info("*** Retrieve Bart Simpson using QBE.");
 
-                var name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
-                var personInfo = new PersonInfoType { Name = name };
-                var studentPersonal = new StudentPersonal { PersonInfo = personInfo };
-                IEnumerable<StudentPersonal> filteredStudents = consumer.QueryByExample(studentPersonal);
+                //var name = new NameOfRecordType { FamilyName = "Simpson", GivenName = "Bart" };
+                //var personInfo = new PersonInfoType { Name = name };
+                //var studentPersonal = new StudentPersonal { PersonInfo = personInfo };
+                //IEnumerable<StudentPersonal> filteredStudents = consumer.QueryByExample(studentPersonal);
 
-                foreach (StudentPersonal student in filteredStudents)
-                {
-                    if (Log.IsInfoEnabled)
-                        Log.Info($"Filtered student name is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
-                }
+                //foreach (StudentPersonal student in filteredStudents)
+                //{
+                //    if (Log.IsInfoEnabled)
+                //        Log.Info($"Filtered student name is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
+                //}
 
                 // Create a new student.
 
@@ -161,76 +162,79 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Create multiple new students.
 
-                if (Log.IsInfoEnabled) Log.Info("*** Create multiple new students.");
+                // TODO Uncomment once the ASP.NET Core Provider has been fully implemented.
+                //if (Log.IsInfoEnabled) Log.Info("*** Create multiple new students.");
 
-                List<StudentPersonal> newStudents = CreateStudents(5);
+                //List<StudentPersonal> newStudents = CreateStudents(5);
 
-                try
-                {
-                    MultipleCreateResponse multipleCreateResponse = consumer.Create(newStudents);
-                    var count = 0;
+                //try
+                //{
+                //    MultipleCreateResponse multipleCreateResponse = consumer.Create(newStudents);
+                //    var count = 0;
 
-                    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
-                    {
-                        if (Log.IsInfoEnabled) Log.Info("Create status code is " + status.StatusCode);
+                //    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                //    {
+                //        if (Log.IsInfoEnabled) Log.Info("Create status code is " + status.StatusCode);
 
-                        newStudents[count++].RefId = status.Id;
-                    }
+                //        newStudents[count++].RefId = status.Id;
+                //    }
 
-                    // Update multiple students.
+                //    // Update multiple students.
 
-                    if (Log.IsInfoEnabled) Log.Info("*** Update multiple students.");
+                //    if (Log.IsInfoEnabled) Log.Info("*** Update multiple students.");
 
-                    foreach (StudentPersonal student in newStudents)
-                    {
-                        student.PersonInfo.Name.GivenName += "o";
-                    }
+                //    foreach (StudentPersonal student in newStudents)
+                //    {
+                //        student.PersonInfo.Name.GivenName += "o";
+                //    }
 
-                    try
-                    {
-                        MultipleUpdateResponse multipleUpdateResponse = consumer.Update(newStudents);
+                //    try
+                //    {
+                //        MultipleUpdateResponse multipleUpdateResponse = consumer.Update(newStudents);
 
-                        foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
-                        {
-                            if (Log.IsInfoEnabled) Log.Info("Update status code is " + status.StatusCode);
-                        }
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        if (Log.IsInfoEnabled) Log.Info("Access to update multiple students is rejected.");
-                    }
+                //        foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
+                //        {
+                //            if (Log.IsInfoEnabled) Log.Info("Update status code is " + status.StatusCode);
+                //        }
+                //    }
+                //    catch (UnauthorizedAccessException)
+                //    {
+                //        if (Log.IsInfoEnabled) Log.Info("Access to update multiple students is rejected.");
+                //    }
 
-                    // Delete multiple students.
+                //    // Delete multiple students.
 
-                    if (Log.IsInfoEnabled) Log.Info("*** Delete multiple students.");
+                //    if (Log.IsInfoEnabled) Log.Info("*** Delete multiple students.");
 
-                    ICollection<string> refIds =
-                        multipleCreateResponse.StatusRecords.Select(status => status.Id).ToList();
+                //    ICollection<string> refIds =
+                //        multipleCreateResponse.StatusRecords.Select(status => status.Id).ToList();
 
-                    try
-                    {
-                        MultipleDeleteResponse multipleDeleteResponse = consumer.Delete(refIds);
+                //    try
+                //    {
+                //        MultipleDeleteResponse multipleDeleteResponse = consumer.Delete(refIds);
 
-                        foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
-                        {
-                            if (Log.IsInfoEnabled) Log.Info("Delete status code is " + status.StatusCode);
-                        }
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        if (Log.IsInfoEnabled) Log.Info("Access to delete multiple students is rejected.");
-                    }
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    if (Log.IsInfoEnabled) Log.Info("Access to create multiple new students is rejected.");
-                }
+                //        foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
+                //        {
+                //            if (Log.IsInfoEnabled) Log.Info("Delete status code is " + status.StatusCode);
+                //        }
+                //    }
+                //    catch (UnauthorizedAccessException)
+                //    {
+                //        if (Log.IsInfoEnabled) Log.Info("Access to delete multiple students is rejected.");
+                //    }
+                //}
+                //catch (UnauthorizedAccessException)
+                //{
+                //    if (Log.IsInfoEnabled) Log.Info("Access to create multiple new students is rejected.");
+                //}
 
                 // Retrieve all students from zone "Gov" and context "Curr".
 
                 if (Log.IsInfoEnabled) Log.Info("*** Retrieve all students from zone \"Gov\" and context \"Curr\".");
 
-                IEnumerable<StudentPersonal> students = consumer.Query(zoneId: "Gov", contextId: "Curr");
+                // TODO Uncomment once the ASP.NET Core Provider has been fully implemented.
+                //IEnumerable<StudentPersonal> students = consumer.Query(zoneId: "Gov", contextId: "Curr");
+                IEnumerable<StudentPersonal> students = consumer.Query();
 
                 foreach (StudentPersonal student in students)
                 {
@@ -298,41 +302,42 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Retrieve students based on Teaching Group using Service Paths.
 
-                if (Log.IsInfoEnabled) Log.Info("*** Retrieve students based on Teaching Group using Service Paths.");
+                // TODO Uncomment once the ASP.NET Core Provider has been fully implemented.
+                //if (Log.IsInfoEnabled) Log.Info("*** Retrieve students based on Teaching Group using Service Paths.");
 
-                var condition = new EqualCondition()
-                {
-                    Left = "TeachingGroups",
-                    Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0"
-                };
+                //var condition = new EqualCondition()
+                //{
+                //    Left = "TeachingGroups",
+                //    Right = "597ad3fe-47e7-4b2c-b919-a93c564d19d0"
+                //};
 
-                IList<EqualCondition> conditions = new List<EqualCondition> { condition };
+                //IList<EqualCondition> conditions = new List<EqualCondition> { condition };
 
-                try
-                {
-                    IEnumerable<StudentPersonal> teachingGroupStudents = consumer.QueryByServicePath(conditions);
+                //try
+                //{
+                //    IEnumerable<StudentPersonal> teachingGroupStudents = consumer.QueryByServicePath(conditions);
 
-                    foreach (StudentPersonal student in teachingGroupStudents)
-                    {
-                        if (Log.IsInfoEnabled)
-                            Log.Info($"Student name is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
+                //    foreach (StudentPersonal student in teachingGroupStudents)
+                //    {
+                //        if (Log.IsInfoEnabled)
+                //            Log.Info($"Student name is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
 
-                        if (student.SIF_ExtendedElements == null || student.SIF_ExtendedElements.Length <= 0) continue;
+                //        if (student.SIF_ExtendedElements == null || student.SIF_ExtendedElements.Length <= 0) continue;
 
-                        foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
-                        {
-                            foreach (string content in element.Text)
-                            {
-                                if (Log.IsInfoEnabled) Log.Info($"Extended element text is ...\n{content}");
-                            }
-                        }
-                    }
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    if (Log.IsInfoEnabled)
-                        Log.Info("Access to query students by Service Path TeachingGroups/{}/StudentPersonals is rejected.");
-                }
+                //        foreach (SIF_ExtendedElementsTypeSIF_ExtendedElement element in student.SIF_ExtendedElements)
+                //        {
+                //            foreach (string content in element.Text)
+                //            {
+                //                if (Log.IsInfoEnabled) Log.Info($"Extended element text is ...\n{content}");
+                //            }
+                //        }
+                //    }
+                //}
+                //catch (UnauthorizedAccessException)
+                //{
+                //    if (Log.IsInfoEnabled)
+                //        Log.Info("Access to query students by Service Path TeachingGroups/{}/StudentPersonals is rejected.");
+                //}
 
                 // Retrieve student changes since a particular point as defined by the Changes Since marker.
 
