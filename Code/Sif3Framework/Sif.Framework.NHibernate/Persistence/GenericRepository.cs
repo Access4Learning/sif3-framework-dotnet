@@ -47,11 +47,11 @@ namespace Sif.Framework.NHibernate.Persistence
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var obj = session.Get<TEntity>(id);
+                    var item = session.Get<TEntity>(id);
 
-                    if (obj != null)
+                    if (item != null)
                     {
-                        session.Delete(obj);
+                        session.Delete(item);
                         transaction.Commit();
                     }
                 }
@@ -59,32 +59,32 @@ namespace Sif.Framework.NHibernate.Persistence
         }
 
         /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Delete(TEntity)" />
-        public virtual void Delete(TEntity obj)
+        public virtual void Delete(TEntity item)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             using (ISession session = SessionFactory.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Delete(obj);
+                    session.Delete(item);
                     transaction.Commit();
                 }
             }
         }
 
         /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Delete(IEnumerable{TEntity})" />
-        public virtual void Delete(IEnumerable<TEntity> objs)
+        public virtual void Delete(IEnumerable<TEntity> items)
         {
-            if (objs == null) throw new ArgumentNullException(nameof(objs));
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             using (ISession session = SessionFactory.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    foreach (TEntity obj in objs)
+                    foreach (TEntity item in items)
                     {
-                        session.Delete(obj);
+                        session.Delete(item);
                     }
 
                     transaction.Commit();
@@ -111,13 +111,13 @@ namespace Sif.Framework.NHibernate.Persistence
         }
 
         /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Retrieve(TEntity)" />
-        public virtual ICollection<TEntity> Retrieve(TEntity obj)
+        public virtual ICollection<TEntity> Retrieve(TEntity item)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             using (ISession session = SessionFactory.OpenSession())
             {
-                Example example = Example.Create(obj).EnableLike(MatchMode.Anywhere).ExcludeZeroes().IgnoreCase();
+                Example example = Example.Create(item).EnableLike(MatchMode.Anywhere).ExcludeZeroes().IgnoreCase();
 
                 return session.CreateCriteria(typeof(TEntity)).Add(example).List<TEntity>();
             }
@@ -133,45 +133,45 @@ namespace Sif.Framework.NHibernate.Persistence
         }
 
         /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Save(TEntity)" />
-        public virtual TKey Save(TEntity obj)
+        public virtual TKey Save(TEntity item)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
-            TKey objId;
+            TKey id;
 
             using (ISession session = SessionFactory.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    if (!EqualityComparer<TKey>.Default.Equals(obj.Id, default(TKey)))
+                    if (!EqualityComparer<TKey>.Default.Equals(item.Id, default(TKey)))
                     {
-                        session.Update(obj);
-                        objId = obj.Id;
+                        session.Update(item);
+                        id = item.Id;
                     }
                     else
                     {
-                        objId = (TKey)session.Save(obj);
+                        id = (TKey)session.Save(item);
                     }
 
                     transaction.Commit();
                 }
             }
 
-            return objId;
+            return id;
         }
 
         /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Save(IEnumerable{TEntity})" />
-        public virtual void Save(IEnumerable<TEntity> objs)
+        public virtual void Save(IEnumerable<TEntity> items)
         {
-            if (objs == null) throw new ArgumentNullException(nameof(objs));
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             using (ISession session = SessionFactory.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    foreach (TEntity obj in objs)
+                    foreach (TEntity item in items)
                     {
-                        session.SaveOrUpdate(obj);
+                        session.SaveOrUpdate(item);
                     }
 
                     transaction.Commit();
@@ -179,6 +179,7 @@ namespace Sif.Framework.NHibernate.Persistence
             }
         }
 
+        /// <inheritdoc cref="IGenericRepository{TEntity,TKey}.Exists" />
         public virtual bool Exists(TKey id)
         {
             using (ISession session = SessionFactory.OpenSession())

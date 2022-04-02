@@ -78,7 +78,8 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Created an XML formatter to remove the ArrayOf prefix and append an "s" postfix when serialising a collection of objects.
 - Updated the Provider to allow specification of the Response content from the URL.
 - Temporarily commented out sections of the demo AU ConsumerApp until the ASP.NET Core version of the demo Provider can be fully implemented.
-- Temporarily changed the service endpoints in the EnvironmentResponse.xml data file for AU Sif3DemoConsumer.
+- Added an EntityFrameworkCore specific integration project - Tardigrade.Framework.EntityFrameworkCore.
+- Created demo setup data files for the AU Consumer to connect to the ASP.NET Core demo Provider.
 - Updated third-party NuGet packages.
 - General code clean-up.
 

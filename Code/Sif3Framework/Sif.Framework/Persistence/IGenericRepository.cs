@@ -35,16 +35,16 @@ namespace Sif.Framework.Persistence
         /// <summary>
         /// Delete the object.
         /// </summary>
-        /// <param name="obj">Object to delete.</param>
-        /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
-        void Delete(TEntity obj);
+        /// <param name="item">Object to delete.</param>
+        /// <exception cref="System.ArgumentNullException">item parameter is null.</exception>
+        void Delete(TEntity item);
 
         /// <summary>
         /// Delete multiple objects.
         /// </summary>
-        /// <param name="objs">Objects delete.</param>
-        /// <exception cref="System.ArgumentNullException">objs parameter is null.</exception>
-        void Delete(IEnumerable<TEntity> objs);
+        /// <param name="items">Objects delete.</param>
+        /// <exception cref="System.ArgumentNullException">items parameter is null.</exception>
+        void Delete(IEnumerable<TEntity> items);
 
         /// <summary>
         /// Retrieve the object based upon it's unique identifier.
@@ -62,9 +62,9 @@ namespace Sif.Framework.Persistence
         /// <summary>
         /// Retrieve all objects based upon the example instance.
         /// </summary>
-        /// <param name="obj">Example instance to match on.</param>
+        /// <param name="item">Example instance to match on.</param>
         /// <returns>All objects that match the example instance.</returns>
-        ICollection<TEntity> Retrieve(TEntity obj);
+        ICollection<TEntity> Retrieve(TEntity item);
 
         /// <summary>
         /// Retrieve a range of objects.
@@ -77,17 +77,17 @@ namespace Sif.Framework.Persistence
         /// <summary>
         /// Save the object.
         /// </summary>
-        /// <param name="obj">Object to save.</param>
+        /// <param name="item">Object to save.</param>
         /// <returns>Unique identifier for the object.</returns>
-        /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
-        TKey Save(TEntity obj);
+        /// <exception cref="System.ArgumentNullException">item parameter is null.</exception>
+        TKey Save(TEntity item);
 
         /// <summary>
         /// Save multiple objects.
         /// </summary>
-        /// <param name="objs">Objects to save.</param>
-        /// <exception cref="System.ArgumentNullException">obj parameter is null.</exception>
-        void Save(IEnumerable<TEntity> objs);
+        /// <param name="items">Objects to save.</param>
+        /// <exception cref="System.ArgumentNullException">item parameter is null.</exception>
+        void Save(IEnumerable<TEntity> items);
 
         /// <summary>
         /// Check if an id exists.

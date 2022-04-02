@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNetCore.En
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.NHibernate", "Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj", "{D979BBDA-71ED-4856-B69F-C89EF643FDEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.AspNetCore", "Sif.Framework.AspNetCore\Sif.Framework.AspNetCore.csproj", "{521593CC-2DEF-4463-9E37-54FEFDF334A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNetCore", "Sif.Framework.AspNetCore\Sif.Framework.AspNetCore.csproj", "{521593CC-2DEF-4463-9E37-54FEFDF334A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFrameworkCore", "Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj", "{5F7783F1-C83A-4566-8A57-0B0B9C961D09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{521593CC-2DEF-4463-9E37-54FEFDF334A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{521593CC-2DEF-4463-9E37-54FEFDF334A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{521593CC-2DEF-4463-9E37-54FEFDF334A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F7783F1-C83A-4566-8A57-0B0B9C961D09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F7783F1-C83A-4566-8A57-0B0B9C961D09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F7783F1-C83A-4566-8A57-0B0B9C961D09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F7783F1-C83A-4566-8A57-0B0B9C961D09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
