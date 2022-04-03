@@ -30,7 +30,7 @@ namespace Sif.Framework.Service.Mapper
     /// </summary>
     public static class MapperFactory
     {
-        private static readonly IMapper Mapper;
+        public static IMapper Mapper { get; }
 
         private class InfrastructureServicesConverter : ITypeConverter<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>
         {

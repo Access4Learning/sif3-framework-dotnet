@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Service
 {
@@ -24,90 +23,69 @@ namespace Sif.Framework.Service
     /// Service interface for CRUD operations based on Data Transfer Objects (DTOs).
     /// </summary>
     /// <typeparam name="TDto">DTO used by the presentation layer.</typeparam>
-    /// <typeparam name="TEntity">Model object used by the persistence layer.</typeparam>
-    public interface ISifService<TDto, TEntity> : IService where TEntity : IHasUniqueIdentifier<Guid>
+    public interface ISifService<TDto> : IService
     {
         /// <summary>
         /// Create a single object.
         /// </summary>
         /// <param name="item">Object to create.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
         /// <returns>Unique identifier for the created object.</returns>
-        Guid Create(TDto item, string zoneId = null, string contextId = null);
+        Guid Create(TDto item);
 
         /// <summary>
         /// Create multiple objects.
         /// </summary>
         /// <param name="items">Objects to create.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
-        void Create(IEnumerable<TDto> items, string zoneId = null, string contextId = null);
+        void Create(IEnumerable<TDto> items);
 
         /// <summary>
         /// Delete an object.
         /// </summary>
         /// <param name="id">Unique identifier for the object to delete.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
-        void Delete(Guid id, string zoneId = null, string contextId = null);
+        void Delete(Guid id);
 
         /// <summary>
         /// Delete an object.
         /// </summary>
         /// <param name="item">Object to delete.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
-        void Delete(TDto item, string zoneId = null, string contextId = null);
+        void Delete(TDto item);
 
         /// <summary>
         /// Delete multiple objects.
         /// </summary>
         /// <param name="items">Objects to delete.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
-        void Delete(IEnumerable<TDto> items, string zoneId = null, string contextId = null);
+        void Delete(IEnumerable<TDto> items);
 
         /// <summary>
         /// Retrieve an object.
         /// </summary>
         /// <param name="id">Unique identifier for the object to retrieve.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
         /// <returns>Object retrieved.</returns>
-        TDto Retrieve(Guid id, string zoneId = null, string contextId = null);
+        TDto Retrieve(Guid id);
 
         /// <summary>
         /// Retrieve objects based upon an example (filter) object.
         /// </summary>
         /// <param name="item">Example (filter) object.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
         /// <returns>Objects matching the example (filter) object.</returns>
-        ICollection<TDto> Retrieve(TDto item, string zoneId = null, string contextId = null);
+        ICollection<TDto> Retrieve(TDto item);
 
         /// <summary>
         /// Retrieve all objects.
         /// </summary>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
         /// <returns>All objects.</returns>
-        ICollection<TDto> Retrieve(string zoneId = null, string contextId = null);
+        ICollection<TDto> Retrieve();
 
         /// <summary>
         /// Update an object.
         /// </summary>
         /// <param name="item">Object to update.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
-        void Update(TDto item, string zoneId = null, string contextId = null);
+        void Update(TDto item);
 
         /// <summary>
         /// Update multiple objects.
         /// </summary>
         /// <param name="items">Objects to update.</param>
-        /// <param name="zoneId">Zone associated with the request.</param>
-        /// <param name="contextId">Zone context.</param>
-        void Update(IEnumerable<TDto> items, string zoneId = null, string contextId = null);
+        void Update(IEnumerable<TDto> items);
     }
 }

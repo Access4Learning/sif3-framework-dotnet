@@ -133,8 +133,8 @@ namespace Sif.Framework.Service.Functional
             return bound;
         }
 
-        /// <see cref="ISifService{UI, DB}.Create(UI, string, string)"/>
-        public override Guid Create(jobType item, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Create(TDto)"/>
+        public override Guid Create(jobType item)
         {
             Job job = MapperFactory.CreateInstance<jobType, Job>(item);
 
@@ -149,8 +149,8 @@ namespace Sif.Framework.Service.Functional
             return Repository.Create(job).Id;
         }
 
-        /// <see cref="ISifService{UI, DB}.Create(IEnumerable{UI}, string, string)"/>
-        public override void Create(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Create(IEnumerable{TDto})"/>
+        public override void Create(IEnumerable<jobType> items)
         {
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
 
@@ -167,20 +167,20 @@ namespace Sif.Framework.Service.Functional
             }
         }
 
-        /// <see cref="ISifService{UI, DB}.Update(UI, string, string)"/>
-        public override void Update(jobType item, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Update(TDto)"/>
+        public override void Update(jobType item)
         {
             throw new RejectedException();
         }
 
-        /// <see cref="ISifService{UI, DB}.Update(IEnumerable{UI}, string, string)"/>
-        public override void Update(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Update(IEnumerable{TDto})"/>
+        public override void Update(IEnumerable<jobType> items)
         {
             throw new RejectedException();
         }
 
-        /// <see cref="ISifService{UI, DB}.Retrieve(Guid, string, string)"/>
-        public override jobType Retrieve(Guid id, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Retrieve(Guid)"/>
+        public override jobType Retrieve(Guid id)
         {
             Job job = Repository.Retrieve(id);
             AcceptJob(job);
@@ -188,14 +188,14 @@ namespace Sif.Framework.Service.Functional
             return MapperFactory.CreateInstance<Job, jobType>(job);
         }
 
-        /// <see cref="ISifService{UI, DB}.Retrieve(UI, string, string)"/>
-        public override ICollection<jobType> Retrieve(jobType item, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Retrieve(TDto)"/>
+        public override ICollection<jobType> Retrieve(jobType item)
         {
             throw new NotImplementedException();
         }
 
-        /// <see cref="ISifService{UI, DB}.Retrieve(string, string)"/>
-        public override ICollection<jobType> Retrieve(string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Retrieve()"/>
+        public override ICollection<jobType> Retrieve()
         {
             IList<Job> repoItems = (from Job job in Repository.Retrieve()
                                     where AcceptJob(job)
@@ -204,8 +204,8 @@ namespace Sif.Framework.Service.Functional
             return MapperFactory.CreateInstances<Job, jobType>(repoItems);
         }
 
-        /// <see cref="ISifService{UI, DB}.Delete(Guid, string, string)"/>
-        public override void Delete(Guid id, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Delete(Guid)"/>
+        public override void Delete(Guid id)
         {
             try
             {
@@ -220,8 +220,8 @@ namespace Sif.Framework.Service.Functional
             }
         }
 
-        /// <see cref="ISifService{UI, DB}.Delete(UI, string, string)"/>
-        public override void Delete(jobType item, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Delete(TDto)"/>
+        public override void Delete(jobType item)
         {
             try
             {
@@ -236,8 +236,8 @@ namespace Sif.Framework.Service.Functional
             }
         }
 
-        /// <see cref="ISifService{UI, DB}.Delete(IEnumerable{UI}, string, string)"/>
-        public override void Delete(IEnumerable<jobType> items, string zoneId = null, string contextId = null)
+        /// <see cref="ISifService{TDto}.Delete(IEnumerable{TDto})"/>
+        public override void Delete(IEnumerable<jobType> items)
         {
             ICollection<Job> jobs = MapperFactory.CreateInstances<jobType, Job>(items);
 

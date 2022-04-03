@@ -24,7 +24,7 @@ using Tardigrade.Framework.Persistence;
 namespace Sif.Framework.Service
 {
     /// <inheritdoc />
-    public abstract class SifService<TDto, TEntity> : ISifService<TDto, TEntity>
+    public abstract class SifService<TDto, TEntity> : ISifService<TDto>
         where TEntity : IHasUniqueIdentifier<Guid>, new()
     {
         /// <summary>
@@ -41,16 +41,16 @@ namespace Sif.Framework.Service
             Repository = repository;
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Create(TDto, string, string)" />
-        public virtual Guid Create(TDto item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Create(TDto)" />
+        public virtual Guid Create(TDto item)
         {
             TEntity model = MapperFactory.CreateInstance<TDto, TEntity>(item);
 
             return Repository.Create(model).Id;
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Create(IEnumerable{TDto}, string, string)" />
-        public virtual void Create(IEnumerable<TDto> items, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Create(IEnumerable{TDto})" />
+        public virtual void Create(IEnumerable<TDto> items)
         {
             ICollection<TEntity> models = MapperFactory.CreateInstances<TDto, TEntity>(items);
 
@@ -60,22 +60,22 @@ namespace Sif.Framework.Service
             }
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Delete(Guid, string, string)" />
-        public virtual void Delete(Guid id, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Delete(Guid)" />
+        public virtual void Delete(Guid id)
         {
             TEntity model = Repository.Retrieve(id);
             Repository.Delete(model);
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Delete(TDto, string, string)" />
-        public virtual void Delete(TDto item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Delete(TDto)" />
+        public virtual void Delete(TDto item)
         {
             TEntity model = MapperFactory.CreateInstance<TDto, TEntity>(item);
             Repository.Delete(model);
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Delete(IEnumerable{TDto}, string, string)" />
-        public virtual void Delete(IEnumerable<TDto> items, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Delete(IEnumerable{TDto})" />
+        public virtual void Delete(IEnumerable<TDto> items)
         {
             ICollection<TEntity> models = MapperFactory.CreateInstances<TDto, TEntity>(items);
 
@@ -85,37 +85,37 @@ namespace Sif.Framework.Service
             }
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Retrieve(Guid, string, string)" />
-        public virtual TDto Retrieve(Guid id, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Retrieve(Guid)" />
+        public virtual TDto Retrieve(Guid id)
         {
             TEntity model = Repository.Retrieve(id);
 
             return MapperFactory.CreateInstance<TEntity, TDto>(model);
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Retrieve(TDto, string, string)" />
-        public virtual ICollection<TDto> Retrieve(TDto item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Retrieve(TDto)" />
+        public virtual ICollection<TDto> Retrieve(TDto item)
         {
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Retrieve(string, string)" />
-        public virtual ICollection<TDto> Retrieve(string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Retrieve()" />
+        public virtual ICollection<TDto> Retrieve()
         {
             ICollection<TEntity> models = Repository.Retrieve().ToList();
 
             return MapperFactory.CreateInstances<TEntity, TDto>(models);
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Update(TDto, string, string)" />
-        public virtual void Update(TDto item, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Update(TDto)" />
+        public virtual void Update(TDto item)
         {
             TEntity model = MapperFactory.CreateInstance<TDto, TEntity>(item);
             Repository.Update(model);
         }
 
-        /// <inheritdoc cref="ISifService{TDto, TEntity}.Update(IEnumerable{TDto}, string, string)" />
-        public virtual void Update(IEnumerable<TDto> items, string zoneId = null, string contextId = null)
+        /// <inheritdoc cref="ISifService{TDto}.Update(IEnumerable{TDto})" />
+        public virtual void Update(IEnumerable<TDto> items)
         {
             ICollection<TEntity> models = MapperFactory.CreateInstances<TDto, TEntity>(items);
 

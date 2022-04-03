@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
 using Sif.Specification.Infrastructure;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-    public interface IEnvironmentService : ISifService<environmentType, Environment>
+    public interface IEnvironmentService : ISifService<environmentType>
     {
         environmentType RetrieveBySessionToken(string sessionToken);
     }

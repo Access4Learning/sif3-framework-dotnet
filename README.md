@@ -82,6 +82,8 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Created demo setup data files for the AU Consumer to connect to the ASP.NET Core demo Provider.
 - Deprecated and deleted the IGenericRepository interface in-lieu of the IRepository interface from the Tardigrade.Framework NuGet package. This required the removal of bulk operations and retrieval by example object.
 - Deprecated and deleted the IGenericService interface in-lieu of the IObjectService interface from the Tardigrade.Framework NuGet package.
+- Removed redundant TEntity generic parameter from the ISifService interface.
+- Removed redundant zoneId and contextId parameters from all methods of the ISifService interface.
 - Updated third-party NuGet packages.
 - General code clean-up.
 

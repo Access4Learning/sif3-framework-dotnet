@@ -44,7 +44,7 @@ namespace Sif.Framework.AspNet.Controllers
         /// <summary>
         /// Service for SIF Object operations.
         /// </summary>
-        protected ISifService<TDto, TEntity> Service;
+        protected ISifService<TDto> Service;
 
         /// <summary>
         /// Create an instance.
@@ -52,7 +52,7 @@ namespace Sif.Framework.AspNet.Controllers
         /// <param name="service">Service used for managing conversion between the object types.</param>
         /// <param name="authService">Authentication service.</param>
         protected SifController(
-            ISifService<TDto, TEntity> service,
+            ISifService<TDto> service,
             IAuthenticationService<HttpRequestHeaders> authService)
         {
             Service = service;

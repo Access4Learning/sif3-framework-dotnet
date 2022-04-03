@@ -24,7 +24,7 @@ namespace Sif.Framework.Service.Functional
     /// <summary>
     /// Interface that Functional services must implement
     /// </summary>
-    public interface IFunctionalService : ISifService<jobType, Job>
+    public interface IFunctionalService : ISifService<jobType>
     {
         /// <summary>
         /// Get the defined name of this service. Must be plural form, for example for a job named "Payload" this method should return "Payloads". Another example, for a job named "ISBSubmission" this should return "ISBSubmissions".

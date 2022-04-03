@@ -130,14 +130,14 @@ namespace Sif.Framework.AspNet.Providers
                         "Request requires use of advisory id, but none has been supplied.");
                 }
 
-                Guid id = service.Create(item, zoneId?[0], contextId?[0]);
+                Guid id = service.Create(item);
 
                 if (ProviderSettings.JobBinding)
                 {
                     service.Bind(id, GetOwnerId(sessionToken));
                 }
 
-                jobType job = service.Retrieve(id, zoneId?[0], contextId?[0]);
+                jobType job = service.Retrieve(id);
                 string uri = Url.Link("ServicesRoute", new { controller = serviceName, id });
                 result = Request.CreateResponse(HttpStatusCode.Created, job);
                 result.Headers.Location = new Uri(uri);
@@ -206,7 +206,7 @@ namespace Sif.Framework.AspNet.Providers
                                 $"Service {serviceName} does not handle jobs named {job.name}.");
                         }
 
-                        Guid id = service.Create(job, zoneId?[0], contextId?[0]);
+                        Guid id = service.Create(job);
 
                         if (ProviderSettings.JobBinding)
                         {
@@ -301,7 +301,7 @@ namespace Sif.Framework.AspNet.Providers
             try
             {
                 IFunctionalService service = GetService(serviceName);
-                ICollection<jobType> jobs = service.Retrieve(zoneId?[0], contextId?[0]);
+                ICollection<jobType> jobs = service.Retrieve();
 
                 foreach (jobType job in jobs)
                 {
@@ -349,7 +349,7 @@ namespace Sif.Framework.AspNet.Providers
             try
             {
                 IFunctionalService service = GetService(serviceName);
-                item = service.Retrieve(id, zoneId?[0], contextId?[0]);
+                item = service.Retrieve(id);
 
                 if (ProviderSettings.JobBinding && !service.IsBound(Guid.Parse(item.id), GetOwnerId(sessionToken)))
                 {
@@ -433,7 +433,7 @@ namespace Sif.Framework.AspNet.Providers
                         "Request failed as one or more jobs referred to in this request do not belong to this consumer.");
                 }
 
-                service.Delete(id, zoneId?[0], contextId?[0]);
+                service.Delete(id);
 
                 if (ProviderSettings.JobBinding)
                 {
@@ -478,7 +478,7 @@ namespace Sif.Framework.AspNet.Providers
                         throw new InvalidSessionException("Request failed as job does not belong to this consumer.");
                     }
 
-                    service.Delete(Guid.Parse(deleteId.id), zoneId?[0], contextId?[0]);
+                    service.Delete(Guid.Parse(deleteId.id));
 
                     if (ProviderSettings.JobBinding)
                     {
