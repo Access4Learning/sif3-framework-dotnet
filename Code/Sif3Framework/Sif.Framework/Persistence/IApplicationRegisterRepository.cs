@@ -15,10 +15,11 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Persistence
 {
-    public interface IApplicationRegisterRepository : IGenericRepository<ApplicationRegister, long>
+    public interface IApplicationRegisterRepository : IRepository<ApplicationRegister, long>
     {
         /// <summary>
         /// Retrieve the Application Register based upon it's application key.

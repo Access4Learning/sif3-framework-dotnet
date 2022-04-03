@@ -51,7 +51,11 @@ namespace Sif.Framework.Demo.Setup
                     ICollection<ApplicationRegister> applicationRegisters =
                         DataFactory.CreateApplicationRegisters(locale);
                     IApplicationRegisterRepository applicationRegisterRepository = new ApplicationRegisterRepository();
-                    applicationRegisterRepository.Save(applicationRegisters);
+
+                    foreach (ApplicationRegister applicationRegister in applicationRegisters)
+                    {
+                        applicationRegisterRepository.Create(applicationRegister);
+                    }
                 }
             }
             finally

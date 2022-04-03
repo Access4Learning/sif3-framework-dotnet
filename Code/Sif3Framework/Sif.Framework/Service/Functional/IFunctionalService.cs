@@ -114,23 +114,10 @@ namespace Sif.Framework.Service.Functional
         void Bind(Guid objectId, string ownerId);
 
         /// <summary>
-        /// Unbinds all (job) object refid from this session token
-        /// </summary>
-        /// <param name="ownerId">The session token to unbind all objects from</param>
-        void Unbind(string ownerId);
-
-        /// <summary>
         /// Unbinds the (job) object's refid from its associated session token
         /// </summary>
         /// <param name="objectId">The refid of the object to unbind from its session token</param>
         void Unbind(Guid objectId);
-
-        /// <summary>
-        /// Checks if the given (job) object id is bound, and if it is returns the session token.
-        /// </summary>
-        /// <param name="objectId">The refid of the object</param>
-        /// <returns>The session token this object id is bound to, null if not found</returns>
-        string GetBinding(Guid objectId);
 
         /// <summary>
         /// Returns true if the (job) object refid is associated with the session token.

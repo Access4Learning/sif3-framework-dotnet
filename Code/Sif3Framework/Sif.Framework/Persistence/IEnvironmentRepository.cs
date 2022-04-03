@@ -15,11 +15,12 @@
  */
 
 using System;
+using Tardigrade.Framework.Persistence;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence
 {
-    public interface IEnvironmentRepository : IGenericRepository<Environment, Guid>
+    public interface IEnvironmentRepository : IRepository<Environment, Guid>
     {
         /// <summary>
         /// Retrieve the Environment based upon it's session token.

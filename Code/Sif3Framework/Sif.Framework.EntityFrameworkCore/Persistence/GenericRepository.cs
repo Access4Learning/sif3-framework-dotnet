@@ -14,68 +14,19 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sif.Framework.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.EntityFrameworkCore.Persistence
+namespace Sif.Framework.EntityFrameworkCore.Persistence;
+
+/// <inheritdoc />
+public class GenericRepository<TEntity, TKey> : Repository<TEntity, TKey>
+    where TEntity : class, IHasUniqueIdentifier<TKey>
+    where TKey : IEquatable<TKey>
+
 {
-    /// <inheritdoc />
-    public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey>
-        where TEntity : class, IHasUniqueIdentifier<TKey>, new()
+    public GenericRepository(DbContext dbContext) : base(dbContext)
     {
-        public virtual void Delete(TKey id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Delete(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Delete(IEnumerable<TEntity> items)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual TEntity Retrieve(TKey id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual ICollection<TEntity> Retrieve()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual ICollection<TEntity> Retrieve(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual ICollection<TEntity> Retrieve(int pageIndex, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual TKey Save(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Save(IEnumerable<TEntity> items)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual bool Exists(TKey id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

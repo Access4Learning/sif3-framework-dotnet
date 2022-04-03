@@ -79,7 +79,7 @@ namespace Sif.Framework.Service.Infrastructure
         {
             // Save a new Environment and then retrieve it using it's identifier.
             Environment saved = DataFactory.CreateEnvironmentRequest();
-            Guid environmentId = environmentRepository.Save(saved);
+            Guid environmentId = environmentRepository.Create(saved).Id;
             environmentType retrieved = environmentService.Retrieve(environmentId);
 
             // Assert that the retrieved Environment matches the saved Environment.

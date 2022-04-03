@@ -41,10 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.3.11" />
   </ItemGroup>
 

@@ -80,6 +80,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Temporarily commented out sections of the demo AU ConsumerApp until the ASP.NET Core version of the demo Provider can be fully implemented.
 - Added an EntityFrameworkCore specific integration project - Tardigrade.Framework.EntityFrameworkCore.
 - Created demo setup data files for the AU Consumer to connect to the ASP.NET Core demo Provider.
+- Deprecated and deleted the IGenericRepository interface in-lieu of the IRepository interface from the Tardigrade.Framework NuGet package. This required the removal of bulk operations and retrieval by example object.
 - Updated third-party NuGet packages.
 - General code clean-up.
 

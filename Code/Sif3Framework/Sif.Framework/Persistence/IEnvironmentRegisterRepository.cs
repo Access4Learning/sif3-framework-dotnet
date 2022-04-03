@@ -15,10 +15,11 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Persistence
 {
-    public interface IEnvironmentRegisterRepository : IGenericRepository<EnvironmentRegister, long>
+    public interface IEnvironmentRegisterRepository : IRepository<EnvironmentRegister, long>
     {
         EnvironmentRegister RetrieveByUniqueIdentifiers(
             string applicationKey,

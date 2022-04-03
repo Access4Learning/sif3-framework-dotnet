@@ -25,15 +25,15 @@ namespace Sif.Framework.Service
         /// <summary>
         ///
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
-        TKey Create(TEntity obj);
+        TKey Create(TEntity item);
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="objs"></param>
-        void Create(IEnumerable<TEntity> objs);
+        /// <param name="items"></param>
+        void Create(IEnumerable<TEntity> items);
 
         /// <summary>
         ///
@@ -44,14 +44,14 @@ namespace Sif.Framework.Service
         /// <summary>
         ///
         /// </summary>
-        /// <param name="obj"></param>
-        void Delete(TEntity obj);
+        /// <param name="item"></param>
+        void Delete(TEntity item);
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="objs"></param>
-        void Delete(IEnumerable<TEntity> objs);
+        /// <param name="items"></param>
+        void Delete(IEnumerable<TEntity> items);
 
         /// <summary>
         ///
@@ -69,9 +69,9 @@ namespace Sif.Framework.Service
         /// <summary>
         ///
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
-        ICollection<TEntity> Retrieve(TEntity obj);
+        ICollection<TEntity> Retrieve(TEntity item);
 
         /// <summary>
         ///
@@ -91,13 +91,13 @@ namespace Sif.Framework.Service
         /// <summary>
         ///
         /// </summary>
-        /// <param name="obj"></param>
-        void Update(TEntity obj);
+        /// <param name="item"></param>
+        void Update(TEntity item);
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="objs"></param>
-        void Update(IEnumerable<TEntity> objs);
+        /// <param name="items"></param>
+        void Update(IEnumerable<TEntity> items);
     }
 }

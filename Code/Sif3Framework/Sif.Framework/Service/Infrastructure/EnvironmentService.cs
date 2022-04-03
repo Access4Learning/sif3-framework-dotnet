@@ -260,7 +260,7 @@ namespace Sif.Framework.Service.Infrastructure
             }
 
             repoItem.SessionToken = sessionToken;
-            Guid environmentId = Repository.Save(repoItem);
+            Guid environmentId = Repository.Create(repoItem).Id;
 
             if (repoItem.InfrastructureServices != null && repoItem.InfrastructureServices.Count > 0)
             {
@@ -270,7 +270,7 @@ namespace Sif.Framework.Service.Infrastructure
                 if (infrastructureService != null)
                 {
                     infrastructureService.Value = infrastructureService.Value + "/" + environmentId;
-                    Repository.Save(repoItem);
+                    Repository.Update(repoItem);
                 }
             }
 

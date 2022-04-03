@@ -15,16 +15,20 @@
  */
 
 using NHibernate;
-using NHibernate.Criterion;
-using Sif.Framework.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Tardigrade.Framework.Models.Domain;
+using Tardigrade.Framework.Models.Persistence;
+using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.NHibernate.Persistence
 {
     /// <inheritdoc />
-    public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey>
+    public class GenericRepository<TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IHasUniqueIdentifier<TKey>, new()
     {
         protected IBaseSessionFactory SessionFactory;
@@ -38,109 +42,27 @@ namespace Sif.Framework.NHibernate.Persistence
             SessionFactory = sessionFactory;
         }
 
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Delete(TKey)" />
-        public virtual void Delete(TKey id)
+        /// <inheritdoc cref="IReadOnlyRepository{TEntity,TKey}.Count(Expression{Func{TEntity, bool}})" />
+        public int Count(Expression<Func<TEntity, bool>> filter = null)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id));
-
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    var item = session.Get<TEntity>(id);
-
-                    if (item != null)
-                    {
-                        session.Delete(item);
-                        transaction.Commit();
-                    }
-                }
-            }
+            throw new NotImplementedException();
         }
 
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Delete(TEntity)" />
-        public virtual void Delete(TEntity item)
+        /// <inheritdoc cref="IReadOnlyRepository{TEntity,TKey}.CountAsync(Expression{Func{TEntity, bool}}, CancellationToken)" />
+        public Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = new CancellationToken())
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IRepository{TEntity, TKey}.Create(TEntity)" />
+        public TEntity Create(TEntity item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             using (ISession session = SessionFactory.OpenSession())
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    session.Delete(item);
-                    transaction.Commit();
-                }
-            }
-        }
+                TKey id;
 
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Delete(IEnumerable{TEntity})" />
-        public virtual void Delete(IEnumerable<TEntity> items)
-        {
-            if (items == null) throw new ArgumentNullException(nameof(items));
-
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    foreach (TEntity item in items)
-                    {
-                        session.Delete(item);
-                    }
-
-                    transaction.Commit();
-                }
-            }
-        }
-
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Retrieve(TKey)" />
-        public virtual TEntity Retrieve(TKey id)
-        {
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                return session.Get<TEntity>(id);
-            }
-        }
-
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Retrieve()" />
-        public virtual ICollection<TEntity> Retrieve()
-        {
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                return session.CreateCriteria(typeof(TEntity)).List<TEntity>();
-            }
-        }
-
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Retrieve(TEntity)" />
-        public virtual ICollection<TEntity> Retrieve(TEntity item)
-        {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                Example example = Example.Create(item).EnableLike(MatchMode.Anywhere).ExcludeZeroes().IgnoreCase();
-
-                return session.CreateCriteria(typeof(TEntity)).Add(example).List<TEntity>();
-            }
-        }
-
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Retrieve(int, int)" />
-        public virtual ICollection<TEntity> Retrieve(int pageIndex, int pageSize)
-        {
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                return session.QueryOver<TEntity>().Skip(pageIndex * pageSize).Take(pageSize).List<TEntity>();
-            }
-        }
-
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Save(TEntity)" />
-        public virtual TKey Save(TEntity item)
-        {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-
-            TKey id;
-
-            using (ISession session = SessionFactory.OpenSession())
-            {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
                     if (!EqualityComparer<TKey>.Default.Equals(item.Id, default(TKey)))
@@ -155,23 +77,119 @@ namespace Sif.Framework.NHibernate.Persistence
 
                     transaction.Commit();
                 }
-            }
 
-            return id;
+                return session.Get<TEntity>(id);
+            }
         }
 
-        /// <inheritdoc cref="IGenericRepository{TEntity, TKey}.Save(IEnumerable{TEntity})" />
-        public virtual void Save(IEnumerable<TEntity> items)
+        /// <inheritdoc cref="IRepository{TEntity, TKey}.CreateAsync(TEntity, CancellationToken)" />
+        public Task<TEntity> CreateAsync(TEntity item, CancellationToken cancellationToken = new CancellationToken())
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IRepository{TEntity, TKey}.Delete(TEntity)" />
+        public virtual void Delete(TEntity item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             using (ISession session = SessionFactory.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    foreach (TEntity item in items)
+                    session.Delete(item);
+                    transaction.Commit();
+                }
+            }
+        }
+
+        /// <inheritdoc cref="IRepository{TEntity, TKey}.DeleteAsync(TEntity, CancellationToken)" />
+        public Task DeleteAsync(TEntity item, CancellationToken cancellationToken = new CancellationToken())
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IRepository{TEntity,TKey}.Exists(TKey)" />
+        public virtual bool Exists(TKey id)
+        {
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                return session.Get<TEntity>(id) != null;
+            }
+        }
+
+        /// <inheritdoc cref="IRepository{TEntity,TKey}.ExistsAsync(TKey, CancellationToken)" />
+        public Task<bool> ExistsAsync(TKey id, CancellationToken cancellationToken = new CancellationToken())
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IReadOnlyRepository{TEntity,TKey}.Retrieve(Expression{Func{TEntity,bool}}, PagingContext, Func{IQueryable{TEntity},IOrderedQueryable{TEntity}}, Expression{Func{TEntity,object}}[])" />
+        public IEnumerable<TEntity> Retrieve(
+            Expression<Func<TEntity, bool>> filter = null,
+            PagingContext pagingContext = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortCondition = null,
+            params Expression<Func<TEntity, object>>[] includes)
+        {
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                if (pagingContext == null)
+                {
+                    return session.CreateCriteria(typeof(TEntity)).List<TEntity>();
+                }
+
+                var pageIndex = (int)pagingContext.PageIndex;
+                var pageSize = (int)pagingContext.PageSize;
+
+                return session.QueryOver<TEntity>().Skip(pageIndex * pageSize).Take(pageSize).List<TEntity>();
+            }
+        }
+
+        /// <inheritdoc cref="IReadOnlyRepository{TEntity,TKey}.Retrieve(TKey, Expression{Func{TEntity,object}}[])" />
+        public TEntity Retrieve(TKey id, params Expression<Func<TEntity, object>>[] includes)
+        {
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                return session.Get<TEntity>(id);
+            }
+        }
+
+        /// <inheritdoc cref="IReadOnlyRepository{TEntity,TKey}.RetrieveAsync(Expression{Func{TEntity,bool}}, PagingContext, Func{IQueryable{TEntity},IOrderedQueryable{TEntity}}, CancellationToken, Expression{Func{TEntity,object}}[])" />
+        public Task<IEnumerable<TEntity>> RetrieveAsync(
+            Expression<Func<TEntity, bool>> filter = null,
+            PagingContext pagingContext = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortCondition = null,
+            CancellationToken cancellationToken = new CancellationToken(),
+            params Expression<Func<TEntity, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IReadOnlyRepository{TEntity,TKey}.RetrieveAsync(TKey, CancellationToken, Expression{Func{TEntity,object}}[])" />
+        public Task<TEntity> RetrieveAsync(
+            TKey id,
+            CancellationToken cancellationToken = new CancellationToken(),
+            params Expression<Func<TEntity, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IRepository{TEntity, TKey}.Update(TEntity)" />
+        public void Update(TEntity item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    if (!EqualityComparer<TKey>.Default.Equals(item.Id, default(TKey)))
                     {
-                        session.SaveOrUpdate(item);
+                        session.Update(item);
+                    }
+                    else
+                    {
+                        _ = (TKey)session.Save(item);
                     }
 
                     transaction.Commit();
@@ -179,13 +197,10 @@ namespace Sif.Framework.NHibernate.Persistence
             }
         }
 
-        /// <inheritdoc cref="IGenericRepository{TEntity,TKey}.Exists" />
-        public virtual bool Exists(TKey id)
+        /// <inheritdoc cref="IRepository{TEntity, TKey}.UpdateAsync(TEntity, CancellationToken)" />
+        public Task UpdateAsync(TEntity item, CancellationToken cancellationToken = new CancellationToken())
         {
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                return session.Get<TEntity>(id) != null;
-            }
+            throw new NotImplementedException();
         }
     }
 }

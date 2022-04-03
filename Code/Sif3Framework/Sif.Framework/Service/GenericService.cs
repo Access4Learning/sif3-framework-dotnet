@@ -15,46 +15,56 @@
  */
 
 using Sif.Framework.Model.Query;
-using Sif.Framework.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Tardigrade.Framework.Extensions;
 using Tardigrade.Framework.Models.Domain;
+using Tardigrade.Framework.Models.Persistence;
+using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Service
 {
     public class GenericService<TEntity, TKey> : IGenericService<TEntity, TKey>
         where TEntity : IHasUniqueIdentifier<TKey>, new()
     {
-        protected IGenericRepository<TEntity, TKey> Repository;
+        protected IRepository<TEntity, TKey> Repository;
 
-        public GenericService(IGenericRepository<TEntity, TKey> repository)
+        public GenericService(IRepository<TEntity, TKey> repository)
         {
             Repository = repository;
         }
 
-        public virtual TKey Create(TEntity obj)
+        public virtual TKey Create(TEntity item)
         {
-            return Repository.Save(obj);
+            return Repository.Create(item).Id;
         }
 
-        public virtual void Create(IEnumerable<TEntity> objs)
+        public virtual void Create(IEnumerable<TEntity> items)
         {
-            Repository.Save(objs);
+            foreach (TEntity item in items.OrEmptyIfNull())
+            {
+                Repository.Create(item);
+            }
         }
 
         public virtual void Delete(TKey id)
         {
-            Repository.Delete(id);
+            TEntity item = Retrieve(id);
+            Repository.Delete(item);
         }
 
-        public virtual void Delete(TEntity obj)
+        public virtual void Delete(TEntity item)
         {
-            Repository.Delete(obj);
+            Repository.Delete(item);
         }
 
-        public virtual void Delete(IEnumerable<TEntity> objs)
+        public virtual void Delete(IEnumerable<TEntity> items)
         {
-            Repository.Delete(objs);
+            foreach (TEntity item in items.OrEmptyIfNull())
+            {
+                Repository.Delete(item);
+            }
         }
 
         public virtual TEntity Retrieve(TKey id)
@@ -64,17 +74,23 @@ namespace Sif.Framework.Service
 
         public virtual ICollection<TEntity> Retrieve()
         {
-            return Repository.Retrieve();
+            return Repository.Retrieve().ToList();
         }
 
-        public virtual ICollection<TEntity> Retrieve(TEntity obj)
+        public virtual ICollection<TEntity> Retrieve(TEntity item)
         {
-            return Repository.Retrieve(obj);
+            throw new NotImplementedException();
         }
 
         public virtual ICollection<TEntity> Retrieve(int pageIndex, int pageSize)
         {
-            return Repository.Retrieve(pageIndex, pageSize);
+            var pagingContext = new PagingContext
+            {
+                PageIndex = (uint)pageIndex,
+                PageSize = (uint)pageSize
+            };
+
+            return Repository.Retrieve(pagingContext: pagingContext).ToList();
         }
 
         public virtual ICollection<TEntity> Retrieve(IEnumerable<EqualCondition> conditions)
@@ -82,14 +98,17 @@ namespace Sif.Framework.Service
             throw new NotImplementedException();
         }
 
-        public virtual void Update(TEntity obj)
+        public virtual void Update(TEntity item)
         {
-            Repository.Save(obj);
+            Repository.Update(item);
         }
 
-        public virtual void Update(IEnumerable<TEntity> objs)
+        public virtual void Update(IEnumerable<TEntity> items)
         {
-            Repository.Save(objs);
+            foreach (TEntity item in items.OrEmptyIfNull())
+            {
+                Repository.Update(item);
+            }
         }
     }
 }
