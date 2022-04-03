@@ -15,10 +15,11 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-    public interface IApplicationRegisterService : IGenericService<ApplicationRegister, long>
+    public interface IApplicationRegisterService : IObjectService<ApplicationRegister, long>
     {
         ApplicationRegister RetrieveByApplicationKey(string applicationKey);
     }

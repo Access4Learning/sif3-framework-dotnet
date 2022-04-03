@@ -16,10 +16,11 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
+using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-    public class EnvironmentRegisterService : GenericService<EnvironmentRegister, long>, IEnvironmentRegisterService
+    public class EnvironmentRegisterService : ObjectService<EnvironmentRegister, long>, IEnvironmentRegisterService
     {
         public EnvironmentRegisterService(IEnvironmentRegisterRepository repository) : base(repository)
         {

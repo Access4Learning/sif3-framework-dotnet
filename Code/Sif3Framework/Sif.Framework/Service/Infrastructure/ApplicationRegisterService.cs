@@ -16,10 +16,11 @@
 
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
+using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-    public class ApplicationRegisterService : GenericService<ApplicationRegister, long>, IApplicationRegisterService
+    public class ApplicationRegisterService : ObjectService<ApplicationRegister, long>, IApplicationRegisterService
     {
         public ApplicationRegisterService(IApplicationRegisterRepository repository) : base(repository)
         {

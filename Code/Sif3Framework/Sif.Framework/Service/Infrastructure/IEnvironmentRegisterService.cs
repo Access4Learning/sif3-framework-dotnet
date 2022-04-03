@@ -15,10 +15,11 @@
  */
 
 using Sif.Framework.Model.Infrastructure;
+using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-    public interface IEnvironmentRegisterService : IGenericService<EnvironmentRegister, long>
+    public interface IEnvironmentRegisterService : IObjectService<EnvironmentRegister, long>
     {
         EnvironmentRegister RetrieveByUniqueIdentifiers(
             string applicationKey,
