@@ -19,8 +19,18 @@ using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Service.Infrastructure
 {
+    /// <summary>
+    /// Service interface for operations associated with the ApplicationRegister object.
+    /// </summary>
     public interface IApplicationRegisterService : IObjectService<ApplicationRegister, long>
     {
+        /// <summary>
+        /// Retrieve an Application Register based upon the application key provided.
+        /// </summary>
+        /// <param name="applicationKey">Application key.</param>
+        /// <returns>Application Register associated with the application key if found; null otherwise.</returns>
+        /// <exception cref="System.ArgumentNullException">Parameter is null or empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Multiple Application Registers are associated with the application key.</exception>
         ApplicationRegister RetrieveByApplicationKey(string applicationKey);
     }
 }

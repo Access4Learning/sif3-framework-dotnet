@@ -19,13 +19,19 @@ using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Persistence
 {
+    /// <summary>
+    /// Repository interface for operations associated with the ApplicationRegister object.
+    /// </summary>
     public interface IApplicationRegisterRepository : IRepository<ApplicationRegister, long>
     {
         /// <summary>
         /// Retrieve the Application Register based upon it's application key.
         /// </summary>
         /// <param name="applicationKey">Application key for the Application Register.</param>
-        /// <returns>Application Register defined by the passed application key.</returns>
+        /// <returns>Application Register defined by the passed application key if exists; null otherwise.</returns>
+        /// <exception cref="System.ArgumentNullException">Parameter is null or empty.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.DuplicateFoundException">Multiple Application Registers are associated with the application key.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.RepositoryException">A general repository failure occurred.</exception>
         ApplicationRegister RetrieveByApplicationKey(string applicationKey);
     }
 }

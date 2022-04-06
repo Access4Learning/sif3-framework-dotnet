@@ -19,8 +19,22 @@ using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Persistence
 {
+    /// <summary>
+    /// Repository interface for operations associated with the EnvironmentRegister object.
+    /// </summary>
     public interface IEnvironmentRegisterRepository : IRepository<EnvironmentRegister, long>
     {
+        /// <summary>
+        /// Retrieve the Environment Register based upon the parameter values passed.
+        /// </summary>
+        /// <param name="applicationKey">Application key.</param>
+        /// <param name="instanceId">Instance identifier (optional).</param>
+        /// <param name="userToken">User token (optional).</param>
+        /// <param name="solutionId">Solution identifier (optional).</param>
+        /// <returns>Environment Register defined by the parameter values passed if exists; null otherwise.</returns>
+        /// <exception cref="System.ArgumentNullException">applicationKey is null or empty.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.DuplicateFoundException">Multiple Environment Registers are associated with the parameter values passed.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.RepositoryException">A general repository failure occurred.</exception>
         EnvironmentRegister RetrieveByUniqueIdentifiers(
             string applicationKey,
             string instanceId,

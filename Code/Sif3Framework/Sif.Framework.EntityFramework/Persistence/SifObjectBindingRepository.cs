@@ -14,43 +14,35 @@
  * limitations under the License.
  */
 
-using NHibernate;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using Tardigrade.Framework.EntityFramework;
 
-namespace Sif.Framework.NHibernate.Persistence
+namespace Sif.Framework.EntityFramework.Persistence
 {
     /// <inheritdoc cref="ISifObjectBindingRepository" />
-    public class SifObjectBindingRepository : GenericRepository<SifObjectBinding, long>, ISifObjectBindingRepository
+    public class SifObjectBindingRepository : Repository<SifObjectBinding, long>, ISifObjectBindingRepository
     {
-        /// <inheritdoc cref="GenericRepository{TEntity, TKey}" />
-        public SifObjectBindingRepository() : base(EnvironmentProviderSessionFactory.Instance)
+        /// <inheritdoc cref="Repository{TEntity, TKey}" />
+        public SifObjectBindingRepository(DbContext dbContext) : base(dbContext)
         {
         }
 
         /// <inheritdoc cref="ISifObjectBindingRepository.RetrieveByBinding" />
-        public virtual IEnumerable<SifObjectBinding> RetrieveByBinding(Guid refId, string ownerId)
+        public IEnumerable<SifObjectBinding> RetrieveByBinding(Guid refId, string ownerId)
         {
             if (string.IsNullOrWhiteSpace(ownerId)) throw new ArgumentNullException(nameof(ownerId));
 
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                return session.QueryOver<SifObjectBinding>()
-                    .Where(e => e.RefId == refId)
-                    .And(e => e.OwnerId == ownerId)
-                    .List<SifObjectBinding>();
-            }
+            return Retrieve(s => s.RefId == refId && s.OwnerId == ownerId);
         }
 
         /// <inheritdoc cref="ISifObjectBindingRepository.RetrieveByRefId" />
-        public virtual IEnumerable<SifObjectBinding> RetrieveByRefId(Guid refId)
+        public IEnumerable<SifObjectBinding> RetrieveByRefId(Guid refId)
         {
-            using (ISession session = SessionFactory.OpenSession())
-            {
-                return session.QueryOver<SifObjectBinding>().Where(e => e.RefId == refId).List<SifObjectBinding>();
-            }
+            return Retrieve(s => s.RefId == refId);
         }
     }
 }

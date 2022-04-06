@@ -15,7 +15,6 @@
  */
 
 using Sif.Framework.EntityFramework.Data;
-using Sif.Framework.EntityFramework.Services.Sessions;
 using Sif.Framework.Model.Sessions;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Sessions;
@@ -33,7 +32,8 @@ namespace Sif.Framework.Demo.Au.Consumer
 {
     internal abstract class ConsoleApp
     {
-        protected enum SettingsSource { Database, File }
+        protected enum SettingsSource
+        { Database, File }
 
         protected static ISessionService GetSessionService(SettingsSource source)
         {

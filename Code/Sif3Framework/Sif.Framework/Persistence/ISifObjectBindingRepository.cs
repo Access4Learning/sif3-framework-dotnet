@@ -21,21 +21,27 @@ using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Persistence
 {
+    /// <summary>
+    /// Repository interface for operations associated with the SifObjectBinding object.
+    /// </summary>
     public interface ISifObjectBindingRepository : IRepository<SifObjectBinding, long>
     {
         /// <summary>
-        /// Retrieve the SIF object binding based upon it's SIF reference and owner identifiers.
+        /// Retrieve SIF object bindings based upon their SIF reference and owner identifiers.
         /// </summary>
         /// <param name="refId">SIF reference identifier.</param>
         /// <param name="ownerId">Owner identifier.</param>
-        /// <returns>SIF object binding defined by the passed SIF reference and owner identifiers.</returns>
+        /// <returns>SIF object bindings defined by the passed SIF reference and owner identifiers if exists; empty collection otherwise.</returns>
+        /// <exception cref="System.ArgumentNullException">ownerId is null or empty.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.RepositoryException">A general repository failure occurred.</exception>
         IEnumerable<SifObjectBinding> RetrieveByBinding(Guid refId, string ownerId);
 
         /// <summary>
-        /// Retrieve the SIF object binding based upon it's SIF reference and owner identifiers.
+        /// Retrieve SIF object bindings based upon their SIF reference and owner identifiers.
         /// </summary>
         /// <param name="refId">SIF reference identifier.</param>
-        /// <returns>SIF object binding defined by the passed SIF reference and owner identifiers.</returns>
+        /// <returns>SIF object bindings defined by the passed SIF reference and owner identifiers if exists; empty collection otherwise.</returns>
+        /// <exception cref="Tardigrade.Framework.Exceptions.RepositoryException">A general repository failure occurred.</exception>
         IEnumerable<SifObjectBinding> RetrieveByRefId(Guid refId);
     }
 }

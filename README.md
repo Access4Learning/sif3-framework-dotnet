@@ -86,6 +86,12 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Removed redundant zoneId and contextId parameters from all methods of the ISifService interface.
 - Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
 - Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
+- Implemented required repositories for the Sif.Framework.EntityFramework project.
+- Implemented required repositories for the Sif.Framework.EntityFrameworkCore project.
+- Updated the repositories in Sif.Framework.NHibernate to ensure consistency of thrown exceptions.
+- Moved the SessionService.cs class from the Sif.Framework.EntityFramework project to the Sif.Framework project.
+- Updated third-party NuGet packages in the Sif.Framework.EntityFramework.Tests project.
+- Updated XML documentation in classes.
 - Updated third-party NuGet packages.
 - General code clean-up.
 

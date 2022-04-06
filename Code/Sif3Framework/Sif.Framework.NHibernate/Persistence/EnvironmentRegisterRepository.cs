@@ -18,12 +18,15 @@ using NHibernate;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
 using System;
+using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.NHibernate.Persistence
 {
+    /// <inheritdoc cref="IEnvironmentRegisterRepository" />
     public class EnvironmentRegisterRepository
         : GenericRepository<EnvironmentRegister, long>, IEnvironmentRegisterRepository
     {
+        /// <inheritdoc cref="GenericRepository{TEntity, TKey}" />
         public EnvironmentRegisterRepository() : base(EnvironmentProviderSessionFactory.Instance)
         {
         }
@@ -57,7 +60,16 @@ namespace Sif.Framework.NHibernate.Persistence
                     query.And(e => e.SolutionId == solutionId);
                 }
 
-                return query.SingleOrDefault();
+                try
+                {
+                    return query.SingleOrDefault();
+                }
+                catch (HibernateException e)
+                {
+                    throw new DuplicateFoundException(
+                        $"Multiple Environment Registers exist with the combination [applicationKey:{applicationKey}|instanceId:{instanceId}|userToken:{userToken}|solutionId:{solutionId}].",
+                        e);
+                }
             }
         }
     }

@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-using NHibernate;
 using Sif.Framework.Persistence;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using Tardigrade.Framework.EntityFramework;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.NHibernate.Persistence
+namespace Sif.Framework.EntityFramework.Persistence
 {
     /// <inheritdoc cref="IEnvironmentRepository" />
-    public class EnvironmentRepository : GenericRepository<Environment, Guid>, IEnvironmentRepository
+    public class EnvironmentRepository : Repository<Environment, Guid>, IEnvironmentRepository
     {
-        /// <inheritdoc cref="GenericRepository{TEntity, TKey}" />
-        public EnvironmentRepository() : base(EnvironmentProviderSessionFactory.Instance)
+        /// <inheritdoc cref="Repository{TEntity, TKey}" />
+        public EnvironmentRepository(DbContext dbContext) : base(dbContext)
         {
         }
 
         /// <inheritdoc cref="IEnvironmentRepository.RetrieveBySessionToken(string)" />
-        public virtual Environment RetrieveBySessionToken(string sessionToken)
+        public Environment RetrieveBySessionToken(string sessionToken)
         {
             if (string.IsNullOrWhiteSpace(sessionToken)) throw new ArgumentNullException(nameof(sessionToken));
 
-            using (ISession session = SessionFactory.OpenSession())
+            IEnumerable<Environment> registers = Retrieve(a => a.SessionToken == sessionToken).ToList();
+
+            try
             {
-                try
-                {
-                    return session.QueryOver<Environment>().Where(e => e.SessionToken == sessionToken).SingleOrDefault();
-                }
-                catch (HibernateException e)
-                {
-                    throw new DuplicateFoundException(
-                        $"Multiple Environments exist with session token {sessionToken}.",
-                        e);
-                }
+                return registers.SingleOrDefault();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new DuplicateFoundException($"Multiple Environments exist with session token {sessionToken}.", e);
             }
         }
     }

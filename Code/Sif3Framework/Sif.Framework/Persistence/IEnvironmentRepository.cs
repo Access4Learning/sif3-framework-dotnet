@@ -20,13 +20,19 @@ using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence
 {
+    /// <summary>
+    /// Repository interface for operations associated with the Environment object.
+    /// </summary>
     public interface IEnvironmentRepository : IRepository<Environment, Guid>
     {
         /// <summary>
         /// Retrieve the Environment based upon it's session token.
         /// </summary>
         /// <param name="sessionToken">Session token for the Environment.</param>
-        /// <returns>Environment defined by the passed session token.</returns>
+        /// <returns>Environment defined by the passed session token if exists; null otherwise.</returns>
+        /// <exception cref="ArgumentNullException">Parameter is null or empty.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.DuplicateFoundException">Multiple Environments are associated with the session token.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.RepositoryException">A general repository failure occurred.</exception>
         Environment RetrieveBySessionToken(string sessionToken);
     }
 }

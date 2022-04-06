@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 Systemic Pty Ltd
+ * Copyright 2021 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,22 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Tardigrade.Framework.EntityFrameworkCore;
-using Tardigrade.Framework.Models.Domain;
+using Sif.Framework.Model.Sessions;
 
-namespace Sif.Framework.EntityFrameworkCore.Persistence;
+namespace Sif.Framework.EntityFrameworkCore.Data;
 
-/// <inheritdoc />
-public class GenericRepository<TEntity, TKey> : Repository<TEntity, TKey>
-    where TEntity : class, IHasUniqueIdentifier<TKey>
-    where TKey : IEquatable<TKey>
-
+/// <summary>
+/// Entity Framework Core database context for use with session data stored in a database.
+/// </summary>
+public class SessionDbContext : DbContext
 {
-    public GenericRepository(DbContext dbContext) : base(dbContext)
+    /// <inheritdoc cref="DbContext"/>
+    public SessionDbContext(DbContextOptions options) : base(options)
     {
     }
+
+    /// <summary>
+    /// Sessions.
+    /// </summary>
+    public DbSet<Session> Sessions => Set<Session>();
 }

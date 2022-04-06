@@ -14,42 +14,41 @@
  * limitations under the License.
  */
 
-using NHibernate;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using Tardigrade.Framework.EntityFramework;
 using Tardigrade.Framework.Exceptions;
 
-namespace Sif.Framework.NHibernate.Persistence
+namespace Sif.Framework.EntityFramework.Persistence
 {
     /// <inheritdoc cref="IApplicationRegisterRepository" />
-    public class ApplicationRegisterRepository
-        : GenericRepository<ApplicationRegister, long>, IApplicationRegisterRepository
+    public class ApplicationRegisterRepository : Repository<ApplicationRegister, long>, IApplicationRegisterRepository
     {
-        /// <inheritdoc cref="GenericRepository{TEntity, TKey}" />
-        public ApplicationRegisterRepository() : base(EnvironmentProviderSessionFactory.Instance)
+        /// <inheritdoc cref="Repository{TEntity, TKey}" />
+        public ApplicationRegisterRepository(DbContext dbContext) : base(dbContext)
         {
         }
 
         /// <inheritdoc cref="IApplicationRegisterRepository.RetrieveByApplicationKey(string)" />
-        public virtual ApplicationRegister RetrieveByApplicationKey(string applicationKey)
+        public ApplicationRegister RetrieveByApplicationKey(string applicationKey)
         {
             if (string.IsNullOrWhiteSpace(applicationKey)) throw new ArgumentNullException(nameof(applicationKey));
 
-            using (ISession session = SessionFactory.OpenSession())
+            IEnumerable<ApplicationRegister> registers = Retrieve(a => a.ApplicationKey == applicationKey).ToList();
+
+            try
             {
-                try
-                {
-                    return session.QueryOver<ApplicationRegister>()
-                        .Where(e => e.ApplicationKey == applicationKey)
-                        .SingleOrDefault();
-                }
-                catch (HibernateException e)
-                {
-                    throw new DuplicateFoundException(
-                        $"Multiple Application Registers exist with application key {applicationKey}.",
-                        e);
-                }
+                return registers.SingleOrDefault();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new DuplicateFoundException(
+                    $"Multiple Application Registers are associated with application key {applicationKey}.",
+                    e);
             }
         }
     }

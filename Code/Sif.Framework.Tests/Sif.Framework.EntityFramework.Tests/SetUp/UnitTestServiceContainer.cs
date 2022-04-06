@@ -16,7 +16,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Sif.Framework.EntityFramework.Data;
-using Sif.Framework.EntityFramework.Services.Sessions;
 using Sif.Framework.Model.Sessions;
 using Sif.Framework.Service.Sessions;
 using System;

@@ -19,6 +19,9 @@ using Tardigrade.Framework.Services;
 
 namespace Sif.Framework.Service.Infrastructure
 {
+    /// <summary>
+    /// Service interface for operations associated with the EnvironmentRegister object.
+    /// </summary>
     public interface IEnvironmentRegisterService : IObjectService<EnvironmentRegister, long>
     {
         EnvironmentRegister RetrieveByUniqueIdentifiers(
