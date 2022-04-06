@@ -31,9 +31,7 @@ public class StudentSchoolEnrollmentsController : BasicProvider<StudentSchoolEnr
     public StudentSchoolEnrollmentsController() : base(
         new StudentSchoolEnrollmentService(),
         new ApplicationRegisterService(new ApplicationRegisterRepository()),
-        new EnvironmentService(
-            new EnvironmentRepository(),
-            new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
+        new EnvironmentService(new EnvironmentRepository()),
         FrameworkConfigFactory.CreateSettings(),
         FrameworkConfigFactory.CreateSessionService())
     {

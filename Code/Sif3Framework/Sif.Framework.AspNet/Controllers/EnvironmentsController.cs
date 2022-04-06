@@ -118,7 +118,9 @@ namespace Sif.Framework.AspNet.Controllers
         /// <summary>
         /// Create an instance.
         /// </summary>
-        protected EnvironmentsController(IEnvironmentService environmentService, IAuthenticationService<HttpRequestHeaders> authService)
+        protected EnvironmentsController(
+            IEnvironmentDtoService environmentService,
+            IAuthenticationService<HttpRequestHeaders> authService)
             : base(environmentService, authService)
         {
         }

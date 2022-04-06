@@ -29,9 +29,7 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
         public SchoolInfosProvider() : base(
             new SchoolInfoService(),
             new ApplicationRegisterService(new ApplicationRegisterRepository()),
-            new EnvironmentService(
-                new EnvironmentRepository(),
-                new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
+            new EnvironmentService(new EnvironmentRepository()),
             FrameworkConfigFactory.CreateSettings(),
             FrameworkConfigFactory.CreateSessionService())
         {

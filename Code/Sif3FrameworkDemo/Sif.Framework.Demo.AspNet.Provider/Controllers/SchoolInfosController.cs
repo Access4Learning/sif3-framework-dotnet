@@ -31,9 +31,7 @@ public class SchoolInfosController : BasicProvider<SchoolInfo>
     public SchoolInfosController() : base(
         new SchoolInfoService(),
         new ApplicationRegisterService(new ApplicationRegisterRepository()),
-        new EnvironmentService(
-            new EnvironmentRepository(),
-            new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
+        new EnvironmentService(new EnvironmentRepository()),
         FrameworkConfigFactory.CreateSettings(),
         FrameworkConfigFactory.CreateSessionService())
     {

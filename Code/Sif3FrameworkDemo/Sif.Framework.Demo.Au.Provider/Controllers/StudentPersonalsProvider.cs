@@ -30,9 +30,7 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
         public StudentPersonalsProvider() : base(
             new StudentPersonalService(),
             new ApplicationRegisterService(new ApplicationRegisterRepository()),
-            new EnvironmentService(
-                new EnvironmentRepository(),
-                new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
+            new EnvironmentService(new EnvironmentRepository()),
             FrameworkConfigFactory.CreateSettings(),
             FrameworkConfigFactory.CreateSessionService())
         {

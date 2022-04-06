@@ -31,9 +31,7 @@ public class StudentPersonalsController : BasicProvider<StudentPersonal>
     public StudentPersonalsController() : base(
         new StudentPersonalService(),
         new ApplicationRegisterService(new ApplicationRegisterRepository()),
-        new EnvironmentService(
-            new EnvironmentRepository(),
-            new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
+        new EnvironmentService(new EnvironmentRepository()),
         FrameworkConfigFactory.CreateSettings(),
         FrameworkConfigFactory.CreateSessionService())
     {

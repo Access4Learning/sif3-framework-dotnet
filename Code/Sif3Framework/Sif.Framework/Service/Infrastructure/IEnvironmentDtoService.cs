@@ -15,22 +15,10 @@
  */
 
 using Sif.Specification.Infrastructure;
-using System;
-using Tardigrade.Framework.Services;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.Service.Infrastructure
 {
-    /// <summary>
-    /// Service interface for operations associated with the Environment object.
-    /// </summary>
-    public interface IEnvironmentService : IObjectService<Environment, Guid>
+    public interface IEnvironmentDtoService : ISifService<environmentType>
     {
-        /// <summary>
-        /// Retrieve an Environment based upon the session token provided.
-        /// </summary>
-        /// <param name="sessionToken">Session token.</param>
-        /// <returns>Environment associated with the session token.</returns>
-        environmentType RetrieveBySessionToken(string sessionToken);
     }
 }

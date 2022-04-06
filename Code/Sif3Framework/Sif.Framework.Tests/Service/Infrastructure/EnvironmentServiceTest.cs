@@ -31,7 +31,7 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentServiceTest
     {
         private IEnvironmentRepository environmentRepository;
-        private IEnvironmentService environmentService;
+        private IEnvironmentDtoService environmentService;
 
         /// <summary>
         /// Use ClassInitialize to run code before running the first test in the class.
@@ -58,7 +58,7 @@ namespace Sif.Framework.Service.Infrastructure
         public void TestInitialize()
         {
             environmentRepository = new EnvironmentRepository();
-            environmentService = new EnvironmentService(
+            environmentService = new EnvironmentDtoService(
                 environmentRepository,
                 new EnvironmentRegisterService(new EnvironmentRegisterRepository()));
         }

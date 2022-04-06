@@ -84,6 +84,8 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Deprecated and deleted the IGenericService interface in-lieu of the IObjectService interface from the Tardigrade.Framework NuGet package.
 - Removed redundant TEntity generic parameter from the ISifService interface.
 - Removed redundant zoneId and contextId parameters from all methods of the ISifService interface.
+- Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
+- Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
 - Updated third-party NuGet packages.
 - General code clean-up.
 

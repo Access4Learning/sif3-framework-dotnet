@@ -30,14 +30,12 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
     public class EnvironmentsController : AspNet.Controllers.EnvironmentsController
     {
         public EnvironmentsController() : base(
-            new EnvironmentService(
+            new EnvironmentDtoService(
                 new EnvironmentRepository(),
                 new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
             new DirectAuthenticationService(
                 new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                new EnvironmentService(
-                    new EnvironmentRepository(),
-                    new EnvironmentRegisterService(new EnvironmentRegisterRepository()))))
+                new EnvironmentService(new EnvironmentRepository())))
         {
         }
 
