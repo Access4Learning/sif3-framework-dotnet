@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFramework.Tests", "Sif.Framework.EntityFramework.Tests\Sif.Framework.EntityFramework.Tests.csproj", "{F4546D54-E46E-4D8D-9A8F-FFDC67C54E1D}"
 EndProject
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Fra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFramework", "..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj", "{983BB129-0FCF-4800-BC80-36DA09706A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Shared", "Sif.Framework.Shared\Sif.Framework.Shared.csproj", "{76D0F674-1662-49B6-A2C2-E5A871562628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Shared", "Sif.Framework.Shared\Sif.Framework.Shared.csproj", "{76D0F674-1662-49B6-A2C2-E5A871562628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFrameworkCore.Tests", "Sif.Framework.EntityFrameworkCore.Tests\Sif.Framework.EntityFrameworkCore.Tests.csproj", "{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{76D0F674-1662-49B6-A2C2-E5A871562628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76D0F674-1662-49B6-A2C2-E5A871562628}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76D0F674-1662-49B6-A2C2-E5A871562628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

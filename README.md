@@ -91,6 +91,9 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Updated the repositories in Sif.Framework.NHibernate to ensure consistency of thrown exceptions.
 - Moved the SessionService.cs class from the Sif.Framework.EntityFramework project to the Sif.Framework project.
 - Updated third-party NuGet packages in the Sif.Framework.EntityFramework.Tests project.
+- Created a unit test project for Entity Framework Core functionality - Sif.Framework.EntityFrameworkCore.Tests.
+- Created new SIF Infrastructure models based upon Entity Framework Core.
+- Created a DbContext based upon Entity Framework Core.
 - Updated XML documentation in classes.
 - Updated third-party NuGet packages.
 - General code clean-up.
