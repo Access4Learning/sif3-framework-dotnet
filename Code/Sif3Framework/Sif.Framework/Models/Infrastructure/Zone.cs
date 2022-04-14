@@ -12,8 +12,8 @@ namespace Sif.Framework.Models.Infrastructure
         }
 
         public long ZoneId { get; set; }
-        public string? SifId { get; set; }
-        public string? Description { get; set; }
+        public string SifId { get; set; }
+        public string Description { get; set; }
 
         public virtual ICollection<EnvironmentRegister> EnvironmentRegisters { get; set; }
         public virtual ICollection<Environment> Environments { get; set; }

@@ -12,7 +12,7 @@ namespace Sif.Framework.Models.Infrastructure
         }
 
         public long ProvisionedZoneId { get; set; }
-        public string? SifId { get; set; }
+        public string SifId { get; set; }
 
         public virtual ICollection<EnvironmentProvisionedZone> EnvironmentProvisionedZones { get; set; }
         public virtual ICollection<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; }

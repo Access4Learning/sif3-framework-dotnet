@@ -10,8 +10,8 @@ namespace Sif.Framework.Models.Infrastructure
         }
 
         public long ApplicationRegisterId { get; set; }
-        public string? ApplicationKey { get; set; }
-        public string? SharedSecret { get; set; }
+        public string ApplicationKey { get; set; }
+        public string SharedSecret { get; set; }
 
         public virtual ICollection<EnvironmentRegister> EnvironmentRegisters { get; set; }
     }

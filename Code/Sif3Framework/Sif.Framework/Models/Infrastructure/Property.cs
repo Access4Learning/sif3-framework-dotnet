@@ -10,8 +10,8 @@ namespace Sif.Framework.Models.Infrastructure
         }
 
         public long PropertyId { get; set; }
-        public string? Name { get; set; }
-        public string? Value { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
 
         public virtual ICollection<ZoneProperty> ZoneProperties { get; set; }
     }

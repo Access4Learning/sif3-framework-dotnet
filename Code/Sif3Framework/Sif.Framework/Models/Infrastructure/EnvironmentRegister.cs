@@ -12,13 +12,13 @@ namespace Sif.Framework.Models.Infrastructure
         }
 
         public long EnvironmentRegisterId { get; set; }
-        public string? ApplicationKey { get; set; }
-        public string? InstanceId { get; set; }
-        public string? SolutionId { get; set; }
-        public string? UserToken { get; set; }
+        public string ApplicationKey { get; set; }
+        public string InstanceId { get; set; }
+        public string SolutionId { get; set; }
+        public string UserToken { get; set; }
         public long? ZoneId { get; set; }
 
-        public virtual Zone? Zone { get; set; }
+        public virtual Zone Zone { get; set; }
         public virtual ICollection<EnvironmentRegisterInfrastructureService> EnvironmentRegisterInfrastructureServices { get; set; }
         public virtual ICollection<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; }
 
