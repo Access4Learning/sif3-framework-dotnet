@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
-using System.Collections.Generic;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 {
@@ -24,9 +23,12 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         //public virtual DbSet<EnvironmentRegisterInfrastructureService> EnvironmentRegisterInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; } = null!;
         public virtual DbSet<InfrastructureService> InfrastructureServices { get; set; } = null!;
-        //public virtual DbSet<ProductIdentity> ProductIdentities { get; set; } = null!;
+
+        public virtual DbSet<ProductIdentity> ProductIdentities { get; set; } = null!;
+
         //public virtual DbSet<Property> Properties { get; set; } = null!;
         public virtual DbSet<ProvisionedZone> ProvisionedZones { get; set; } = null!;
+
         public virtual DbSet<Right> Rights { get; set; } = null!;
         public virtual DbSet<Models.Infrastructure.Service> Services { get; set; } = null!;
         //public virtual DbSet<SifObjectBinding> SifObjectBindings { get; set; } = null!;
@@ -256,22 +258,20 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
                 entity.Property(e => e.Value).HasColumnName("VALUE");
             });
 
-            //modelBuilder.Entity<ProductIdentity>(entity =>
-            //{
-            //    entity.ToTable("PRODUCT_IDENTITY");
+            modelBuilder.Entity<ProductIdentity>(entity =>
+            {
+                entity.ToTable("PRODUCT_IDENTITY");
 
-            //    entity.Property(e => e.ProductIdentityId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("PRODUCT_IDENTITY_ID");
+                entity.Property(e => e.Id).HasColumnName("PRODUCT_IDENTITY_ID");
 
-            //    entity.Property(e => e.IconUri).HasColumnName("ICON_URI");
+                entity.Property(e => e.IconUri).HasColumnName("ICON_URI");
 
-            //    entity.Property(e => e.ProductName).HasColumnName("PRODUCT_NAME");
+                entity.Property(e => e.ProductName).HasColumnName("PRODUCT_NAME");
 
-            //    entity.Property(e => e.ProductVersion).HasColumnName("PRODUCT_VERSION");
+                entity.Property(e => e.ProductVersion).HasColumnName("PRODUCT_VERSION");
 
-            //    entity.Property(e => e.VendorName).HasColumnName("VENDOR_NAME");
-            //});
+                entity.Property(e => e.VendorName).HasColumnName("VENDOR_NAME");
+            });
 
             //modelBuilder.Entity<Property>(entity =>
             //{

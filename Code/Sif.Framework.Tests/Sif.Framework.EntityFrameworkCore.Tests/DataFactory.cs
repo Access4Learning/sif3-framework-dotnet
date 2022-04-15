@@ -27,6 +27,14 @@ public static class DataFactory
         Value = "http://localhost:62921/api/environments/31515b87-0e9e-4804-b09e-174b262b898a"
     };
 
+    public static ProductIdentity ProductIdentity => new()
+    {
+        IconUri = "https://cdn.sif.com/icons",
+        ProductName = "SIF Framework",
+        ProductVersion = "10.4.3",
+        VendorName = "Systemic"
+    };
+
     public static ProvisionedZone ProvisionedZone => new()
     {
         Services = new List<Models.Infrastructure.Service> { ServiceSchool, ServiceStudent },

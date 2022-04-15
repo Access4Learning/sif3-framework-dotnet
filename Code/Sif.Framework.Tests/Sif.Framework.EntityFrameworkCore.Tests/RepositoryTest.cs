@@ -36,6 +36,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 {
     private readonly ITestOutputHelper _output;
     private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
+    private readonly IRepository<ProductIdentity, long> _productIdentityRepository;
     private readonly IRepository<ProvisionedZone, long> _provisionedZoneRepository;
     private readonly IRepository<Right, long> _rightRepository;
     private readonly IRepository<Models.Infrastructure.Service, long> _serviceRepository;
@@ -93,6 +94,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _output = output ?? throw new ArgumentNullException(nameof(output));
 
         _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
+        _productIdentityRepository = fixture.GetService<IRepository<ProductIdentity, long>>();
         _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
         _rightRepository = fixture.GetService<IRepository<Right, long>>();
         _serviceRepository = fixture.GetService<IRepository<Models.Infrastructure.Service, long>>();
@@ -131,6 +133,23 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         // Delete.
         DeleteTest(_infrastructureServiceRepository, updated);
+    }
+
+    [Fact]
+    public void Crud_ProductIdentity_Success()
+    {
+        // Create.
+        ProductIdentity created = CreateTest(_productIdentityRepository, DataFactory.ProductIdentity);
+
+        // Retrieve.
+        ProductIdentity retrieved = RetrieveTest(_productIdentityRepository, created);
+
+        // Update.
+        retrieved.ProductVersion = "10.5.0";
+        ProductIdentity updated = UpdateTest(_productIdentityRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_productIdentityRepository, updated);
     }
 
     [Fact]
