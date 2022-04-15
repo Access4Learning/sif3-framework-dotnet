@@ -16,14 +16,13 @@
 
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure
+namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+
+public class Right : IHasUniqueIdentifier<long>
 {
-    public class Right : IHasUniqueIdentifier<long>
-    {
-        public virtual long Id { get; set; }
+    public virtual long Id { get; set; }
 
-        public virtual string? Type { get; set; }
+    public virtual string? Type { get; set; }
 
-        public virtual string? Value { get; set; }
-    }
+    public virtual string? Value { get; set; }
 }

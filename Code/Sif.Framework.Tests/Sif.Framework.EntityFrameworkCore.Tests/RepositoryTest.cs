@@ -35,6 +35,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 {
     private readonly ITestOutputHelper _output;
+    private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
     private readonly IRepository<ProvisionedZone, long> _provisionedZoneRepository;
     private readonly IRepository<Right, long> _rightRepository;
     private readonly IRepository<Models.Infrastructure.Service, long> _serviceRepository;
@@ -91,9 +92,10 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         _output = output ?? throw new ArgumentNullException(nameof(output));
 
+        _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
+        _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
         _rightRepository = fixture.GetService<IRepository<Right, long>>();
         _serviceRepository = fixture.GetService<IRepository<Models.Infrastructure.Service, long>>();
-        _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
 
         // Get the current project's directory to store the create script.
         DirectoryInfo? binDirectory =
@@ -111,6 +113,24 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         streamReader.Close();
 
         //Environment environment = MapperFactory.CreateInstance<environmentType, Environment>(environmentType);
+    }
+
+    [Fact]
+    public void Crud_InfrastructureService_Success()
+    {
+        // Create.
+        InfrastructureService created =
+            CreateTest(_infrastructureServiceRepository, DataFactory.InfrastructureServiceEnvironment);
+
+        // Retrieve.
+        InfrastructureService retrieved = RetrieveTest(_infrastructureServiceRepository, created);
+
+        // Update.
+        retrieved.Value = "http://localhost:62921/api/environments/83304d7d-ebe1-46bc-8250-e86548fcc25d";
+        InfrastructureService updated = UpdateTest(_infrastructureServiceRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_infrastructureServiceRepository, updated);
     }
 
     [Fact]
@@ -134,7 +154,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     public void Crud_Right_Success()
     {
         // Create.
-        Right created = CreateTest(_rightRepository, DataFactory.QueryRight);
+        Right created = CreateTest(_rightRepository, DataFactory.RightQuery);
 
         // Retrieve.
         Right retrieved = RetrieveTest(_rightRepository, created);
@@ -151,7 +171,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     public void Crud_Service_Success()
     {
         // Create.
-        Models.Infrastructure.Service created = CreateTest(_serviceRepository, DataFactory.StudentService);
+        Models.Infrastructure.Service created = CreateTest(_serviceRepository, DataFactory.ServiceStudent);
 
         // Retrieve.
         Models.Infrastructure.Service retrieved = RetrieveTest(_serviceRepository, created);

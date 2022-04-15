@@ -23,7 +23,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         //public virtual DbSet<EnvironmentRegister> EnvironmentRegisters { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegisterInfrastructureService> EnvironmentRegisterInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; } = null!;
-        //public virtual DbSet<InfrastructureService> InfrastructureServices { get; set; } = null!;
+        public virtual DbSet<InfrastructureService> InfrastructureServices { get; set; } = null!;
         //public virtual DbSet<ProductIdentity> ProductIdentities { get; set; } = null!;
         //public virtual DbSet<Property> Properties { get; set; } = null!;
         public virtual DbSet<ProvisionedZone> ProvisionedZones { get; set; } = null!;
@@ -245,18 +245,16 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
             //        .OnDelete(DeleteBehavior.ClientSetNull);
             //});
 
-            //modelBuilder.Entity<InfrastructureService>(entity =>
-            //{
-            //    entity.ToTable("INFRASTRUCTURE_SERVICE");
+            modelBuilder.Entity<InfrastructureService>(entity =>
+            {
+                entity.ToTable("INFRASTRUCTURE_SERVICE");
 
-            //    entity.Property(e => e.InfrastructureServiceId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("INFRASTRUCTURE_SERVICE_ID");
+                entity.Property(e => e.Id).HasColumnName("INFRASTRUCTURE_SERVICE_ID");
 
-            //    entity.Property(e => e.Name).HasColumnName("NAME");
+                entity.Property(e => e.Name).HasColumnName("NAME");
 
-            //    entity.Property(e => e.Value).HasColumnName("VALUE");
-            //});
+                entity.Property(e => e.Value).HasColumnName("VALUE");
+            });
 
             //modelBuilder.Entity<ProductIdentity>(entity =>
             //{
@@ -292,8 +290,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
             {
                 entity.ToTable("PROVISIONED_ZONE");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("PROVISIONED_ZONE_ID");
+                entity.Property(e => e.Id).HasColumnName("PROVISIONED_ZONE_ID");
 
                 entity.Property(e => e.SifId).HasColumnName("SIF_ID");
             });

@@ -17,20 +17,17 @@
 using System.Collections.Generic;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure
+namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+
+public class Service : IHasUniqueIdentifier<long>
 {
-    public class Service : IHasUniqueIdentifier<long>
-    {
-        //public Service()
-        //{
-        //    ServiceRights = new HashSet<ServiceRight>();
-        //    ProvisionedZones = new HashSet<ProvisionedZone>();
-        //}
-        public virtual string? ContextId { get; set; }
-        public virtual long Id { get; set; }
-        public virtual string? Name { get; set; }
-        public virtual ICollection<Right>? Rights { get; set; } = null;
-        public virtual string? Type { get; set; }
-        //public virtual ICollection<ProvisionedZone> ProvisionedZones { get; set; }
-    }
+    public virtual string? ContextId { get; set; }
+
+    public virtual long Id { get; set; }
+
+    public virtual string? Name { get; set; }
+
+    public virtual ICollection<Right>? Rights { get; set; } = null;
+
+    public virtual string? Type { get; set; }
 }

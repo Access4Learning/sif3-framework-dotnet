@@ -21,13 +21,19 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 
 public static class DataFactory
 {
+    public static InfrastructureService InfrastructureServiceEnvironment => new()
+    {
+        Name = "environment",
+        Value = "http://localhost:62921/api/environments/31515b87-0e9e-4804-b09e-174b262b898a"
+    };
+
     public static ProvisionedZone ProvisionedZone => new()
     {
-        Services = new List<Models.Infrastructure.Service> { SchoolService, StudentService },
+        Services = new List<Models.Infrastructure.Service> { ServiceSchool, ServiceStudent },
         SifId = "Sif3DemoZone1"
     };
 
-    public static Right QueryRight => new() { Type = "QUERY", Value = "APPROVED" };
+    public static Right RightQuery => new() { Type = "QUERY", Value = "APPROVED" };
 
     public static ICollection<Right> Rights => new List<Right>
     {
@@ -37,7 +43,7 @@ public static class DataFactory
         new() { Type = "UPDATE", Value = "APPROVED" }
     };
 
-    public static Models.Infrastructure.Service SchoolService => new()
+    public static Models.Infrastructure.Service ServiceSchool => new()
     {
         ContextId = "DEFAULT",
         Name = "SchoolInfos",
@@ -45,7 +51,7 @@ public static class DataFactory
         Type = "OBJECT"
     };
 
-    public static Models.Infrastructure.Service StudentService => new()
+    public static Models.Infrastructure.Service ServiceStudent => new()
     {
         ContextId = "DEFAULT",
         Name = "StudentPersonals",
