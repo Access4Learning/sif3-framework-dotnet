@@ -94,6 +94,8 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Created a unit test project for Entity Framework Core functionality - Sif.Framework.EntityFrameworkCore.Tests.
 - Created new SIF Infrastructure models based upon Entity Framework Core.
 - Created a DbContext based upon Entity Framework Core.
+- Created initial unit tests for Infrastructure model repositories.
+- Re-designed database relationships for Infrastructure models via the DbContext.
 - Updated XML documentation in classes.
 - Updated third-party NuGet packages.
 - General code clean-up.

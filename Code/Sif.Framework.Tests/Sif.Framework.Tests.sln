@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Shared", "Sif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFrameworkCore.Tests", "Sif.Framework.EntityFrameworkCore.Tests\Sif.Framework.EntityFrameworkCore.Tests.csproj", "{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFrameworkCore", "..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj", "{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.NHibernate", "..\Sif3Framework\Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj", "{D8B683EB-9CA3-4B5F-8350-95C000F186EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
