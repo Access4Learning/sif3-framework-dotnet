@@ -29,7 +29,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure
         public virtual string? ContextId { get; set; }
         public virtual long Id { get; set; }
         public virtual string? Name { get; set; }
-        public virtual ICollection<Right> Rights { get; set; } = new List<Right>();
+        public virtual ICollection<Right>? Rights { get; set; } = null;
         public virtual string? Type { get; set; }
         //public virtual ICollection<ProvisionedZone> ProvisionedZones { get; set; }
     }

@@ -28,7 +28,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure
         //    Services = new HashSet<Service>();
         //}
         public virtual long Id { get; set; }
-        public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+        public virtual ICollection<Service>? Services { get; set; } = null;
         public virtual string? SifId { get; set; }
         //public virtual ICollection<EnvironmentProvisionedZone> EnvironmentProvisionedZones { get; set; }
         //public virtual ICollection<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; }

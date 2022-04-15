@@ -21,7 +21,13 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 
 public static class DataFactory
 {
-    public static Right Right => new() { Type = "QUERY", Value = "APPROVED" };
+    public static ProvisionedZone ProvisionedZone => new()
+    {
+        Services = new List<Models.Infrastructure.Service> { SchoolService, StudentService },
+        SifId = "Sif3DemoZone1"
+    };
+
+    public static Right QueryRight => new() { Type = "QUERY", Value = "APPROVED" };
 
     public static ICollection<Right> Rights => new List<Right>
     {
@@ -31,7 +37,15 @@ public static class DataFactory
         new() { Type = "UPDATE", Value = "APPROVED" }
     };
 
-    public static Models.Infrastructure.Service Service => new()
+    public static Models.Infrastructure.Service SchoolService => new()
+    {
+        ContextId = "DEFAULT",
+        Name = "SchoolInfos",
+        Rights = Rights,
+        Type = "OBJECT"
+    };
+
+    public static Models.Infrastructure.Service StudentService => new()
     {
         ContextId = "DEFAULT",
         Name = "StudentPersonals",

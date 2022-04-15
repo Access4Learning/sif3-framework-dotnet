@@ -296,23 +296,6 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
                     .HasColumnName("PROVISIONED_ZONE_ID");
 
                 entity.Property(e => e.SifId).HasColumnName("SIF_ID");
-
-                //entity.HasMany(d => d.Services)
-                //    .WithMany(p => p.ProvisionedZones)
-                //    .UsingEntity<Dictionary<string, object>>(
-                //        "ProvisionedZoneService",
-                //        l => l.HasOne<Models.Infrastructure.Service>().WithMany().HasForeignKey("ServiceId").OnDelete(DeleteBehavior.ClientSetNull),
-                //        r => r.HasOne<ProvisionedZone>().WithMany().HasForeignKey("ProvisionedZoneId").OnDelete(DeleteBehavior.ClientSetNull),
-                //        j =>
-                //        {
-                //            j.HasKey("ProvisionedZoneId", "ServiceId");
-
-                //            j.ToTable("PROVISIONED_ZONE_SERVICES");
-
-                //            j.IndexerProperty<long>("ProvisionedZoneId").HasColumnName("PROVISIONED_ZONE_ID");
-
-                //            j.IndexerProperty<long>("ServiceId").HasColumnName("SERVICE_ID");
-                //        });
             });
 
             modelBuilder.Entity<Right>(entity =>
@@ -325,7 +308,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.Value).HasColumnName("VALUE");
 
-                entity.Property<long>("ServiceId").HasColumnName("SERVICE_ID");
+                entity.Property<long?>("ServiceId").HasColumnName("SERVICE_ID");
             });
 
             modelBuilder.Entity<Models.Infrastructure.Service>(entity =>
@@ -340,9 +323,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.Type).HasColumnName("TYPE");
 
-                entity.Property<long>("ProvisionedZoneId").HasColumnName("PROVISIONED_ZONE_ID");
-
-                //entity.HasMany(b => b.Rights).WithOne().HasForeignKey("ServiceId");
+                entity.Property<long?>("ProvisionedZoneId").HasColumnName("PROVISIONED_ZONE_ID");
             });
 
             //modelBuilder.Entity<SifObjectBinding>(entity =>
