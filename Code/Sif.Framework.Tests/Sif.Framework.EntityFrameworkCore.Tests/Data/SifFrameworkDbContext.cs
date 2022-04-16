@@ -51,17 +51,15 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.Transport).HasColumnName("TRANSPORT");
 
-                entity.Property<long?>("AdapterProductId").HasColumnName("ADAPTER_PRODUCT_ID");
+                entity.HasOne(b => b.AdapterProduct)
+                    .WithOne()
+                    .HasForeignKey<ProductIdentity>("ADAPTER_PRODUCT_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                entity.Property<long?>("ApplicationProductId").HasColumnName("APPLICATION_PRODUCT_ID");
-
-                //entity.HasOne(d => d.AdapterProduct)
-                //    .WithMany(p => p.ApplicationInfoAdapterProducts)
-                //    .HasForeignKey(d => d.AdapterProductId);
-
-                //entity.HasOne(d => d.ApplicationProduct)
-                //    .WithMany(p => p.ApplicationInfoApplicationProducts)
-                //    .HasForeignKey(d => d.ApplicationProductId);
+                entity.HasOne(b => b.ApplicationProduct)
+                    .WithOne()
+                    .HasForeignKey<ProductIdentity>("APPLICATION_PRODUCT_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             //modelBuilder.Entity<ApplicationRegister>(entity =>
@@ -291,6 +289,11 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
                 entity.Property(e => e.Id).HasColumnName("PROVISIONED_ZONE_ID");
 
                 entity.Property(e => e.SifId).HasColumnName("SIF_ID");
+
+                entity.HasMany(e => e.Services)
+                    .WithOne()
+                    .HasForeignKey("PROVISIONED_ZONE_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Right>(entity =>
@@ -302,8 +305,6 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
                 entity.Property(e => e.Type).HasColumnName("TYPE");
 
                 entity.Property(e => e.Value).HasColumnName("VALUE");
-
-                entity.Property<long?>("ServiceId").HasColumnName("SERVICE_ID");
             });
 
             modelBuilder.Entity<Models.Infrastructure.Service>(entity =>
@@ -318,7 +319,10 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.Type).HasColumnName("TYPE");
 
-                entity.Property<long?>("ProvisionedZoneId").HasColumnName("PROVISIONED_ZONE_ID");
+                entity.HasMany(e => e.Rights)
+                    .WithOne()
+                    .HasForeignKey("SERVICE_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             //modelBuilder.Entity<SifObjectBinding>(entity =>
