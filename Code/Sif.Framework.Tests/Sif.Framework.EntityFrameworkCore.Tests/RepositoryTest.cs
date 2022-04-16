@@ -38,6 +38,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
     private readonly ITestOutputHelper _output;
     private readonly IRepository<ProductIdentity, long> _productIdentityRepository;
+    private readonly IRepository<Property, long> _propertyRepository;
     private readonly IRepository<ProvisionedZone, long> _provisionedZoneRepository;
     private readonly IRepository<Right, long> _rightRepository;
     private readonly IRepository<Models.Infrastructure.Service, long> _serviceRepository;
@@ -97,6 +98,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _applicationInfoRepository = fixture.GetService<IRepository<ApplicationInfo, long>>();
         _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
         _productIdentityRepository = fixture.GetService<IRepository<ProductIdentity, long>>();
+        _propertyRepository = fixture.GetService<IRepository<Property, long>>();
         _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
         _rightRepository = fixture.GetService<IRepository<Right, long>>();
         _serviceRepository = fixture.GetService<IRepository<Models.Infrastructure.Service, long>>();
@@ -169,6 +171,24 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         // Delete.
         DeleteTest(_productIdentityRepository, updated);
+    }
+
+    [Fact]
+    public void Crud_Property_Success()
+    {
+        // Create.
+        Property created = CreateTest(_propertyRepository, DataFactory.Property);
+
+
+        // Retrieve.
+        Property retrieved = RetrieveTest(_propertyRepository, created);
+
+        // Update.
+        retrieved.Value = "en_GB";
+        Property updated = UpdateTest(_propertyRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_propertyRepository, updated);
     }
 
     [Fact]

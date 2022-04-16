@@ -23,12 +23,9 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         //public virtual DbSet<EnvironmentRegisterInfrastructureService> EnvironmentRegisterInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; } = null!;
         public virtual DbSet<InfrastructureService> InfrastructureServices { get; set; } = null!;
-
         public virtual DbSet<ProductIdentity> ProductIdentities { get; set; } = null!;
-
-        //public virtual DbSet<Property> Properties { get; set; } = null!;
+        public virtual DbSet<Property> Properties { get; set; } = null!;
         public virtual DbSet<ProvisionedZone> ProvisionedZones { get; set; } = null!;
-
         public virtual DbSet<Right> Rights { get; set; } = null!;
         public virtual DbSet<Models.Infrastructure.Service> Services { get; set; } = null!;
         //public virtual DbSet<SifObjectBinding> SifObjectBindings { get; set; } = null!;
@@ -269,18 +266,16 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
                 entity.Property(e => e.VendorName).HasColumnName("VENDOR_NAME");
             });
 
-            //modelBuilder.Entity<Property>(entity =>
-            //{
-            //    entity.ToTable("PROPERTY");
+            modelBuilder.Entity<Property>(entity =>
+            {
+                entity.ToTable("PROPERTY");
 
-            //    entity.Property(e => e.PropertyId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("PROPERTY_ID");
+                entity.Property(e => e.Id).HasColumnName("PROPERTY_ID");
 
-            //    entity.Property(e => e.Name).HasColumnName("NAME");
+                entity.Property(e => e.Name).HasColumnName("NAME");
 
-            //    entity.Property(e => e.Value).HasColumnName("VALUE");
-            //});
+                entity.Property(e => e.Value).HasColumnName("VALUE");
+            });
 
             modelBuilder.Entity<ProvisionedZone>(entity =>
             {

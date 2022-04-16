@@ -53,6 +53,12 @@ public static class DataFactory
         VendorName = "Systemic"
     };
 
+    public static Property Property => new()
+    {
+        Name = "lang",
+        Value = "en_AU"
+    };
+
     public static ProvisionedZone ProvisionedZone => new()
     {
         Services = new List<Models.Infrastructure.Service> { ServiceSchool, ServiceStudent },
