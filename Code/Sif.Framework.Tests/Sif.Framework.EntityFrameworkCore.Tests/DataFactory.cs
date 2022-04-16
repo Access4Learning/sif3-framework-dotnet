@@ -31,10 +31,36 @@ public static class DataFactory
         Transport = "REST"
     };
 
+    public static Environment Environment => new()
+    {
+        ApplicationInfo = ApplicationInfo,
+        AuthenticationMethod = "Basic",
+        ConsumerName = "TemplateDemoConsumer",
+        DefaultZone = Zone,
+        InfrastructureServices = InfrastructureServices,
+        InstanceId = "device-037",
+        ProvisionedZones = new List<ProvisionedZone> { ProvisionedZone },
+        SessionToken = "U2lmM0RlbW9Db25zdW1lcjo6OlNpZjNGcmFtZXdvcms=",
+        SolutionId = "Sif3Framework",
+        Type = "DIRECT",
+        UserToken = "6621a7d1-a66d-419b-8d3f-80c4a305ad83"
+    };
+
     public static InfrastructureService InfrastructureServiceEnvironment => new()
     {
         Name = "environment",
         Value = "http://localhost:62921/api/environments/31515b87-0e9e-4804-b09e-174b262b898a"
+    };
+
+    public static ICollection<InfrastructureService> InfrastructureServices => new List<InfrastructureService>
+    {
+        InfrastructureServiceEnvironment,
+        new() { Name = "provisionRequests", Value = "http://localhost:62921/api/provision" },
+        new() { Name = "requestsConnector", Value = "http://localhost:50617/api" },
+        new() { Name = "servicesConnector", Value = "http://localhost:50617/services" },
+        new() { Name = "eventsConnector", Value = "http://localhost:62837/api" },
+        new() { Name = "queues", Value = "http://localhost:59586/api/queues" },
+        new() { Name = "subscriptions", Value = "http://localhost:59586/api/subscriptions" }
     };
 
     public static ProductIdentity ProductIdentityAdapterProduct => new()
@@ -75,9 +101,9 @@ public static class DataFactory
 
     public static ICollection<Right> Rights => new List<Right>
     {
+        RightQuery,
         new() { Type = "CREATE", Value = "APPROVED" },
         new() { Type = "DELETE", Value = "REJECTED" },
-        new() { Type = "QUERY", Value = "APPROVED" },
         new() { Type = "UPDATE", Value = "APPROVED" }
     };
 

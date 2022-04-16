@@ -28,6 +28,7 @@ using Tardigrade.Framework.Models.Domain;
 using Tardigrade.Framework.Persistence;
 using Xunit;
 using Xunit.Abstractions;
+using Environment = Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests;
 
@@ -35,6 +36,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 {
     private readonly IRepository<ApplicationInfo, long> _applicationInfoRepository;
+    private readonly IRepository<Environment, Guid> _environmentRepository;
     private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
     private readonly ITestOutputHelper _output;
     private readonly IRepository<ProductIdentity, long> _productIdentityRepository;
@@ -97,6 +99,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _output = output ?? throw new ArgumentNullException(nameof(output));
 
         _applicationInfoRepository = fixture.GetService<IRepository<ApplicationInfo, long>>();
+        _environmentRepository = fixture.GetService<IRepository<Environment, Guid>>();
         _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
         _productIdentityRepository = fixture.GetService<IRepository<ProductIdentity, long>>();
         _propertyRepository = fixture.GetService<IRepository<Property, long>>();
@@ -138,6 +141,23 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         // Delete.
         DeleteTest(_applicationInfoRepository, updated);
+    }
+
+    [Fact]
+    public void Crud_Environment_Success()
+    {
+        // Create.
+        Environment created = CreateTest(_environmentRepository, DataFactory.Environment);
+
+        // Retrieve.
+        Environment retrieved = RetrieveTest(_environmentRepository, created);
+
+        // Update.
+        retrieved.InstanceId = "device-007";
+        Environment updated = UpdateTest(_environmentRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_environmentRepository, updated);
     }
 
     [Fact]

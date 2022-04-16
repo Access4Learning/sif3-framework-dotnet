@@ -16,7 +16,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
         public virtual DbSet<ApplicationInfo> ApplicationInfos { get; set; } = null!;
         //public virtual DbSet<ApplicationRegister> ApplicationRegisters { get; set; } = null!;
-        //public virtual DbSet<Environment> Environments { get; set; } = null!;
+        public virtual DbSet<Environment> Environments { get; set; } = null!;
         //public virtual DbSet<EnvironmentInfrastructureService> EnvironmentInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentProvisionedZone> EnvironmentProvisionedZones { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegister> EnvironmentRegisters { get; set; } = null!;
@@ -48,7 +48,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.Transport).HasColumnName("TRANSPORT");
 
-                entity.HasOne(b => b.AdapterProduct)
+                entity.HasOne(d => d.AdapterProduct)
                     .WithOne()
                     .HasForeignKey<ProductIdentity>("ADAPTER_PRODUCT_ID")
                     .OnDelete(DeleteBehavior.Cascade);
@@ -89,41 +89,46 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
             //            });
             //});
 
-            //modelBuilder.Entity<Environment>(entity =>
-            //{
-            //    entity.ToTable("ENVIRONMENT");
+            modelBuilder.Entity<Environment>(entity =>
+            {
+                entity.ToTable("ENVIRONMENT");
 
-            //    entity.HasIndex(e => e.ApplicationInfoId, "IX_ENVIRONMENT_APPLICATION_INFO_ID")
-            //        .IsUnique();
+                entity.Property(e => e.Id).HasColumnName("ENVIRONMENT_ID");
 
-            //    entity.Property(e => e.EnvironmentId).HasColumnName("ENVIRONMENT_ID");
+                entity.Property(e => e.AuthenticationMethod).HasColumnName("AUTHENTICATION_METHOD");
 
-            //    entity.Property(e => e.ApplicationInfoId).HasColumnName("APPLICATION_INFO_ID");
+                entity.Property(e => e.ConsumerName).HasColumnName("CONSUMER_NAME");
 
-            //    entity.Property(e => e.AuthenticationMethod).HasColumnName("AUTHENTICATION_METHOD");
+                entity.Property(e => e.InstanceId).HasColumnName("INSTANCE_ID");
 
-            //    entity.Property(e => e.ConsumerName).HasColumnName("CONSUMER_NAME");
+                entity.Property(e => e.SessionToken).HasColumnName("SESSION_TOKEN");
 
-            //    entity.Property(e => e.InstanceId).HasColumnName("INSTANCE_ID");
+                entity.Property(e => e.SolutionId).HasColumnName("SOLUTION_ID");
 
-            //    entity.Property(e => e.SessionToken).HasColumnName("SESSION_TOKEN");
+                entity.Property(e => e.Type).HasColumnName("TYPE");
 
-            //    entity.Property(e => e.SolutionId).HasColumnName("SOLUTION_ID");
+                entity.Property(e => e.UserToken).HasColumnName("USER_TOKEN");
 
-            //    entity.Property(e => e.Type).HasColumnName("TYPE");
+                entity.HasOne(d => d.ApplicationInfo)
+                    .WithOne()
+                    .HasForeignKey<ApplicationInfo>("ENVIRONMENT_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            //    entity.Property(e => e.UserToken).HasColumnName("USER_TOKEN");
+                entity.HasOne(d => d.DefaultZone)
+                    .WithOne()
+                    .HasForeignKey<Zone>("ENVIRONMENT_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            //    entity.Property(e => e.ZoneId).HasColumnName("ZONE_ID");
+                entity.HasMany(d => d.InfrastructureServices)
+                    .WithOne()
+                    .HasForeignKey("ENVIRONMENT_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            //    entity.HasOne(d => d.ApplicationInfo)
-            //        .WithOne(p => p.Environment)
-            //        .HasForeignKey<Environment>(d => d.ApplicationInfoId);
-
-            //    entity.HasOne(d => d.Zone)
-            //        .WithMany(p => p.Environments)
-            //        .HasForeignKey(d => d.ZoneId);
-            //});
+                entity.HasMany(d => d.ProvisionedZones)
+                    .WithOne()
+                    .HasForeignKey("ENVIRONMENT_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             //modelBuilder.Entity<EnvironmentInfrastructureService>(entity =>
             //{
@@ -285,7 +290,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.SifId).HasColumnName("SIF_ID");
 
-                entity.HasMany(e => e.Services)
+                entity.HasMany(d => d.Services)
                     .WithOne()
                     .HasForeignKey("PROVISIONED_ZONE_ID")
                     .OnDelete(DeleteBehavior.Cascade);
@@ -314,7 +319,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.Type).HasColumnName("TYPE");
 
-                entity.HasMany(e => e.Rights)
+                entity.HasMany(d => d.Rights)
                     .WithOne()
                     .HasForeignKey("SERVICE_ID")
                     .OnDelete(DeleteBehavior.Cascade);
@@ -343,7 +348,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
                 entity.Property(e => e.SifId).HasColumnName("SIF_ID");
 
-                entity.HasMany(e => e.Properties)
+                entity.HasMany(d => d.Properties)
                     .WithOne()
                     .HasForeignKey("ZONE_ID")
                     .OnDelete(DeleteBehavior.Cascade);

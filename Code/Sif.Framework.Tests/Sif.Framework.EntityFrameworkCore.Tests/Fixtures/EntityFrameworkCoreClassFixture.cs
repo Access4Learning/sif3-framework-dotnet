@@ -20,10 +20,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sif.Framework.EntityFrameworkCore.Tests.Data;
 using Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+using System;
 using System.Reflection;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Persistence;
 using Tardigrade.Framework.Testing;
+using Environment = Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests.Fixtures;
 
@@ -46,6 +48,7 @@ public class EntityFrameworkCoreClassFixture : UnitTestClassFixture
 
         // Inject business services.
         services.AddTransient<IRepository<ApplicationInfo, long>, Repository<ApplicationInfo, long>>();
+        services.AddTransient<IRepository<Environment, Guid>, Repository<Environment, Guid>>();
         services.AddTransient<IRepository<InfrastructureService, long>, Repository<InfrastructureService, long>>();
         services.AddTransient<IRepository<ProductIdentity, long>, Repository<ProductIdentity, long>>();
         services.AddTransient<IRepository<Property, long>, Repository<Property, long>>();
