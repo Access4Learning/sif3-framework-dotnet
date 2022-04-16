@@ -53,10 +53,16 @@ public static class DataFactory
         VendorName = "Systemic"
     };
 
-    public static Property Property => new()
+    public static Property PropertyLang => new()
     {
         Name = "lang",
         Value = "en_AU"
+    };
+
+    public static Property PropertyLocale => new()
+    {
+        Name = "locale",
+        Value = "AU"
     };
 
     public static ProvisionedZone ProvisionedZone => new()
@@ -89,5 +95,12 @@ public static class DataFactory
         Name = "StudentPersonals",
         Rights = Rights,
         Type = "OBJECT"
+    };
+
+    public static Zone Zone => new()
+    {
+        Description = "SIF3 demo default zone",
+        Properties = new List<Property> { PropertyLang, PropertyLocale },
+        SifId = "Sif3DemoZone1"
     };
 }

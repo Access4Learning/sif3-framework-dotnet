@@ -52,6 +52,7 @@ public class EntityFrameworkCoreClassFixture : UnitTestClassFixture
         services.AddTransient<IRepository<ProvisionedZone, long>, Repository<ProvisionedZone, long>>();
         services.AddTransient<IRepository<Right, long>, Repository<Right, long>>();
         services.AddTransient<IRepository<Models.Infrastructure.Service, long>, Repository<Models.Infrastructure.Service, long>>();
+        services.AddTransient<IRepository<Zone, long>, Repository<Zone, long>>();
     }
 
     /// <inheritdoc />

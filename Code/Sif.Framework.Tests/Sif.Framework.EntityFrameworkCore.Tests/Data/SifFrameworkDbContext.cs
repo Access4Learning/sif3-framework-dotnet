@@ -29,7 +29,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         public virtual DbSet<Right> Rights { get; set; } = null!;
         public virtual DbSet<Models.Infrastructure.Service> Services { get; set; } = null!;
         //public virtual DbSet<SifObjectBinding> SifObjectBindings { get; set; } = null!;
-        //public virtual DbSet<Zone> Zones { get; set; } = null!;
+        public virtual DbSet<Zone> Zones { get; set; } = null!;
         //public virtual DbSet<ZoneProperty> ZoneProperties { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -333,18 +333,21 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
             //    entity.Property(e => e.RefId).HasColumnName("REF_ID");
             //});
 
-            //modelBuilder.Entity<Zone>(entity =>
-            //{
-            //    entity.ToTable("ZONE");
+            modelBuilder.Entity<Zone>(entity =>
+            {
+                entity.ToTable("ZONE");
 
-            //    entity.Property(e => e.ZoneId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("ZONE_ID");
+                entity.Property(e => e.Id).HasColumnName("ZONE_ID");
 
-            //    entity.Property(e => e.Description).HasColumnName("DESCRIPTION");
+                entity.Property(e => e.Description).HasColumnName("DESCRIPTION");
 
-            //    entity.Property(e => e.SifId).HasColumnName("SIF_ID");
-            //});
+                entity.Property(e => e.SifId).HasColumnName("SIF_ID");
+
+                entity.HasMany(e => e.Properties)
+                    .WithOne()
+                    .HasForeignKey("ZONE_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             //modelBuilder.Entity<ZoneProperty>(entity =>
             //{

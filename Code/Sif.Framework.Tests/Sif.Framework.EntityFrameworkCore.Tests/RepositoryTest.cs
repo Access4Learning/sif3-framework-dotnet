@@ -42,6 +42,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     private readonly IRepository<ProvisionedZone, long> _provisionedZoneRepository;
     private readonly IRepository<Right, long> _rightRepository;
     private readonly IRepository<Models.Infrastructure.Service, long> _serviceRepository;
+    private readonly IRepository<Zone, long> _zoneRepository;
 
     private TEntity CreateTest<TEntity, TKey>(IRepository<TEntity, TKey> repository, TEntity toCreate)
         where TEntity : IHasUniqueIdentifier<TKey>
@@ -102,6 +103,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
         _rightRepository = fixture.GetService<IRepository<Right, long>>();
         _serviceRepository = fixture.GetService<IRepository<Models.Infrastructure.Service, long>>();
+        _zoneRepository = fixture.GetService<IRepository<Zone, long>>();
 
         // Get the current project's directory to store the create script.
         DirectoryInfo? binDirectory =
@@ -177,8 +179,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     public void Crud_Property_Success()
     {
         // Create.
-        Property created = CreateTest(_propertyRepository, DataFactory.Property);
-
+        Property created = CreateTest(_propertyRepository, DataFactory.PropertyLang);
 
         // Retrieve.
         Property retrieved = RetrieveTest(_propertyRepository, created);
@@ -240,5 +241,22 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         // Delete.
         DeleteTest(_serviceRepository, updated);
+    }
+
+    [Fact]
+    public void Crud_Zone_Success()
+    {
+        // Create.
+        Zone created = CreateTest(_zoneRepository, DataFactory.Zone);
+
+        // Retrieve.
+        Zone retrieved = RetrieveTest(_zoneRepository, created);
+
+        // Update.
+        retrieved.Description = "SIF3 default zone for demo";
+        Zone updated = UpdateTest(_zoneRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_zoneRepository, updated);
     }
 }
