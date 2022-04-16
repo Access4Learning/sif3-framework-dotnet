@@ -21,17 +21,35 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 
 public static class DataFactory
 {
+    public static ApplicationInfo ApplicationInfo => new()
+    {
+        AdapterProduct = ProductIdentityAdapterProduct,
+        ApplicationKey = "Sif3DemoConsumer",
+        ApplicationProduct = ProductIdentityApplicationProduct,
+        DataModelNamespace = "http://www.sifassociation.org/datamodel/au/3.4",
+        SupportedInfrastructureVersion = "3.2.1",
+        Transport = "REST"
+    };
+
     public static InfrastructureService InfrastructureServiceEnvironment => new()
     {
         Name = "environment",
         Value = "http://localhost:62921/api/environments/31515b87-0e9e-4804-b09e-174b262b898a"
     };
 
-    public static ProductIdentity ProductIdentity => new()
+    public static ProductIdentity ProductIdentityAdapterProduct => new()
     {
-        IconUri = "https://cdn.sif.com/icons",
-        ProductName = "SIF Framework",
+        IconUri = "https://cdn.sif.com/icons/adapters",
+        ProductName = "Framework Adapters",
         ProductVersion = "10.4.3",
+        VendorName = "Systemic"
+    };
+
+    public static ProductIdentity ProductIdentityApplicationProduct => new()
+    {
+        IconUri = "https://cdn.sif.com/icons/applications",
+        ProductName = "Framework Applications",
+        ProductVersion = "5.7.0",
         VendorName = "Systemic"
     };
 

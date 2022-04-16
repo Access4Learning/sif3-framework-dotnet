@@ -45,6 +45,7 @@ public class EntityFrameworkCoreClassFixture : UnitTestClassFixture
         services.AddTransient<DbContext>(_ => new SifFrameworkDbContext(options));
 
         // Inject business services.
+        services.AddTransient<IRepository<ApplicationInfo, long>, Repository<ApplicationInfo, long>>();
         services.AddTransient<IRepository<InfrastructureService, long>, Repository<InfrastructureService, long>>();
         services.AddTransient<IRepository<ProductIdentity, long>, Repository<ProductIdentity, long>>();
         services.AddTransient<IRepository<ProvisionedZone, long>, Repository<ProvisionedZone, long>>();

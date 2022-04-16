@@ -34,8 +34,9 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 /// <inheritdoc />
 public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 {
-    private readonly ITestOutputHelper _output;
+    private readonly IRepository<ApplicationInfo, long> _applicationInfoRepository;
     private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
+    private readonly ITestOutputHelper _output;
     private readonly IRepository<ProductIdentity, long> _productIdentityRepository;
     private readonly IRepository<ProvisionedZone, long> _provisionedZoneRepository;
     private readonly IRepository<Right, long> _rightRepository;
@@ -93,6 +94,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         _output = output ?? throw new ArgumentNullException(nameof(output));
 
+        _applicationInfoRepository = fixture.GetService<IRepository<ApplicationInfo, long>>();
         _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
         _productIdentityRepository = fixture.GetService<IRepository<ProductIdentity, long>>();
         _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
@@ -118,6 +120,23 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     }
 
     [Fact]
+    public void Crud_ApplicationInfo_Success()
+    {
+        // Create.
+        ApplicationInfo created = CreateTest(_applicationInfoRepository, DataFactory.ApplicationInfo);
+
+        // Retrieve.
+        ApplicationInfo retrieved = RetrieveTest(_applicationInfoRepository, created);
+
+        // Update.
+        retrieved.ApplicationKey = "Sif3DemoAspNetCoreConsumer";
+        ApplicationInfo updated = UpdateTest(_applicationInfoRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_applicationInfoRepository, updated);
+    }
+
+    [Fact]
     public void Crud_InfrastructureService_Success()
     {
         // Create.
@@ -139,7 +158,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     public void Crud_ProductIdentity_Success()
     {
         // Create.
-        ProductIdentity created = CreateTest(_productIdentityRepository, DataFactory.ProductIdentity);
+        ProductIdentity created = CreateTest(_productIdentityRepository, DataFactory.ProductIdentityAdapterProduct);
 
         // Retrieve.
         ProductIdentity retrieved = RetrieveTest(_productIdentityRepository, created);

@@ -14,7 +14,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         {
         }
 
-        //public virtual DbSet<ApplicationInfo> ApplicationInfos { get; set; } = null!;
+        public virtual DbSet<ApplicationInfo> ApplicationInfos { get; set; } = null!;
         //public virtual DbSet<ApplicationRegister> ApplicationRegisters { get; set; } = null!;
         //public virtual DbSet<Environment> Environments { get; set; } = null!;
         //public virtual DbSet<EnvironmentInfrastructureService> EnvironmentInfrastructureServices { get; set; } = null!;
@@ -37,34 +37,32 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ApplicationInfo>(entity =>
-            //{
-            //    entity.ToTable("APPLICATION_INFO");
+            modelBuilder.Entity<ApplicationInfo>(entity =>
+            {
+                entity.ToTable("APPLICATION_INFO");
 
-            //    entity.Property(e => e.ApplicationInfoId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("APPLICATION_INFO_ID");
+                entity.Property(e => e.Id).HasColumnName("APPLICATION_INFO_ID");
 
-            //    entity.Property(e => e.AdapterProductId).HasColumnName("ADAPTER_PRODUCT_ID");
+                entity.Property(e => e.ApplicationKey).HasColumnName("APPLICATION_KEY");
 
-            //    entity.Property(e => e.ApplicationKey).HasColumnName("APPLICATION_KEY");
+                entity.Property(e => e.DataModelNamespace).HasColumnName("DATA_MODEL_NAMESPACE");
 
-            //    entity.Property(e => e.ApplicationProductId).HasColumnName("APPLICATION_PRODUCT_ID");
+                entity.Property(e => e.SupportedInfrastructureVersion).HasColumnName("SUPPORTED_INFRASTRUCTURE_VERSION");
 
-            //    entity.Property(e => e.DataModelNamespace).HasColumnName("DATA_MODEL_NAMESPACE");
+                entity.Property(e => e.Transport).HasColumnName("TRANSPORT");
 
-            //    entity.Property(e => e.SupportedInfrastructureVersion).HasColumnName("SUPPORTED_INFRASTRUCTURE_VERSION");
+                entity.Property<long?>("AdapterProductId").HasColumnName("ADAPTER_PRODUCT_ID");
 
-            //    entity.Property(e => e.Transport).HasColumnName("TRANSPORT");
+                entity.Property<long?>("ApplicationProductId").HasColumnName("APPLICATION_PRODUCT_ID");
 
-            //    entity.HasOne(d => d.AdapterProduct)
-            //        .WithMany(p => p.ApplicationInfoAdapterProducts)
-            //        .HasForeignKey(d => d.AdapterProductId);
+                //entity.HasOne(d => d.AdapterProduct)
+                //    .WithMany(p => p.ApplicationInfoAdapterProducts)
+                //    .HasForeignKey(d => d.AdapterProductId);
 
-            //    entity.HasOne(d => d.ApplicationProduct)
-            //        .WithMany(p => p.ApplicationInfoApplicationProducts)
-            //        .HasForeignKey(d => d.ApplicationProductId);
-            //});
+                //entity.HasOne(d => d.ApplicationProduct)
+                //    .WithMany(p => p.ApplicationInfoApplicationProducts)
+                //    .HasForeignKey(d => d.ApplicationProductId);
+            });
 
             //modelBuilder.Entity<ApplicationRegister>(entity =>
             //{
