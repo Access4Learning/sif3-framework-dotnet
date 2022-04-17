@@ -157,7 +157,7 @@ namespace Sif.Framework.Service.Mapper
                     .ConvertUsing(new RightsConverter());
 
                 cfg.CreateMap<Model.Infrastructure.Service, serviceType>()
-                    .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights.Values));
+                    .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights));
                 cfg.CreateMap<serviceType, Model.Infrastructure.Service>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
 

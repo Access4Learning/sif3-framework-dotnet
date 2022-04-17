@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,27 +15,27 @@
  */
 
 using NHibernate.Tool.hbm2ddl;
+using Sif.Framework.Model.Infrastructure;
 using System;
 using System.Collections.Generic;
 using Configuration = NHibernate.Cfg.Configuration;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Tests
 {
-
     /// <summary>
     /// This class is used to generate test data for unit testing.
     /// </summary>
     public static class DataFactory
     {
-
         /// <summary>
         /// Generate the database schema, apply it to the database and save the DDL used into a file.
         /// </summary>
         public static void CreateDatabase()
         {
-            Configuration configuration = new Configuration();
+            var configuration = new Configuration();
             configuration.Configure();
-            SchemaExport schemaExport = new SchemaExport(configuration);
+            var schemaExport = new SchemaExport(configuration);
             schemaExport.SetOutputFile("SQLite database schema.ddl");
             schemaExport.Create(true, true);
         }
@@ -46,17 +46,17 @@ namespace Sif.Framework.Model.Infrastructure
         /// <returns>Environment request.</returns>
         public static Environment CreateEnvironmentRequest()
         {
-            ProductIdentity adapterProduct = new ProductIdentity { IconURI = "icon url 1", ProductName = "product name 1", ProductVersion = "3.4.1", VendorName = "Systemic" };
-            ProductIdentity applicationProduct = new ProductIdentity { IconURI = "icon url 2", ProductName = "product name 2", ProductVersion = "9.80", VendorName = "Systemic" };
-            Property zoneCharge = new Property { Name = "charge", Value = "Negative" };
-            Property zoneMaster = new Property { Name = "master", Value = "Annihilus" };
+            var adapterProduct = new ProductIdentity { IconURI = "icon url 1", ProductName = "product name 1", ProductVersion = "3.4.1", VendorName = "Systemic" };
+            var applicationProduct = new ProductIdentity { IconURI = "icon url 2", ProductName = "product name 2", ProductVersion = "9.80", VendorName = "Systemic" };
+            var zoneCharge = new Property { Name = "charge", Value = "Negative" };
+            var zoneMaster = new Property { Name = "master", Value = "Annihilus" };
             IDictionary<string, Property> zoneProperties = new Dictionary<string, Property>
             {
                 { zoneCharge.Name, zoneCharge },
                 { zoneMaster.Name, zoneMaster }
             };
-            Zone theNegativeZone = new Zone { Description = "The Negative Zone", Properties = zoneProperties };
-            ApplicationInfo applicationInfo = new ApplicationInfo
+            var theNegativeZone = new Zone { Description = "The Negative Zone", Properties = zoneProperties };
+            var applicationInfo = new ApplicationInfo
             {
                 AdapterProduct = adapterProduct,
                 ApplicationKey = "UnitTesting",
@@ -65,7 +65,7 @@ namespace Sif.Framework.Model.Infrastructure
                 SupportedInfrastructureVersion = "3.2",
                 Transport = "REST"
             };
-            Environment environmentRequest = new Environment
+            var environmentRequest = new Environment
             {
                 ApplicationInfo = applicationInfo,
                 AuthenticationMethod = "Basic",
@@ -87,36 +87,33 @@ namespace Sif.Framework.Model.Infrastructure
         /// <returns>Environment response.</returns>
         public static Environment CreateEnvironmentResponse()
         {
-            InfrastructureService environmentURL = new InfrastructureService { Name = InfrastructureServiceNames.environment, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/environments/5b72f2d4-7a83-4297-a71f-8b5fb26cbf14" };
-            InfrastructureService provisionRequestsURL = new InfrastructureService { Name = InfrastructureServiceNames.provisionRequests, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/provisionRequests" };
-            InfrastructureService queuesURL = new InfrastructureService { Name = InfrastructureServiceNames.queues, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/queues" };
-            InfrastructureService requestsConnectorURL = new InfrastructureService { Name = InfrastructureServiceNames.requestsConnector, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/requestsConnector" };
-            InfrastructureService subscriptionsURL = new InfrastructureService { Name = InfrastructureServiceNames.subscriptions, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/subscriptions" };
+            var environmentUrl = new InfrastructureService { Name = InfrastructureServiceNames.environment, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/environments/5b72f2d4-7a83-4297-a71f-8b5fb26cbf14" };
+            var provisionRequestsUrl = new InfrastructureService { Name = InfrastructureServiceNames.provisionRequests, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/provisionRequests" };
+            var queuesUrl = new InfrastructureService { Name = InfrastructureServiceNames.queues, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/queues" };
+            var requestsConnectorUrl = new InfrastructureService { Name = InfrastructureServiceNames.requestsConnector, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/requestsConnector" };
+            var subscriptionsUrl = new InfrastructureService { Name = InfrastructureServiceNames.subscriptions, Value = "http://rest3api.sifassociation.org/api/solutions/auTestSolution/subscriptions" };
             IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>
             {
-                { environmentURL.Name, environmentURL },
-                { provisionRequestsURL.Name, provisionRequestsURL },
-                { queuesURL.Name, queuesURL },
-                { requestsConnectorURL.Name, requestsConnectorURL },
-                { subscriptionsURL.Name, subscriptionsURL }
+                { environmentUrl.Name, environmentUrl },
+                { provisionRequestsUrl.Name, provisionRequestsUrl },
+                { queuesUrl.Name, queuesUrl },
+                { requestsConnectorUrl.Name, requestsConnectorUrl },
+                { subscriptionsUrl.Name, subscriptionsUrl }
             };
 
-            Right adminRight = new Right() { Type = RightType.ADMIN.ToString(), Value = RightValue.APPROVED.ToString() };
-            Right createRight = new Right() { Type = RightType.CREATE.ToString(), Value = RightValue.APPROVED.ToString() };
-            IDictionary<string, Right> rights = new Dictionary<string, Right>
-            {
-                { adminRight.Type, adminRight }
-            };
-            Service studentPersonalsService = new Service { ContextId = "DEFAULT", Name = "StudentPersonals", Rights = rights, Type = "OBJECT" };
-            Service schoolInfosService = new Service { ContextId = "DEFAULT", Name = "SchoolInfos", Rights = rights, Type = "OBJECT" };
-            ICollection<Service> services = new SortedSet<Service>
+            var adminRight = new Right { Type = RightType.ADMIN.ToString(), Value = RightValue.APPROVED.ToString() };
+            var createRight = new Right { Type = RightType.CREATE.ToString(), Value = RightValue.APPROVED.ToString() };
+            ICollection<Right> rights = new List<Right> { adminRight, createRight };
+            var studentPersonalsService = new Model.Infrastructure.Service { ContextId = "DEFAULT", Name = "StudentPersonals", Rights = rights, Type = "OBJECT" };
+            var schoolInfosService = new Model.Infrastructure.Service { ContextId = "DEFAULT", Name = "SchoolInfos", Rights = rights, Type = "OBJECT" };
+            ICollection<Model.Infrastructure.Service> services = new SortedSet<Model.Infrastructure.Service>
             {
                 studentPersonalsService,
                 schoolInfosService
             };
 
-            ProvisionedZone schoolZone = new ProvisionedZone { SifId = "auSchoolTestingZone", Services = services };
-            ProvisionedZone studentZone = new ProvisionedZone { SifId = "auStudentTestingZone", Services = services };
+            var schoolZone = new ProvisionedZone { SifId = "auSchoolTestingZone", Services = services };
+            var studentZone = new ProvisionedZone { SifId = "auStudentTestingZone", Services = services };
             IDictionary<string, ProvisionedZone> provisionedZones = new SortedDictionary<string, ProvisionedZone>
             {
                 { schoolZone.SifId, schoolZone },
@@ -129,7 +126,5 @@ namespace Sif.Framework.Model.Infrastructure
 
             return environmentResponse;
         }
-
     }
-
 }

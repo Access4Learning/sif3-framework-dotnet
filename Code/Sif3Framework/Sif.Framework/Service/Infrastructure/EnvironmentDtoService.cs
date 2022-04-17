@@ -21,6 +21,7 @@ using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -137,33 +138,6 @@ namespace Sif.Framework.Service.Infrastructure
         }
 
         /// <summary>
-        /// Create a copy of a dictionary of Right objects.
-        /// </summary>
-        /// <param name="sourceRights">Dictionary of Right objects to copy.</param>
-        /// <returns>New copy of the dictionary of Right objects if not null; null otherwise.</returns>
-        private static IDictionary<string, Right> CopyRights(IDictionary<string, Right> sourceRights)
-        {
-            if (sourceRights == null) return null;
-
-            var destinationRights = new Dictionary<string, Right>();
-
-            foreach (string key in sourceRights.Keys)
-            {
-                if (!sourceRights.TryGetValue(key, out Right sourceRight)) continue;
-
-                var destinationRight = new Right
-                {
-                    Type = sourceRight.Type,
-                    Value = sourceRight.Value
-                };
-
-                destinationRights.Add(key, destinationRight);
-            }
-
-            return destinationRights;
-        }
-
-        /// <summary>
         /// Create a copy of a collection of Service objects.
         /// </summary>
         /// <param name="sourceServices">Collection of Service objects to copy.</param>
@@ -186,7 +160,7 @@ namespace Sif.Framework.Service.Infrastructure
 
                 if (sourceService.Rights != null)
                 {
-                    destinationService.Rights = CopyRights(sourceService.Rights);
+                    destinationService.Rights = sourceService.Rights.ToList();
                 }
 
                 destinationServices.Add(destinationService);

@@ -37,7 +37,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// </summary>
         public virtual string Name { get; set; }
 
-        public virtual IDictionary<string, Right> Rights { get; set; }
+        public virtual ICollection<Right> Rights { get; set; }
 
         public virtual string Type { get; set; }
 

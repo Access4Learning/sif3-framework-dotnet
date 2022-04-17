@@ -61,7 +61,7 @@ namespace Sif.Framework.AspNet.Services.Authorisation
             string serviceType = headers.GetHeaderValue("serviceType") ?? ServiceType.OBJECT.ToDescription();
 
             // Retrieving permissions for requester.
-            IDictionary<string, Right> requesterPermissions = GetRightsForService(
+            ICollection<Right> requesterPermissions = GetRightsForService(
                 serviceType,
                 serviceName,
                 environment.GetTargetZone(zoneId));
@@ -93,7 +93,7 @@ namespace Sif.Framework.AspNet.Services.Authorisation
         /// <param name="serviceName">The service name.</param>
         /// <param name="zone">The zone to retrieve the rights for.</param>
         /// <returns>An array of declared rights</returns>
-        private static IDictionary<string, Right> GetRightsForService(
+        private static ICollection<Right> GetRightsForService(
             string serviceType,
             string serviceName,
             ProvisionedZone zone)

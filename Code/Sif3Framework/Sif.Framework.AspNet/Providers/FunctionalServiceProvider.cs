@@ -1005,7 +1005,7 @@ namespace Sif.Framework.AspNet.Providers
         /// <param name="serviceName">The service name to look for</param>
         /// <param name="zone">The zone to retrieve the rights for</param>
         /// <returns>An array of declared rights</returns>
-        private IDictionary<string, Right> GetRights(string serviceName, ProvisionedZone zone)
+        private ICollection<Right> GetRights(string serviceName, ProvisionedZone zone)
         {
             Model.Infrastructure.Service service =
                 (from Model.Infrastructure.Service s in zone.Services

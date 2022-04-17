@@ -279,7 +279,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights, new Right(RightType.CREATE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.CREATE, RightValue.APPROVED));
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Create(job, phase, body, contentType, accept);
@@ -300,7 +300,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights, new Right(RightType.QUERY, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.QUERY, RightValue.APPROVED));
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Retrieve(job, phase, body, contentType, accept);
@@ -321,7 +321,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights, new Right(RightType.UPDATE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.UPDATE, RightValue.APPROVED));
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Update(job, phase, body, contentType, accept);
@@ -342,7 +342,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights, new Right(RightType.DELETE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.DELETE, RightValue.APPROVED));
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Delete(job, phase, body, contentType, accept);
@@ -361,7 +361,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.StatesRights, new Right(RightType.CREATE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.StatesRights.Values, new Right(RightType.CREATE, RightValue.APPROVED));
 
             PhaseState state = MapperFactory.CreateInstance<stateType, PhaseState>(item);
 

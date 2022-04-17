@@ -17,10 +17,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.NHibernate.Persistence;
+using Sif.Framework.Persistence;
 using System;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Persistence.NHibernate
+namespace Sif.Framework.Tests.Persistence.NHibernate
 {
     /// <summary>
     /// Unit test for EnvironmentRepository.

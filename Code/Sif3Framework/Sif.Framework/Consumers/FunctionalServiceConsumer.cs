@@ -711,7 +711,9 @@ namespace Sif.Framework.Consumers
                 throw new ArgumentException("Job must have an Id for any non-creation operation");
             }
 
-            if (service.Rights[right.ToString()].Value.Equals(RightValue.REJECTED.ToString()))
+            string rightValue = service.Rights.FirstOrDefault(r => r.Type == right.ToString())?.Value;
+
+            if (rightValue == null || rightValue.Equals(RightValue.REJECTED.ToString()))
             {
                 throw new ArgumentException(
                     "The attempted operation is not permitted in the ACL of the current environment");
