@@ -19,7 +19,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         public virtual DbSet<Environment> Environments { get; set; } = null!;
         //public virtual DbSet<EnvironmentInfrastructureService> EnvironmentInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentProvisionedZone> EnvironmentProvisionedZones { get; set; } = null!;
-        //public virtual DbSet<EnvironmentRegister> EnvironmentRegisters { get; set; } = null!;
+        public virtual DbSet<EnvironmentRegister> EnvironmentRegisters { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegisterInfrastructureService> EnvironmentRegisterInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentRegisterProvisionedZone> EnvironmentRegisterProvisionedZones { get; set; } = null!;
         public virtual DbSet<InfrastructureService> InfrastructureServices { get; set; } = null!;
@@ -176,28 +176,35 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
             //        .OnDelete(DeleteBehavior.ClientSetNull);
             //});
 
-            //modelBuilder.Entity<EnvironmentRegister>(entity =>
-            //{
-            //    entity.ToTable("ENVIRONMENT_REGISTER");
+            modelBuilder.Entity<EnvironmentRegister>(entity =>
+            {
+                entity.ToTable("ENVIRONMENT_REGISTER");
 
-            //    entity.Property(e => e.EnvironmentRegisterId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("ENVIRONMENT_REGISTER_ID");
+                entity.Property(e => e.Id).HasColumnName("ENVIRONMENT_REGISTER_ID");
 
-            //    entity.Property(e => e.ApplicationKey).HasColumnName("APPLICATION_KEY");
+                entity.Property(e => e.ApplicationKey).HasColumnName("APPLICATION_KEY");
 
-            //    entity.Property(e => e.InstanceId).HasColumnName("INSTANCE_ID");
+                entity.Property(e => e.InstanceId).HasColumnName("INSTANCE_ID");
 
-            //    entity.Property(e => e.SolutionId).HasColumnName("SOLUTION_ID");
+                entity.Property(e => e.SolutionId).HasColumnName("SOLUTION_ID");
 
-            //    entity.Property(e => e.UserToken).HasColumnName("USER_TOKEN");
+                entity.Property(e => e.UserToken).HasColumnName("USER_TOKEN");
 
-            //    entity.Property(e => e.ZoneId).HasColumnName("ZONE_ID");
+                entity.HasOne(d => d.DefaultZone)
+                    .WithOne()
+                    .HasForeignKey<Zone>("ENVIRONMENT_REGISTER_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            //    entity.HasOne(d => d.Zone)
-            //        .WithMany(p => p.EnvironmentRegisters)
-            //        .HasForeignKey(d => d.ZoneId);
-            //});
+                entity.HasMany(d => d.InfrastructureServices)
+                    .WithOne()
+                    .HasForeignKey("ENVIRONMENT_REGISTER_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(d => d.ProvisionedZones)
+                    .WithOne()
+                    .HasForeignKey("ENVIRONMENT_REGISTER_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             //modelBuilder.Entity<EnvironmentRegisterInfrastructureService>(entity =>
             //{

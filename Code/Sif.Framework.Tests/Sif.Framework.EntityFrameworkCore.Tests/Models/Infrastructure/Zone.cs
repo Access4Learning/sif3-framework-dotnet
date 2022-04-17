@@ -22,7 +22,10 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
 public class Zone : IHasUniqueIdentifier<long>
 {
     public virtual string? Description { get; set; }
+
     public virtual long Id { get; set; }
-    public virtual ICollection<Property>? Properties { get; set; } = null;
+
+    public virtual ICollection<Property>? Properties { get; set; }
+
     public virtual string? SifId { get; set; }
 }

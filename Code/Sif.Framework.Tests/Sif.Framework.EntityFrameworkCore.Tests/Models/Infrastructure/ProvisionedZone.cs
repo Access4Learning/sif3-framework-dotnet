@@ -23,7 +23,7 @@ public class ProvisionedZone : IHasUniqueIdentifier<long>
 {
     public virtual long Id { get; set; }
 
-    public virtual ICollection<Service>? Services { get; set; } = null;
+    public virtual ICollection<Service>? Services { get; set; }
 
     public virtual string? SifId { get; set; }
 }

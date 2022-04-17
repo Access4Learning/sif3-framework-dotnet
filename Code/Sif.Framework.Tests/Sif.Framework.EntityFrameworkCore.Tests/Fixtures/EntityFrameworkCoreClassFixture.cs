@@ -49,6 +49,7 @@ public class EntityFrameworkCoreClassFixture : UnitTestClassFixture
         // Inject business services.
         services.AddTransient<IRepository<ApplicationInfo, long>, Repository<ApplicationInfo, long>>();
         services.AddTransient<IRepository<Environment, Guid>, Repository<Environment, Guid>>();
+        services.AddTransient<IRepository<EnvironmentRegister, long>, Repository<EnvironmentRegister, long>>();
         services.AddTransient<IRepository<InfrastructureService, long>, Repository<InfrastructureService, long>>();
         services.AddTransient<IRepository<ProductIdentity, long>, Repository<ProductIdentity, long>>();
         services.AddTransient<IRepository<Property, long>, Repository<Property, long>>();

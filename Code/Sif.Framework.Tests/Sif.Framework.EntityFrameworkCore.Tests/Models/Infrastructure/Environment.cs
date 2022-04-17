@@ -23,15 +23,26 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
 public class Environment : IHasUniqueIdentifier<Guid>
 {
     public virtual Guid Id { get; set; }
+
     public virtual ApplicationInfo? ApplicationInfo { get; set; }
+
     public virtual string? AuthenticationMethod { get; set; }
+
     public virtual string? ConsumerName { get; set; }
+
     public virtual Zone? DefaultZone { get; set; }
+
     public virtual ICollection<InfrastructureService>? InfrastructureServices { get; set; }
+
     public virtual string? InstanceId { get; set; }
+
     public virtual ICollection<ProvisionedZone>? ProvisionedZones { get; set; }
+
     public virtual string? SessionToken { get; set; }
+
     public virtual string? SolutionId { get; set; }
+
     public virtual string? Type { get; set; }
+
     public virtual string? UserToken { get; set; }
 }

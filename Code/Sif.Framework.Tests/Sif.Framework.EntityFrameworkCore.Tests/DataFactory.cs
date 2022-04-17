@@ -46,6 +46,17 @@ public static class DataFactory
         UserToken = "6621a7d1-a66d-419b-8d3f-80c4a305ad83"
     };
 
+    public static EnvironmentRegister EnvironmentRegister => new()
+    {
+        ApplicationKey = "Sif3DemoConsumer",
+        DefaultZone = Zone,
+        InfrastructureServices = InfrastructureServices,
+        InstanceId = "device-044",
+        ProvisionedZones = new List<ProvisionedZone> { ProvisionedZone },
+        SolutionId = "Sif3Framework",
+        UserToken = "6621a7d1-a66d-419b-8d3f-80c4a305ad83"
+    };
+
     public static InfrastructureService InfrastructureServiceEnvironment => new()
     {
         Name = "environment",

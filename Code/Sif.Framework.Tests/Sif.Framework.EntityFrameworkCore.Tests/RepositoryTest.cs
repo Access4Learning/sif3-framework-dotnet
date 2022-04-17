@@ -37,6 +37,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 {
     private readonly IRepository<ApplicationInfo, long> _applicationInfoRepository;
     private readonly IRepository<Environment, Guid> _environmentRepository;
+    private readonly IRepository<EnvironmentRegister, long> _environmentRegisterRepository;
     private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
     private readonly ITestOutputHelper _output;
     private readonly IRepository<ProductIdentity, long> _productIdentityRepository;
@@ -100,6 +101,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         _applicationInfoRepository = fixture.GetService<IRepository<ApplicationInfo, long>>();
         _environmentRepository = fixture.GetService<IRepository<Environment, Guid>>();
+        _environmentRegisterRepository = fixture.GetService<IRepository<EnvironmentRegister, long>>();
         _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
         _productIdentityRepository = fixture.GetService<IRepository<ProductIdentity, long>>();
         _propertyRepository = fixture.GetService<IRepository<Property, long>>();
@@ -158,6 +160,23 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         // Delete.
         DeleteTest(_environmentRepository, updated);
+    }
+
+    [Fact]
+    public void Crud_EnvironmentRegister_Success()
+    {
+        // Create.
+        EnvironmentRegister created = CreateTest(_environmentRegisterRepository, DataFactory.EnvironmentRegister);
+
+        // Retrieve.
+        EnvironmentRegister retrieved = RetrieveTest(_environmentRegisterRepository, created);
+
+        // Update.
+        retrieved.InstanceId = "device-004";
+        EnvironmentRegister updated = UpdateTest(_environmentRegisterRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_environmentRegisterRepository, updated);
     }
 
     [Fact]

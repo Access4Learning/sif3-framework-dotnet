@@ -27,7 +27,7 @@ public class Service : IHasUniqueIdentifier<long>
 
     public virtual string? Name { get; set; }
 
-    public virtual ICollection<Right>? Rights { get; set; } = null;
+    public virtual ICollection<Right>? Rights { get; set; }
 
     public virtual string? Type { get; set; }
 }
