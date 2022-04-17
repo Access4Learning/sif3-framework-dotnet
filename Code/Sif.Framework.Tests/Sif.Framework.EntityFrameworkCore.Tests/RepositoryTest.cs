@@ -36,6 +36,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests;
 public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 {
     private readonly IRepository<ApplicationInfo, long> _applicationInfoRepository;
+    private readonly IRepository<ApplicationRegister, long> _applicationRegisterRepository;
     private readonly IRepository<Environment, Guid> _environmentRepository;
     private readonly IRepository<EnvironmentRegister, long> _environmentRegisterRepository;
     private readonly IRepository<InfrastructureService, long> _infrastructureServiceRepository;
@@ -100,6 +101,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _output = output ?? throw new ArgumentNullException(nameof(output));
 
         _applicationInfoRepository = fixture.GetService<IRepository<ApplicationInfo, long>>();
+        _applicationRegisterRepository = fixture.GetService<IRepository<ApplicationRegister, long>>();
         _environmentRepository = fixture.GetService<IRepository<Environment, Guid>>();
         _environmentRegisterRepository = fixture.GetService<IRepository<EnvironmentRegister, long>>();
         _infrastructureServiceRepository = fixture.GetService<IRepository<InfrastructureService, long>>();
@@ -143,6 +145,23 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
 
         // Delete.
         DeleteTest(_applicationInfoRepository, updated);
+    }
+
+    [Fact]
+    public void Crud_ApplicationRegister_Success()
+    {
+        // Create.
+        ApplicationRegister created = CreateTest(_applicationRegisterRepository, DataFactory.ApplicationRegister);
+
+        // Retrieve.
+        ApplicationRegister retrieved = RetrieveTest(_applicationRegisterRepository, created);
+
+        // Update.
+        retrieved.SharedSecret = "SuperSecr3t";
+        ApplicationRegister updated = UpdateTest(_applicationRegisterRepository, retrieved);
+
+        // Delete.
+        DeleteTest(_applicationRegisterRepository, updated);
     }
 
     [Fact]

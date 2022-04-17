@@ -21,11 +21,11 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
 
 public class EnvironmentRegister : IHasUniqueIdentifier<long>
 {
-    public virtual long Id { get; set; }
-
     public virtual string? ApplicationKey { get; set; }
 
     public virtual Zone? DefaultZone { get; set; }
+
+    public virtual long Id { get; set; }
 
     public virtual ICollection<InfrastructureService>? InfrastructureServices { get; set; }
 

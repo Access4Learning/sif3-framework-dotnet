@@ -15,7 +15,7 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
         }
 
         public virtual DbSet<ApplicationInfo> ApplicationInfos { get; set; } = null!;
-        //public virtual DbSet<ApplicationRegister> ApplicationRegisters { get; set; } = null!;
+        public virtual DbSet<ApplicationRegister> ApplicationRegisters { get; set; } = null!;
         public virtual DbSet<Environment> Environments { get; set; } = null!;
         //public virtual DbSet<EnvironmentInfrastructureService> EnvironmentInfrastructureServices { get; set; } = null!;
         //public virtual DbSet<EnvironmentProvisionedZone> EnvironmentProvisionedZones { get; set; } = null!;
@@ -59,35 +59,21 @@ namespace Sif.Framework.EntityFrameworkCore.Tests.Data
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            //modelBuilder.Entity<ApplicationRegister>(entity =>
-            //{
-            //    entity.ToTable("APPLICATION_REGISTER");
+            modelBuilder.Entity<ApplicationRegister>(entity =>
+            {
+                entity.ToTable("APPLICATION_REGISTER");
 
-            //    entity.Property(e => e.ApplicationRegisterId)
-            //        .HasColumnType("integer")
-            //        .HasColumnName("APPLICATION_REGISTER_ID");
+                entity.Property(e => e.Id).HasColumnName("APPLICATION_REGISTER_ID");
 
-            //    entity.Property(e => e.ApplicationKey).HasColumnName("APPLICATION_KEY");
+                entity.Property(e => e.ApplicationKey).HasColumnName("APPLICATION_KEY");
 
-            //    entity.Property(e => e.SharedSecret).HasColumnName("SHARED_SECRET");
+                entity.Property(e => e.SharedSecret).HasColumnName("SHARED_SECRET");
 
-            //    entity.HasMany(d => d.EnvironmentRegisters)
-            //        .WithMany(p => p.ApplicationRegisters)
-            //        .UsingEntity<Dictionary<string, object>>(
-            //            "ApplicationEnvironmentRegister",
-            //            l => l.HasOne<EnvironmentRegister>().WithMany().HasForeignKey("EnvironmentRegisterId").OnDelete(DeleteBehavior.ClientSetNull),
-            //            r => r.HasOne<ApplicationRegister>().WithMany().HasForeignKey("ApplicationRegisterId").OnDelete(DeleteBehavior.ClientSetNull),
-            //            j =>
-            //            {
-            //                j.HasKey("ApplicationRegisterId", "EnvironmentRegisterId");
-
-            //                j.ToTable("APPLICATION_ENVIRONMENT_REGISTERS");
-
-            //                j.IndexerProperty<long>("ApplicationRegisterId").HasColumnName("APPLICATION_REGISTER_ID");
-
-            //                j.IndexerProperty<long>("EnvironmentRegisterId").HasColumnName("ENVIRONMENT_REGISTER_ID");
-            //            });
-            //});
+                entity.HasMany(d => d.EnvironmentRegisters)
+                    .WithOne()
+                    .HasForeignKey("APPLICATION_REGISTER_ID")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity<Environment>(entity =>
             {

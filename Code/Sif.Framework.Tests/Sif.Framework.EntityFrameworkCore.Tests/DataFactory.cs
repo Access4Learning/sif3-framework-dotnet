@@ -31,6 +31,13 @@ public static class DataFactory
         Transport = "REST"
     };
 
+    public static ApplicationRegister ApplicationRegister => new()
+    {
+        ApplicationKey = "Sif3DemoConsumer",
+        EnvironmentRegisters = new List<EnvironmentRegister> { EnvironmentRegister },
+        SharedSecret = "SecretDem0"
+    };
+
     public static Environment Environment => new()
     {
         ApplicationInfo = ApplicationInfo,
