@@ -106,7 +106,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.CREATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.CreateApprovedRight);
             HttpResponseMessage result;
 
             try
@@ -188,7 +188,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.CREATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.CreateApprovedRight);
             HttpResponseMessage result;
 
             try
@@ -295,7 +295,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.QUERY, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.QueryApprovedRight);
             ICollection<jobType> items = new List<jobType>();
 
             try
@@ -339,7 +339,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.QUERY, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.QueryApprovedRight);
 
             // Check that we support that provider
             // if not then throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -387,7 +387,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+            CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
 
             return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
@@ -404,7 +404,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
-            CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+            CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
 
             return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
@@ -421,7 +421,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.DELETE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.DeleteApprovedRight);
 
             try
             {
@@ -464,7 +464,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.DELETE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.DeleteApprovedRight);
             IFunctionalService service = GetService(serviceName);
             ICollection<deleteStatus> statuses = new List<deleteStatus>();
 
@@ -564,7 +564,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
             PreventPagingHeaders();
             string body = Request.Content?.ReadAsStringAsync().Result;
 
@@ -633,7 +633,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
             PreventPagingHeaders();
             string _ = Request.Content?.ReadAsStringAsync().Result;
 
@@ -702,7 +702,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
             string body = Request.Content?.ReadAsStringAsync().Result;
 
             try
@@ -771,7 +771,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
             PreventPagingHeaders();
             string body = Request.Content?.ReadAsStringAsync().Result;
 
@@ -845,7 +845,7 @@ namespace Sif.Framework.AspNet.Providers
             [MatrixParameter] string[] contextId = null)
         {
             string sessionToken =
-                CheckAuthorisation(serviceName, zoneId, contextId, new Right(RightType.UPDATE, RightValue.APPROVED));
+                CheckAuthorisation(serviceName, zoneId, contextId, RightsUtils.UpdateApprovedRight);
             PreventPagingHeaders();
             HttpResponseMessage result;
 

@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tardigrade.Framework.Persistence;
-using Job = Sif.Framework.Model.Infrastructure.Job;
 
 namespace Sif.Framework.Service.Functional
 {
@@ -37,7 +36,7 @@ namespace Sif.Framework.Service.Functional
         private static readonly slf4net.ILogger Log =
             slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        private readonly ISifObjectBindingRepository bindings;
+        private readonly ISifObjectBindingRepository _bindings;
 
         /// <summary>
         /// The dictionary of phases this service contains, with the actions each can perform
@@ -53,7 +52,7 @@ namespace Sif.Framework.Service.Functional
             : base(jobRepository)
         {
             PhaseActions = new Dictionary<string, IPhaseActions>();
-            bindings = objectBindingRepository;
+            _bindings = objectBindingRepository;
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Bind(Guid objectId, string ownerId)
         {
-            long id = bindings.Create(new SifObjectBinding
+            long id = _bindings.Create(new SifObjectBinding
             {
                 OwnerId = ownerId,
                 RefId = objectId
@@ -102,11 +101,11 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual void Unbind(Guid objectId)
         {
-            IEnumerable<SifObjectBinding> sifObjectBindings = bindings.RetrieveByRefId(objectId);
+            IEnumerable<SifObjectBinding> sifObjectBindings = _bindings.RetrieveByRefId(objectId);
 
             foreach (SifObjectBinding sifObjectBinding in sifObjectBindings)
             {
-                bindings.Delete(sifObjectBinding);
+                _bindings.Delete(sifObjectBinding);
             }
 
             Log.Info("Unbound object " + objectId + " from its session token");
@@ -117,7 +116,7 @@ namespace Sif.Framework.Service.Functional
         /// </summary>
         public virtual bool IsBound(Guid objectId, string ownerId)
         {
-            IEnumerable<SifObjectBinding> candidates = bindings.RetrieveByBinding(objectId, ownerId);
+            IEnumerable<SifObjectBinding> candidates = _bindings.RetrieveByBinding(objectId, ownerId);
 
             bool bound = candidates != null && candidates.Any();
 
@@ -279,7 +278,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.CREATE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.CreateApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Create(job, phase, body, contentType, accept);
@@ -300,7 +299,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.QUERY, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.QueryApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Retrieve(job, phase, body, contentType, accept);
@@ -321,7 +320,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.UPDATE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.UpdateApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Update(job, phase, body, contentType, accept);
@@ -342,7 +341,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, new Right(RightType.DELETE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.DeleteApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Delete(job, phase, body, contentType, accept);
@@ -361,7 +360,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.StatesRights.Values, new Right(RightType.CREATE, RightValue.APPROVED));
+            RightsUtils.CheckRight(phase.StatesRights.Values, RightsUtils.CreateApprovedRight);
 
             PhaseState state = MapperFactory.CreateInstance<stateType, PhaseState>(item);
 

@@ -57,7 +57,7 @@ public class AuthorisationService : IAuthorisationService<IHeaderDictionary>
         if (environment == null) throw
             new InvalidSessionException("Session token does not have an associated environment definition.");
 
-        var operationPolicy = new Right(permission, privilege);
+        var operationPolicy = new Right { Type = permission.ToString(), Value = privilege.ToString() };
         string serviceType = headers.GetHeaderValue("serviceType") ?? ServiceType.OBJECT.ToDescription();
 
         // Retrieving permissions for requester.

@@ -25,15 +25,5 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual string Type { get; set; }
 
         public virtual string Value { get; set; }
-
-        public Right()
-        {
-        }
-
-        public Right(RightType type, RightValue value)
-        {
-            Type = type.ToString();
-            Value = value.ToString();
-        }
     }
 }

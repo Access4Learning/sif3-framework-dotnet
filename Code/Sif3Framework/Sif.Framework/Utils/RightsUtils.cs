@@ -27,6 +27,18 @@ namespace Sif.Framework.Utils
     /// </summary>
     public static class RightsUtils
     {
+        public static readonly Right CreateApprovedRight =
+            new Right { Type = RightType.CREATE.ToString(), Value = RightValue.APPROVED.ToString() };
+
+        public static readonly Right DeleteApprovedRight =
+            new Right { Type = RightType.DELETE.ToString(), Value = RightValue.APPROVED.ToString() };
+
+        public static readonly Right QueryApprovedRight =
+            new Right { Type = RightType.QUERY.ToString(), Value = RightValue.APPROVED.ToString() };
+
+        public static readonly Right UpdateApprovedRight =
+            new Right { Type = RightType.UPDATE.ToString(), Value = RightValue.APPROVED.ToString() };
+
         /// <summary>
         /// Checks to see if the given Right is contained in the collection of Rights. Throws a RejectedException if
         /// the right is not found.
@@ -42,37 +54,6 @@ namespace Sif.Framework.Utils
                 throw new RejectedException(
                     $"Insufficient rights for this operation, no right for {right.Type} given in the rights collection.");
             }
-        }
-
-        /// <summary>
-        /// Gets a dictionary of rights. If no arguments are supplied all rights are assumed to have the value REJECTED.
-        /// </summary>
-        /// <param name="admin">The value of the ADMIN right</param>
-        /// <param name="create">The value of the CREATE right</param>
-        /// <param name="delete">The value of the DELETE right</param>
-        /// <param name="provide">The value of the PROVIDE right</param>
-        /// <param name="query">The value of the QUERY right</param>
-        /// <param name="subscribe">The value of the SUBSCRIBE right</param>
-        /// <param name="update">The value of the UPDATE right</param>
-        /// <returns>A dictionary of rights.</returns>
-        public static IDictionary<string, Right> GetRights(
-            RightValue admin = RightValue.REJECTED,
-            RightValue create = RightValue.REJECTED,
-            RightValue delete = RightValue.REJECTED,
-            RightValue provide = RightValue.REJECTED,
-            RightValue query = RightValue.REJECTED,
-            RightValue subscribe = RightValue.REJECTED,
-            RightValue update = RightValue.REJECTED)
-        {
-            IDictionary<string, Right> rights = new Dictionary<string, Right>();
-            rights.Add(RightType.ADMIN.ToString(), new Right(RightType.ADMIN, admin));
-            rights.Add(RightType.CREATE.ToString(), new Right(RightType.CREATE, create));
-            rights.Add(RightType.DELETE.ToString(), new Right(RightType.DELETE, delete));
-            rights.Add(RightType.PROVIDE.ToString(), new Right(RightType.PROVIDE, provide));
-            rights.Add(RightType.QUERY.ToString(), new Right(RightType.QUERY, query));
-            rights.Add(RightType.SUBSCRIBE.ToString(), new Right(RightType.SUBSCRIBE, subscribe));
-            rights.Add(RightType.UPDATE.ToString(), new Right(RightType.UPDATE, update));
-            return rights;
         }
     }
 }
