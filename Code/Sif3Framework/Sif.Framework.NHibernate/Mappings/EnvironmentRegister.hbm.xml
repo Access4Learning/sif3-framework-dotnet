@@ -13,10 +13,9 @@
       <key column="ENVIRONMENT_REGISTER_ID" />
       <one-to-many class="Sif.Framework.Model.Infrastructure.InfrastructureService" />
     </bag>
-    <map name="ProvisionedZones" table="ENVIRONMENT_REGISTER_PROVISIONED_ZONES" cascade="all" lazy="false">
+    <bag name="ProvisionedZones" cascade="all" lazy="false">
       <key column="ENVIRONMENT_REGISTER_ID" />
-      <index column="SIF_ID" type="string" />
-      <many-to-many column="PROVISIONED_ZONE_ID" class="Sif.Framework.Model.Infrastructure.ProvisionedZone" />
-    </map>
+      <one-to-many class="Sif.Framework.Model.Infrastructure.ProvisionedZone" />
+    </bag>
   </class>
 </hibernate-mapping>

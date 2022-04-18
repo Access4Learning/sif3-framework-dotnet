@@ -33,20 +33,20 @@ namespace Sif.Framework.Extensions
             // Return the requested zone
             if (!string.IsNullOrWhiteSpace(zoneId))
             {
-                return environment.ProvisionedZones[zoneId];
+                return environment.ProvisionedZones.FirstOrDefault(p => p.SifId == zoneId);
             }
 
             // No zone, so try getting the default zone
             if (!string.IsNullOrWhiteSpace(environment.DefaultZone.SifId))
             {
-                return environment.ProvisionedZones[environment.DefaultZone.SifId];
+                return environment.ProvisionedZones.FirstOrDefault(p => p.SifId == environment.DefaultZone.SifId);
             }
 
             // No default zone defined
             // Fallback: If there is exactly one zone defined then return that
             if (environment.ProvisionedZones != null && environment.ProvisionedZones.Count == 1)
             {
-                return environment.ProvisionedZones.Values.FirstOrDefault();
+                return environment.ProvisionedZones.FirstOrDefault();
             }
 
             return null;

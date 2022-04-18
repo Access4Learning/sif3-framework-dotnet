@@ -65,7 +65,7 @@ namespace Sif.Framework.Model.Infrastructure
 
         public virtual string InstanceId { get; set; }
 
-        public virtual IDictionary<string, ProvisionedZone> ProvisionedZones { get; set; }
+        public virtual ICollection<ProvisionedZone> ProvisionedZones { get; set; }
 
         /// <summary>
         /// The ID associated with an instance of the Environment.

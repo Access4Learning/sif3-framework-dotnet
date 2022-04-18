@@ -20,7 +20,6 @@ using Sif.Framework.Service.Mapper;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Tardigrade.Framework.Exceptions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -53,66 +52,66 @@ namespace Sif.Framework.Service.Infrastructure
             return destinationZone;
         }
 
-        /// <summary>
-        /// Create a copy of a dictionary of ProvisionedZone objects.
-        /// </summary>
-        /// <param name="sourceZones">Dictionary of ProvisionedZone objects to copy.</param>
-        /// <returns>New copy of the dictionary of ProvisionedZone objects if not null; null otherwise.</returns>
-        private static IDictionary<string, ProvisionedZone> CopyProvisionedZones(
-            IDictionary<string, ProvisionedZone> sourceZones)
-        {
-            if (sourceZones == null) return null;
+        ///// <summary>
+        ///// Create a copy of a dictionary of ProvisionedZone objects.
+        ///// </summary>
+        ///// <param name="sourceZones">Dictionary of ProvisionedZone objects to copy.</param>
+        ///// <returns>New copy of the dictionary of ProvisionedZone objects if not null; null otherwise.</returns>
+        //private static IDictionary<string, ProvisionedZone> CopyProvisionedZones(
+        //    IDictionary<string, ProvisionedZone> sourceZones)
+        //{
+        //    if (sourceZones == null) return null;
 
-            var destinationZones = new Dictionary<string, ProvisionedZone>();
+        //    var destinationZones = new Dictionary<string, ProvisionedZone>();
 
-            foreach (string key in sourceZones.Keys)
-            {
-                if (!sourceZones.TryGetValue(key, out ProvisionedZone sourceZone)) continue;
+        //    foreach (string key in sourceZones.Keys)
+        //    {
+        //        if (!sourceZones.TryGetValue(key, out ProvisionedZone sourceZone)) continue;
 
-                var destinationZone = new ProvisionedZone { SifId = sourceZone.SifId };
+        //        var destinationZone = new ProvisionedZone { SifId = sourceZone.SifId };
 
-                if (sourceZone.Services != null)
-                {
-                    destinationZone.Services = CopyServices(sourceZone.Services);
-                }
+        //        if (sourceZone.Services != null)
+        //        {
+        //            destinationZone.Services = CopyServices(sourceZone.Services);
+        //        }
 
-                destinationZones.Add(key, destinationZone);
-            }
+        //        destinationZones.Add(key, destinationZone);
+        //    }
 
-            return destinationZones;
-        }
+        //    return destinationZones;
+        //}
 
-        /// <summary>
-        /// Create a copy of a collection of Service objects.
-        /// </summary>
-        /// <param name="sourceServices">Collection of Service objects to copy.</param>
-        /// <returns>New copy of the collection of Service objects if not null; null otherwise.</returns>
-        private static ICollection<Model.Infrastructure.Service> CopyServices(
-            ICollection<Model.Infrastructure.Service> sourceServices)
-        {
-            if (sourceServices == null) return null;
+        ///// <summary>
+        ///// Create a copy of a collection of Service objects.
+        ///// </summary>
+        ///// <param name="sourceServices">Collection of Service objects to copy.</param>
+        ///// <returns>New copy of the collection of Service objects if not null; null otherwise.</returns>
+        //private static ICollection<Model.Infrastructure.Service> CopyServices(
+        //    ICollection<Model.Infrastructure.Service> sourceServices)
+        //{
+        //    if (sourceServices == null) return null;
 
-            var destinationServices = new List<Model.Infrastructure.Service>();
+        //    var destinationServices = new List<Model.Infrastructure.Service>();
 
-            foreach (Model.Infrastructure.Service sourceService in sourceServices)
-            {
-                var destinationService = new Model.Infrastructure.Service
-                {
-                    ContextId = sourceService.ContextId,
-                    Name = sourceService.Name,
-                    Type = sourceService.Type
-                };
+        //    foreach (Model.Infrastructure.Service sourceService in sourceServices)
+        //    {
+        //        var destinationService = new Model.Infrastructure.Service
+        //        {
+        //            ContextId = sourceService.ContextId,
+        //            Name = sourceService.Name,
+        //            Type = sourceService.Type
+        //        };
 
-                if (sourceService.Rights != null)
-                {
-                    destinationService.Rights = sourceService.Rights.ToList();
-                }
+        //        if (sourceService.Rights != null)
+        //        {
+        //            destinationService.Rights = sourceService.Rights.ToList();
+        //        }
 
-                destinationServices.Add(destinationService);
-            }
+        //        destinationServices.Add(destinationService);
+        //    }
 
-            return destinationServices;
-        }
+        //    return destinationServices;
+        //}
 
         /// <summary>
         /// Retrieve an Environment based upon the session token provided.
@@ -166,8 +165,6 @@ namespace Sif.Framework.Service.Infrastructure
                 throw new AlreadyExistsException(errorMessage);
             }
 
-            IDictionary<string, ProvisionedZone> provisionedZones =
-                CopyProvisionedZones(environmentRegister.ProvisionedZones);
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
 
             if (environmentRegister.DefaultZone != null)
@@ -175,20 +172,20 @@ namespace Sif.Framework.Service.Infrastructure
                 repoItem.DefaultZone = CopyDefaultZone(environmentRegister.DefaultZone);
             }
 
-            if (environmentRegister.InfrastructureServices.Count > 0)
+            if (environmentRegister.InfrastructureServices.Any())
             {
                 repoItem.InfrastructureServices = environmentRegister.InfrastructureServices;
             }
 
-            if (provisionedZones.Count > 0)
+            if (environmentRegister.ProvisionedZones.Any())
             {
-                repoItem.ProvisionedZones = CopyProvisionedZones(environmentRegister.ProvisionedZones);
+                repoItem.ProvisionedZones = environmentRegister.ProvisionedZones.ToList();
             }
 
             repoItem.SessionToken = sessionToken;
             Guid environmentId = Repository.Create(repoItem).Id;
 
-            if (repoItem.InfrastructureServices != null && repoItem.InfrastructureServices.Count > 0)
+            if (repoItem.InfrastructureServices != null && repoItem.InfrastructureServices.Any())
             {
                 InfrastructureService infrastructureService = repoItem.InfrastructureServices.FirstOrDefault(
                     i => i.Name == InfrastructureServiceNames.environment);

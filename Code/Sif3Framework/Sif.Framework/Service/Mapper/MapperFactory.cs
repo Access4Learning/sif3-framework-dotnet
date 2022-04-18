@@ -32,22 +32,6 @@ namespace Sif.Framework.Service.Mapper
     {
         public static IMapper Mapper { get; }
 
-        private class ProvisionedZonesConverter : ITypeConverter<provisionedZoneType[], IDictionary<string, ProvisionedZone>>
-        {
-            public IDictionary<string, ProvisionedZone> Convert(provisionedZoneType[] source, IDictionary<string, ProvisionedZone> destination, ResolutionContext context)
-            {
-                ICollection<ProvisionedZone> values = Mapper.Map<provisionedZoneType[], ICollection<ProvisionedZone>>(source);
-                IDictionary<string, ProvisionedZone> provisionedZones = new Dictionary<string, ProvisionedZone>();
-
-                foreach (ProvisionedZone provisionedZone in values)
-                {
-                    provisionedZones.Add(provisionedZone.SifId, provisionedZone);
-                }
-
-                return provisionedZones;
-            }
-        }
-
         private class PhasesConverter : ITypeConverter<phaseType[], IDictionary<string, Phase>>
         {
             public IDictionary<string, Phase> Convert(phaseType[] source, IDictionary<string, Phase> destination, ResolutionContext context)
@@ -77,7 +61,6 @@ namespace Sif.Framework.Service.Mapper
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
 
                 cfg.CreateMap<Environment, environmentType>()
-                    .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values))
                     .ForMember(dest => dest.typeSpecified, opt => opt.MapFrom(src => true))
                     .ForMember(dest => dest.fingerprint, opt => opt.Ignore());
                 cfg.CreateMap<environmentType, Environment>();
@@ -93,8 +76,6 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<provisionedZoneType, ProvisionedZone>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.SifId, opt => opt.MapFrom(src => src.id));
-                cfg.CreateMap<provisionedZoneType[], IDictionary<string, ProvisionedZone>>()
-                    .ConvertUsing(new ProvisionedZonesConverter());
 
                 cfg.CreateMap<Right, rightType>()
                     .ReverseMap();

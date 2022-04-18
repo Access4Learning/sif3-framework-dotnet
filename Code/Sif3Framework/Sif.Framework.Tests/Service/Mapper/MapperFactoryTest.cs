@@ -139,7 +139,7 @@ namespace Sif.Framework.Tests.Service.Mapper
 
             index = 0;
 
-            foreach (ProvisionedZone sourceProvisionedZone in source.ProvisionedZones.Values)
+            foreach (ProvisionedZone sourceProvisionedZone in source.ProvisionedZones)
             {
                 Assert.AreEqual(sourceProvisionedZone.SifId, destination.provisionedZones[index].id);
                 var sourceIndex = 0;
@@ -187,8 +187,6 @@ namespace Sif.Framework.Tests.Service.Mapper
                 Scope = "request"
             };
 
-            errorType destError = MapperFactory.CreateInstance<ResponseError, errorType>(srcError);
-
             // Create.
             var srcCreateStatus = new CreateStatus
             {
@@ -198,7 +196,6 @@ namespace Sif.Framework.Tests.Service.Mapper
                 StatusCode = "200"
             };
 
-            createType destCreateStatus = MapperFactory.CreateInstance<CreateStatus, createType>(srcCreateStatus);
             var srcCreateResponse =
                 new MultipleCreateResponse { StatusRecords = new List<CreateStatus> { srcCreateStatus } };
             createResponseType destCreateResponse =
@@ -221,7 +218,6 @@ namespace Sif.Framework.Tests.Service.Mapper
 
             // Delete.
             var srcDeleteStatus = new DeleteStatus { Error = srcError, Id = "del8", StatusCode = "300" };
-            deleteStatus destDeleteStatus = MapperFactory.CreateInstance<DeleteStatus, deleteStatus>(srcDeleteStatus);
             var srcDeleteResponse =
                 new MultipleDeleteResponse { StatusRecords = new List<DeleteStatus> { srcDeleteStatus } };
             deleteResponseType destDeleteResponse =
@@ -243,7 +239,6 @@ namespace Sif.Framework.Tests.Service.Mapper
 
             // Update.
             var srcUpdateStatus = new UpdateStatus { Error = srcError, Id = "up8", StatusCode = "400" };
-            updateType destUpdateStatus = MapperFactory.CreateInstance<UpdateStatus, updateType>(srcUpdateStatus);
             var srcUpdateResponse =
                 new MultipleUpdateResponse { StatusRecords = new List<UpdateStatus> { srcUpdateStatus } };
             updateResponseType destUpdateResponse =

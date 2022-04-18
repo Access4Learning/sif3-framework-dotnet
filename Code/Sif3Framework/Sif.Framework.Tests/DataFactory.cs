@@ -167,11 +167,7 @@ namespace Sif.Framework.Tests
             var schoolZone = new ProvisionedZone { SifId = "auSchoolTestingZone", Services = services };
             var studentZone = new ProvisionedZone { SifId = "auStudentTestingZone", Services = services };
 
-            IDictionary<string, ProvisionedZone> provisionedZones = new SortedDictionary<string, ProvisionedZone>
-            {
-                { schoolZone.SifId, schoolZone },
-                { studentZone.SifId, studentZone }
-            };
+            ICollection<ProvisionedZone> provisionedZones = new List<ProvisionedZone> { schoolZone, studentZone };
 
             Environment environmentResponse = CreateEnvironmentRequest();
             environmentResponse.InfrastructureServices = infrastructureServices;
