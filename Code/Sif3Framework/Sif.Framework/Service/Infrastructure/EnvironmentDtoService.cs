@@ -54,34 +54,6 @@ namespace Sif.Framework.Service.Infrastructure
         }
 
         /// <summary>
-        /// Create a copy of a dictionary of InfrastructureService objects.
-        /// </summary>
-        /// <param name="sourceServices">Dictionary of InfrastructureService objects to copy.</param>
-        /// <returns>New copy of the dictionary of InfrastructureService objects if not null; null otherwise.</returns>
-        private static IDictionary<InfrastructureServiceNames, InfrastructureService> CopyInfrastructureServices(
-            IDictionary<InfrastructureServiceNames, InfrastructureService> sourceServices)
-        {
-            if (sourceServices == null) return null;
-
-            var destinationServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
-
-            foreach (InfrastructureServiceNames key in sourceServices.Keys)
-            {
-                if (!sourceServices.TryGetValue(key, out InfrastructureService sourceService)) continue;
-
-                var destinationService = new InfrastructureService
-                {
-                    Name = sourceService.Name,
-                    Value = sourceService.Value
-                };
-
-                destinationServices.Add(key, destinationService);
-            }
-
-            return destinationServices;
-        }
-
-        /// <summary>
         /// Create a copy of a dictionary of ProvisionedZone objects.
         /// </summary>
         /// <param name="sourceZones">Dictionary of ProvisionedZone objects to copy.</param>
@@ -194,8 +166,6 @@ namespace Sif.Framework.Service.Infrastructure
                 throw new AlreadyExistsException(errorMessage);
             }
 
-            IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices =
-                CopyInfrastructureServices(environmentRegister.InfrastructureServices);
             IDictionary<string, ProvisionedZone> provisionedZones =
                 CopyProvisionedZones(environmentRegister.ProvisionedZones);
             Environment repoItem = MapperFactory.CreateInstance<environmentType, Environment>(item);
@@ -205,10 +175,9 @@ namespace Sif.Framework.Service.Infrastructure
                 repoItem.DefaultZone = CopyDefaultZone(environmentRegister.DefaultZone);
             }
 
-            if (infrastructureServices.Count > 0)
+            if (environmentRegister.InfrastructureServices.Count > 0)
             {
-                repoItem.InfrastructureServices =
-                    CopyInfrastructureServices(environmentRegister.InfrastructureServices);
+                repoItem.InfrastructureServices = environmentRegister.InfrastructureServices;
             }
 
             if (provisionedZones.Count > 0)
@@ -221,8 +190,8 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (repoItem.InfrastructureServices != null && repoItem.InfrastructureServices.Count > 0)
             {
-                InfrastructureService infrastructureService =
-                    repoItem.InfrastructureServices[InfrastructureServiceNames.environment];
+                InfrastructureService infrastructureService = repoItem.InfrastructureServices.FirstOrDefault(
+                    i => i.Name == InfrastructureServiceNames.environment);
 
                 if (infrastructureService != null)
                 {

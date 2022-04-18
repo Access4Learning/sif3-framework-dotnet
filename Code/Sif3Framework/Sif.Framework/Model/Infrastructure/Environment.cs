@@ -32,11 +32,6 @@ namespace Sif.Framework.Model.Infrastructure
     /// </summary>
     public class Environment : IHasUniqueIdentifier<Guid>
     {
-        /// <summary>
-        /// The ID of the Environment as managed by the Environment Provider.
-        /// </summary>
-        public virtual Guid Id { get; set; }
-
         public virtual ApplicationInfo ApplicationInfo { get; set; }
 
         /// <summary>
@@ -57,15 +52,16 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual Zone DefaultZone { get; set; }
 
         /// <summary>
+        /// The ID of the Environment as managed by the Environment Provider.
+        /// </summary>
+        public virtual Guid Id { get; set; }
+
+        /// <summary>
         /// There must be an InfrastructureService element present for each defined Infrastructure Service. The value
         /// of each InfrastructureService Property value sub-element defines the URL location of that Infrastructure
         /// Service.
         /// </summary>
-        public virtual IDictionary<InfrastructureServiceNames, InfrastructureService> InfrastructureServices
-        {
-            get;
-            set;
-        }
+        public virtual ICollection<InfrastructureService> InfrastructureServices { get; set; }
 
         public virtual string InstanceId { get; set; }
 

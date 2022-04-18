@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,22 +31,6 @@ namespace Sif.Framework.Service.Mapper
     public static class MapperFactory
     {
         public static IMapper Mapper { get; }
-
-        private class InfrastructureServicesConverter : ITypeConverter<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>
-        {
-            public IDictionary<InfrastructureServiceNames, InfrastructureService> Convert(infrastructureServiceType[] source, IDictionary<InfrastructureServiceNames, InfrastructureService> destination, ResolutionContext context)
-            {
-                ICollection<InfrastructureService> values = Mapper.Map<infrastructureServiceType[], ICollection<InfrastructureService>>(source);
-                IDictionary<InfrastructureServiceNames, InfrastructureService> infrastructureServices = new Dictionary<InfrastructureServiceNames, InfrastructureService>();
-
-                foreach (InfrastructureService infrastructureService in values)
-                {
-                    infrastructureServices.Add(infrastructureService.Name, infrastructureService);
-                }
-
-                return infrastructureServices;
-            }
-        }
 
         private class ProvisionedZonesConverter : ITypeConverter<provisionedZoneType[], IDictionary<string, ProvisionedZone>>
         {
@@ -91,11 +75,8 @@ namespace Sif.Framework.Service.Mapper
                     .ForMember(dest => dest.nameSpecified, opt => opt.MapFrom(src => true));
                 cfg.CreateMap<infrastructureServiceType, InfrastructureService>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
-                cfg.CreateMap<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>()
-                    .ConvertUsing(new InfrastructureServicesConverter());
 
                 cfg.CreateMap<Environment, environmentType>()
-                    .ForMember(dest => dest.infrastructureServices, opt => opt.MapFrom(src => src.InfrastructureServices.Values))
                     .ForMember(dest => dest.provisionedZones, opt => opt.MapFrom(src => src.ProvisionedZones.Values))
                     .ForMember(dest => dest.typeSpecified, opt => opt.MapFrom(src => true))
                     .ForMember(dest => dest.fingerprint, opt => opt.Ignore());

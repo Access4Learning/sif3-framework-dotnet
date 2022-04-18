@@ -84,13 +84,10 @@ namespace Sif.Framework.Extensions
                     break;
             }
 
-            if (environment.InfrastructureServices[name] == null ||
-                environment.InfrastructureServices[name].Value == null)
-            {
-                return null;
-            }
+            InfrastructureService infrastructureService =
+                environment.InfrastructureServices.FirstOrDefault(i => i.Name == name);
 
-            return environment.InfrastructureServices[name].Value;
+            return infrastructureService?.Value;
         }
     }
 }

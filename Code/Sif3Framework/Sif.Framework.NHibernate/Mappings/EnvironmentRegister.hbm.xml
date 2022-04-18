@@ -9,11 +9,10 @@
     <property name="SolutionId" column="SOLUTION_ID" length="256" />
     <property name="UserToken" column="USER_TOKEN" length="256" />
     <many-to-one name="DefaultZone" column="ZONE_ID" class="Sif.Framework.Model.Infrastructure.Zone" cascade="all" fetch="join" />
-    <map name="InfrastructureServices" table="ENVIRONMENT_REGISTER_INFRASTRUCTURE_SERVICES" cascade="all" lazy="false">
+    <bag name="InfrastructureServices" cascade="all" lazy="false">
       <key column="ENVIRONMENT_REGISTER_ID" />
-      <index column="NAME" type="InfrastructureServiceNames" />
-      <many-to-many column="INFRASTRUCTURE_SERVICE_ID" class="Sif.Framework.Model.Infrastructure.InfrastructureService" />
-    </map>
+      <one-to-many class="Sif.Framework.Model.Infrastructure.InfrastructureService" />
+    </bag>
     <map name="ProvisionedZones" table="ENVIRONMENT_REGISTER_PROVISIONED_ZONES" cascade="all" lazy="false">
       <key column="ENVIRONMENT_REGISTER_ID" />
       <index column="SIF_ID" type="string" />

@@ -39,17 +39,35 @@ namespace Sif.Framework.Tests.Service.Mapper
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);
 
             // Assert that the mapping was successful.
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconUri, destination.applicationInfo.adapterProduct.iconURI);
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductName, destination.applicationInfo.adapterProduct.productName);
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductVersion, destination.applicationInfo.adapterProduct.productVersion);
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.VendorName, destination.applicationInfo.adapterProduct.vendorName);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.IconUri,
+                destination.applicationInfo.adapterProduct.iconURI);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.ProductName,
+                destination.applicationInfo.adapterProduct.productName);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.ProductVersion,
+                destination.applicationInfo.adapterProduct.productVersion);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.VendorName,
+                destination.applicationInfo.adapterProduct.vendorName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationKey, destination.applicationInfo.applicationKey);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.IconUri, destination.applicationInfo.applicationProduct.iconURI);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductName, destination.applicationInfo.applicationProduct.productName);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductVersion, destination.applicationInfo.applicationProduct.productVersion);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.VendorName, destination.applicationInfo.applicationProduct.vendorName);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.IconUri,
+                destination.applicationInfo.applicationProduct.iconURI);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.ProductName,
+                destination.applicationInfo.applicationProduct.productName);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.ProductVersion,
+                destination.applicationInfo.applicationProduct.productVersion);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.VendorName,
+                destination.applicationInfo.applicationProduct.vendorName);
             Assert.AreEqual(source.ApplicationInfo.DataModelNamespace, destination.applicationInfo.dataModelNamespace);
-            Assert.AreEqual(source.ApplicationInfo.SupportedInfrastructureVersion, destination.applicationInfo.supportedInfrastructureVersion);
+            Assert.AreEqual(
+                source.ApplicationInfo.SupportedInfrastructureVersion,
+                destination.applicationInfo.supportedInfrastructureVersion);
             Assert.AreEqual(source.ApplicationInfo.Transport, destination.applicationInfo.transport);
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
@@ -73,17 +91,35 @@ namespace Sif.Framework.Tests.Service.Mapper
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);
 
             // Assert that the mapping was successful.
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconUri, destination.applicationInfo.adapterProduct.iconURI);
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductName, destination.applicationInfo.adapterProduct.productName);
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductVersion, destination.applicationInfo.adapterProduct.productVersion);
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.VendorName, destination.applicationInfo.adapterProduct.vendorName);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.IconUri,
+                destination.applicationInfo.adapterProduct.iconURI);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.ProductName,
+                destination.applicationInfo.adapterProduct.productName);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.ProductVersion,
+                destination.applicationInfo.adapterProduct.productVersion);
+            Assert.AreEqual(
+                source.ApplicationInfo.AdapterProduct.VendorName,
+                destination.applicationInfo.adapterProduct.vendorName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationKey, destination.applicationInfo.applicationKey);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.IconUri, destination.applicationInfo.applicationProduct.iconURI);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductName, destination.applicationInfo.applicationProduct.productName);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductVersion, destination.applicationInfo.applicationProduct.productVersion);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.VendorName, destination.applicationInfo.applicationProduct.vendorName);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.IconUri,
+                destination.applicationInfo.applicationProduct.iconURI);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.ProductName,
+                destination.applicationInfo.applicationProduct.productName);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.ProductVersion,
+                destination.applicationInfo.applicationProduct.productVersion);
+            Assert.AreEqual(
+                source.ApplicationInfo.ApplicationProduct.VendorName,
+                destination.applicationInfo.applicationProduct.vendorName);
             Assert.AreEqual(source.ApplicationInfo.DataModelNamespace, destination.applicationInfo.dataModelNamespace);
-            Assert.AreEqual(source.ApplicationInfo.SupportedInfrastructureVersion, destination.applicationInfo.supportedInfrastructureVersion);
+            Assert.AreEqual(
+                source.ApplicationInfo.SupportedInfrastructureVersion,
+                destination.applicationInfo.supportedInfrastructureVersion);
             Assert.AreEqual(source.ApplicationInfo.Transport, destination.applicationInfo.transport);
             Assert.AreEqual(source.AuthenticationMethod, destination.authenticationMethod);
             Assert.AreEqual(source.ConsumerName, destination.consumerName);
@@ -92,9 +128,11 @@ namespace Sif.Framework.Tests.Service.Mapper
             Assert.AreEqual(source.Id.ToString(), destination.id);
             var index = 0;
 
-            foreach (InfrastructureService sourceProperty in source.InfrastructureServices.Values)
+            foreach (InfrastructureService sourceProperty in source.InfrastructureServices)
             {
-                Assert.AreEqual(sourceProperty.Name.ToString(), destination.infrastructureServices[index].name.ToString());
+                Assert.AreEqual(
+                    sourceProperty.Name.ToString(),
+                    destination.infrastructureServices[index].name.ToString());
                 Assert.AreEqual(sourceProperty.Value, destination.infrastructureServices[index].Value);
                 index++;
             }
@@ -108,15 +146,21 @@ namespace Sif.Framework.Tests.Service.Mapper
 
                 foreach (Model.Infrastructure.Service sourceService in sourceProvisionedZone.Services)
                 {
-                    Assert.AreEqual(sourceService.ContextId, destination.provisionedZones[index].services[sourceIndex].contextId);
+                    Assert.AreEqual(
+                        sourceService.ContextId,
+                        destination.provisionedZones[index].services[sourceIndex].contextId);
                     Assert.AreEqual(sourceService.Name, destination.provisionedZones[index].services[sourceIndex].name);
                     Assert.AreEqual(sourceService.Type, destination.provisionedZones[index].services[sourceIndex].type);
                     var rightIndex = 0;
 
                     foreach (Right sourceRight in sourceService.Rights)
                     {
-                        Assert.AreEqual(sourceRight.Type, destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].type);
-                        Assert.AreEqual(sourceRight.Value, destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].Value);
+                        Assert.AreEqual(
+                            sourceRight.Type,
+                            destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].type);
+                        Assert.AreEqual(
+                            sourceRight.Value,
+                            destination.provisionedZones[index].services[sourceIndex].rights[rightIndex].Value);
                         rightIndex++;
                     }
 
@@ -134,14 +178,31 @@ namespace Sif.Framework.Tests.Service.Mapper
         public void ExplicitResponseMapperTest()
         {
             // Error.
-            var srcError = new ResponseError { Code = 123, Description = "Err desc", Id = "42", Message = "Error occurred", Scope = "request" };
+            var srcError = new ResponseError
+            {
+                Code = 123,
+                Description = "Err desc",
+                Id = "42",
+                Message = "Error occurred",
+                Scope = "request"
+            };
+
             errorType destError = MapperFactory.CreateInstance<ResponseError, errorType>(srcError);
 
             // Create.
-            var srcCreateStatus = new CreateStatus { AdvisoryId = "src456", Error = srcError, Id = "cr8", StatusCode = "200" };
+            var srcCreateStatus = new CreateStatus
+            {
+                AdvisoryId = "src456",
+                Error = srcError,
+                Id = "cr8",
+                StatusCode = "200"
+            };
+
             createType destCreateStatus = MapperFactory.CreateInstance<CreateStatus, createType>(srcCreateStatus);
-            var srcCreateResponse = new MultipleCreateResponse { StatusRecords = new List<CreateStatus> { srcCreateStatus } };
-            createResponseType destCreateResponse = MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(srcCreateResponse);
+            var srcCreateResponse =
+                new MultipleCreateResponse { StatusRecords = new List<CreateStatus> { srcCreateStatus } };
+            createResponseType destCreateResponse =
+                MapperFactory.CreateInstance<MultipleCreateResponse, createResponseType>(srcCreateResponse);
             var index = 0;
 
             // Assert that the mapping was successful.
@@ -161,8 +222,10 @@ namespace Sif.Framework.Tests.Service.Mapper
             // Delete.
             var srcDeleteStatus = new DeleteStatus { Error = srcError, Id = "del8", StatusCode = "300" };
             deleteStatus destDeleteStatus = MapperFactory.CreateInstance<DeleteStatus, deleteStatus>(srcDeleteStatus);
-            var srcDeleteResponse = new MultipleDeleteResponse { StatusRecords = new List<DeleteStatus> { srcDeleteStatus } };
-            deleteResponseType destDeleteResponse = MapperFactory.CreateInstance<MultipleDeleteResponse, deleteResponseType>(srcDeleteResponse);
+            var srcDeleteResponse =
+                new MultipleDeleteResponse { StatusRecords = new List<DeleteStatus> { srcDeleteStatus } };
+            deleteResponseType destDeleteResponse =
+                MapperFactory.CreateInstance<MultipleDeleteResponse, deleteResponseType>(srcDeleteResponse);
             index = 0;
 
             // Assert that the mapping was successful.
@@ -181,8 +244,10 @@ namespace Sif.Framework.Tests.Service.Mapper
             // Update.
             var srcUpdateStatus = new UpdateStatus { Error = srcError, Id = "up8", StatusCode = "400" };
             updateType destUpdateStatus = MapperFactory.CreateInstance<UpdateStatus, updateType>(srcUpdateStatus);
-            var srcUpdateResponse = new MultipleUpdateResponse { StatusRecords = new List<UpdateStatus> { srcUpdateStatus } };
-            updateResponseType destUpdateResponse = MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(srcUpdateResponse);
+            var srcUpdateResponse =
+                new MultipleUpdateResponse { StatusRecords = new List<UpdateStatus> { srcUpdateStatus } };
+            updateResponseType destUpdateResponse =
+                MapperFactory.CreateInstance<MultipleUpdateResponse, updateResponseType>(srcUpdateResponse);
             index = 0;
 
             // Assert that the mapping was successful.
