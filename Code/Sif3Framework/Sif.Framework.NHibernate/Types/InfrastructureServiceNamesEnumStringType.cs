@@ -22,9 +22,9 @@ namespace Sif.Framework.NHibernate.Types
     /// <summary>
     /// <a href="https://blog.devart.com/string-enum-representation-in-entity-developer.html">String Enum Representation in Entity Developer</a>
     /// </summary>
-    public class InfrastructureServiceNameEnumStringType : EnumStringType
+    public class InfrastructureServiceNamesEnumStringType : EnumStringType
     {
-        public InfrastructureServiceNameEnumStringType() : base(typeof(InfrastructureServiceNames))
+        public InfrastructureServiceNamesEnumStringType() : base(typeof(InfrastructureServiceNames))
         {
         }
     }

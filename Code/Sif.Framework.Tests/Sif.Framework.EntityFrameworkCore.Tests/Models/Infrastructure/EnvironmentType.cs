@@ -16,13 +16,8 @@
 
 namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
 
-public enum InfrastructureServiceNames
+public enum EnvironmentType
 {
-    environment,
-    provisionRequests,
-    requestsConnector,
-    servicesConnector,
-    eventsConnector,
-    queues,
-    subscriptions
+    DIRECT,
+    BROKERED
 }

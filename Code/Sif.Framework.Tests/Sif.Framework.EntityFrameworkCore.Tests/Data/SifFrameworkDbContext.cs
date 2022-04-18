@@ -97,7 +97,7 @@ public class SifFrameworkDbContext : DbContext
 
             entity.Property(e => e.SolutionId).HasColumnName("SOLUTION_ID");
 
-            entity.Property(e => e.Type).HasColumnName("TYPE");
+            entity.Property(e => e.Type).HasColumnName("TYPE").HasConversion<string>();
 
             entity.Property(e => e.UserToken).HasColumnName("USER_TOKEN");
 

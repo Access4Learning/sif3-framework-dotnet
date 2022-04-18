@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+using NHibernate.Type;
+using Sif.Framework.Model.Infrastructure;
 
-public enum InfrastructureServiceNames
+namespace Sif.Framework.NHibernate.Types
 {
-    environment,
-    provisionRequests,
-    requestsConnector,
-    servicesConnector,
-    eventsConnector,
-    queues,
-    subscriptions
+    /// <summary>
+    /// <a href="https://blog.devart.com/string-enum-representation-in-entity-developer.html">String Enum Representation in Entity Developer</a>
+    /// </summary>
+    public class EnvironmentTypeEnumStringType : EnumStringType
+    {
+        public EnvironmentTypeEnumStringType() : base(typeof(EnvironmentType))
+        {
+        }
+    }
 }

@@ -4,7 +4,7 @@
     <id name="Id" column="INFRASTRUCTURE_SERVICE_ID">
       <generator class="native" />
     </id>
-    <property name="Name" column="NAME" type="Sif.Framework.NHibernate.Types.InfrastructureServiceNameEnumStringType,Sif.Framework.NHibernate" />
+    <property name="Name" column="NAME" type="Sif.Framework.NHibernate.Types.InfrastructureServiceNamesEnumStringType, Sif.Framework.NHibernate" />
     <property name="Value" column="VALUE" length="256" />
   </class>
 </hibernate-mapping>

@@ -49,7 +49,7 @@ public static class DataFactory
         ProvisionedZones = new List<ProvisionedZone> { ProvisionedZone },
         SessionToken = "U2lmM0RlbW9Db25zdW1lcjo6OlNpZjNGcmFtZXdvcms=",
         SolutionId = "Sif3Framework",
-        Type = "DIRECT",
+        Type = EnvironmentType.DIRECT,
         UserToken = "6621a7d1-a66d-419b-8d3f-80c4a305ad83"
     };
 

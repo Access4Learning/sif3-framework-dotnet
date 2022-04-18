@@ -42,7 +42,7 @@ public class Environment : IHasUniqueIdentifier<Guid>
 
     public virtual string? SolutionId { get; set; }
 
-    public virtual string? Type { get; set; }
+    public virtual EnvironmentType? Type { get; set; }
 
     public virtual string? UserToken { get; set; }
 }
