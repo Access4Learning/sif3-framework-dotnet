@@ -20,9 +20,9 @@ namespace Sif.Framework.Model.Infrastructure
 {
     public class ProductIdentity : IHasUniqueIdentifier<long>
     {
-        public virtual long Id { get; set; }
+        public virtual string IconUri { get; set; }
 
-        public virtual string IconURI { get; set; }
+        public virtual long Id { get; set; }
 
         public virtual string ProductName { get; set; }
 

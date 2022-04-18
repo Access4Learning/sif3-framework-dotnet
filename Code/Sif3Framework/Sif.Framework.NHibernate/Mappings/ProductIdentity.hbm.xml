@@ -7,6 +7,6 @@
     <property name="VendorName" column="VENDOR_NAME" length="256"/>
     <property name="ProductName" column="PRODUCT_NAME" length="256"/>
     <property name="ProductVersion" column="PRODUCT_VERSION" length="80"/>
-    <property name="IconURI" column="ICON_URI" length="256"/>
+    <property name="IconUri" column="ICON_URI" length="256"/>
   </class>
 </hibernate-mapping>

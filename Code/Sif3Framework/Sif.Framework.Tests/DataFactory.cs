@@ -46,8 +46,8 @@ namespace Sif.Framework.Tests
         /// <returns>Environment request.</returns>
         public static Environment CreateEnvironmentRequest()
         {
-            var adapterProduct = new ProductIdentity { IconURI = "icon url 1", ProductName = "product name 1", ProductVersion = "3.4.1", VendorName = "Systemic" };
-            var applicationProduct = new ProductIdentity { IconURI = "icon url 2", ProductName = "product name 2", ProductVersion = "9.80", VendorName = "Systemic" };
+            var adapterProduct = new ProductIdentity { IconUri = "icon url 1", ProductName = "product name 1", ProductVersion = "3.4.1", VendorName = "Systemic" };
+            var applicationProduct = new ProductIdentity { IconUri = "icon url 2", ProductName = "product name 2", ProductVersion = "9.80", VendorName = "Systemic" };
             var zoneCharge = new Property { Name = "charge", Value = "Negative" };
             var zoneMaster = new Property { Name = "master", Value = "Annihilus" };
             IDictionary<string, Property> zoneProperties = new Dictionary<string, Property>

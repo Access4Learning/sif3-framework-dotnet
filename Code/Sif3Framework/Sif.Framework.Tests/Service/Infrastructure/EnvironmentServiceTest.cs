@@ -84,7 +84,7 @@ namespace Sif.Framework.Tests.Service.Infrastructure
 
             // Assert that the retrieved Environment matches the saved Environment.
             Assert.AreEqual(
-                saved.ApplicationInfo.AdapterProduct.IconURI,
+                saved.ApplicationInfo.AdapterProduct.IconUri,
                 retrieved.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(
                 saved.ApplicationInfo.AdapterProduct.ProductName,
@@ -97,7 +97,7 @@ namespace Sif.Framework.Tests.Service.Infrastructure
                 retrieved.applicationInfo.adapterProduct.vendorName);
             Assert.AreEqual(saved.ApplicationInfo.ApplicationKey, retrieved.applicationInfo.applicationKey);
             Assert.AreEqual(
-                saved.ApplicationInfo.ApplicationProduct.IconURI,
+                saved.ApplicationInfo.ApplicationProduct.IconUri,
                 retrieved.applicationInfo.applicationProduct.iconURI);
             Assert.AreEqual(
                 saved.ApplicationInfo.ApplicationProduct.ProductName,

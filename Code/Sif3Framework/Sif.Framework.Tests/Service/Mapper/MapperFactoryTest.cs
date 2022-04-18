@@ -39,12 +39,12 @@ namespace Sif.Framework.Tests.Service.Mapper
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);
 
             // Assert that the mapping was successful.
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconURI, destination.applicationInfo.adapterProduct.iconURI);
+            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconUri, destination.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductName, destination.applicationInfo.adapterProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductVersion, destination.applicationInfo.adapterProduct.productVersion);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.VendorName, destination.applicationInfo.adapterProduct.vendorName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationKey, destination.applicationInfo.applicationKey);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.IconURI, destination.applicationInfo.applicationProduct.iconURI);
+            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.IconUri, destination.applicationInfo.applicationProduct.iconURI);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductName, destination.applicationInfo.applicationProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductVersion, destination.applicationInfo.applicationProduct.productVersion);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.VendorName, destination.applicationInfo.applicationProduct.vendorName);
@@ -73,12 +73,12 @@ namespace Sif.Framework.Tests.Service.Mapper
             environmentType destination = MapperFactory.CreateInstance<Environment, environmentType>(source);
 
             // Assert that the mapping was successful.
-            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconURI, destination.applicationInfo.adapterProduct.iconURI);
+            Assert.AreEqual(source.ApplicationInfo.AdapterProduct.IconUri, destination.applicationInfo.adapterProduct.iconURI);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductName, destination.applicationInfo.adapterProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.ProductVersion, destination.applicationInfo.adapterProduct.productVersion);
             Assert.AreEqual(source.ApplicationInfo.AdapterProduct.VendorName, destination.applicationInfo.adapterProduct.vendorName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationKey, destination.applicationInfo.applicationKey);
-            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.IconURI, destination.applicationInfo.applicationProduct.iconURI);
+            Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.IconUri, destination.applicationInfo.applicationProduct.iconURI);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductName, destination.applicationInfo.applicationProduct.productName);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.ProductVersion, destination.applicationInfo.applicationProduct.productVersion);
             Assert.AreEqual(source.ApplicationInfo.ApplicationProduct.VendorName, destination.applicationInfo.applicationProduct.vendorName);
