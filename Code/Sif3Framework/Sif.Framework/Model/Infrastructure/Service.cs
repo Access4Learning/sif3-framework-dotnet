@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-    public class Service : IHasUniqueIdentifier<long>, IComparable<Service>
+    public class Service : IHasUniqueIdentifier<long>
     {
-        public virtual long Id { get; set; }
-
         /// <summary>
         /// The unique identity of a context element, which is associated with a Provider of this name and type
         /// operating in a Zone with this ID.  All Services with the same name in the same Zone must have different
         /// Context IDs. Only one such Service can have no Context.
         /// </summary>
         public virtual string ContextId { get; set; }
+
+        public virtual long Id { get; set; }
 
         /// <summary>
         /// The name of the Service. For utilities, this is fixed to one of the defined set of Utility Service Names.
@@ -40,26 +39,5 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual ICollection<Right> Rights { get; set; }
 
         public virtual string Type { get; set; }
-
-        public virtual int CompareTo(Service service)
-        {
-            var comparison = 0;
-
-            if (service == null)
-            {
-                comparison = 1;
-            }
-            else if (!service.Equals(this))
-            {
-                comparison = string.CompareOrdinal(Name, service.Name);
-
-                if (comparison == 0)
-                {
-                    comparison = string.CompareOrdinal(ContextId, service.ContextId);
-                }
-            }
-
-            return comparison;
-        }
     }
 }

@@ -99,6 +99,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - _***Backward Incompatibility***_ Refactored the Rights property of the Service model to an ICollection instead of an IDictionary. Updated all references accordingly.
 - Fixed incorrect namespace in the Sif.Framework.Tests project.
 - Removed constructors from the Insfrastructure model classes.
+- Removed the IComparable intergace from the Service class.
 - Code clean-up of the Sif.Framework.Tests project.
 - Updated XML documentation in classes.
 - Updated third-party NuGet packages.
