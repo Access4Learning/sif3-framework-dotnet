@@ -158,7 +158,7 @@ public class SifFrameworkDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("INFRASTRUCTURE_SERVICE_ID");
 
-            entity.Property(e => e.Name).HasColumnName("NAME");
+            entity.Property(e => e.Name).HasColumnName("NAME").HasConversion<string>();
 
             entity.Property(e => e.Value).HasColumnName("VALUE");
         });

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 Systemic Pty Ltd
+ * Copyright 2017 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-using Tardigrade.Framework.Models.Domain;
-
 namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
 
-public class InfrastructureService : IHasUniqueIdentifier<long>
+public enum InfrastructureServiceNames
 {
-    public virtual long Id { get; set; }
-
-    public virtual InfrastructureServiceNames? Name { get; set; }
-
-    public virtual string? Value { get; set; }
+    environment,
+    provisionRequests,
+    requestsConnector,
+    servicesConnector,
+    eventsConnector,
+    queues,
+    subscriptions
 }

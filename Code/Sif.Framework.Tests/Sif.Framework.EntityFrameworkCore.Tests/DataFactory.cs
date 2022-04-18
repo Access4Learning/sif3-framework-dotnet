@@ -66,19 +66,19 @@ public static class DataFactory
 
     public static InfrastructureService InfrastructureServiceEnvironment => new()
     {
-        Name = "environment",
+        Name = InfrastructureServiceNames.environment,
         Value = "http://localhost:62921/api/environments/31515b87-0e9e-4804-b09e-174b262b898a"
     };
 
     public static ICollection<InfrastructureService> InfrastructureServices => new List<InfrastructureService>
     {
         InfrastructureServiceEnvironment,
-        new() { Name = "provisionRequests", Value = "http://localhost:62921/api/provision" },
-        new() { Name = "requestsConnector", Value = "http://localhost:50617/api" },
-        new() { Name = "servicesConnector", Value = "http://localhost:50617/services" },
-        new() { Name = "eventsConnector", Value = "http://localhost:62837/api" },
-        new() { Name = "queues", Value = "http://localhost:59586/api/queues" },
-        new() { Name = "subscriptions", Value = "http://localhost:59586/api/subscriptions" }
+        new() { Name = InfrastructureServiceNames.provisionRequests, Value = "http://localhost:62921/api/provision" },
+        new() { Name = InfrastructureServiceNames.requestsConnector, Value = "http://localhost:50617/api" },
+        new() { Name = InfrastructureServiceNames.servicesConnector, Value = "http://localhost:50617/services" },
+        new() { Name = InfrastructureServiceNames.eventsConnector, Value = "http://localhost:62837/api" },
+        new() { Name = InfrastructureServiceNames.queues, Value = "http://localhost:59586/api/queues" },
+        new() { Name = InfrastructureServiceNames.subscriptions, Value = "http://localhost:59586/api/subscriptions" }
     };
 
     public static ProductIdentity ProductIdentityAdapterProduct => new()

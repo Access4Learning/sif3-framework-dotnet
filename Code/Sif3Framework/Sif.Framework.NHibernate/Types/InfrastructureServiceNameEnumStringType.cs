@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-using Tardigrade.Framework.Models.Domain;
+using NHibernate.Type;
+using Sif.Framework.Model.Infrastructure;
 
-namespace Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
-
-public class InfrastructureService : IHasUniqueIdentifier<long>
+namespace Sif.Framework.NHibernate.Types
 {
-    public virtual long Id { get; set; }
-
-    public virtual InfrastructureServiceNames? Name { get; set; }
-
-    public virtual string? Value { get; set; }
+    /// <summary>
+    /// <a href="https://blog.devart.com/string-enum-representation-in-entity-developer.html">String Enum Representation in Entity Developer</a>
+    /// </summary>
+    public class InfrastructureServiceNameEnumStringType : EnumStringType
+    {
+        public InfrastructureServiceNameEnumStringType() : base(typeof(InfrastructureServiceNames))
+        {
+        }
+    }
 }

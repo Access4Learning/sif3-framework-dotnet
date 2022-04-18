@@ -106,7 +106,7 @@ namespace Sif.Framework.Tests
             ICollection<Right> rights = new List<Right> { adminRight, createRight };
             var studentPersonalsService = new Model.Infrastructure.Service { ContextId = "DEFAULT", Name = "StudentPersonals", Rights = rights, Type = "OBJECT" };
             var schoolInfosService = new Model.Infrastructure.Service { ContextId = "DEFAULT", Name = "SchoolInfos", Rights = rights, Type = "OBJECT" };
-            ICollection<Model.Infrastructure.Service> services = new SortedSet<Model.Infrastructure.Service>
+            ICollection<Model.Infrastructure.Service> services = new List<Model.Infrastructure.Service>
             {
                 studentPersonalsService,
                 schoolInfosService
