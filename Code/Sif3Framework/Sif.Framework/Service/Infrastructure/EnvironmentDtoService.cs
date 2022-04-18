@@ -47,7 +47,7 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (sourceZone.Properties != null)
             {
-                destinationZone.Properties = CopyProperties(sourceZone.Properties);
+                destinationZone.Properties = sourceZone.Properties.ToList();
             }
 
             return destinationZone;
@@ -79,33 +79,6 @@ namespace Sif.Framework.Service.Infrastructure
             }
 
             return destinationServices;
-        }
-
-        /// <summary>
-        /// Create a copy of a dictionary of Property objects.
-        /// </summary>
-        /// <param name="sourceProperties">Dictionary of Property objects to copy.</param>
-        /// <returns>New copy of the dictionary of Property objects if not null; null otherwise.</returns>
-        private static IDictionary<string, Property> CopyProperties(IDictionary<string, Property> sourceProperties)
-        {
-            if (sourceProperties == null) return null;
-
-            var destinationProperties = new Dictionary<string, Property>();
-
-            foreach (string key in sourceProperties.Keys)
-            {
-                if (!sourceProperties.TryGetValue(key, out Property sourceProperty)) continue;
-
-                var destinationProperty = new Property
-                {
-                    Name = sourceProperty.Name,
-                    Value = sourceProperty.Value
-                };
-
-                destinationProperties.Add(key, destinationProperty);
-            }
-
-            return destinationProperties;
         }
 
         /// <summary>

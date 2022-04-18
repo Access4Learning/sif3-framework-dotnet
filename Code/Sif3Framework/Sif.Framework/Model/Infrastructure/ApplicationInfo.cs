@@ -20,8 +20,6 @@ namespace Sif.Framework.Model.Infrastructure
 {
     public class ApplicationInfo : IHasUniqueIdentifier<long>
     {
-        public virtual long Id { get; set; }
-
         public virtual ProductIdentity AdapterProduct { get; set; }
 
         /// <summary>
@@ -34,6 +32,8 @@ namespace Sif.Framework.Model.Infrastructure
         public virtual ProductIdentity ApplicationProduct { get; set; }
 
         public virtual string DataModelNamespace { get; set; }
+
+        public virtual long Id { get; set; }
 
         /// <summary>
         /// The version of the SIF infrastructure which the Consumer supports.

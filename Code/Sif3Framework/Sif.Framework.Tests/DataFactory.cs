@@ -50,11 +50,7 @@ namespace Sif.Framework.Tests
             var applicationProduct = new ProductIdentity { IconUri = "icon url 2", ProductName = "product name 2", ProductVersion = "9.80", VendorName = "Systemic" };
             var zoneCharge = new Property { Name = "charge", Value = "Negative" };
             var zoneMaster = new Property { Name = "master", Value = "Annihilus" };
-            IDictionary<string, Property> zoneProperties = new Dictionary<string, Property>
-            {
-                { zoneCharge.Name, zoneCharge },
-                { zoneMaster.Name, zoneMaster }
-            };
+            ICollection<Property> zoneProperties = new List<Property> { zoneCharge, zoneMaster };
             var theNegativeZone = new Zone { Description = "The Negative Zone", Properties = zoneProperties };
             var applicationInfo = new ApplicationInfo
             {

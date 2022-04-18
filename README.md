@@ -97,6 +97,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Created initial unit tests for Infrastructure model repositories.
 - Re-designed database relationships for Infrastructure models via the DbContext.
 - _***Backward Incompatibility***_ Refactored the Rights property of the Service model to an ICollection instead of an IDictionary. Updated all references accordingly.
+- _***Backward Incompatibility***_ Refactored the Properties property of the Zone model to an ICollection instead of an IDictionary. Updated all references accordingly.
 - Fixed incorrect namespace in the Sif.Framework.Tests project.
 - Removed constructors from the Insfrastructure model classes.
 - Removed the IComparable intergace from the Service class.

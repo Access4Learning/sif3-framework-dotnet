@@ -21,11 +21,11 @@ namespace Sif.Framework.Model.Infrastructure
 {
     public class Zone : IHasUniqueIdentifier<long>
     {
-        public virtual long Id { get; set; }
-
         public virtual string Description { get; set; }
 
-        public virtual IDictionary<string, Property> Properties { get; set; }
+        public virtual long Id { get; set; }
+
+        public virtual ICollection<Property> Properties { get; set; }
 
         public virtual string SifId { get; set; }
     }
