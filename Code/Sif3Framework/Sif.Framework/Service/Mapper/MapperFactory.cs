@@ -48,22 +48,6 @@ namespace Sif.Framework.Service.Mapper
             }
         }
 
-        private class PropertiesConverter : ITypeConverter<propertyType[], IDictionary<string, Property>>
-        {
-            public IDictionary<string, Property> Convert(propertyType[] source, IDictionary<string, Property> destination, ResolutionContext context)
-            {
-                ICollection<Property> values = Mapper.Map<propertyType[], ICollection<Property>>(source);
-                IDictionary<string, Property> properties = new Dictionary<string, Property>();
-
-                foreach (Property property in values)
-                {
-                    properties.Add(property.Name, property);
-                }
-
-                return properties;
-            }
-        }
-
         private class ProvisionedZonesConverter : ITypeConverter<provisionedZoneType[], IDictionary<string, ProvisionedZone>>
         {
             public IDictionary<string, ProvisionedZone> Convert(provisionedZoneType[] source, IDictionary<string, ProvisionedZone> destination, ResolutionContext context)
@@ -77,22 +61,6 @@ namespace Sif.Framework.Service.Mapper
                 }
 
                 return provisionedZones;
-            }
-        }
-
-        private class RightsConverter : ITypeConverter<rightType[], IDictionary<string, Right>>
-        {
-            public IDictionary<string, Right> Convert(rightType[] source, IDictionary<string, Right> destination, ResolutionContext context)
-            {
-                ICollection<Right> values = Mapper.Map<rightType[], ICollection<Right>>(source);
-                IDictionary<string, Right> rights = new Dictionary<string, Right>();
-
-                foreach (Right right in values)
-                {
-                    rights.Add(right.Type, right);
-                }
-
-                return rights;
             }
         }
 
@@ -120,11 +88,9 @@ namespace Sif.Framework.Service.Mapper
                     .ReverseMap();
 
                 cfg.CreateMap<InfrastructureService, infrastructureServiceType>()
-                    .ForMember(dest => dest.nameSpecified, opt => opt.MapFrom(src => true))
-                    .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
+                    .ForMember(dest => dest.nameSpecified, opt => opt.MapFrom(src => true));
                 cfg.CreateMap<infrastructureServiceType, InfrastructureService>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
+                    .ForMember(dest => dest.Id, opt => opt.Ignore());
                 cfg.CreateMap<infrastructureServiceType[], IDictionary<InfrastructureServiceNames, InfrastructureService>>()
                     .ConvertUsing(new InfrastructureServicesConverter());
 
@@ -140,8 +106,6 @@ namespace Sif.Framework.Service.Mapper
 
                 cfg.CreateMap<Property, propertyType>()
                     .ReverseMap();
-                cfg.CreateMap<propertyType[], IDictionary<string, Property>>()
-                    .ConvertUsing(new PropertiesConverter());
 
                 cfg.CreateMap<ProvisionedZone, provisionedZoneType>()
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.SifId));
@@ -153,11 +117,8 @@ namespace Sif.Framework.Service.Mapper
 
                 cfg.CreateMap<Right, rightType>()
                     .ReverseMap();
-                cfg.CreateMap<rightType[], IDictionary<string, Right>>()
-                    .ConvertUsing(new RightsConverter());
 
-                cfg.CreateMap<Model.Infrastructure.Service, serviceType>()
-                    .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights));
+                cfg.CreateMap<Model.Infrastructure.Service, serviceType>();
                 cfg.CreateMap<serviceType, Model.Infrastructure.Service>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
 
