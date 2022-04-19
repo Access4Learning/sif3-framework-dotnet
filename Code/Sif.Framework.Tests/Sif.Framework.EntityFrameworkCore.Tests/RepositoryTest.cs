@@ -18,12 +18,8 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Sif.Framework.EntityFrameworkCore.Tests.Fixtures;
 using Sif.Framework.Model.Infrastructure;
-using Sif.Specification.Infrastructure;
 using System;
-using System.IO;
 using System.Text.Json;
-using System.Xml.Serialization;
-using Tardigrade.Framework.EntityFrameworkCore.Extensions;
 using Tardigrade.Framework.Models.Domain;
 using Tardigrade.Framework.Persistence;
 using Xunit;
@@ -112,22 +108,8 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _serviceRepository = fixture.GetService<IRepository<Model.Infrastructure.Service, long>>();
         _zoneRepository = fixture.GetService<IRepository<Zone, long>>();
 
-        // Get the current project's directory to store the create script.
-        DirectoryInfo? binDirectory =
-            Directory.GetParent(Directory.GetCurrentDirectory())?.Parent ??
-            Directory.GetParent(Directory.GetCurrentDirectory());
-        DirectoryInfo? projectDirectory = binDirectory?.Parent ?? binDirectory;
-
         // Create and store SQL script for the test database.
-        fixture.GetService<DbContext>().GenerateCreateScript($"{projectDirectory}\\Scripts\\DatabaseCreateScript.sql");
-
-        var xmlSerializer = new XmlSerializer(typeof(environmentType));
-
-        var streamReader = new StreamReader(@"xml\environment.xml");
-        var environmentType = (environmentType)xmlSerializer.Deserialize(streamReader)!;
-        streamReader.Close();
-
-        //Environment environment = MapperFactory.CreateInstance<environmentType, Environment>(environmentType);
+        DataFactory.GenerateCreateScript(fixture.GetService<DbContext>());
     }
 
     [Fact]
@@ -157,7 +139,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         ApplicationRegister retrieved = RetrieveTest(_applicationRegisterRepository, created);
 
         // Update.
-        retrieved.SharedSecret = "SuperSecr3t";
+        retrieved.SharedSecret = "SuperSecret";
         ApplicationRegister updated = UpdateTest(_applicationRegisterRepository, retrieved);
 
         // Delete.

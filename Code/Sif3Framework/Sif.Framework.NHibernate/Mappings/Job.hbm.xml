@@ -13,10 +13,9 @@
     <property name="LastModified" column="LASTMODIFIED" />
     <!-- type="UtcDateTime" />-->
     <property name="Timeout" column="TIMEOUT" />
-    <map name="Phases" table="JOB_PHASES" cascade="all" lazy="false">
+    <bag name="Phases" cascade="all" lazy="false">
       <key column="JOB_ID" />
-      <index column="NAME" type="string" />
-      <many-to-many column="PHASE_ID" class="Sif.Framework.Model.Infrastructure.Phase" />
-    </map>
+      <one-to-many class="Sif.Framework.Model.Infrastructure.Phase" />
+    </bag>
   </class>
 </hibernate-mapping>

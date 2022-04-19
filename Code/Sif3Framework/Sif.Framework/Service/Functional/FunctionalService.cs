@@ -278,7 +278,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.CreateApprovedRight);
+            RightsUtils.CheckRight(phase.Rights, RightsUtils.CreateApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Create(job, phase, body, contentType, accept);
@@ -299,7 +299,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.QueryApprovedRight);
+            RightsUtils.CheckRight(phase.Rights, RightsUtils.QueryApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Retrieve(job, phase, body, contentType, accept);
@@ -320,7 +320,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.UpdateApprovedRight);
+            RightsUtils.CheckRight(phase.Rights, RightsUtils.UpdateApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Update(job, phase, body, contentType, accept);
@@ -341,7 +341,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.Rights.Values, RightsUtils.DeleteApprovedRight);
+            RightsUtils.CheckRight(phase.Rights, RightsUtils.DeleteApprovedRight);
 
             IPhaseActions action = GetActions(phaseName);
             string result = action.Delete(job, phase, body, contentType, accept);
@@ -360,7 +360,7 @@ namespace Sif.Framework.Service.Functional
         {
             Job job = Repository.Retrieve(id);
             Phase phase = GetPhase(job, phaseName);
-            RightsUtils.CheckRight(phase.StatesRights.Values, RightsUtils.CreateApprovedRight);
+            RightsUtils.CheckRight(phase.StatesRights, RightsUtils.CreateApprovedRight);
 
             PhaseState state = MapperFactory.CreateInstance<stateType, PhaseState>(item);
 
@@ -499,7 +499,7 @@ namespace Sif.Framework.Service.Functional
         private Phase GetPhase(Job job, string phaseName)
         {
             CheckJob(job);
-            Phase phase = job.Phases[phaseName];
+            Phase phase = job.Phases.FirstOrDefault(p => p.Name == phaseName);
 
             if (phase == null)
             {

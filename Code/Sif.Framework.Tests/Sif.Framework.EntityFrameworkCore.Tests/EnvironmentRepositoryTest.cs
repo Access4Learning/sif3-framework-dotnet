@@ -96,13 +96,14 @@ public class EnvironmentRepositoryTest : IClassFixture<EntityFrameworkCoreClassF
         var repository = (IRepository<Environment, Guid>)_environmentRepository;
 
         // Create.
-        Environment created = CreateTest(repository, DataFactory.Environment);
+        Environment created = CreateTest(repository, DataFactory.GetEnvironment());
 
         // Retrieve.
         Environment retrieved = RetrieveTest(repository, created);
 
-        // TODO Retrieve by session token.
-        //retrieved = _environmentRepository.RetrieveBySessionToken(created.SessionToken);
+        // Retrieve by session token.
+        Environment retrievedBySessionToken = _environmentRepository.RetrieveBySessionToken(created.SessionToken);
+        retrievedBySessionToken.Should().BeEquivalentTo(created);
 
         // Update.
         retrieved.InstanceId = "device-007";

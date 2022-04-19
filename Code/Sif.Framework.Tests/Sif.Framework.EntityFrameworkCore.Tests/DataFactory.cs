@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+using Microsoft.EntityFrameworkCore;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Service.Mapper;
+using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
+using Tardigrade.Framework.EntityFrameworkCore.Extensions;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests;
 
@@ -147,4 +153,26 @@ public static class DataFactory
         Properties = new List<Property> { PropertyLang, PropertyLocale },
         SifId = "Sif3DemoZone1"
     };
+
+    public static void GenerateCreateScript(DbContext dbContext)
+    {
+        // Get the current project's directory to store the create script.
+        DirectoryInfo? binDirectory =
+            Directory.GetParent(Directory.GetCurrentDirectory())?.Parent ??
+            Directory.GetParent(Directory.GetCurrentDirectory());
+        DirectoryInfo? projectDirectory = binDirectory?.Parent ?? binDirectory;
+
+        // Create and store SQL script for the test database.
+        dbContext.GenerateCreateScript($"{projectDirectory}\\Scripts\\DatabaseCreateScript.sql");
+    }
+
+    public static Environment GetEnvironment()
+    {
+        var xmlSerializer = new XmlSerializer(typeof(environmentType));
+        using var streamReader = new StreamReader(@"xml\environment.xml");
+        var environmentType = (environmentType)xmlSerializer.Deserialize(streamReader)!;
+        Environment environment = MapperFactory.CreateInstance<environmentType, Environment>(environmentType);
+
+        return environment;
+    }
 }

@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
@@ -84,7 +85,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// Collection of phase objects
         /// </summary>
-        public virtual IDictionary<string, Phase> Phases { get; set; } = new Dictionary<string, Phase>();
+        public virtual ICollection<Phase> Phases { get; set; } = new List<Phase>();
 
         /// <summary>
         /// Initialisation object associated with the job.
@@ -127,7 +128,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="phase">Phase to add</param>
         public virtual void AddPhase(Phase phase)
         {
-            Phases.Add(phase.Name, phase);
+            Phases.Add(phase);
         }
 
         /// <summary>
@@ -138,8 +139,8 @@ namespace Sif.Framework.Model.Infrastructure
         /// <param name="stateDescription">Optional description</param>
         public virtual void UpdatePhaseState(string phaseName, PhaseStateType state, string stateDescription = null)
         {
-            PhaseState s = Phases[phaseName].UpdateState(state, stateDescription);
-            LastModified = s.LastModified;
+            PhaseState s = Phases.FirstOrDefault(p => p.Name == phaseName)?.UpdateState(state, stateDescription);
+            LastModified = s?.LastModified;
         }
     }
 }

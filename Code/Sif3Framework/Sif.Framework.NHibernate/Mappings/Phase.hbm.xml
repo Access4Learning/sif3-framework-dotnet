@@ -10,15 +10,13 @@
       <one-to-many class="Sif.Framework.Model.Infrastructure.PhaseState" />
     </bag>
     <property name="Required" column="REQUIRED" type="Boolean" />
-    <map name="StatesRights" table="PHASE_STATES_RIGHTS" cascade="all" lazy="false">
+    <bag name="StatesRights" cascade="all" lazy="false">
       <key column="PHASE_ID" />
-      <index column="TYPE" type="string" />
-      <many-to-many column="RIGHT_ID" class="Sif.Framework.Model.Infrastructure.Right" />
-    </map>
-    <map name="Rights" table="RIGHTS" cascade="all" lazy="false">
+      <one-to-many class="Sif.Framework.Model.Infrastructure.Right" />
+    </bag>
+    <bag name="Rights" cascade="all" lazy="false">
       <key column="PHASE_ID" />
-      <index column="TYPE" type="string" />
-      <many-to-many column="RIGHT_ID" class="Sif.Framework.Model.Infrastructure.Right" />
-    </map>
+      <one-to-many class="Sif.Framework.Model.Infrastructure.Right" />
+    </bag>
   </class>
 </hibernate-mapping>

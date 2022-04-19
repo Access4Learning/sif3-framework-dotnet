@@ -32,22 +32,6 @@ namespace Sif.Framework.Service.Mapper
     {
         public static IMapper Mapper { get; }
 
-        private class PhasesConverter : ITypeConverter<phaseType[], IDictionary<string, Phase>>
-        {
-            public IDictionary<string, Phase> Convert(phaseType[] source, IDictionary<string, Phase> destination, ResolutionContext context)
-            {
-                ICollection<Phase> values = Mapper.Map<phaseType[], ICollection<Phase>>(source);
-                IDictionary<string, Phase> phases = new Dictionary<string, Phase>();
-
-                foreach (Phase phase in values)
-                {
-                    phases.Add(phase.Name, phase);
-                }
-
-                return phases;
-            }
-        }
-
         static MapperFactory()
         {
             var config = new MapperConfiguration(cfg =>
@@ -96,19 +80,14 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<stateType, PhaseState>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
 
-                cfg.CreateMap<Phase, phaseType>()
-                    .ForMember(dest => dest.rights, opt => opt.MapFrom(src => src.Rights.Values))
-                    .ForMember(dest => dest.statesRights, opt => opt.MapFrom(src => src.StatesRights.Values));
+                cfg.CreateMap<Phase, phaseType>();
                 cfg.CreateMap<phaseType, Phase>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
-                cfg.CreateMap<phaseType[], IDictionary<string, Phase>>()
-                    .ConvertUsing(new PhasesConverter());
 
                 cfg.CreateMap<Initialization, initializationType>()
                     .ReverseMap();
 
                 cfg.CreateMap<Job, jobType>()
-                    .ForMember(dest => dest.phases, opt => opt.MapFrom(src => src.Phases.Values))
                     .ForMember(dest => dest.createdSpecified, opt => opt.MapFrom(src => src.Created != null))
                     .ForMember(dest => dest.lastModifiedSpecified, opt => opt.MapFrom(src => src.LastModified != null))
                     .ForMember(dest => dest.stateSpecified, opt => opt.MapFrom(src => src.State != null))

@@ -57,12 +57,12 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// Access rights given to the consumer for this phase.
         /// </summary>
-        public virtual IDictionary<string, Right> Rights { get; set; }
+        public virtual ICollection<Right> Rights { get; set; }
 
         /// <summary>
         /// Access rights given to the consumer for the states in this phase.
         /// </summary>
-        public virtual IDictionary<string, Right> StatesRights { get; set; }
+        public virtual ICollection<Right> StatesRights { get; set; }
 
         /// <summary>
         /// Basic constructor that sets logical default values
@@ -71,8 +71,8 @@ namespace Sif.Framework.Model.Infrastructure
         {
             Name = "unnamed";
             States = new List<PhaseState>();
-            Rights = new Dictionary<string, Right>();
-            StatesRights = new Dictionary<string, Right>();
+            Rights = new List<Right>();
+            StatesRights = new List<Right>();
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace Sif.Framework.Model.Infrastructure
         public Phase(
             string phaseName,
             bool required,
-            IDictionary<string, Right> rights = null,
-            IDictionary<string, Right> stateRights = null,
+            ICollection<Right> rights = null,
+            ICollection<Right> stateRights = null,
             PhaseStateType phaseState = PhaseStateType.NOTAPPLICABLE,
             string stateDescription = "Not applicable")
             : this(phaseName, required)
