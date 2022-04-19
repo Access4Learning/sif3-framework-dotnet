@@ -22,6 +22,7 @@ namespace Sif.Framework.Model.Infrastructure
 {
     /// <summary>
     /// Object representing the state of a phase
+    /// TODO Currently not supported in the ASP.NET Core version of the SIF Framework.
     /// </summary>
     public class PhaseState : IHasUniqueIdentifier<Guid>
     {

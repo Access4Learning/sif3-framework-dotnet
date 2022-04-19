@@ -21,11 +21,11 @@ namespace Sif.Framework.Model.Infrastructure
 {
     public class ApplicationRegister : IHasUniqueIdentifier<long>
     {
-        public virtual long Id { get; set; }
-
         public virtual string ApplicationKey { get; set; }
 
         public virtual ICollection<EnvironmentRegister> EnvironmentRegisters { get; set; }
+
+        public virtual long Id { get; set; }
 
         public virtual string SharedSecret { get; set; }
     }

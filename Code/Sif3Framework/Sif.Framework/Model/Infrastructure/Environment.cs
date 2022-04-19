@@ -86,20 +86,10 @@ namespace Sif.Framework.Model.Infrastructure
 
         public virtual string UserToken { get; set; }
 
-        /// <summary>
-        ///
-        /// </summary>
         public Environment()
         {
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="applicationKey"></param>
-        /// <param name="instanceId"></param>
-        /// <param name="userToken"></param>
-        /// <param name="solutionId"></param>
         public Environment(
             string applicationKey,
             string instanceId = null,

@@ -28,6 +28,7 @@ namespace Sif.Framework.Model.Infrastructure
     /// /phase/state
     /// /phase/required
     /// /phase/rights
+    /// TODO Currently not supported in the ASP.NET Core version of the SIF Framework.
     /// </summary>
     public class Phase : IHasUniqueIdentifier<long>
     {

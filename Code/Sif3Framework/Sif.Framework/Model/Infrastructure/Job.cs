@@ -25,6 +25,7 @@ namespace Sif.Framework.Model.Infrastructure
     /// The following Job elements/properties are mandatory according to the SIF specification:
     /// /job[@id]
     /// /job/name
+    /// TODO Currently not supported in the ASP.NET Core version of the SIF Framework.
     /// </summary>
     public class Job : IHasUniqueIdentifier<Guid>
     {

@@ -18,24 +18,12 @@ using Tardigrade.Framework.Models.Domain;
 
 namespace Sif.Framework.Model.Infrastructure
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class InfrastructureService : IHasUniqueIdentifier<long>
     {
-        /// <summary>
-        ///
-        /// </summary>
         public virtual long Id { get; set; }
 
-        /// <summary>
-        ///
-        /// </summary>
         public virtual InfrastructureServiceNames Name { get; set; }
 
-        /// <summary>
-        ///
-        /// </summary>
         public virtual string Value { get; set; }
     }
 }
