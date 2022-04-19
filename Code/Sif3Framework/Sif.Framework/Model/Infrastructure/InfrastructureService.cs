@@ -22,7 +22,7 @@ namespace Sif.Framework.Model.Infrastructure
     {
         public virtual long Id { get; set; }
 
-        public virtual InfrastructureServiceNames Name { get; set; }
+        public virtual InfrastructureServiceNames? Name { get; set; }
 
         public virtual string Value { get; set; }
     }

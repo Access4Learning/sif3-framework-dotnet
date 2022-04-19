@@ -20,14 +20,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sif.Framework.EntityFrameworkCore.Persistence;
 using Sif.Framework.EntityFrameworkCore.Tests.Data;
-using Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
 using System;
 using System.Reflection;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Persistence;
 using Tardigrade.Framework.Testing;
-using Environment = Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure.Environment;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests.Fixtures;
 
@@ -59,7 +59,7 @@ public class EntityFrameworkCoreClassFixture : UnitTestClassFixture
         services.AddTransient<IRepository<Property, long>, Repository<Property, long>>();
         services.AddTransient<IRepository<ProvisionedZone, long>, Repository<ProvisionedZone, long>>();
         services.AddTransient<IRepository<Right, long>, Repository<Right, long>>();
-        services.AddTransient<IRepository<Models.Infrastructure.Service, long>, Repository<Models.Infrastructure.Service, long>>();
+        services.AddTransient<IRepository<Model.Infrastructure.Service, long>, Repository<Model.Infrastructure.Service, long>>();
         services.AddTransient<IRepository<Zone, long>, Repository<Zone, long>>();
     }
 

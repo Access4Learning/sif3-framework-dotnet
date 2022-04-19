@@ -17,7 +17,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Sif.Framework.EntityFrameworkCore.Tests.Fixtures;
-using Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+using Sif.Framework.Model.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System;
 using System.IO;
@@ -28,7 +28,7 @@ using Tardigrade.Framework.Models.Domain;
 using Tardigrade.Framework.Persistence;
 using Xunit;
 using Xunit.Abstractions;
-using Environment = Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure.Environment;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests;
 
@@ -45,7 +45,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     private readonly IRepository<Property, long> _propertyRepository;
     private readonly IRepository<ProvisionedZone, long> _provisionedZoneRepository;
     private readonly IRepository<Right, long> _rightRepository;
-    private readonly IRepository<Models.Infrastructure.Service, long> _serviceRepository;
+    private readonly IRepository<Model.Infrastructure.Service, long> _serviceRepository;
     private readonly IRepository<Zone, long> _zoneRepository;
 
     private TEntity CreateTest<TEntity, TKey>(IRepository<TEntity, TKey> repository, TEntity toCreate)
@@ -109,7 +109,7 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
         _propertyRepository = fixture.GetService<IRepository<Property, long>>();
         _provisionedZoneRepository = fixture.GetService<IRepository<ProvisionedZone, long>>();
         _rightRepository = fixture.GetService<IRepository<Right, long>>();
-        _serviceRepository = fixture.GetService<IRepository<Models.Infrastructure.Service, long>>();
+        _serviceRepository = fixture.GetService<IRepository<Model.Infrastructure.Service, long>>();
         _zoneRepository = fixture.GetService<IRepository<Zone, long>>();
 
         // Get the current project's directory to store the create script.
@@ -288,14 +288,14 @@ public class RepositoryTest : IClassFixture<EntityFrameworkCoreClassFixture>
     public void Crud_Service_Success()
     {
         // Create.
-        Models.Infrastructure.Service created = CreateTest(_serviceRepository, DataFactory.ServiceStudent);
+        Model.Infrastructure.Service created = CreateTest(_serviceRepository, DataFactory.ServiceStudent);
 
         // Retrieve.
-        Models.Infrastructure.Service retrieved = RetrieveTest(_serviceRepository, created);
+        Model.Infrastructure.Service retrieved = RetrieveTest(_serviceRepository, created);
 
         // Update.
         retrieved.Type = "SERVICEPATH";
-        Models.Infrastructure.Service updated = UpdateTest(_serviceRepository, retrieved);
+        Model.Infrastructure.Service updated = UpdateTest(_serviceRepository, retrieved);
 
         // Delete.
         DeleteTest(_serviceRepository, updated);

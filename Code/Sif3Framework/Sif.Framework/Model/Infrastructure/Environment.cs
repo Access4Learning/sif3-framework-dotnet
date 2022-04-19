@@ -82,7 +82,7 @@ namespace Sif.Framework.Model.Infrastructure
         /// <summary>
         /// Defines whether the connection to the Environment is DIRECT or BROKERED.
         /// </summary>
-        public virtual EnvironmentType Type { get; set; }
+        public virtual EnvironmentType? Type { get; set; }
 
         public virtual string UserToken { get; set; }
 

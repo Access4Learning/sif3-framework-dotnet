@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+using Sif.Framework.Model.Infrastructure;
 using System.Collections.Generic;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests;
@@ -111,7 +111,7 @@ public static class DataFactory
 
     public static ProvisionedZone ProvisionedZone => new()
     {
-        Services = new List<Models.Infrastructure.Service> { ServiceSchool, ServiceStudent },
+        Services = new List<Model.Infrastructure.Service> { ServiceSchool, ServiceStudent },
         SifId = "Sif3DemoZone1"
     };
 
@@ -125,7 +125,7 @@ public static class DataFactory
         new() { Type = "UPDATE", Value = "APPROVED" }
     };
 
-    public static Models.Infrastructure.Service ServiceSchool => new()
+    public static Model.Infrastructure.Service ServiceSchool => new()
     {
         ContextId = "DEFAULT",
         Name = "SchoolInfos",
@@ -133,7 +133,7 @@ public static class DataFactory
         Type = "OBJECT"
     };
 
-    public static Models.Infrastructure.Service ServiceStudent => new()
+    public static Model.Infrastructure.Service ServiceStudent => new()
     {
         ContextId = "DEFAULT",
         Name = "StudentPersonals",

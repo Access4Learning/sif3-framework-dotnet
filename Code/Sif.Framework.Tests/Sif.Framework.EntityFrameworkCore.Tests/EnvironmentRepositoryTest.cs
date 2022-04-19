@@ -23,7 +23,7 @@ using Tardigrade.Framework.Models.Domain;
 using Tardigrade.Framework.Persistence;
 using Xunit;
 using Xunit.Abstractions;
-using Environment = Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure.Environment;
+using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests;
 

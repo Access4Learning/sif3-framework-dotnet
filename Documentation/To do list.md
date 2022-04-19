@@ -7,6 +7,8 @@
 - Convert the Sif.Framework.EntityFramework.Tests Project to an SDK style project.
 - Update all AutoMapper mapping definitions to use the new Profile mechanism.
 - Replace the HttpUtils class with a RestSharp implementation.
+- Rename the Sif.Framework.Model directory to Sif.Framework.Models.
+- Rename the Sif.Framework.Service directory to Sif.Framework.Services.
 
 ## .NET 6 upgrade
 

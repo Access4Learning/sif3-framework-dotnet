@@ -15,7 +15,7 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Sif.Framework.EntityFrameworkCore.Tests.Models.Infrastructure;
+using Sif.Framework.Model.Infrastructure;
 
 namespace Sif.Framework.EntityFrameworkCore.Tests.Data;
 
@@ -35,7 +35,7 @@ public class SifFrameworkDbContext : DbContext
     public virtual DbSet<Property> Properties { get; set; } = null!;
     public virtual DbSet<ProvisionedZone> ProvisionedZones { get; set; } = null!;
     public virtual DbSet<Right> Rights { get; set; } = null!;
-    public virtual DbSet<Models.Infrastructure.Service> Services { get; set; } = null!;
+    public virtual DbSet<Model.Infrastructure.Service> Services { get; set; } = null!;
     public virtual DbSet<Zone> Zones { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -214,7 +214,7 @@ public class SifFrameworkDbContext : DbContext
             entity.Property(e => e.Value).HasColumnName("VALUE");
         });
 
-        modelBuilder.Entity<Models.Infrastructure.Service>(entity =>
+        modelBuilder.Entity<Model.Infrastructure.Service>(entity =>
         {
             entity.ToTable("SERVICE");
 
