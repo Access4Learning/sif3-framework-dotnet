@@ -49,13 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SifFrameworkDatabase.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Scripts\" />
   </ItemGroup>
 

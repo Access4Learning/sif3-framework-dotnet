@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
