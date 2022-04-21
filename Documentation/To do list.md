@@ -17,7 +17,11 @@
 - Replace the HttpUtils class with an ASP.NET Core HttpClient implementation.
 - Create a Goessner Notation JSON/XML serialiser for ASP.NET Core.
 - Implement Matrix Parameters for ASP.NET Core.
+- Implement Service Paths for ASP.NET Core.
+- Implement SIF Events for ASP.NET Core.
+- Implement multiple Create, Update and Delete operations for ASP.NET Core SIF Providers.
 - Implement ASP.NET Core Middleware for Basic and HMAC SHA Authentication and Authorisation.
+- For the HEAD method, need to clear the content body (for the purpose of optimisation).
 
 ### Tardigrade.Framework.AspNet
 
