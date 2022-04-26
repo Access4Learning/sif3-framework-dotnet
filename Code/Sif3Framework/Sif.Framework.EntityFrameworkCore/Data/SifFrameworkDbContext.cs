@@ -64,6 +64,10 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey<ProductIdentity>("APPLICATION_PRODUCT_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(e => e.AdapterProduct).AutoInclude();
+
+            entity.Navigation(e => e.ApplicationProduct).AutoInclude();
         });
 
         modelBuilder.Entity<ApplicationRegister>(entity =>
@@ -80,6 +84,8 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("APPLICATION_REGISTER_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(e => e.EnvironmentRegisters).AutoInclude();
         });
 
         modelBuilder.Entity<Environment>(entity =>
@@ -121,6 +127,14 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("ENVIRONMENT_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(e => e.ApplicationInfo).AutoInclude();
+
+            entity.Navigation(e => e.DefaultZone).AutoInclude();
+
+            entity.Navigation(e => e.InfrastructureServices).AutoInclude();
+
+            entity.Navigation(e => e.ProvisionedZones).AutoInclude();
         });
 
         modelBuilder.Entity<EnvironmentRegister>(entity =>
@@ -151,6 +165,12 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("ENVIRONMENT_REGISTER_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(e => e.DefaultZone).AutoInclude();
+
+            entity.Navigation(e => e.InfrastructureServices).AutoInclude();
+
+            entity.Navigation(e => e.ProvisionedZones).AutoInclude();
         });
 
         modelBuilder.Entity<InfrastructureService>(entity =>
@@ -202,6 +222,8 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("PROVISIONED_ZONE_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            entity.Navigation(e => e.Services).AutoInclude();
         });
 
         modelBuilder.Entity<Right>(entity =>
@@ -231,6 +253,8 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("SERVICE_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(e => e.Rights).AutoInclude();
         });
 
         modelBuilder.Entity<Zone>(entity =>
@@ -247,6 +271,8 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("ZONE_ID")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(e => e.Properties).AutoInclude();
         });
     }
 }

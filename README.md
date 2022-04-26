@@ -105,6 +105,8 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Created an ASP.NET Core implementation of the demo Setup project.
 - _***Backward Incompatibility***_ Corrected a return type design issue with the IEnvironmentService interface.
 - _***Backward Incompatibility***_ Updated the Create() method of EnvironmentService to use an environment register.
+- Updated the DbContext to eager load all relationships.
+- Created an ASP.NET Core implementation of the EnvironmentProvider.
 - Updated the Type property of the Environment class in Entity Framework Core to match that used by NHibernate.
 - Updated the NHibernate mapping for the Environment class to save the EnvironmentType enum property as a string rather than integer.
 - Fixed incorrect namespace in the Sif.Framework.Tests project.

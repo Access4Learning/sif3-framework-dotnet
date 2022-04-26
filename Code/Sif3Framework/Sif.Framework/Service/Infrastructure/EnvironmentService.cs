@@ -96,12 +96,12 @@ namespace Sif.Framework.Service.Infrastructure
                 item.DefaultZone = CopyDefaultZone(environmentRegister.DefaultZone);
             }
 
-            if (environmentRegister.InfrastructureServices.Any())
+            if (environmentRegister.InfrastructureServices?.Any() ?? false)
             {
                 item.InfrastructureServices = environmentRegister.InfrastructureServices;
             }
 
-            if (environmentRegister.ProvisionedZones.Any())
+            if (environmentRegister.ProvisionedZones?.Any() ?? false)
             {
                 item.ProvisionedZones = environmentRegister.ProvisionedZones.ToList();
             }
@@ -109,7 +109,7 @@ namespace Sif.Framework.Service.Infrastructure
             item.SessionToken = sessionToken;
             Environment created = Repository.Create(item);
 
-            if (item.InfrastructureServices != null && item.InfrastructureServices.Any())
+            if (item.InfrastructureServices?.Any() ?? false)
             {
                 InfrastructureService infrastructureService =
                     item.InfrastructureServices.FirstOrDefault(i => i.Name == InfrastructureServiceNames.environment);
