@@ -1,4 +1,4 @@
-> Copyright 2021 Systemic Pty Ltd
+> Copyright 2022 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -102,6 +102,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - _***Backward Incompatibility***_ Refactored the ProvisionedZones property of the Environment and EnvironmentRegister models to an ICollection instead of an IDictionary. Updated all references accordingly.
 - _***Backward Incompatibility***_ Refactored the Phases property of the Job model to an ICollection instead of an IDictionary. Updated all references accordingly.
 - _***Backward Incompatibility***_ Refactored the Rights and StatesRights properties of the Phase model to an ICollection instead of an IDictionary. Updated all references accordingly.
+- Created an ASP.NET Core implementation of the demo Setup project.
 - Updated the Type property of the Environment class in Entity Framework Core to match that used by NHibernate.
 - Updated the NHibernate mapping for the Environment class to save the EnvironmentType enum property as a string rather than integer.
 - Fixed incorrect namespace in the Sif.Framework.Tests project.

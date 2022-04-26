@@ -8,7 +8,82 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
+    <None Remove="appsettings.json" />
+    <None Remove="Data files\AU\Sif3DemoAspNetCoreConsumer\EnvironmentRequest.xml" />
+    <None Remove="Data files\AU\Sif3DemoAspNetCoreConsumer\EnvironmentResponse.xml" />
+    <None Remove="Data files\AU\Sif3DemoBroker\EnvironmentRequest.xml" />
+    <None Remove="Data files\AU\Sif3DemoBroker\EnvironmentResponse.xml" />
+    <None Remove="Data files\AU\Sif3DemoConsumer\EnvironmentRequest.xml" />
+    <None Remove="Data files\AU\Sif3DemoConsumer\EnvironmentResponse.xml" />
+    <None Remove="Data files\AU\Sif3DemoEventConsumer\EnvironmentRequest.xml" />
+    <None Remove="Data files\AU\Sif3DemoEventConsumer\EnvironmentResponse.xml" />
+    <None Remove="Data files\AU\Sif3DemoProvider\EnvironmentRequest.xml" />
+    <None Remove="Data files\AU\Sif3DemoProvider\EnvironmentResponse.xml" />
+    <None Remove="Data files\UK\Sif3DemoApp\EnvironmentRequest.xml" />
+    <None Remove="Data files\UK\Sif3DemoApp\EnvironmentResponse.xml" />
+    <None Remove="Data files\US\EnvironmentRequest.xml" />
+    <None Remove="Data files\US\EnvironmentResponse.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoAspNetCoreConsumer\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoAspNetCoreConsumer\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoBroker\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoBroker\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoConsumer\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoConsumer\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoEventConsumer\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoEventConsumer\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoProvider\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\AU\Sif3DemoProvider\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\UK\Sif3DemoApp\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\UK\Sif3DemoApp\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\US\EnvironmentRequest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data files\US\EnvironmentResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj" />
   </ItemGroup>
 
 </Project>
