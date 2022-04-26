@@ -19,10 +19,4 @@
     <ProjectReference Include="..\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="SifFrameworkDatabase.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

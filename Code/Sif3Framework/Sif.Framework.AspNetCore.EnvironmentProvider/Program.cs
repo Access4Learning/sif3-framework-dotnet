@@ -36,7 +36,7 @@ builder.Services
     .AddXmlSerializerFormatters()
     .AddXmlDataContractSerializerFormatters();
 builder.Services.AddDbContext<SifFrameworkDbContext>(
-    options => options.UseSqlite("Data Source=SifFrameworkDatabase.db"));
+    options => options.UseSqlite("Data Source=..\\..\\..\\Databases\\EntityFrameworkCore\\SQLite\\SifFrameworkDatabase.db"));
 
 builder.Services.AddScoped<DbContext, SifFrameworkDbContext>();
 builder.Services.AddScoped<IApplicationRegisterRepository, ApplicationRegisterRepository>();
