@@ -15,10 +15,7 @@
  */
 
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Mapper;
-using Sif.Specification.Infrastructure;
 using System;
-using Tardigrade.Framework.Persistence;
 using Tardigrade.Framework.Services;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -29,17 +26,18 @@ namespace Sif.Framework.Service.Infrastructure
     /// </summary>
     public class EnvironmentService : ObjectService<Environment, Guid>, IEnvironmentService
     {
+        private readonly IEnvironmentRepository _repository;
+
         /// <inheritdoc cref="ObjectService{TEntity, TKey}" />
-        public EnvironmentService(IRepository<Environment, Guid> repository) : base(repository)
+        public EnvironmentService(IEnvironmentRepository repository) : base(repository)
         {
+            _repository = repository;
         }
 
         /// <inheritdoc cref="IEnvironmentService.RetrieveBySessionToken(string)" />
-        public virtual environmentType RetrieveBySessionToken(string sessionToken)
+        public virtual Environment RetrieveBySessionToken(string sessionToken)
         {
-            Environment environment = ((IEnvironmentRepository)Repository).RetrieveBySessionToken(sessionToken);
-
-            return MapperFactory.CreateInstance<Environment, environmentType>(environment);
+            return _repository.RetrieveBySessionToken(sessionToken);
         }
     }
 }

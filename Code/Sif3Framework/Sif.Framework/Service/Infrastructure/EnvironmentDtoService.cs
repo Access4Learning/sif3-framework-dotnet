@@ -32,6 +32,7 @@ namespace Sif.Framework.Service.Infrastructure
     public class EnvironmentDtoService : SifService<environmentType, Environment>, IEnvironmentDtoService
     {
         private readonly IEnvironmentRegisterService _environmentRegisterService;
+        private readonly IEnvironmentRepository _environmentRepository;
 
         /// <summary>
         /// Create a copy of a Zone object.
@@ -52,86 +53,16 @@ namespace Sif.Framework.Service.Infrastructure
             return destinationZone;
         }
 
-        ///// <summary>
-        ///// Create a copy of a dictionary of ProvisionedZone objects.
-        ///// </summary>
-        ///// <param name="sourceZones">Dictionary of ProvisionedZone objects to copy.</param>
-        ///// <returns>New copy of the dictionary of ProvisionedZone objects if not null; null otherwise.</returns>
-        //private static IDictionary<string, ProvisionedZone> CopyProvisionedZones(
-        //    IDictionary<string, ProvisionedZone> sourceZones)
-        //{
-        //    if (sourceZones == null) return null;
-
-        //    var destinationZones = new Dictionary<string, ProvisionedZone>();
-
-        //    foreach (string key in sourceZones.Keys)
-        //    {
-        //        if (!sourceZones.TryGetValue(key, out ProvisionedZone sourceZone)) continue;
-
-        //        var destinationZone = new ProvisionedZone { SifId = sourceZone.SifId };
-
-        //        if (sourceZone.Services != null)
-        //        {
-        //            destinationZone.Services = CopyServices(sourceZone.Services);
-        //        }
-
-        //        destinationZones.Add(key, destinationZone);
-        //    }
-
-        //    return destinationZones;
-        //}
-
-        ///// <summary>
-        ///// Create a copy of a collection of Service objects.
-        ///// </summary>
-        ///// <param name="sourceServices">Collection of Service objects to copy.</param>
-        ///// <returns>New copy of the collection of Service objects if not null; null otherwise.</returns>
-        //private static ICollection<Model.Infrastructure.Service> CopyServices(
-        //    ICollection<Model.Infrastructure.Service> sourceServices)
-        //{
-        //    if (sourceServices == null) return null;
-
-        //    var destinationServices = new List<Model.Infrastructure.Service>();
-
-        //    foreach (Model.Infrastructure.Service sourceService in sourceServices)
-        //    {
-        //        var destinationService = new Model.Infrastructure.Service
-        //        {
-        //            ContextId = sourceService.ContextId,
-        //            Name = sourceService.Name,
-        //            Type = sourceService.Type
-        //        };
-
-        //        if (sourceService.Rights != null)
-        //        {
-        //            destinationService.Rights = sourceService.Rights.ToList();
-        //        }
-
-        //        destinationServices.Add(destinationService);
-        //    }
-
-        //    return destinationServices;
-        //}
-
-        /// <summary>
-        /// Retrieve an Environment based upon the session token provided.
-        /// </summary>
-        /// <param name="sessionToken">Session token.</param>
-        /// <returns>Environment associated with the session token.</returns>
-        private environmentType RetrieveBySessionToken(string sessionToken)
-        {
-            Environment environment = ((IEnvironmentRepository)Repository).RetrieveBySessionToken(sessionToken);
-
-            return MapperFactory.CreateInstance<Environment, environmentType>(environment);
-        }
-
         /// <inheritdoc cref="SifService{TDto, TEntity}" />
         public EnvironmentDtoService(
             IEnvironmentRepository environmentRepository,
             IEnvironmentRegisterService environmentRegisterService)
             : base(environmentRepository)
         {
-            _environmentRegisterService = environmentRegisterService;
+            _environmentRepository =
+                environmentRepository ?? throw new ArgumentNullException(nameof(environmentRepository));
+            _environmentRegisterService =
+                environmentRegisterService ?? throw new ArgumentNullException(nameof(environmentRegisterService));
         }
 
         /// <inheritdoc cref="SifService{TDto, TEntity}.Create(TDto)" />
@@ -156,9 +87,9 @@ namespace Sif.Framework.Service.Infrastructure
                 item.userToken,
                 item.solutionId);
 
-            environmentType environmentType = RetrieveBySessionToken(sessionToken);
+            Environment environment = _environmentRepository.RetrieveBySessionToken(sessionToken);
 
-            if (environmentType != null)
+            if (environment != null)
             {
                 string errorMessage =
                     $"A session token already exists for environment with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}].";

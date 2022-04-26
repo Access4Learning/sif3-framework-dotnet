@@ -17,8 +17,6 @@
 using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Mapper;
-using Sif.Specification.Infrastructure;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNetCore.Services.Authentication;
@@ -40,9 +38,7 @@ public class DirectAuthenticationService : AuthenticationService
     /// <inheritdoc cref="Framework.Service.Authentication.IAuthenticationService{THeaders}.GetEnvironmentBySessionToken(string)" />
     public override Environment GetEnvironmentBySessionToken(string sessionToken)
     {
-        environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
-
-        return MapperFactory.CreateInstance<environmentType, Environment>(environment);
+        return _environmentService.RetrieveBySessionToken(sessionToken);
     }
 
     /// <inheritdoc cref="AuthenticationService.InitialSharedSecret(string)" />
@@ -56,12 +52,12 @@ public class DirectAuthenticationService : AuthenticationService
     /// <inheritdoc cref="AuthenticationService.SharedSecret(string)" />
     protected override string? SharedSecret(string sessionToken)
     {
-        environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
+        Environment environment = _environmentService.RetrieveBySessionToken(sessionToken);
 
         if (environment == null) throw new InvalidSessionException();
 
         ApplicationRegister applicationRegister =
-            _applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
+            _applicationRegisterService.RetrieveByApplicationKey(environment.ApplicationInfo.ApplicationKey);
 
         return applicationRegister?.SharedSecret;
     }

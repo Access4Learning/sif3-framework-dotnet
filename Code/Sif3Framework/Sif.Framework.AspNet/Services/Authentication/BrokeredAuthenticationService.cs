@@ -18,9 +18,7 @@ using Sif.Framework.Model.Exceptions;
 using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Mapper;
 using Sif.Framework.Service.Sessions;
-using Sif.Specification.Infrastructure;
 using System;
 using System.Net.Http.Headers;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -59,9 +57,7 @@ namespace Sif.Framework.AspNet.Services.Authentication
         /// <inheritdoc cref="AuthenticationService.GetEnvironmentBySessionToken(string)" />
         public override Environment GetEnvironmentBySessionToken(string sessionToken)
         {
-            environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
-
-            return MapperFactory.CreateInstance<environmentType, Environment>(environment);
+            return _environmentService.RetrieveBySessionToken(sessionToken);
         }
 
         /// <inheritdoc cref="AuthenticationService.InitialSharedSecret(string)" />
@@ -76,7 +72,7 @@ namespace Sif.Framework.AspNet.Services.Authentication
         /// <inheritdoc cref="AuthenticationService.SharedSecret(string)" />
         protected override string SharedSecret(string sessionToken)
         {
-            environmentType environment = _environmentService.RetrieveBySessionToken(sessionToken);
+            Environment environment = _environmentService.RetrieveBySessionToken(sessionToken);
 
             if (environment == null)
             {
@@ -84,7 +80,7 @@ namespace Sif.Framework.AspNet.Services.Authentication
             }
 
             ApplicationRegister applicationRegister =
-                _applicationRegisterService.RetrieveByApplicationKey(environment.applicationInfo.applicationKey);
+                _applicationRegisterService.RetrieveByApplicationKey(environment.ApplicationInfo.ApplicationKey);
 
             return applicationRegister?.SharedSecret;
         }

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Sif.Specification.Infrastructure;
 using System;
 using Tardigrade.Framework.Services;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
@@ -31,6 +30,6 @@ namespace Sif.Framework.Service.Infrastructure
         /// </summary>
         /// <param name="sessionToken">Session token.</param>
         /// <returns>Environment associated with the session token.</returns>
-        environmentType RetrieveBySessionToken(string sessionToken);
+        Environment RetrieveBySessionToken(string sessionToken);
     }
 }
