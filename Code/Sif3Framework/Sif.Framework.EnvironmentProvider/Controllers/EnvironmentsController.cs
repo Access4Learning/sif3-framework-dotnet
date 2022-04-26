@@ -35,7 +35,9 @@ namespace Sif.Framework.EnvironmentProvider.Controllers
                 new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
             new DirectAuthenticationService(
                 new ApplicationRegisterService(new ApplicationRegisterRepository()),
-                new EnvironmentService(new EnvironmentRepository())))
+                new EnvironmentService(
+                    new EnvironmentRepository(),
+                    new EnvironmentRegisterService(new EnvironmentRegisterRepository()))))
         {
         }
 
