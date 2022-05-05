@@ -16,28 +16,34 @@
 
 using Microsoft.EntityFrameworkCore;
 using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Model.Sessions;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Data;
 
+/// <summary>
+/// Entity Framework Core database context for use with SIF Framework data types.
+/// </summary>
 public class SifFrameworkDbContext : DbContext
 {
+    /// <inheritdoc cref="DbContext"/>
     public SifFrameworkDbContext(DbContextOptions<SifFrameworkDbContext> options)
         : base(options)
     {
     }
 
-    public virtual DbSet<ApplicationInfo> ApplicationInfos { get; set; } = null!;
-    public virtual DbSet<ApplicationRegister> ApplicationRegisters { get; set; } = null!;
-    public virtual DbSet<Environment> Environments { get; set; } = null!;
-    public virtual DbSet<EnvironmentRegister> EnvironmentRegisters { get; set; } = null!;
-    public virtual DbSet<InfrastructureService> InfrastructureServices { get; set; } = null!;
-    public virtual DbSet<ProductIdentity> ProductIdentities { get; set; } = null!;
-    public virtual DbSet<Property> Properties { get; set; } = null!;
-    public virtual DbSet<ProvisionedZone> ProvisionedZones { get; set; } = null!;
-    public virtual DbSet<Right> Rights { get; set; } = null!;
-    public virtual DbSet<Model.Infrastructure.Service> Services { get; set; } = null!;
-    public virtual DbSet<Zone> Zones { get; set; } = null!;
+    public virtual DbSet<ApplicationInfo> ApplicationInfos => Set<ApplicationInfo>();
+    public virtual DbSet<ApplicationRegister> ApplicationRegisters => Set<ApplicationRegister>();
+    public virtual DbSet<Environment> Environments => Set<Environment>();
+    public virtual DbSet<EnvironmentRegister> EnvironmentRegisters => Set<EnvironmentRegister>();
+    public virtual DbSet<InfrastructureService> InfrastructureServices => Set<InfrastructureService>();
+    public virtual DbSet<ProductIdentity> ProductIdentities => Set<ProductIdentity>();
+    public virtual DbSet<Property> Properties => Set<Property>();
+    public virtual DbSet<ProvisionedZone> ProvisionedZones => Set<ProvisionedZone>();
+    public virtual DbSet<Right> Rights => Set<Right>();
+    public virtual DbSet<Model.Infrastructure.Service> Services => Set<Model.Infrastructure.Service>();
+    public virtual DbSet<Session> Sessions => Set<Session>();
+    public virtual DbSet<Zone> Zones => Set<Zone>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -222,7 +228,7 @@ public class SifFrameworkDbContext : DbContext
                 .WithOne()
                 .HasForeignKey("PROVISIONED_ZONE_ID")
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             entity.Navigation(e => e.Services).AutoInclude();
         });
 

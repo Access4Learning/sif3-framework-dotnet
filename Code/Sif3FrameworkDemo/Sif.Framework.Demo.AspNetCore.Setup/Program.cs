@@ -63,7 +63,7 @@ else
     DirectoryInfo? projectDirectory = binDirectory?.Parent ?? binDirectory;
 
     // Create and store SQL script for the test database.
-    dbContext.GenerateCreateScript($"{projectDirectory}\\Scripts\\DatabaseCreateScript.sql");
+    dbContext.GenerateCreateScript($"{projectDirectory}\\Scripts\\DatabaseCreateScript.sql", true);
 
     // Generate seed application registers for the demonstration project.
     IList<ApplicationRegister> applicationRegisters =

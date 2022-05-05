@@ -5,17 +5,17 @@
   </defaultZone>
   <infrastructureServices>
     <!-- The presence of the following two Services are mandatory for any Consumer Environment. -->
-    <infrastructureService name="environment">http://localhost:62921/api/environments</infrastructureService>
-    <infrastructureService name="requestsConnector">https://localhost:7151/api</infrastructureService>
+    <infrastructureService name="environment">https://localhost:7009/api/environments</infrastructureService>
+    <infrastructureService name="requestsConnector">https://localhost:7207/api</infrastructureService>
     <!-- These two Services support the reception of delayed Responses and asynchronous Events. They are mandatory for all Brokered Architectures. -->
     <infrastructureService name="queues">http://localhost:59586/api/queues</infrastructureService>
     <infrastructureService name="subscriptions">http://localhost:59586/api/subscriptions</infrastructureService>
     <!-- This Service is necessary to support self-configuring Consumers. -->
-    <infrastructureService name="provisionRequests">http://localhost:62921/api/provision</infrastructureService>
+    <infrastructureService name="provisionRequests">https://localhost:7009/api/provision</infrastructureService>
     <!-- After provisioning itself as a Provider, this service allows a Consumer to post Events. It is mandatory for all Brokered Architectures and never included in a Direct Architecture. -->
     <infrastructureService name="eventsConnector">http://localhost:62837/api</infrastructureService>
     <!-- This Service is necessary to support Functional Services. -->
-    <infrastructureService name="servicesConnector">https://localhost:7151/services</infrastructureService>
+    <infrastructureService name="servicesConnector">https://localhost:7207/services</infrastructureService>
   </infrastructureServices>
   <provisionedZones>
     <provisionedZone id="Sif3DemoZone1">

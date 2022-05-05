@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-using System;
+using Sif.Framework.Model.DataModels;
+using Sif.Specification.DataModel.Au;
+using System.Xml.Serialization;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Demo.AspNetCore.Provider.Models;
+
+[XmlRoot("StudentPersonal", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+[XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
+public class StudentPersonal : StudentPersonalType, IDataModel
 {
-    /// <summary>
-    /// This class represents Consumer settings that are stored in the SifFramework.config custom configuration file.
-    /// </summary>
-    [Obsolete("Deprecating the use of the SifFramework.config file.")]
-    internal class ConsumerSettings : ConfigFileBasedFrameworkSettings
-    {
-        /// <summary>
-        /// <see cref="ConfigFileBasedFrameworkSettings.SettingsPrefix"/>
-        /// </summary>
-        protected override string SettingsPrefix => "consumer";
-    }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@ using Sif.Framework.Model.Sessions;
 namespace Sif.Framework.EntityFrameworkCore.Data;
 
 /// <summary>
-/// Entity Framework Core database context for use with session data stored in a database.
+/// Entity Framework Core database context for use with session data.
 /// </summary>
 public class SessionDbContext : DbContext
 {
     /// <inheritdoc cref="DbContext"/>
-    public SessionDbContext(DbContextOptions options) : base(options)
+    public SessionDbContext(DbContextOptions<SessionDbContext> options) : base(options)
     {
     }
 
     /// <summary>
     /// Sessions.
     /// </summary>
-    public DbSet<Session> Sessions => Set<Session>();
+    public virtual DbSet<Session> Sessions => Set<Session>();
 }

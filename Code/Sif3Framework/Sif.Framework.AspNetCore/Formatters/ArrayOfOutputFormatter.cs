@@ -15,7 +15,6 @@
  */
 
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Serialisation;
 using System.Xml;
 using System.Xml.Serialization;
@@ -25,36 +24,36 @@ namespace Sif.Framework.AspNetCore.Formatters;
 /// <summary>
 /// Remove the ArrayOf prefix and append an "s" postfix when serialising a collection of objects.
 /// </summary>
-public class ArrayOfOutputFormatter<TObject> : XmlSerializerOutputFormatter
+public class ArrayOfOutputFormatter<T> : XmlSerializerOutputFormatter
 {
-    private readonly IFrameworkSettings _settings;
+    private readonly string? _dataModelNamespace;
 
     /// <summary>
-    /// Create an instance of this formatter using the settings provided.
+    /// Create an instance of this formatter with the namespace provided.
     /// </summary>
-    /// <param name="settings">Settings used to configure this formatter.</param>
-    public ArrayOfOutputFormatter(IFrameworkSettings settings)
+    /// <param name="dataModelNamespace">Data mode namespace.</param>
+    public ArrayOfOutputFormatter(string? dataModelNamespace)
     {
-        _settings = settings;
+        _dataModelNamespace = dataModelNamespace;
     }
 
     /// <inheritdoc />
     protected override bool CanWriteType(Type type)
     {
-        return typeof(IEnumerable<TObject>).IsAssignableFrom(type);
+        return typeof(IEnumerable<T>).IsAssignableFrom(type);
     }
 
     /// <inheritdoc />
     // ReSharper disable once RedundantAssignment
     protected override void Serialize(XmlSerializer xmlSerializer, XmlWriter xmlWriter, object value)
     {
-        var xmlRootAttribute = new XmlRootAttribute($"{typeof(TObject).Name}s")
+        var xmlRootAttribute = new XmlRootAttribute($"{typeof(T).Name}s")
         {
-            Namespace = _settings.DataModelNamespace,
+            Namespace = _dataModelNamespace,
             IsNullable = false
         };
 
-        ISerialiser<List<TObject>> serialiser = SerialiserFactory.GetXmlSerialiser<List<TObject>>(xmlRootAttribute);
+        ISerialiser<List<T>> serialiser = SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute);
         xmlSerializer = (XmlSerializer)serialiser;
         xmlSerializer.Serialize(xmlWriter, value);
     }

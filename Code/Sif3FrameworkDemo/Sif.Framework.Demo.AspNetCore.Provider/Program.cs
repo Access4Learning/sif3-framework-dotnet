@@ -15,25 +15,37 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Sif.Framework.AspNetCore.Services.Authentication;
+using Sif.Framework.AspNetCore.Formatters;
+using Sif.Framework.Demo.AspNetCore.Provider.Models;
+using Sif.Framework.Demo.AspNetCore.Provider.Services;
 using Sif.Framework.EntityFrameworkCore.Data;
 using Sif.Framework.EntityFrameworkCore.Persistence;
-using Sif.Framework.Mappers;
+using Sif.Framework.Model.Sessions;
+using Sif.Framework.Model.Settings;
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Authentication;
 using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Service.Providers;
+using Sif.Framework.Service.Sessions;
+using Sif.Framework.Settings;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Persistence;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Tardigrade.Framework.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string? dataModelNamespace = builder.Configuration["provider.environment.template.dataModelNamespace"];
 
-builder.Services.AddAutoMapper(typeof(InfrastructureProfile));
-builder.Services.AddControllers().AddXmlSerializerFormatters();
+builder.Services
+    .AddControllers(options =>
+    {
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>(dataModelNamespace));
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>(dataModelNamespace));
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentSchoolEnrollment>(dataModelNamespace));
+    })
+    .AddXmlSerializerFormatters();
 builder.Services.AddDbContext<SifFrameworkDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddScoped<DbContext, SifFrameworkDbContext>();
@@ -41,12 +53,18 @@ builder.Services.AddScoped<DbContext, SifFrameworkDbContext>();
 builder.Services.AddScoped<IApplicationRegisterRepository, ApplicationRegisterRepository>();
 builder.Services.AddScoped<IEnvironmentRegisterRepository, EnvironmentRegisterRepository>();
 builder.Services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
-builder.Services.AddScoped<IRepository<Environment, Guid>, Repository<Environment, Guid>>();
+builder.Services.AddScoped<IRepository<Session, Guid>, Repository<Session, Guid>>();
 
 builder.Services.AddScoped<IApplicationRegisterService, ApplicationRegisterService>();
-builder.Services.AddScoped<IAuthenticationService<IHeaderDictionary>, DirectAuthenticationService>();
+builder.Services.AddScoped<IBasicProviderService<SchoolInfo>, SchoolInfoService>();
+builder.Services.AddScoped<IBasicProviderService<StudentPersonal>, StudentPersonalService>();
+builder.Services.AddScoped<IBasicProviderService<StudentSchoolEnrollment>, StudentSchoolEnrollmentService>();
 builder.Services.AddScoped<IEnvironmentRegisterService, EnvironmentRegisterService>();
 builder.Services.AddScoped<IEnvironmentService, EnvironmentService>();
+builder.Services.AddScoped<IObjectService<Session, Guid>, ObjectService<Session, Guid>>();
+builder.Services.AddScoped<ISessionService, SessionService>();
+
+builder.Services.AddScoped<IFrameworkSettings, ProviderSettings>();
 
 WebApplication app = builder.Build();
 

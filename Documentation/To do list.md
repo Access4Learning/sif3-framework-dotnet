@@ -9,10 +9,11 @@
 - Replace the HttpUtils class with a RestSharp implementation.
 - Rename the Sif.Framework.Model directory to Sif.Framework.Models.
 - Rename the Sif.Framework.Service directory to Sif.Framework.Services.
+- Replace RandomNameGenerator with Bogus.
 
 ## .NET 6 upgrade
 
-### Sif.Framework.AspNet
+### Sif.Framework.AspNetCore
 
 - Replace the HttpUtils class with an ASP.NET Core HttpClient implementation.
 - Create a Goessner Notation JSON/XML serialiser for ASP.NET Core.
@@ -21,8 +22,6 @@
 - Implement SIF Events for ASP.NET Core.
 - Implement multiple Create, Update and Delete operations for ASP.NET Core SIF Providers.
 - Implement ASP.NET Core Middleware for Basic and HMAC SHA Authentication and Authorisation.
+- Implement Dynamic Queries in the SIF Provider.
 - For the HEAD method, need to clear the content body (for the purpose of optimisation).
-
-### Tardigrade.Framework.AspNet
-
 - Split the Provider.Get(TSingle, string, string[], string[]) method into 2 separate methods: Get(TSingle, string, string[], string[]) and Get(string, string[], string[]).

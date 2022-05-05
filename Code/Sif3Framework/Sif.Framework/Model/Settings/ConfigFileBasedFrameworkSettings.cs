@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ namespace Sif.Framework.Model.Settings
     /// <summary>
     /// This class represents settings that are stored in the SifFramework.config custom configuration file.
     /// </summary>
+    [Obsolete("Deprecating the use of the SifFramework.config file.")]
     internal abstract class ConfigFileBasedFrameworkSettings : IFrameworkSettings
     {
         private readonly Configuration configuration;
@@ -39,19 +40,21 @@ namespace Sif.Framework.Model.Settings
         protected bool GetBooleanSetting(string key, bool defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
-            bool value = defaultValue;
 
-            if (setting != null)
+            if (setting == null) return defaultValue;
+
+            bool value;
+
+            try
             {
-                try
-                {
-                    value = bool.Parse(setting.Value);
-                }
-                catch (FormatException)
-                {
-                    string message = $"The valid values for the {setting.Key} setting are \"true\" or \"false\". The value \"{setting.Value}\" is not valid.";
-                    throw new ConfigurationErrorsException(message);
-                }
+                value = bool.Parse(setting.Value);
+            }
+            catch (FormatException)
+            {
+                string message =
+                    $"The valid values for the {setting.Key} setting are \"true\" or \"false\". The value \"{setting.Value}\" is not valid.";
+
+                throw new ConfigurationErrorsException(message);
             }
 
             return value;
@@ -66,19 +69,20 @@ namespace Sif.Framework.Model.Settings
         protected int GetIntegerSetting(string key, int defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
-            int value = defaultValue;
 
-            if (setting != null)
+            if (setting == null) return defaultValue;
+
+            int value;
+
+            try
             {
-                try
-                {
-                    value = int.Parse(setting.Value);
-                }
-                catch (FormatException)
-                {
-                    string message = $"The value \"{setting.Value}\" is not a valid integer for the {setting.Key} setting.";
-                    throw new ConfigurationErrorsException(message);
-                }
+                value = int.Parse(setting.Value);
+            }
+            catch (FormatException)
+            {
+                string message = $"The value \"{setting.Value}\" is not a valid integer for the {setting.Key} setting.";
+
+                throw new ConfigurationErrorsException(message);
             }
 
             return value;
@@ -93,6 +97,7 @@ namespace Sif.Framework.Model.Settings
         protected string GetStringSetting(string key, string defaultValue)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
+
             return setting != null ? setting.Value : defaultValue;
         }
 
@@ -104,6 +109,7 @@ namespace Sif.Framework.Model.Settings
         protected string GetStringSetting(string key)
         {
             KeyValueConfigurationElement setting = configuration.AppSettings.Settings[key];
+
             return setting?.Value;
         }
 
@@ -130,12 +136,9 @@ namespace Sif.Framework.Model.Settings
             }
 #endif
 
-            if (configurationFilePath == null)
-            {
-                configurationFilePath = "SifFramework.config";
-            }
+            configurationFilePath = configurationFilePath ?? "SifFramework.config";
 
-            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap
+            var exeConfigurationFileMap = new ExeConfigurationFileMap
             {
                 ExeConfigFilename = configurationFilePath
             };
@@ -154,7 +157,8 @@ namespace Sif.Framework.Model.Settings
 
             if (!configuration.HasFile)
             {
-                string message = $"Missing configuration file {configurationFilePath}.";
+                var message = $"Missing configuration file {configurationFilePath}.";
+
                 throw new ConfigurationErrorsException(message);
             }
         }
@@ -166,68 +170,46 @@ namespace Sif.Framework.Model.Settings
         {
             get
             {
-                string settingKey = $"{SettingsPrefix}.payload.accept";
+                var settingKey = $"{SettingsPrefix}.payload.accept";
                 string settingValue = GetStringSetting(settingKey, "XML");
 
                 if (Accept.XML.ToString().Equals(settingValue.ToUpper()))
                 {
                     return Accept.XML;
                 }
-                else if (ContentType.JSON.ToString().Equals(settingValue.ToUpper()))
+
+                if (ContentType.JSON.ToString().Equals(settingValue.ToUpper()))
                 {
                     return Accept.JSON;
                 }
-                else
-                {
-                    string message = $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
-                    throw new ConfigurationErrorsException(message);
-                }
+
+                string message =
+                    $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
+
+                throw new ConfigurationErrorsException(message);
             }
         }
 
         /// <summary>
         /// <see cref="IFrameworkSettings.ApplicationKey"/>
         /// </summary>
-        public string ApplicationKey
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.applicationKey");
-            }
-        }
+        public string ApplicationKey => GetStringSetting($"{SettingsPrefix}.environment.template.applicationKey");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.AuthenticationMethod"/>
         /// </summary>
-        public string AuthenticationMethod
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.authenticationMethod");
-            }
-        }
+        public string AuthenticationMethod =>
+            GetStringSetting($"{SettingsPrefix}.environment.template.authenticationMethod");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.CompressPayload"/>
         /// </summary>
-        public bool CompressPayload
-        {
-            get
-            {
-                return GetBooleanSetting(SettingsPrefix + ".payload.compress", false);
-            }
-        }
+        public bool CompressPayload => GetBooleanSetting($"{SettingsPrefix}.payload.compress", false);
 
         /// <summary>
         /// <see cref="IFrameworkSettings.ConsumerName"/>
         /// </summary>
-        public string ConsumerName
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.consumerName");
-            }
-        }
+        public string ConsumerName => GetStringSetting($"{SettingsPrefix}.environment.template.consumerName");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.ContentType"/>
@@ -236,57 +218,42 @@ namespace Sif.Framework.Model.Settings
         {
             get
             {
-                string settingKey = $"{SettingsPrefix}.payload.contentType";
+                var settingKey = $"{SettingsPrefix}.payload.contentType";
                 string settingValue = GetStringSetting(settingKey, "XML");
 
                 if (ContentType.XML.ToString().Equals(settingValue.ToUpper()))
                 {
                     return ContentType.XML;
                 }
-                else if (ContentType.JSON.ToString().Equals(settingValue.ToUpper()))
+
+                if (ContentType.JSON.ToString().Equals(settingValue.ToUpper()))
                 {
                     return ContentType.JSON;
                 }
-                else
-                {
-                    string message = $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
-                    throw new ConfigurationErrorsException(message);
-                }
+
+                string message =
+                    $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
+
+                throw new ConfigurationErrorsException(message);
             }
         }
 
         /// <summary>
         /// <see cref="IFrameworkSettings.DataModelNamespace"/>
         /// </summary>
-        public string DataModelNamespace
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.dataModelNamespace");
-            }
-        }
+        public string DataModelNamespace =>
+            GetStringSetting($"{SettingsPrefix}.environment.template.dataModelNamespace");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.InfrastructureNamespace"/>
         /// </summary>
-        public string InfrastructureNamespace
-        {
-            get
-            {
-                return "http://www.sifassociation.org/infrastructure/" + SupportedInfrastructureVersion;
-            }
-        }
+        public string InfrastructureNamespace =>
+            $"http://www.sifassociation.org/infrastructure/{SupportedInfrastructureVersion}";
 
         /// <summary>
         /// <see cref="IFrameworkSettings.DeleteOnUnregister"/>
         /// </summary>
-        public bool DeleteOnUnregister
-        {
-            get
-            {
-                return GetBooleanSetting(SettingsPrefix + ".environment.deleteOnUnregister", false);
-            }
-        }
+        public bool DeleteOnUnregister => GetBooleanSetting($"{SettingsPrefix}.environment.deleteOnUnregister", false);
 
         /// <summary>
         /// <see cref="IFrameworkSettings.EnvironmentType"/>
@@ -295,148 +262,90 @@ namespace Sif.Framework.Model.Settings
         {
             get
             {
-                string settingKey = $"{SettingsPrefix}.environmentType";
+                var settingKey = $"{SettingsPrefix}.environmentType";
                 string settingValue = GetStringSetting(settingKey, "DIRECT");
 
                 if (EnvironmentType.BROKERED.ToString().Equals(settingValue))
                 {
                     return EnvironmentType.BROKERED;
                 }
-                else if (EnvironmentType.DIRECT.ToString().Equals(settingValue))
+
+                if (EnvironmentType.DIRECT.ToString().Equals(settingValue))
                 {
                     return EnvironmentType.DIRECT;
                 }
-                else
-                {
-                    string message = $"The valid values for the {settingKey} setting are \"BROKERED\" or \"DIRECT\". The value \"{settingValue}\" is not valid.";
-                    throw new ConfigurationErrorsException(message);
-                }
+
+                string message =
+                    $"The valid values for the {settingKey} setting are \"BROKERED\" or \"DIRECT\". The value \"{settingValue}\" is not valid.";
+
+                throw new ConfigurationErrorsException(message);
             }
         }
 
         /// <summary>
         /// <see cref="IFrameworkSettings.EnvironmentUrl"/>
         /// </summary>
-        public string EnvironmentUrl
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.url");
-            }
-        }
+        public string EnvironmentUrl => GetStringSetting($"{SettingsPrefix}.environment.url");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.EventProcessingWaitTime"/>
         /// </summary>
-        public int EventProcessingWaitTime
-        {
-            get
-            {
-                return GetIntegerSetting(SettingsPrefix + ".events.minWaitTimeSeconds", 60);
-            }
-        }
+        public int EventProcessingWaitTime => GetIntegerSetting($"{SettingsPrefix}.events.minWaitTimeSeconds", 60);
 
         /// <summary>
         /// <see cref="IFrameworkSettings.InstanceId"/>
         /// </summary>
-        public string InstanceId
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.instanceId");
-            }
-        }
+        public string InstanceId => GetStringSetting($"{SettingsPrefix}.environment.template.instanceId");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.NavigationPageSize"/>
         /// </summary>
-        public int NavigationPageSize
-        {
-            get
-            {
-                return GetIntegerSetting(SettingsPrefix + ".paging.navigationPageSize", 100);
-            }
-        }
+        public int NavigationPageSize => GetIntegerSetting($"{SettingsPrefix}.paging.navigationPageSize", 100);
 
         /// <summary>
         /// <see cref="IFrameworkSettings.SharedSecret"/>
         /// </summary>
-        public string SharedSecret
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.sharedSecret");
-            }
-        }
+        public string SharedSecret => GetStringSetting($"{SettingsPrefix}.environment.sharedSecret");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.SolutionId"/>
         /// </summary>
-        public string SolutionId
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.solutionId");
-            }
-        }
+        public string SolutionId => GetStringSetting($"{SettingsPrefix}.environment.template.solutionId");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.SupportedInfrastructureVersion"/>
         /// </summary>
-        public string SupportedInfrastructureVersion
-        {
-            get
-            {
-                return GetStringSetting(SettingsPrefix + ".environment.template.supportedInfrastructureVersion");
-            }
-        }
+        public string SupportedInfrastructureVersion =>
+            GetStringSetting($"{SettingsPrefix}.environment.template.supportedInfrastructureVersion");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.UserToken"/>
         /// </summary>
-        public string UserToken
-        {
-            get { return GetStringSetting(SettingsPrefix + ".environment.template.userToken"); }
-        }
+        public string UserToken => GetStringSetting($"{SettingsPrefix}.environment.template.userToken");
 
         /// <summary>
         /// <see cref="IFrameworkSettings.JobClasses"/>
         /// </summary>
-        public string JobClasses
-        {
-            get { return GetStringSetting(SettingsPrefix + ".job.classes", "any"); }
-        }
+        public string JobClasses => GetStringSetting($"{SettingsPrefix}.job.classes", "any");
 
         /// <summary>
         /// How long in seconds to delay between starting each Functional Service thread. Default 10.
         /// </summary>
-        public int StartupDelay
-        {
-            get { return GetIntegerSetting(SettingsPrefix + ".startup.delay", 10); }
-        }
+        public int StartupDelay => GetIntegerSetting($"{SettingsPrefix}.startup.delay", 10);
 
         /// <summary>
         /// True if job objects should be bound to the consumer that created them, false otherwise. Default true.
         /// </summary>
-        public bool JobBinding
-        {
-            get { return GetBooleanSetting(SettingsPrefix + ".job.binding", true); }
-        }
+        public bool JobBinding => GetBooleanSetting($"{SettingsPrefix}.job.binding", true);
 
         /// <summary>
         /// True if job timeouts are enabled, false otherwise. Default true.
         /// </summary>
-        public bool JobTimeoutEnabled
-        {
-            get { return GetBooleanSetting(SettingsPrefix + ".job.timeout.enabled", true); }
-        }
+        public bool JobTimeoutEnabled => GetBooleanSetting($"{SettingsPrefix}.job.timeout.enabled", true);
 
         /// <summary>
-        /// How often to check for timedout jobs in seconds. Default 60.
+        /// How often to check for timed out jobs in seconds. Default 60.
         /// </summary>
-        public int JobTimeoutFrequency
-        {
-            get { return GetIntegerSetting(SettingsPrefix + ".job.timeout.frequency", 60); }
-        }
+        public int JobTimeoutFrequency => GetIntegerSetting($"{SettingsPrefix}.job.timeout.frequency", 60);
     }
 }
