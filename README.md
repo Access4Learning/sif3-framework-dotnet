@@ -109,7 +109,9 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Created an ASP.NET Core implementation of the EnvironmentProvider.
 - Updated the Type property of the Environment class in Entity Framework Core to match that used by NHibernate.
 - Updated the NHibernate mapping for the Environment class to save the EnvironmentType enum property as a string rather than integer.
-- Created a new demo project for ASP.NET Core SIF Providers (based upon the AU SIF Data Models).
+- Created XML serializer input formatters to allow the ASP.NET Core SIF Providers (Controllers) to recognise the required SIF namespaces on data models when serializing method parameters.
+- Created ASP.NET Core middleware to manage method overrides.
+- Implemented multiple create and update operations for ASP.NET Core SIF Providers (Controllers).- Created a new demo project for ASP.NET Core SIF Providers (based upon the AU SIF Data Models).
 - Updated the ArrayOfOutputFormatter class constructor to accept a string rather than the IFrameworkSettings interface.
 - Added the Session data model to the SifFrameworkDbContext configuration.
 - Deprecating the following classes:

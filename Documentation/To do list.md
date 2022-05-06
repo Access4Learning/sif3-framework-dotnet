@@ -10,6 +10,7 @@
 - Rename the Sif.Framework.Model directory to Sif.Framework.Models.
 - Rename the Sif.Framework.Service directory to Sif.Framework.Services.
 - Replace RandomNameGenerator with Bogus.
+- Remove references to the Sif.Specification.Infrastructure domain models from the IProvider interface to decouple the interface from SIF Infrastructure code. Once done, deprecate the SifInputFormatter class.
 
 ## .NET 6 upgrade
 
@@ -23,5 +24,6 @@
 - Implement multiple Create, Update and Delete operations for ASP.NET Core SIF Providers.
 - Implement ASP.NET Core Middleware for Basic and HMAC SHA Authentication and Authorisation.
 - Implement Dynamic Queries in the SIF Provider.
+- Create BAT scripts for running ASP.NET Core apps.
 - For the HEAD method, need to clear the content body (for the purpose of optimisation).
 - Split the Provider.Get(TSingle, string, string[], string[]) method into 2 separate methods: Get(TSingle, string, string[], string[]) and Get(string, string[], string[]).

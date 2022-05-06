@@ -163,44 +163,44 @@ namespace Sif.Framework.Demo.Au.Consumer
                 // Create multiple new students.
 
                 // TODO Uncomment once the ASP.NET Core Provider has been fully implemented.
-                //if (Log.IsInfoEnabled) Log.Info("*** Create multiple new students.");
+                if (Log.IsInfoEnabled) Log.Info("*** Create multiple new students.");
 
-                //List<StudentPersonal> newStudents = CreateStudents(5);
+                List<StudentPersonal> newStudents = CreateStudents(5);
 
-                //try
-                //{
-                //    MultipleCreateResponse multipleCreateResponse = consumer.Create(newStudents);
-                //    var count = 0;
+                try
+                {
+                    MultipleCreateResponse multipleCreateResponse = consumer.Create(newStudents);
+                    var count = 0;
 
-                //    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
-                //    {
-                //        if (Log.IsInfoEnabled) Log.Info("Create status code is " + status.StatusCode);
+                    foreach (CreateStatus status in multipleCreateResponse.StatusRecords)
+                    {
+                        if (Log.IsInfoEnabled) Log.Info("Create status code is " + status.StatusCode);
 
-                //        newStudents[count++].RefId = status.Id;
-                //    }
+                        newStudents[count++].RefId = status.Id;
+                    }
 
-                //    // Update multiple students.
+                    // Update multiple students.
 
-                //    if (Log.IsInfoEnabled) Log.Info("*** Update multiple students.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Update multiple students.");
 
-                //    foreach (StudentPersonal student in newStudents)
-                //    {
-                //        student.PersonInfo.Name.GivenName += "o";
-                //    }
+                    foreach (StudentPersonal student in newStudents)
+                    {
+                        student.PersonInfo.Name.GivenName += "o";
+                    }
 
-                //    try
-                //    {
-                //        MultipleUpdateResponse multipleUpdateResponse = consumer.Update(newStudents);
+                    try
+                    {
+                        MultipleUpdateResponse multipleUpdateResponse = consumer.Update(newStudents);
 
-                //        foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
-                //        {
-                //            if (Log.IsInfoEnabled) Log.Info("Update status code is " + status.StatusCode);
-                //        }
-                //    }
-                //    catch (UnauthorizedAccessException)
-                //    {
-                //        if (Log.IsInfoEnabled) Log.Info("Access to update multiple students is rejected.");
-                //    }
+                        foreach (UpdateStatus status in multipleUpdateResponse.StatusRecords)
+                        {
+                            if (Log.IsInfoEnabled) Log.Info("Update status code is " + status.StatusCode);
+                        }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (Log.IsInfoEnabled) Log.Info("Access to update multiple students is rejected.");
+                    }
 
                 //    // Delete multiple students.
 
@@ -222,11 +222,11 @@ namespace Sif.Framework.Demo.Au.Consumer
                 //    {
                 //        if (Log.IsInfoEnabled) Log.Info("Access to delete multiple students is rejected.");
                 //    }
-                //}
-                //catch (UnauthorizedAccessException)
-                //{
-                //    if (Log.IsInfoEnabled) Log.Info("Access to create multiple new students is rejected.");
-                //}
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (Log.IsInfoEnabled) Log.Info("Access to create multiple new students is rejected.");
+                }
 
                 // Retrieve all students from zone "Gov" and context "Curr".
 

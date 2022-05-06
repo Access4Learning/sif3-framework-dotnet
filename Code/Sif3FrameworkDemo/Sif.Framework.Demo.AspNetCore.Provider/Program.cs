@@ -15,7 +15,9 @@
  */
 
 using Microsoft.EntityFrameworkCore;
+using Sif.Framework.AspNetCore.Extensions;
 using Sif.Framework.AspNetCore.Formatters;
+using Sif.Framework.AspNetCore.Middlewares;
 using Sif.Framework.Demo.AspNetCore.Provider.Models;
 using Sif.Framework.Demo.AspNetCore.Provider.Services;
 using Sif.Framework.EntityFrameworkCore.Data;
@@ -27,6 +29,7 @@ using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Sessions;
 using Sif.Framework.Settings;
+using Sif.Specification.Infrastructure;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Persistence;
 using Tardigrade.Framework.Services;
@@ -41,6 +44,10 @@ string? dataModelNamespace = builder.Configuration["provider.environment.templat
 builder.Services
     .AddControllers(options =>
     {
+        options.InputFormatters.Add(new ArrayOfInputFormatter<SchoolInfo>(options, dataModelNamespace));
+        options.InputFormatters.Add(new ArrayOfInputFormatter<StudentPersonal>(options, dataModelNamespace));
+        options.InputFormatters.Add(new ArrayOfInputFormatter<StudentSchoolEnrollment>(options, dataModelNamespace));
+        options.InputFormatters.Add(new SifInputFormatter<deleteRequestType>(options, dataModelNamespace));
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>(dataModelNamespace));
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>(dataModelNamespace));
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentSchoolEnrollment>(dataModelNamespace));
@@ -65,10 +72,13 @@ builder.Services.AddScoped<IObjectService<Session, Guid>, ObjectService<Session,
 builder.Services.AddScoped<ISessionService, SessionService>();
 
 builder.Services.AddScoped<IFrameworkSettings, ProviderSettings>();
+builder.Services.AddScoped<MethodOverrideMiddleware>();
 
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseMethodOverrideMiddleware();
 
 app.UseHttpsRedirection();
 
