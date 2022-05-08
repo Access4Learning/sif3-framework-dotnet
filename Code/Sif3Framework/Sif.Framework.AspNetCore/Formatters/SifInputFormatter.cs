@@ -22,20 +22,16 @@ using System.Xml.Serialization;
 namespace Sif.Framework.AspNetCore.Formatters;
 
 /// <summary>
-/// Remove the ArrayOf prefix and append an "s" postfix when serialising a collection of objects.
+/// Set an appropriate SIF namespace when serialising SIF infrastructure objects.
 /// </summary>
 public class SifInputFormatter<T> : XmlSerializerInputFormatter
 {
-    private readonly string? _dataModelNamespace;
-
     /// <summary>
-    /// Create an instance of this formatter with the namespace provided.
+    /// Create an instance of this formatter.
     /// </summary>
     /// <param name="options">Configuration options.</param>
-    /// <param name="dataModelNamespace">Data mode namespace.</param>
-    public SifInputFormatter(MvcOptions options, string? dataModelNamespace) : base(options)
+    public SifInputFormatter(MvcOptions options) : base(options)
     {
-        _dataModelNamespace = dataModelNamespace;
     }
 
     /// <inheritdoc />
@@ -51,11 +47,17 @@ public class SifInputFormatter<T> : XmlSerializerInputFormatter
     {
         try
         {
-            var xmlRootAttribute = new XmlRootAttribute
+            XmlRootAttribute? xmlRootAttribute = null;
+
+            // Check for an XML root attribute in the passed type.
+            if (Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute)) is XmlRootAttribute existingAttribute)
             {
-                Namespace = _dataModelNamespace,
-                IsNullable = false
-            };
+                xmlRootAttribute = new XmlRootAttribute(existingAttribute.ElementName)
+                {
+                    Namespace = existingAttribute.Namespace,
+                    IsNullable = existingAttribute.IsNullable
+                };
+            }
 
             ISerialiser<T> serialiser = SerialiserFactory.GetXmlSerialiser<T>(xmlRootAttribute);
 

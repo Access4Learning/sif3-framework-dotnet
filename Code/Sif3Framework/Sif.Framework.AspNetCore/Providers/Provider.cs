@@ -729,7 +729,7 @@ public abstract class Provider<TSingle, TMultiple>
     /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(deleteRequestType, string, string)" />
     [HttpDelete]
     public virtual IActionResult Delete(
-        deleteRequestType deleteRequest,
+        [FromBody] deleteRequestType deleteRequest,
         [FromQuery] string? zoneId = null,
         [FromQuery] string? contextId = null)
     {

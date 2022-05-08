@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 using Sif.Framework.Demo.Au.Consumer.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Demo.Au.Consumer.Utils;
-using Sif.Framework.Model.Query;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Sessions;
@@ -32,7 +31,7 @@ namespace Sif.Framework.Demo.Au.Consumer
     internal class ConsumerApp : ConsoleApp
     {
         private static readonly slf4net.ILogger Log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private static readonly Random Random = new Random();
 
@@ -202,26 +201,26 @@ namespace Sif.Framework.Demo.Au.Consumer
                         if (Log.IsInfoEnabled) Log.Info("Access to update multiple students is rejected.");
                     }
 
-                //    // Delete multiple students.
+                    // Delete multiple students.
 
-                //    if (Log.IsInfoEnabled) Log.Info("*** Delete multiple students.");
+                    if (Log.IsInfoEnabled) Log.Info("*** Delete multiple students.");
 
-                //    ICollection<string> refIds =
-                //        multipleCreateResponse.StatusRecords.Select(status => status.Id).ToList();
+                    ICollection<string> refIds =
+                        multipleCreateResponse.StatusRecords.Select(status => status.Id).ToList();
 
-                //    try
-                //    {
-                //        MultipleDeleteResponse multipleDeleteResponse = consumer.Delete(refIds);
+                    try
+                    {
+                        MultipleDeleteResponse multipleDeleteResponse = consumer.Delete(refIds);
 
-                //        foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
-                //        {
-                //            if (Log.IsInfoEnabled) Log.Info("Delete status code is " + status.StatusCode);
-                //        }
-                //    }
-                //    catch (UnauthorizedAccessException)
-                //    {
-                //        if (Log.IsInfoEnabled) Log.Info("Access to delete multiple students is rejected.");
-                //    }
+                        foreach (DeleteStatus status in multipleDeleteResponse.StatusRecords)
+                        {
+                            if (Log.IsInfoEnabled) Log.Info("Delete status code is " + status.StatusCode);
+                        }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        if (Log.IsInfoEnabled) Log.Info("Access to delete multiple students is rejected.");
+                    }
                 }
                 catch (UnauthorizedAccessException)
                 {

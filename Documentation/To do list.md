@@ -21,7 +21,6 @@
 - Implement Matrix Parameters for ASP.NET Core.
 - Implement Service Paths for ASP.NET Core.
 - Implement SIF Events for ASP.NET Core.
-- Implement multiple Create, Update and Delete operations for ASP.NET Core SIF Providers.
 - Implement ASP.NET Core Middleware for Basic and HMAC SHA Authentication and Authorisation.
 - Implement Dynamic Queries in the SIF Provider.
 - Create BAT scripts for running ASP.NET Core apps.

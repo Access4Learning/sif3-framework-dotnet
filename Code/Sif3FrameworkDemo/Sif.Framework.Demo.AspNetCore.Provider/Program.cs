@@ -47,7 +47,7 @@ builder.Services
         options.InputFormatters.Add(new ArrayOfInputFormatter<SchoolInfo>(options, dataModelNamespace));
         options.InputFormatters.Add(new ArrayOfInputFormatter<StudentPersonal>(options, dataModelNamespace));
         options.InputFormatters.Add(new ArrayOfInputFormatter<StudentSchoolEnrollment>(options, dataModelNamespace));
-        options.InputFormatters.Add(new SifInputFormatter<deleteRequestType>(options, dataModelNamespace));
+        options.InputFormatters.Add(new SifInputFormatter<deleteRequestType>(options));
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>(dataModelNamespace));
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>(dataModelNamespace));
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentSchoolEnrollment>(dataModelNamespace));
@@ -78,7 +78,11 @@ WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
+// The MethodOverrideMiddleware will not work unless app.UseRouting() is also called after.
+// https://stackoverflow.com/questions/71686202/change-http-put-request-to-http-patch-request-using-iasyncactionfilter-and-rewri
 app.UseMethodOverrideMiddleware();
+
+app.UseRouting();
 
 app.UseHttpsRedirection();
 
