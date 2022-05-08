@@ -26,17 +26,6 @@ namespace Sif.Framework.AspNetCore.Formatters;
 /// </summary>
 public class ArrayOfOutputFormatter<T> : XmlSerializerOutputFormatter
 {
-    private readonly string? _dataModelNamespace;
-
-    /// <summary>
-    /// Create an instance of this formatter with the namespace provided.
-    /// </summary>
-    /// <param name="dataModelNamespace">Data mode namespace.</param>
-    public ArrayOfOutputFormatter(string? dataModelNamespace)
-    {
-        _dataModelNamespace = dataModelNamespace;
-    }
-
     /// <inheritdoc />
     protected override bool CanWriteType(Type type)
     {
@@ -47,11 +36,17 @@ public class ArrayOfOutputFormatter<T> : XmlSerializerOutputFormatter
     // ReSharper disable once RedundantAssignment
     protected override void Serialize(XmlSerializer xmlSerializer, XmlWriter xmlWriter, object value)
     {
-        var xmlRootAttribute = new XmlRootAttribute($"{typeof(T).Name}s")
+        XmlRootAttribute? xmlRootAttribute = null;
+
+        // Check for an XML root attribute in the generic type.
+        if (Attribute.GetCustomAttribute(typeof(T), typeof(XmlRootAttribute)) is XmlRootAttribute existingAttribute)
         {
-            Namespace = _dataModelNamespace,
-            IsNullable = false
-        };
+            xmlRootAttribute = new XmlRootAttribute($"{existingAttribute.ElementName}s")
+            {
+                Namespace = existingAttribute.Namespace,
+                IsNullable = existingAttribute.IsNullable
+            };
+        }
 
         ISerialiser<List<T>> serialiser = SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute);
         xmlSerializer = (XmlSerializer)serialiser;

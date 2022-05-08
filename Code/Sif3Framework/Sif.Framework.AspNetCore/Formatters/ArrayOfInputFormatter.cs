@@ -26,16 +26,12 @@ namespace Sif.Framework.AspNetCore.Formatters;
 /// </summary>
 public class ArrayOfInputFormatter<T> : XmlSerializerInputFormatter
 {
-    private readonly string? _dataModelNamespace;
-
     /// <summary>
     /// Create an instance of this formatter with the namespace provided.
     /// </summary>
     /// <param name="options">Configuration options.</param>
-    /// <param name="dataModelNamespace">Data mode namespace.</param>
-    public ArrayOfInputFormatter(MvcOptions options, string? dataModelNamespace) : base(options)
+    public ArrayOfInputFormatter(MvcOptions options) : base(options)
     {
-        _dataModelNamespace = dataModelNamespace;
     }
 
     /// <inheritdoc />
@@ -49,11 +45,17 @@ public class ArrayOfInputFormatter<T> : XmlSerializerInputFormatter
     {
         try
         {
-            var xmlRootAttribute = new XmlRootAttribute($"{typeof(T).Name}s")
+            XmlRootAttribute? xmlRootAttribute = null;
+
+            // Check for an XML root attribute in the generic type.
+            if (Attribute.GetCustomAttribute(typeof(T), typeof(XmlRootAttribute)) is XmlRootAttribute existingAttribute)
             {
-                Namespace = _dataModelNamespace,
-                IsNullable = false
-            };
+                xmlRootAttribute = new XmlRootAttribute($"{existingAttribute.ElementName}s")
+                {
+                    Namespace = existingAttribute.Namespace,
+                    IsNullable = existingAttribute.IsNullable
+                };
+            }
 
             ISerialiser<List<T>> serialiser = SerialiserFactory.GetXmlSerialiser<List<T>>(xmlRootAttribute);
 

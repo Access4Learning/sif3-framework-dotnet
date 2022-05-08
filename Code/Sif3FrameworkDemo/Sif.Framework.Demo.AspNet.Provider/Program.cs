@@ -16,10 +16,6 @@
 
 using Sif.Framework.AspNetCore.Formatters;
 using Sif.Framework.Demo.AspNet.Provider.Models;
-using Sif.Framework.Demo.AspNet.Provider.Utils;
-using Sif.Framework.Model.Settings;
-
-IFrameworkSettings settings = FrameworkConfigFactory.CreateSettings();
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +24,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddControllers(options =>
     {
-        options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>(settings.DataModelNamespace));
-        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>(settings.DataModelNamespace));
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>());
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>());
     })
     .AddXmlSerializerFormatters();
 

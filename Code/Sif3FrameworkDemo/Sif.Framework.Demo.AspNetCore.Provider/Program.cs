@@ -39,18 +39,17 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-string? dataModelNamespace = builder.Configuration["provider.environment.template.dataModelNamespace"];
 
 builder.Services
     .AddControllers(options =>
     {
-        options.InputFormatters.Add(new ArrayOfInputFormatter<SchoolInfo>(options, dataModelNamespace));
-        options.InputFormatters.Add(new ArrayOfInputFormatter<StudentPersonal>(options, dataModelNamespace));
-        options.InputFormatters.Add(new ArrayOfInputFormatter<StudentSchoolEnrollment>(options, dataModelNamespace));
+        options.InputFormatters.Add(new ArrayOfInputFormatter<SchoolInfo>(options));
+        options.InputFormatters.Add(new ArrayOfInputFormatter<StudentPersonal>(options));
+        options.InputFormatters.Add(new ArrayOfInputFormatter<StudentSchoolEnrollment>(options));
         options.InputFormatters.Add(new SifInputFormatter<deleteRequestType>(options));
-        options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>(dataModelNamespace));
-        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>(dataModelNamespace));
-        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentSchoolEnrollment>(dataModelNamespace));
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<SchoolInfo>());
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentPersonal>());
+        options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentSchoolEnrollment>());
     })
     .AddXmlSerializerFormatters();
 builder.Services.AddDbContext<SifFrameworkDbContext>(options => options.UseSqlite(connectionString));
