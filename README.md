@@ -129,6 +129,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Updated the SifInputFormatter to use the existing XmlRootAttribute of the passed type.
 - Fixed an issue with the MethodOverrideMiddleware configuration on start up.
 - Updated the ConsumerApp to return code for deleting multiple students.
+- Created shell scripts for running the ASP.NET Core demo projects.
 
 **May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
 
