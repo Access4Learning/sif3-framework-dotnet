@@ -139,6 +139,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Updated the AU Demo Consumer and Provider projects to enable the use of the session service.
 - Created unit tests for the session service.
 - Performed general code improvements based upon ReSharper recommendations.
+- Removed redundant SharedLibs directory.
 
 **Apr 25, 2021 - 4.0.1 Updated to the official release of the SIF AU 3.4.8 Data Model**
 
