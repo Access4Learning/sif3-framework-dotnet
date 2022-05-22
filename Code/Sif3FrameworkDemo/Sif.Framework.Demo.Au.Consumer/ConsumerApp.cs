@@ -424,8 +424,7 @@ namespace Sif.Framework.Demo.Au.Consumer
         {
             try
             {
-                SettingsSource source = SelectFrameworkConfigSource();
-                RunConsumer(GetSettings(source), GetSessionService(source));
+                RunConsumer(GetSettings(SettingsSource.File), GetSessionService(SettingsSource.Database));
             }
             catch (Exception e)
             {

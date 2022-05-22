@@ -82,46 +82,54 @@ namespace Sif.Framework.Service.Infrastructure
                 item.UserToken,
                 item.SolutionId);
 
-            Environment environment = RetrieveBySessionToken(sessionToken);
-
-            if (environment != null)
+            try
             {
-                string errorMessage =
-                    $"A session token already exists for environment with [applicationKey:{item.ApplicationInfo.ApplicationKey}|solutionId:{item.SolutionId ?? "<null>"}|instanceId:{item.InstanceId ?? "<null>"}|userToken:{item.UserToken ?? "<null>"}].";
-                throw new AlreadyExistsException(errorMessage);
-            }
+                Environment environment = RetrieveBySessionToken(sessionToken);
 
-            if (environmentRegister.DefaultZone != null)
-            {
-                item.DefaultZone = CopyDefaultZone(environmentRegister.DefaultZone);
-            }
-
-            if (environmentRegister.InfrastructureServices?.Any() ?? false)
-            {
-                item.InfrastructureServices = environmentRegister.InfrastructureServices;
-            }
-
-            if (environmentRegister.ProvisionedZones?.Any() ?? false)
-            {
-                item.ProvisionedZones = environmentRegister.ProvisionedZones.ToList();
-            }
-
-            item.SessionToken = sessionToken;
-            Environment created = Repository.Create(item);
-
-            if (item.InfrastructureServices?.Any() ?? false)
-            {
-                InfrastructureService infrastructureService =
-                    item.InfrastructureServices.FirstOrDefault(i => i.Name == InfrastructureServiceNames.environment);
-
-                if (infrastructureService != null)
+                if (environment != null)
                 {
-                    infrastructureService.Value = infrastructureService.Value + "/" + created.Id;
-                    Repository.Update(item);
+                    var errorMessage =
+                        $"A session token already exists for environment with [applicationKey:{item.ApplicationInfo.ApplicationKey}|solutionId:{item.SolutionId ?? "<null>"}|instanceId:{item.InstanceId ?? "<null>"}|userToken:{item.UserToken ?? "<null>"}].";
+                    throw new AlreadyExistsException(errorMessage);
                 }
-            }
 
-            return created;
+                if (environmentRegister.DefaultZone != null)
+                {
+                    item.DefaultZone = CopyDefaultZone(environmentRegister.DefaultZone);
+                }
+
+                if (environmentRegister.InfrastructureServices?.Any() ?? false)
+                {
+                    item.InfrastructureServices = environmentRegister.InfrastructureServices;
+                }
+
+                if (environmentRegister.ProvisionedZones?.Any() ?? false)
+                {
+                    item.ProvisionedZones = environmentRegister.ProvisionedZones.ToList();
+                }
+
+                item.SessionToken = sessionToken;
+                Environment created = Repository.Create(item);
+
+                if (item.InfrastructureServices?.Any() ?? false)
+                {
+                    InfrastructureService infrastructureService =
+                        item.InfrastructureServices.FirstOrDefault(
+                            i => i.Name == InfrastructureServiceNames.environment);
+
+                    if (infrastructureService != null)
+                    {
+                        infrastructureService.Value = infrastructureService.Value + "/" + created.Id;
+                        Repository.Update(item);
+                    }
+                }
+
+                return created;
+            }
+            catch (Exception e) when (e is DuplicateFoundException || e is RepositoryException)
+            {
+                throw new ServiceException(e.Message, e);
+            }
         }
 
         /// <inheritdoc cref="IEnvironmentService.RetrieveBySessionToken(string)" />

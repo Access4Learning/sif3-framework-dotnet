@@ -152,6 +152,7 @@ public class EnvironmentsController : ControllerBase
     /// POST api/environments/environment
     /// 201 Created
     /// 400 Bad Request
+    /// 500 Internal Server Error
     /// </summary>
     /// <param name="item">Environment to create.</param>
     /// <returns>Environment created (including allocated unique identifier).</returns>
@@ -172,13 +173,21 @@ public class EnvironmentsController : ControllerBase
             var environmentType = _mapper.Map<environmentType>(environment);
             result = CreatedAtAction(nameof(Get), new { environmentType.id }, environmentType);
         }
+        catch (AlreadyExistsException e)
+        {
+            result = this.StatusCode(StatusCodes.Status409Conflict, message: e.Message);
+        }
+        catch (NotFoundException e)
+        {
+            result = this.BadRequest(message: e.Message);
+        }
         catch (ServiceException e)
         {
-            result = this.StatusCode(StatusCodes.Status500InternalServerError, message: e.GetBaseException().Message);
+            result = this.StatusCode(StatusCodes.Status500InternalServerError, message: e.Message);
         }
         catch (ValidationException e)
         {
-            result = this.BadRequest(message: e.GetBaseException().Message);
+            result = this.BadRequest(message: e.Message);
         }
 
         return result;
