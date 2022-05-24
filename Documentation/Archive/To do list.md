@@ -11,6 +11,7 @@
 - Rename the Sif.Framework.Service directory to Sif.Framework.Services.
 - Replace RandomNameGenerator with Bogus.
 - Remove references to the Sif.Specification.Infrastructure domain models from the IProvider interface to decouple the interface from SIF Infrastructure code. Once done, deprecate the SifInputFormatter class.
+- Support PESC JSON notation.
 
 ## .NET 6 upgrade
 
