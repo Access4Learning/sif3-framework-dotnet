@@ -14,29 +14,25 @@
 
 ## Summary
 
-The SIF3 Framework is a .NET framework that enables developers to efficiently implement SIF3 Services (Consumers and/or Providers). It fully encapsulates the low level SIF3 Infrastructure. It also provides a basic Environment Provider which is core to SIF3.
+The SIF Framework is an SDK that enables developers to efficiently implement Service Consumers and Object Service Providers that comply with the [SIF standard](https://data.a4l.org). It fully encapsulates the low-level implementation details of the specifications that make up the standard. The SIF Framework also provides a reference implementation of an Environment Provider, a core component for operating in a Direct Zone.
 
-The framework includes a demo Solution that illustrates how to use it.
+The SIF Framework includes demonstration projects that provide examples of its use.
 
 ### Getting started
 
-To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
+To get started using the SIF Framework, read the *SIF Framework Setup Guide.docx* document under the *Documentation\Developer Guides* directory.
 
 ### Pre-requisites
 
-The SIF3 Framework library is a .NET Standard project that supports multiple versions of .NET Framework (4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2). If you do not have all these versions installed, you will need to edit the Sif.Framework.csproj project file to reflect your installation. Multiple versions are targeted for the benefit of NuGet package deployment.
+The SIF Framework supports the following versions of .NET:
 
-For more information regarding support for multiple versions, refer to the article [Target frameworks](https://docs.microsoft.com/en-us/dotnet/standard/frameworks).
+- .NET Standard 2.0
+- .NET Framework 4.7.2
+- .NET 6
 
-The SIF3 Framework has been developed on Visual Studio Community 2017.
+These versions were targeted to provide some degree of NuGet package backward compatibility. Versions prior to these are not supported.
 
-### Contributing to this framework
-
-See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
-
-* contributing to this framework 
-* the coding style to be used and
-* the structure of the SIF 3 Framework repositories
+For .NET 6 support, Visual Studio 2022 is required. The SIF Framework is currently maintained using Visual Studio Community 2022.
 
 ## Version control history
 

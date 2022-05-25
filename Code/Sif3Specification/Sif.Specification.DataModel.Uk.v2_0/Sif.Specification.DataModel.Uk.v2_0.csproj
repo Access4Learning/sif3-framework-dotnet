@@ -47,11 +47,11 @@
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="Targets" />
     </GetAssemblyIdentity>
-      <PropertyGroup>
+    <PropertyGroup>
       <Version>@(Targets->'%(Version)')</Version>
       <Major>$(Version.Split('.')[0])</Major>
       <Minor>$(Version.Split('.')[1])</Minor>
-	  <Revision>$(Version.Split('.')[2])</Revision>
+      <Revision>$(Version.Split('.')[2])</Revision>
       <Build>$(Version.Split('.')[3])</Build>
     </PropertyGroup>
     <ItemGroup>
@@ -59,7 +59,7 @@
       <Major Include="$(Major)" />
       <Minor Include="$(Minor)" />
       <Revision Include="$(Revision)" />
-	  <Build Include="$(Build)" />
+      <Build Include="$(Build)" />
       <SifFrameworkOut Include="$(ProjectDir)..\..\..\SharedLibs\$(TargetName) $(Major).$(Minor)\" />
     </ItemGroup>
   </Target>
