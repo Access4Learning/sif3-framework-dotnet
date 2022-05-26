@@ -161,7 +161,6 @@ namespace Sif.Framework.Demo.Au.Consumer
 
                 // Create multiple new students.
 
-                // TODO Uncomment once the ASP.NET Core Provider has been fully implemented.
                 if (Log.IsInfoEnabled) Log.Info("*** Create multiple new students.");
 
                 List<StudentPersonal> newStudents = CreateStudents(5);

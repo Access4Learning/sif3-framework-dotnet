@@ -69,7 +69,7 @@ public class SifFrameworkDbContext : DbContext
             entity.HasOne(b => b.ApplicationProduct)
                 .WithOne()
                 .HasForeignKey<ProductIdentity>("APPLICATION_PRODUCT_ID")
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             entity.Navigation(e => e.AdapterProduct).AutoInclude();
 

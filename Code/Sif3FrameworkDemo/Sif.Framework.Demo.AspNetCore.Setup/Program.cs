@@ -25,19 +25,29 @@ using Sif.Framework.Model.Infrastructure;
 using Sif.Framework.Persistence;
 using Tardigrade.Framework.EntityFrameworkCore.Extensions;
 
+const string DatabaseEngineKey = "demo.database.engine";
+const string LocaleKey = "demo.locale";
+
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) => services
         .AddTransient<DbContext>(_ =>
             new SifFrameworkDbContext(
-                new DbContextOptionsBuilder<SifFrameworkDbContext>()
-                    .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection"))
-                    .Options))
+                context.Configuration[DatabaseEngineKey] switch
+                {
+                    "LocalDB" => new DbContextOptionsBuilder<SifFrameworkDbContext>()
+                            .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection.LocalDB"))
+                            .Options,
+                    "SQLite" => new DbContextOptionsBuilder<SifFrameworkDbContext>()
+                            .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection.SQLite"))
+                            .Options,
+                    _ => throw new ArgumentOutOfRangeException()
+                }))
         .AddTransient<IApplicationRegisterRepository, ApplicationRegisterRepository>())
     .Build();
 
 // Determine locale to use.
 var config = host.Services.GetRequiredService<IConfiguration>();
-string prop = args.Length == 1 ? args[0] : config["demo.locale"];
+string prop = args.Length == 1 ? args[0] : config[LocaleKey];
 bool localeValid = "AU".Equals(prop, StringComparison.OrdinalIgnoreCase) ||
                    "UK".Equals(prop, StringComparison.OrdinalIgnoreCase) ||
                    "US".Equals(prop, StringComparison.OrdinalIgnoreCase);
@@ -63,7 +73,8 @@ else
     DirectoryInfo? projectDirectory = binDirectory?.Parent ?? binDirectory;
 
     // Create and store SQL script for the test database.
-    dbContext.GenerateCreateScript($"{projectDirectory}\\Scripts\\DatabaseCreateScript.sql", true);
+    string scriptFilename = $"{projectDirectory}\\Scripts\\CreateScript-{config[DatabaseEngineKey]}.sql";
+    dbContext.GenerateCreateScript(scriptFilename, true);
 
     // Generate seed application registers for the demonstration project.
     IList<ApplicationRegister> applicationRegisters =
