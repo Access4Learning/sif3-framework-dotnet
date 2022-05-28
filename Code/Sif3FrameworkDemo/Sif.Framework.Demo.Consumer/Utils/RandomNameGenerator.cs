@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Demo.AspNetCore.Consumer.Utils;
+namespace Sif.Framework.Demo.Consumer.Utils;
 
 /// <summary>
 /// This class is used to generate random names.

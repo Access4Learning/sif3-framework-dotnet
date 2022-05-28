@@ -15,11 +15,11 @@
  */
 
 using Sif.Framework.Consumers;
-using Sif.Framework.Demo.AspNetCore.Consumer.Models;
+using Sif.Framework.Demo.Consumer.Models;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Sessions;
 
-namespace Sif.Framework.Demo.AspNetCore.Consumer.Consumers;
+namespace Sif.Framework.Demo.Consumer.Consumers;
 
 public class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
 {

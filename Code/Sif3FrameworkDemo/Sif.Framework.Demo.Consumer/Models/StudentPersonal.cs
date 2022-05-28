@@ -18,7 +18,7 @@ using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.AspNetCore.Consumer.Models;
+namespace Sif.Framework.Demo.Consumer.Models;
 
 [XmlRoot("StudentPersonal", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
 [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]

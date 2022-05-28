@@ -4,8 +4,8 @@ rem ============================================================================
 rem == User defined environment variables                                     ==
 rem ============================================================================
 
-set EXECUTABLE_PATH=..\..\..\..\Code\Sif3FrameworkDemo\Sif.Framework.Demo.AspNetCore.Consumer\bin\Debug\net6.0
-set EXECUTABLE=Sif.Framework.Demo.AspNetCore.Consumer.dll
+set EXECUTABLE_PATH=..\..\..\..\Code\Sif3FrameworkDemo\Sif.Framework.Demo.Consumer\bin\Debug\net6.0
+set EXECUTABLE=Sif.Framework.Demo.Consumer.dll
 set FULL_PATH=%EXECUTABLE_PATH%\%EXECUTABLE%
 
 echo Running %FULL_PATH%

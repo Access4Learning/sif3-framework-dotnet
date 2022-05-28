@@ -15,9 +15,9 @@
  */
 
 using Microsoft.Extensions.Logging;
-using Sif.Framework.Demo.AspNetCore.Consumer.Consumers;
-using Sif.Framework.Demo.AspNetCore.Consumer.Models;
-using Sif.Framework.Demo.AspNetCore.Consumer.Utils;
+using Sif.Framework.Demo.Consumer.Consumers;
+using Sif.Framework.Demo.Consumer.Models;
+using Sif.Framework.Demo.Consumer.Utils;
 using Sif.Framework.Model.Responses;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Sessions;
@@ -25,7 +25,7 @@ using Sif.Framework.Utils;
 using Sif.Specification.DataModel.Au;
 using Tardigrade.Framework.Extensions;
 
-namespace Sif.Framework.Demo.AspNetCore.Consumer.Apps;
+namespace Sif.Framework.Demo.Consumer.Apps;
 
 public class StudentPersonalApp
 {

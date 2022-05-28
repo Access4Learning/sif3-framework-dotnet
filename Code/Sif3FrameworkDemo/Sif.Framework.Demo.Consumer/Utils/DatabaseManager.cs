@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Tardigrade.Framework.EntityFrameworkCore.Extensions;
 
-namespace Sif.Framework.Demo.AspNetCore.Consumer.Utils;
+namespace Sif.Framework.Demo.Consumer.Utils;
 
 public class DatabaseManager
 {
