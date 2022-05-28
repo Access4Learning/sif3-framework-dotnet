@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,22 @@
  */
 
 using Sif.Framework.Consumers;
-using Sif.Framework.Demo.Au.Consumer.Models;
+using Sif.Framework.Demo.AspNetCore.Consumer.Models;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Sessions;
 
-namespace Sif.Framework.Demo.Au.Consumer.Consumers
+namespace Sif.Framework.Demo.AspNetCore.Consumer.Consumers;
+
+public class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
 {
-    public class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
+    public StudentPersonalConsumer(
+        string applicationKey,
+        string? instanceId = null,
+        string? userToken = null,
+        string? solutionId = null,
+        IFrameworkSettings? settings = null,
+        ISessionService? sessionService = null)
+        : base(applicationKey, instanceId, userToken, solutionId, settings, sessionService)
     {
-        public StudentPersonalConsumer(
-            string applicationKey,
-            string instanceId = null,
-            string userToken = null,
-            string solutionId = null,
-            IFrameworkSettings settings = null,
-            ISessionService sessionService = null)
-            : base(applicationKey, instanceId, userToken, solutionId, settings, sessionService)
-        {
-        }
     }
 }

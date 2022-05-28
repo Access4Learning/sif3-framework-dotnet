@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.AspNetCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFrameworkCore", "..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj", "{C878774D-625F-40F8-90E4-89A8888B33EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.AspNetCore.Provider", "Sif.Framework.Demo.AspNetCore.Provider\Sif.Framework.Demo.AspNetCore.Provider.csproj", "{4198CC1B-59A3-4D6F-BC2A-744141B34421}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.AspNetCore.Provider", "Sif.Framework.Demo.AspNetCore.Provider\Sif.Framework.Demo.AspNetCore.Provider.csproj", "{4198CC1B-59A3-4D6F-BC2A-744141B34421}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.Demo.AspNetCore.Consumer", "Sif.Framework.Demo.AspNetCore.Consumer\Sif.Framework.Demo.AspNetCore.Consumer.csproj", "{95250801-6DA6-4304-961F-735DF899F163}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{4198CC1B-59A3-4D6F-BC2A-744141B34421}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4198CC1B-59A3-4D6F-BC2A-744141B34421}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4198CC1B-59A3-4D6F-BC2A-744141B34421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95250801-6DA6-4304-961F-735DF899F163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95250801-6DA6-4304-961F-735DF899F163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95250801-6DA6-4304-961F-735DF899F163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95250801-6DA6-4304-961F-735DF899F163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

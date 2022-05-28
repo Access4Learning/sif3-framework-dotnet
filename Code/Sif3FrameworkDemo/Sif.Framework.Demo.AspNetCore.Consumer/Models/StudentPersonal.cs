@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,10 @@ using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.Au.Consumer.Models
+namespace Sif.Framework.Demo.AspNetCore.Consumer.Models;
+
+[XmlRoot("StudentPersonal", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+[XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
+public class StudentPersonal : StudentPersonalType, IDataModel
 {
-    [XmlRoot("StudentPersonal", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
-    [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
-    public class StudentPersonal : StudentPersonalType, IDataModel
-    {
-    }
 }

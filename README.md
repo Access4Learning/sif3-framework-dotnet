@@ -126,6 +126,7 @@ For .NET 6 support, Visual Studio 2022 is required. The SIF Framework is current
 - Fixed an issue with the MethodOverrideMiddleware configuration on start up.
 - Updated the ConsumerApp to return code for deleting multiple students.
 - Created shell scripts for running the ASP.NET Core demo projects.
+- Created a demo project for an ASP.NET Core SIF Consumer.
 
 **May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
 

@@ -26,5 +26,5 @@ rem ============================================================================
 
 title %EXECUTABLE%
 cd %EXECUTABLE_PATH%
-dotnet %EXECUTABLE%
+dotnet %EXECUTABLE% recreateDb
 :end
