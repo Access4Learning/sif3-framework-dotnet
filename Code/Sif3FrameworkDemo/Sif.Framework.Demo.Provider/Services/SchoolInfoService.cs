@@ -14,52 +14,17 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.AspNetCore.Provider.Models;
+using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
-using Sif.Specification.DataModel.Au;
 
-namespace Sif.Framework.Demo.AspNetCore.Provider.Services;
+namespace Sif.Framework.Demo.Provider.Services;
 
-public class StudentSchoolEnrollmentService : IBasicProviderService<StudentSchoolEnrollment>
+public class SchoolInfoService : IBasicProviderService<SchoolInfo>
 {
-    private static readonly IDictionary<string, StudentSchoolEnrollment> EnrollmentsCache;
-
-    private static StudentSchoolEnrollment CreateEnrollment()
-    {
-        var enrollment = new StudentSchoolEnrollment
-        {
-            RefId = Guid.NewGuid().ToString(),
-            YearLevel = new YearLevelType
-            {
-                Code = AUCodeSetsYearLevelCodeType.Item10
-            }
-        };
-
-        return enrollment;
-    }
-
-    private static IDictionary<string, StudentSchoolEnrollment> CreateEnrollments(int count)
-    {
-        var enrollmentsCache = new Dictionary<string, StudentSchoolEnrollment>();
-
-        for (var i = 1; i <= count; i++)
-        {
-            StudentSchoolEnrollment enrollment = CreateEnrollment();
-            enrollmentsCache.Add(enrollment.RefId, enrollment);
-        }
-
-        return enrollmentsCache;
-    }
-
-    static StudentSchoolEnrollmentService()
-    {
-        EnrollmentsCache = CreateEnrollments(5);
-    }
-
-    public StudentSchoolEnrollment Create(
-        StudentSchoolEnrollment obj,
+    public SchoolInfo Create(
+        SchoolInfo obj,
         bool? mustUseAdvisory = null,
         string? zoneId = null,
         string? contextId = null,
@@ -68,7 +33,7 @@ public class StudentSchoolEnrollmentService : IBasicProviderService<StudentSchoo
         throw new NotImplementedException();
     }
 
-    public void Delete(
+    public SchoolInfo Retrieve(
         string refId,
         string? zoneId = null,
         string? contextId = null,
@@ -77,40 +42,35 @@ public class StudentSchoolEnrollmentService : IBasicProviderService<StudentSchoo
         throw new NotImplementedException();
     }
 
-    public StudentSchoolEnrollment Retrieve(
-        string refId,
-        string? zoneId = null,
-        string? contextId = null,
-        params RequestParameter[] requestParameters)
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<StudentSchoolEnrollment> Retrieve(
+    public List<SchoolInfo> Retrieve(
         uint? pageIndex = null,
         uint? pageSize = null,
         string? zoneId = null,
         string? contextId = null,
         params RequestParameter[] requestParameters)
     {
-        throw new NotImplementedException();
+        var school = new SchoolInfo { SchoolName = "Applecross SHS" };
+        var schools = new List<SchoolInfo> { school };
+
+        return schools;
     }
 
-    public List<StudentSchoolEnrollment> Retrieve(
-        StudentSchoolEnrollment obj,
-        uint? pageIndex = null,
-        uint? pageSize = null,
-        string? zoneId = null,
-        string? contextId = null,
-        params RequestParameter[] requestParameters)
-    {
-        return EnrollmentsCache.Values
-            .Where(enrollment => enrollment.YearLevel.Code.Equals(obj?.YearLevel.Code))
-            .ToList();
-    }
-
-    public List<StudentSchoolEnrollment> Retrieve(
+    public List<SchoolInfo> Retrieve(
         IEnumerable<EqualCondition> conditions,
+        uint? pageIndex = null,
+        uint? pageSize = null,
+        string? zoneId = null,
+        string? contextId = null,
+        params RequestParameter[] requestParameters)
+    {
+        var school = new SchoolInfo { SchoolName = "Rossmoyne Conditional SHS" };
+        var schools = new List<SchoolInfo> { school };
+
+        return schools;
+    }
+
+    public List<SchoolInfo> Retrieve(
+        SchoolInfo obj,
         uint? pageIndex = null,
         uint? pageSize = null,
         string? zoneId = null,
@@ -121,7 +81,16 @@ public class StudentSchoolEnrollmentService : IBasicProviderService<StudentSchoo
     }
 
     public void Update(
-        StudentSchoolEnrollment obj,
+        SchoolInfo obj,
+        string? zoneId = null,
+        string? contextId = null,
+        params RequestParameter[] requestParameters)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(
+        string refId,
         string? zoneId = null,
         string? contextId = null,
         params RequestParameter[] requestParameters)

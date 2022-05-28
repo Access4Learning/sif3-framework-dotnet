@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.AspNetCore.Provider.Models;
-using Sif.Framework.Demo.AspNetCore.Provider.Utils;
+using Sif.Framework.Demo.Provider.Models;
+using Sif.Framework.Demo.Provider.Utils;
 using Sif.Framework.Model.Events;
 using Sif.Specification.DataModel.Au;
 
-namespace Sif.Framework.Demo.AspNetCore.Provider.Services;
+namespace Sif.Framework.Demo.Provider.Services;
 
 public class StudentPersonalIterator : IEventIterator<List<StudentPersonal>>
 {

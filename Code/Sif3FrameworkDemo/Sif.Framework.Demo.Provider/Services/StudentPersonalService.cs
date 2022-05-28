@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Demo.AspNetCore.Provider.Models;
-using Sif.Framework.Demo.AspNetCore.Provider.Utils;
+using Sif.Framework.Demo.Provider.Models;
+using Sif.Framework.Demo.Provider.Utils;
 using Sif.Framework.Model.Events;
 using Sif.Framework.Model.Parameters;
 using Sif.Framework.Model.Query;
 using Sif.Framework.Service.Providers;
 using Sif.Specification.DataModel.Au;
 
-namespace Sif.Framework.Demo.AspNetCore.Provider.Services;
+namespace Sif.Framework.Demo.Provider.Services;
 
 public class StudentPersonalService :
     IBasicProviderService<StudentPersonal>,

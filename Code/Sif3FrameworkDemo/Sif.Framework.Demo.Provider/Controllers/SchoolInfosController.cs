@@ -16,20 +16,20 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Sif.Framework.AspNetCore.Providers;
-using Sif.Framework.Demo.AspNetCore.Provider.Models;
+using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Sessions;
 
-namespace Sif.Framework.Demo.AspNetCore.Provider.Controllers;
+namespace Sif.Framework.Demo.Provider.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class StudentSchoolEnrollmentsController : BasicProvider<StudentSchoolEnrollment>
+public class SchoolInfosController : BasicProvider<SchoolInfo>
 {
-    public StudentSchoolEnrollmentsController(
-        IBasicProviderService<StudentSchoolEnrollment> service,
+    public SchoolInfosController(
+        IBasicProviderService<SchoolInfo> service,
         IApplicationRegisterService applicationRegisterService,
         IEnvironmentService environmentService,
         IFrameworkSettings? settings = null,
@@ -42,5 +42,16 @@ public class StudentSchoolEnrollmentsController : BasicProvider<StudentSchoolEnr
     public override IActionResult BroadcastEvents(string? zoneId = null, string? contextId = null)
     {
         return base.BroadcastEvents(zoneId, contextId);
+    }
+
+    /// <summary>
+    /// GET api/SchoolInfos/index
+    /// 200 OK
+    /// </summary>
+    /// <returns>Success message.</returns>
+    [HttpGet("index")]
+    public IActionResult Index()
+    {
+        return Ok(new { Startup = "Success" });
     }
 }

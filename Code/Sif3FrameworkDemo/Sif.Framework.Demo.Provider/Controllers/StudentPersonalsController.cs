@@ -16,13 +16,13 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Sif.Framework.AspNetCore.Providers;
-using Sif.Framework.Demo.AspNetCore.Provider.Models;
+using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Model.Settings;
 using Sif.Framework.Service.Infrastructure;
 using Sif.Framework.Service.Providers;
 using Sif.Framework.Service.Sessions;
 
-namespace Sif.Framework.Demo.AspNetCore.Provider.Controllers;
+namespace Sif.Framework.Demo.Provider.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

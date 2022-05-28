@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Sif.Framework.Demo.AspNetCore.Provider": {
+    "Sif.Framework.Demo.Provider": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

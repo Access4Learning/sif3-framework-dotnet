@@ -18,10 +18,10 @@ using Sif.Framework.Model.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Demo.AspNetCore.Provider.Models;
+namespace Sif.Framework.Demo.Provider.Models;
 
-[XmlRoot("StudentSchoolEnrollment", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
+[XmlRoot("SchoolInfo", Namespace = "http://www.sifassociation.org/datamodel/au/3.4", IsNullable = false)]
 [XmlType(Namespace = "http://www.sifassociation.org/datamodel/au/3.4")]
-public class StudentSchoolEnrollment : StudentSchoolEnrollmentType, IDataModel
+public class SchoolInfo : SchoolInfoType, IDataModel
 {
 }

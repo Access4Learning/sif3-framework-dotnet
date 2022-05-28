@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.AspNetCore\Sif.Framework.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj" />
   </ItemGroup>
 
 </Project>
