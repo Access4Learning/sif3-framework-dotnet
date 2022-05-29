@@ -31,28 +31,28 @@ using Tardigrade.Framework.Services;
 
 const string DatabaseEngineKey = "demo.database.engine";
 
+// Create a .NET Generic Host for this application.
+using IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((context, services) => services
+        .AddTransient<DbContext>(_ =>
+            new SessionDbContext(
+                context.Configuration[DatabaseEngineKey] switch
+                {
+                    "LocalDB" => new DbContextOptionsBuilder<SessionDbContext>()
+                        .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection.LocalDB"))
+                        .Options,
+                    "SQLite" => new DbContextOptionsBuilder<SessionDbContext>()
+                        .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection.SQLite"))
+                        .Options,
+                    _ => throw new ArgumentOutOfRangeException()
+                }))
+        .AddTransient<IRepository<Session, Guid>, Repository<Session, Guid>>()
+        .AddTransient<IObjectService<Session, Guid>, ObjectService<Session, Guid>>()
+        .AddTransient<ISessionService, SessionService>())
+    .Build();
+
 try
 {
-    // Create a .NET Generic Host for this application.
-    using IHost host = Host.CreateDefaultBuilder(args)
-        .ConfigureServices((context, services) => services
-            .AddTransient<DbContext>(_ =>
-                new SessionDbContext(
-                    context.Configuration[DatabaseEngineKey] switch
-                    {
-                        "LocalDB" => new DbContextOptionsBuilder<SessionDbContext>()
-                            .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection.LocalDB"))
-                            .Options,
-                        "SQLite" => new DbContextOptionsBuilder<SessionDbContext>()
-                            .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection.SQLite"))
-                            .Options,
-                        _ => throw new ArgumentOutOfRangeException()
-                    }))
-            .AddTransient<IRepository<Session, Guid>, Repository<Session, Guid>>()
-            .AddTransient<IObjectService<Session, Guid>, ObjectService<Session, Guid>>()
-            .AddTransient<ISessionService, SessionService>())
-        .Build();
-
     // Get required services.
     var config = host.Services.GetRequiredService<IConfiguration>();
     var dbContext = host.Services.GetRequiredService<DbContext>();
@@ -75,10 +75,10 @@ try
         var app = new StudentPersonalApp(logger);
         app.RunConsumer(settings, sessionService);
     }
-
-    await host.RunAsync();
 }
 catch (Exception e)
 {
     Console.WriteLine($"Error: {e.Message}");
 }
+
+await host.RunAsync();

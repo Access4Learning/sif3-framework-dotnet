@@ -21,7 +21,7 @@ using Sif.Specification.Infrastructure;
 using System.Collections.ObjectModel;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
-namespace Sif.Framework.Demo.AspNetCore.Setup.Utils;
+namespace Sif.Framework.Demo.NetCore.Setup.Utils;
 
 /// <summary>
 /// This class is used to generate data for running the demonstration projects.

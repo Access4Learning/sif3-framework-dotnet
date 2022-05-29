@@ -33,13 +33,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.AspNet.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.AspNetCore", "..\Sif3Framework\Sif.Framework.AspNetCore\Sif.Framework.AspNetCore.csproj", "{4561CCF7-5189-465A-BD6A-8FB6CFBBAB75}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.AspNetCore.Setup", "Sif.Framework.Demo.AspNetCore.Setup\Sif.Framework.Demo.AspNetCore.Setup.csproj", "{001F5935-A42B-45CC-9F1F-45B1BC67D01B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFrameworkCore", "..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj", "{C878774D-625F-40F8-90E4-89A8888B33EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.Consumer", "Sif.Framework.Demo.Consumer\Sif.Framework.Demo.Consumer.csproj", "{FCDDE37F-E9EB-478E-9B52-EE9814C620F5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.Provider", "Sif.Framework.Demo.Provider\Sif.Framework.Demo.Provider.csproj", "{A9A049AE-F3EA-41BF-BC0C-360B04C0896A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Demo.NetCore.Setup", "Sif.Framework.Demo.NetCore.Setup\Sif.Framework.Demo.NetCore.Setup.csproj", "{B6400E19-E7F2-40F3-86F9-9DFF5FD360CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,10 +107,6 @@ Global
 		{4561CCF7-5189-465A-BD6A-8FB6CFBBAB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4561CCF7-5189-465A-BD6A-8FB6CFBBAB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4561CCF7-5189-465A-BD6A-8FB6CFBBAB75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{001F5935-A42B-45CC-9F1F-45B1BC67D01B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{001F5935-A42B-45CC-9F1F-45B1BC67D01B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{001F5935-A42B-45CC-9F1F-45B1BC67D01B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{001F5935-A42B-45CC-9F1F-45B1BC67D01B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C878774D-625F-40F8-90E4-89A8888B33EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C878774D-625F-40F8-90E4-89A8888B33EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C878774D-625F-40F8-90E4-89A8888B33EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -123,6 +119,10 @@ Global
 		{A9A049AE-F3EA-41BF-BC0C-360B04C0896A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A049AE-F3EA-41BF-BC0C-360B04C0896A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A049AE-F3EA-41BF-BC0C-360B04C0896A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6400E19-E7F2-40F3-86F9-9DFF5FD360CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6400E19-E7F2-40F3-86F9-9DFF5FD360CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6400E19-E7F2-40F3-86F9-9DFF5FD360CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6400E19-E7F2-40F3-86F9-9DFF5FD360CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
