@@ -34,13 +34,18 @@ using IHost host = Host.CreateDefaultBuilder(args)
             new SifFrameworkDbContext(
                 context.Configuration[DatabaseEngineKey] switch
                 {
-                    "LocalDB" => new DbContextOptionsBuilder<SifFrameworkDbContext>()
+                    "LocalDB" =>
+                        new DbContextOptionsBuilder<SifFrameworkDbContext>()
                             .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection.LocalDB"))
                             .Options,
-                    "SQLite" => new DbContextOptionsBuilder<SifFrameworkDbContext>()
+                    "SQLite" =>
+                        new DbContextOptionsBuilder<SifFrameworkDbContext>()
                             .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection.SQLite"))
                             .Options,
-                    _ => throw new ArgumentOutOfRangeException()
+                    _ =>
+                        new DbContextOptionsBuilder<SifFrameworkDbContext>()
+                            .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"))
+                            .Options
                 }))
         .AddTransient<IApplicationRegisterRepository, ApplicationRegisterRepository>())
     .Build();

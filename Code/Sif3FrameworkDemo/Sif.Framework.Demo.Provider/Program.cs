@@ -34,11 +34,13 @@ using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Persistence;
 using Tardigrade.Framework.Services;
 
+const string DatabaseEngineKey = "demo.database.engine";
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string? databaseEngine = builder.Configuration[DatabaseEngineKey];
 
 builder.Services
     .AddControllers(options =>
@@ -52,7 +54,22 @@ builder.Services
         options.OutputFormatters.Add(new ArrayOfOutputFormatter<StudentSchoolEnrollment>());
     })
     .AddXmlSerializerFormatters();
-builder.Services.AddDbContext<SifFrameworkDbContext>(options => options.UseSqlite(connectionString));
+
+if (string.Equals("LocalDB", databaseEngine, StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddDbContext<SifFrameworkDbContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection.LocalDB")));
+}
+else if (string.Equals("SQLite", databaseEngine, StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddDbContext<SifFrameworkDbContext>(
+        options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection.SQLite")));
+}
+else
+{
+    builder.Services.AddDbContext<SifFrameworkDbContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 builder.Services.AddScoped<DbContext, SifFrameworkDbContext>();
 

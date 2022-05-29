@@ -38,13 +38,18 @@ using IHost host = Host.CreateDefaultBuilder(args)
             new SessionDbContext(
                 context.Configuration[DatabaseEngineKey] switch
                 {
-                    "LocalDB" => new DbContextOptionsBuilder<SessionDbContext>()
-                        .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection.LocalDB"))
-                        .Options,
-                    "SQLite" => new DbContextOptionsBuilder<SessionDbContext>()
-                        .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection.SQLite"))
-                        .Options,
-                    _ => throw new ArgumentOutOfRangeException()
+                    "LocalDB" =>
+                        new DbContextOptionsBuilder<SessionDbContext>()
+                            .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection.LocalDB"))
+                            .Options,
+                    "SQLite" =>
+                        new DbContextOptionsBuilder<SessionDbContext>()
+                            .UseSqlite(context.Configuration.GetConnectionString("DefaultConnection.SQLite"))
+                            .Options,
+                    _ =>
+                        new DbContextOptionsBuilder<SessionDbContext>()
+                            .UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"))
+                            .Options
                 }))
         .AddTransient<IRepository<Session, Guid>, Repository<Session, Guid>>()
         .AddTransient<IObjectService<Session, Guid>, ObjectService<Session, Guid>>()
