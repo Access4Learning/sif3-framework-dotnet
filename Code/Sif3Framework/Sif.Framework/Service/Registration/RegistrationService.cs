@@ -27,6 +27,7 @@ using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Linq;
+using System.Net;
 using System.Xml;
 using Environment = Sif.Framework.Model.Infrastructure.Environment;
 
@@ -170,51 +171,65 @@ namespace Sif.Framework.Service.Registration
                 if (_log.IsDebugEnabled)
                     _log.Debug("Session token already exists for this object service (Consumer/Provider).");
 
-                string storedSessionToken = _sessionService.RetrieveSessionToken(
-                    environment.ApplicationInfo.ApplicationKey,
-                    environment.SolutionId,
-                    environment.UserToken,
-                    environment.InstanceId);
-                _authorisationToken = _authorisationTokenService.Generate(storedSessionToken, _settings.SharedSecret);
-                string storedEnvironmentUrl = _sessionService.RetrieveEnvironmentUrl(
-                    environment.ApplicationInfo.ApplicationKey,
-                    environment.SolutionId,
-                    environment.UserToken,
-                    environment.InstanceId);
-                string environmentBody = HttpUtils.GetRequest(
-                    storedEnvironmentUrl,
-                    _authorisationToken,
-                    _settings.CompressPayload,
-                    contentTypeOverride: _settings.ContentType.ToDescription(),
-                    acceptOverride: _settings.Accept.ToDescription());
-
-                if (_log.IsDebugEnabled) _log.Debug($"Environment response from GET request ...\n{environmentBody}");
-
-                environmentType environmentTypeToDeserialise =
-                    SerialiserFactory.GetSerialiser<environmentType>(_settings.Accept).Deserialise(environmentBody);
-                Environment environmentResponse =
-                    MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
-
-                _sessionToken = environmentResponse.SessionToken;
-                _environmentUrl = environmentResponse.InfrastructureServices.FirstOrDefault(
-                    i => i.Name == InfrastructureServiceNames.environment)?.Value;
-
-                if (_log.IsDebugEnabled) _log.Debug($"Environment URL is {_environmentUrl}.");
-
-                if (!storedSessionToken.Equals(_sessionToken) || !storedEnvironmentUrl.Equals(_environmentUrl))
+                try
                 {
-                    _authorisationToken = _authorisationTokenService.Generate(_sessionToken, _settings.SharedSecret);
-                    _sessionService.RemoveSession(storedSessionToken);
-                    _sessionService.StoreSession(
-                        environmentResponse.ApplicationInfo.ApplicationKey,
-                        _sessionToken,
-                        _environmentUrl,
-                        environmentResponse.SolutionId,
-                        environmentResponse.UserToken,
-                        environmentResponse.InstanceId);
-                }
+                    string storedSessionToken = _sessionService.RetrieveSessionToken(
+                        environment.ApplicationInfo.ApplicationKey,
+                        environment.SolutionId,
+                        environment.UserToken,
+                        environment.InstanceId);
+                    _authorisationToken = _authorisationTokenService.Generate(storedSessionToken, _settings.SharedSecret);
+                    string storedEnvironmentUrl = _sessionService.RetrieveEnvironmentUrl(
+                        environment.ApplicationInfo.ApplicationKey,
+                        environment.SolutionId,
+                        environment.UserToken,
+                        environment.InstanceId);
+                    string environmentBody = HttpUtils.GetRequest(
+                        storedEnvironmentUrl,
+                        _authorisationToken,
+                        _settings.CompressPayload,
+                        contentTypeOverride: _settings.ContentType.ToDescription(),
+                        acceptOverride: _settings.Accept.ToDescription());
 
-                environment = environmentResponse;
+                    if (_log.IsDebugEnabled) _log.Debug($"Environment response from GET request ...\n{environmentBody}");
+
+                    environmentType environmentTypeToDeserialise =
+                        SerialiserFactory.GetSerialiser<environmentType>(_settings.Accept).Deserialise(environmentBody);
+                    Environment environmentResponse =
+                        MapperFactory.CreateInstance<environmentType, Environment>(environmentTypeToDeserialise);
+
+                    _sessionToken = environmentResponse.SessionToken;
+                    _environmentUrl = environmentResponse.InfrastructureServices.FirstOrDefault(
+                        i => i.Name == InfrastructureServiceNames.environment)?.Value;
+
+                    if (_log.IsDebugEnabled) _log.Debug($"Environment URL is {_environmentUrl}.");
+
+                    if (!storedSessionToken.Equals(_sessionToken) || !storedEnvironmentUrl.Equals(_environmentUrl))
+                    {
+                        _authorisationToken = _authorisationTokenService.Generate(_sessionToken, _settings.SharedSecret);
+                        _sessionService.RemoveSession(storedSessionToken);
+                        _sessionService.StoreSession(
+                            environmentResponse.ApplicationInfo.ApplicationKey,
+                            _sessionToken,
+                            _environmentUrl,
+                            environmentResponse.SolutionId,
+                            environmentResponse.UserToken,
+                            environmentResponse.InstanceId);
+                    }
+
+                    environment = environmentResponse;
+                }
+                catch (WebException e)
+                    when (e.Response is HttpWebResponse response && response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new RegistrationException(
+                        $"Existing registration is no longer valid: {response.StatusDescription}.",
+                        e);
+                }
+                catch (Exception e)
+                {
+                    throw new RegistrationException($"Registration failed with ${e.Message}.", e);
+                }
             }
             else
             {
@@ -277,7 +292,7 @@ namespace Sif.Framework.Service.Registration
                             _settings.CompressPayload);
                     }
 
-                    throw new RegistrationException("Registration failed.", e);
+                    throw new RegistrationException($"Registration failed with ${e.Message}.", e);
                 }
             }
 
