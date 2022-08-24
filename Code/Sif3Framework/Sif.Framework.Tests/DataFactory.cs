@@ -15,11 +15,11 @@
  */
 
 using NHibernate.Tool.hbm2ddl;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using System;
 using System.Collections.Generic;
 using Configuration = NHibernate.Cfg.Configuration;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Tests
 {
@@ -142,7 +142,7 @@ namespace Sif.Framework.Tests
             var createRight = new Right { Type = RightType.CREATE.ToString(), Value = RightValue.APPROVED.ToString() };
             ICollection<Right> rights = new List<Right> { adminRight, createRight };
 
-            var studentPersonalsService = new Model.Infrastructure.Service
+            var studentPersonalsService = new Models.Infrastructure.Service
             {
                 ContextId = "DEFAULT",
                 Name = "StudentPersonals",
@@ -150,7 +150,7 @@ namespace Sif.Framework.Tests
                 Type = "OBJECT"
             };
 
-            var schoolInfosService = new Model.Infrastructure.Service
+            var schoolInfosService = new Models.Infrastructure.Service
             {
                 ContextId = "DEFAULT",
                 Name = "SchoolInfos",
@@ -158,7 +158,7 @@ namespace Sif.Framework.Tests
                 Type = "OBJECT"
             };
 
-            ICollection<Model.Infrastructure.Service> services = new List<Model.Infrastructure.Service>
+            ICollection<Models.Infrastructure.Service> services = new List<Models.Infrastructure.Service>
             {
                 studentPersonalsService,
                 schoolInfosService

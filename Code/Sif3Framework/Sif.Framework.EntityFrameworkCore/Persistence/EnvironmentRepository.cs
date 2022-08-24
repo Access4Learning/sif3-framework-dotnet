@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Sif.Framework.Persistence;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Exceptions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Persistence;
 

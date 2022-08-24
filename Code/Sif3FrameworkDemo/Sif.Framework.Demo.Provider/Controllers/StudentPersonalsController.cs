@@ -17,10 +17,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Sif.Framework.AspNetCore.Providers;
 using Sif.Framework.Demo.Provider.Models;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Providers;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Providers;
+using Sif.Framework.Services.Sessions;
 
 namespace Sif.Framework.Demo.Provider.Controllers;
 

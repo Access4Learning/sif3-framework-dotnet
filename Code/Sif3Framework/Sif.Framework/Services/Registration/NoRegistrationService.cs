@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Authentication;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Models.Authentication;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Registration
+namespace Sif.Framework.Services.Registration
 {
-
     /// <summary>
     /// <see cref="IRegistrationService">IRegistrationService</see>
     /// </summary>
     public class NoRegistrationService : IRegistrationService
     {
-
         /// <summary>
         /// <see cref="IRegistrationService.AuthorisationToken">AuthorisationToken</see>
         /// </summary>
-        public AuthorisationToken AuthorisationToken { get; private set; }
+        public AuthorisationToken AuthorisationToken { get; }
 
         /// <summary>
         /// <see cref="IRegistrationService.Registered">Registered</see>
@@ -70,7 +68,5 @@ namespace Sif.Framework.Service.Registration
         {
             Registered = false;
         }
-
     }
-
 }

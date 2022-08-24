@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 
-namespace Sif.Framework.Service.Authorisation
+namespace Sif.Framework.Services.Authorisation
 {
     /// <summary>
     /// This class contains operations for service authorisation.
@@ -33,7 +33,7 @@ namespace Sif.Framework.Service.Authorisation
         /// <param name="permission">The permission requested. Any of: ADMIN, CREATE, DELETE, PROVIDE, QUERY, SUBSCRIBE, UPDATE</param>
         /// <param name="privilege">The access level requested. Any of APPROVED, REJECTED, SUPPORTED</param>
         /// <param name="zoneId">The zone of the request.</param>
-        /// <exception cref="Model.Exceptions.InvalidSessionException">Session token does not have an associated environment definition.</exception>
+        /// <exception cref="Models.Exceptions.InvalidSessionException">Session token does not have an associated environment definition.</exception>
         bool IsAuthorised(THeaders headers,
             string sessionToken,
             string serviceName,

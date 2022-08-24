@@ -16,8 +16,8 @@
 
 using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.AspNet.Utils;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNet.Controllers
 {

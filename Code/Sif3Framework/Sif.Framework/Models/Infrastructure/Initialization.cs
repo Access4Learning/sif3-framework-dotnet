@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     /// <summary>
     /// Job initialisation object.

@@ -1,12 +1,13 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,14 +15,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Sif.Framework.Models.Infrastructure;
 
-namespace Sif.Framework.Service.Functional
+namespace Sif.Framework.Services.Functional
 {
     /// <summary>
     /// The interface used for all actions that a phase may perform.
@@ -37,7 +33,7 @@ namespace Sif.Framework.Service.Functional
         /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
         /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
         /// <returns>A (possibly null) string to be sent back to the consumer</returns>
-        /// <exception cref="Sif.Framework.Model.Exceptions.CreateException" />
+        /// <exception cref="Models.Exceptions.CreateException" />
         string Create(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
 
         /// <summary>
@@ -49,7 +45,7 @@ namespace Sif.Framework.Service.Functional
         /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
         /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
         /// <returns>A (possibly null) string to be sent back to the consumer</returns>
-        /// <exception cref="Sif.Framework.Model.Exceptions.NotFoundException" />
+        /// <exception cref="Tardigrade.Framework.Exceptions.NotFoundException" />
         string Retrieve(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace Sif.Framework.Service.Functional
         /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
         /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
         /// <returns>A (possibly null) string to be sent back to the consumer</returns>
-        /// <exception cref="Sif.Framework.Model.Exceptions.UpdateException" />
+        /// <exception cref="Models.Exceptions.UpdateException" />
         string Update(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
 
         /// <summary>
@@ -73,7 +69,7 @@ namespace Sif.Framework.Service.Functional
         /// <param name="contentType">A mime type that indicates what format the body is serialized as</param>
         /// <param name="accept">A mime type that indicates what format the response should be serialized as</param>
         /// <returns>A (possibly null) string to be sent back to the consumer</returns>
-        /// <exception cref="Sif.Framework.Model.Exceptions.DeleteException" />
+        /// <exception cref="Models.Exceptions.DeleteException" />
         string Delete(Job job, Phase phase, string body = null, string contentType = null, string accept = null);
     }
 }

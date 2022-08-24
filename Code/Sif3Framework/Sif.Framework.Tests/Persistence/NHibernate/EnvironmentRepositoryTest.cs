@@ -15,11 +15,11 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.NHibernate.Persistence;
 using Sif.Framework.Persistence;
 using System;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Tests.Persistence.NHibernate
 {

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
 using System.Collections.Generic;
 
-namespace Sif.Framework.Service
+namespace Sif.Framework.Services
 {
     /// <summary>
     /// This interface defines the services available on SIF data model objects.
@@ -38,8 +38,8 @@ namespace Sif.Framework.Service
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="Tardigrade.Framework.Exceptions.AlreadyExistsException">Object already exists.</exception>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.CreateException">Error creating object.</exception>
-        /// <exception cref="Model.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
+        /// <exception cref="Models.Exceptions.CreateException">Error creating object.</exception>
+        /// <exception cref="Models.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
         /// <returns>Created object.</returns>
         TSingle Create(
             TSingle obj,
@@ -56,7 +56,7 @@ namespace Sif.Framework.Service
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.DeleteException">Error deleting object.</exception>
+        /// <exception cref="Models.Exceptions.DeleteException">Error deleting object.</exception>
         /// <exception cref="Tardigrade.Framework.Exceptions.NotFoundException">Object to delete not found.</exception>
         void Delete(
             TPrimaryKey refId,
@@ -72,7 +72,7 @@ namespace Sif.Framework.Service
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.QueryException">Error retrieving object.</exception>
+        /// <exception cref="Models.Exceptions.QueryException">Error retrieving object.</exception>
         /// <returns>Retrieved object.</returns>
         TSingle Retrieve(
             TPrimaryKey refId,
@@ -89,8 +89,8 @@ namespace Sif.Framework.Service
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">One or more parameters are invalid.</exception>
-        /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
-        /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Models.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="Models.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
         TMultiple Retrieve(
             uint? pageIndex = null,
@@ -109,8 +109,8 @@ namespace Sif.Framework.Service
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">One or more parameters are invalid.</exception>
-        /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
-        /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Models.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="Models.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
         TMultiple Retrieve(
             TSingle obj,
@@ -130,8 +130,8 @@ namespace Sif.Framework.Service
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
-        /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Models.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="Models.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
         TMultiple Retrieve(
             IEnumerable<EqualCondition> conditions,
@@ -150,7 +150,7 @@ namespace Sif.Framework.Service
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
         /// <exception cref="Tardigrade.Framework.Exceptions.NotFoundException">Object to update not found.</exception>
-        /// <exception cref="Model.Exceptions.UpdateException">Error updating objects.</exception>
+        /// <exception cref="Models.Exceptions.UpdateException">Error updating objects.</exception>
         void Update(
             TSingle obj,
             string zoneId = null,

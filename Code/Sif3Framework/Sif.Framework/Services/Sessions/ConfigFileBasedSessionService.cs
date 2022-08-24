@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Settings;
+using Sif.Framework.Models.Settings;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
 
-namespace Sif.Framework.Service.Sessions
+namespace Sif.Framework.Services.Sessions
 {
     /// <summary>
     /// This class represents operations associated with sessions that are stored in the SifFramework.config custom
     /// configuration file.
     /// </summary>
-    internal abstract class ConfigFileBasedSessionService : ISessionService
+    public abstract class ConfigFileBasedSessionService : ISessionService
     {
         /// <summary>
         /// Reference to the SifFramework.config custom configuration file.

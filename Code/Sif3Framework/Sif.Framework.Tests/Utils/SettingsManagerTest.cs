@@ -15,8 +15,8 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using System;
 

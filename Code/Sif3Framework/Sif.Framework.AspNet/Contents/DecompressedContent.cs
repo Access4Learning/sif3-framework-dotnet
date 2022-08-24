@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Service.Compression;
+using Sif.Framework.Services.Compression;
 using System;
 using System.IO;
 using System.Net;

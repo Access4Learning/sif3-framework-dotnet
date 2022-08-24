@@ -16,7 +16,7 @@
 
 using Sif.Framework.AspNet.Services.Authentication;
 using Sif.Framework.NHibernate.Persistence;
-using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Services.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System.Net.Http;
 using System.Web.Http;

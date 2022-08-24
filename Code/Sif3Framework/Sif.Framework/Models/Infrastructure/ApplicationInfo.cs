@@ -16,7 +16,7 @@
 
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     public class ApplicationInfo : IHasUniqueIdentifier<long>
     {

@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,12 @@
 
 using System.Configuration;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
-
     /// <summary>
     /// Represents the "session" configuration element within a configuration file.
     /// </summary>
-    class SessionElement : ConfigurationElement
+    public class SessionElement : ConfigurationElement
     {
         public const string ElementReference = "session";
 
@@ -58,17 +57,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("applicationKey", IsRequired = true)]
         public string ApplicationKey
         {
+            get => (string)this["applicationKey"];
 
-            get
-            {
-                return (string)this["applicationKey"];
-            }
-
-            set
-            {
-                this["applicationKey"] = value;
-            }
-
+            set => this["applicationKey"] = value;
         }
 
         /// <summary>
@@ -77,17 +68,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("environmentUrl", IsRequired = true)]
         public string EnvironmentUrl
         {
+            get => (string)this["environmentUrl"];
 
-            get
-            {
-                return (string)this["environmentUrl"];
-            }
-
-            set
-            {
-                this["environmentUrl"] = value;
-            }
-
+            set => this["environmentUrl"] = value;
         }
 
         /// <summary>
@@ -96,17 +79,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("instanceId")]
         public string InstanceId
         {
+            get => (string)this["instanceId"];
 
-            get
-            {
-                return (string)this["instanceId"];
-            }
-
-            set
-            {
-                this["instanceId"] = value;
-            }
-
+            set => this["instanceId"] = value;
         }
 
         /// <summary>
@@ -115,17 +90,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("queueId")]
         public string QueueId
         {
+            get => (string)this["queueId"];
 
-            get
-            {
-                return (string)this["queueId"];
-            }
-
-            set
-            {
-                this["queueId"] = value;
-            }
-
+            set => this["queueId"] = value;
         }
 
         /// <summary>
@@ -134,17 +101,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("sessionToken", IsRequired = true)]
         public string SessionToken
         {
+            get => (string)this["sessionToken"];
 
-            get
-            {
-                return (string)this["sessionToken"];
-            }
-
-            set
-            {
-                this["sessionToken"] = value;
-            }
-
+            set => this["sessionToken"] = value;
         }
 
         /// <summary>
@@ -153,17 +112,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("solutionId")]
         public string SolutionId
         {
+            get => (string)this["solutionId"];
 
-            get
-            {
-                return (string)this["solutionId"];
-            }
-
-            set
-            {
-                this["solutionId"] = value;
-            }
-
+            set => this["solutionId"] = value;
         }
 
         /// <summary>
@@ -172,17 +123,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("subscriptionId")]
         public string SubscriptionId
         {
+            get => (string)this["subscriptionId"];
 
-            get
-            {
-                return (string)this["subscriptionId"];
-            }
-
-            set
-            {
-                this["subscriptionId"] = value;
-            }
-
+            set => this["subscriptionId"] = value;
         }
 
         /// <summary>
@@ -191,19 +134,9 @@ namespace Sif.Framework.Model.Settings
         [ConfigurationProperty("userToken")]
         public string UserToken
         {
+            get => (string)this["userToken"];
 
-            get
-            {
-                return (string)this["userToken"];
-            }
-
-            set
-            {
-                this["userToken"] = value;
-            }
-
+            set => this["userToken"] = value;
         }
-
     }
-
 }

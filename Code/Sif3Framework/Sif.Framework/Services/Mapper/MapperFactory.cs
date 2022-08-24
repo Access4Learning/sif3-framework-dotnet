@@ -15,15 +15,15 @@
  */
 
 using AutoMapper;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
-using Sif.Framework.Model.Responses;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Requests;
+using Sif.Framework.Models.Responses;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 using System.Xml;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Mapper
+namespace Sif.Framework.Services.Mapper
 {
     /// <summary>
     /// Factory class for managing object to object mappings.
@@ -64,8 +64,8 @@ namespace Sif.Framework.Service.Mapper
                 cfg.CreateMap<Right, rightType>()
                     .ReverseMap();
 
-                cfg.CreateMap<Model.Infrastructure.Service, serviceType>();
-                cfg.CreateMap<serviceType, Model.Infrastructure.Service>()
+                cfg.CreateMap<Service, serviceType>();
+                cfg.CreateMap<serviceType, Service>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore());
 
                 cfg.CreateMap<Zone, zoneType>()

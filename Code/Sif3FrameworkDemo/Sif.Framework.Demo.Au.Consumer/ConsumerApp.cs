@@ -17,9 +17,9 @@
 using Sif.Framework.Demo.Au.Consumer.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
 using Sif.Framework.Demo.Au.Consumer.Utils;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Responses;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.DataModel.Au;
 using System;

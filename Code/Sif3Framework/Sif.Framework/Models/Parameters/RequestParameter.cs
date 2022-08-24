@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Sif.Framework.Model.Parameters
+namespace Sif.Framework.Models.Parameters
 {
     /// <summary>
     /// Message parameter used for Requests.

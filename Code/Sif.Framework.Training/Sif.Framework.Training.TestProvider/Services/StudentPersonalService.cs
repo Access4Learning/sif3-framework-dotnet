@@ -1,6 +1,6 @@
-﻿using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Service.Providers;
+﻿using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Services.Providers;
 using Sif.Framework.Training.TestProvider.Models;
 using Sif.Specification.DataModel.Au;
 

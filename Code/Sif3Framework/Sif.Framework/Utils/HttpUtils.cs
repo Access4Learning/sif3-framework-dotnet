@@ -15,9 +15,9 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Parameters;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Parameters;
 using System;
 using System.Collections.Specialized;
 using System.IO;

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Models.Infrastructure">
   <class name="ApplicationInfo" table="APPLICATION_INFO" lazy="false">
     <id name="Id" column="APPLICATION_INFO_ID">
       <generator class="native" />
@@ -8,7 +8,7 @@
     <property name="SupportedInfrastructureVersion" column="SUPPORTED_INFRASTRUCTURE_VERSION" length="16" />
     <property name="DataModelNamespace" column="DATA_MODEL_NAMESPACE" length="256" />
     <property name="Transport" column="TRANSPORT" length="8" />
-    <many-to-one name="ApplicationProduct" column="APPLICATION_PRODUCT_ID" class="Sif.Framework.Model.Infrastructure.ProductIdentity" cascade="all" fetch="join" />
-    <many-to-one name="AdapterProduct" column="ADAPTER_PRODUCT_ID" class="Sif.Framework.Model.Infrastructure.ProductIdentity" cascade="all" fetch="join" />
+    <many-to-one name="ApplicationProduct" column="APPLICATION_PRODUCT_ID" class="Sif.Framework.Models.Infrastructure.ProductIdentity" cascade="all" fetch="join" />
+    <many-to-one name="AdapterProduct" column="ADAPTER_PRODUCT_ID" class="Sif.Framework.Models.Infrastructure.ProductIdentity" cascade="all" fetch="join" />
   </class>
 </hibernate-mapping>

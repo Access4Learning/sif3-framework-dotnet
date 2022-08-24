@@ -15,10 +15,10 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Authorisation;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Authorisation;
 using Sif.Framework.Utils;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,8 +98,8 @@ namespace Sif.Framework.AspNet.Services.Authorisation
             string serviceName,
             ProvisionedZone zone)
         {
-            Model.Infrastructure.Service service =
-                (from Model.Infrastructure.Service s in zone.Services
+            Service service =
+                (from Service s in zone.Services
                  where s.Type.Equals(serviceType) && s.Name.Equals(serviceName)
                  select s).FirstOrDefault();
 

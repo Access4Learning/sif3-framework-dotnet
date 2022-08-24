@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Sessions;
+using Sif.Framework.Models.Sessions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tardigrade.Framework.Exceptions;
 using Tardigrade.Framework.Services;
 
-namespace Sif.Framework.Service.Sessions
+namespace Sif.Framework.Services.Sessions
 {
     /// <inheritdoc />
     public class SessionService : ISessionService

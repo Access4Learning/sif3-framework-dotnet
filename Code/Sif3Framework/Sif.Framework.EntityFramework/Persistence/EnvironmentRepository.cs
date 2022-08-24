@@ -21,7 +21,7 @@ using System.Data.Entity;
 using System.Linq;
 using Tardigrade.Framework.EntityFramework;
 using Tardigrade.Framework.Exceptions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFramework.Persistence
 {

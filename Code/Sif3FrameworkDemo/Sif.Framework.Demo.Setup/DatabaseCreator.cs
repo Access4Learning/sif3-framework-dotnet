@@ -15,7 +15,7 @@
  */
 
 using Sif.Framework.Demo.Setup.Utils;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.NHibernate.Persistence;
 using Sif.Framework.Persistence;
 using System;

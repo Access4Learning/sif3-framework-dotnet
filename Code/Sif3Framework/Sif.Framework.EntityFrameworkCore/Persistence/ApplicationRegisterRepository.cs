@@ -15,7 +15,7 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Exceptions;

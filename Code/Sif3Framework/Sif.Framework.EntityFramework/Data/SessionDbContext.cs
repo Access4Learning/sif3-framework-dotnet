@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Sessions;
+using Sif.Framework.Models.Sessions;
 using System.Data.Entity;
 
 namespace Sif.Framework.EntityFramework.Data

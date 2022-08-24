@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Service.Providers
+namespace Sif.Framework.Services.Providers
 {
     /// <summary>
     /// This interface defines operations associated with the "Changes Since" mechanism.

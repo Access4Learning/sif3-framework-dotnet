@@ -18,11 +18,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using Sif.Framework.AspNetCore.Extensions;
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Service.Authentication;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Services.Authentication;
 using System.Net.Http.Headers;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNetCore.Services.Authentication;
 

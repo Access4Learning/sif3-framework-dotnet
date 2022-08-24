@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
+using Sif.Framework.Models.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 

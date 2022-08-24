@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Models.Infrastructure">
   <class name="Right" table="RIGHT">
     <id name="Id" column="RIGHT_ID">
       <generator class="native" />

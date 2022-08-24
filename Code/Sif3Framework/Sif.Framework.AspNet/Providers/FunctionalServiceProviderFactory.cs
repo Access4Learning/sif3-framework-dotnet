@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service;
-using Sif.Framework.Service.Functional;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services;
+using Sif.Framework.Services.Functional;
 using Sif.Framework.Utils;
 using slf4net;
 using System;

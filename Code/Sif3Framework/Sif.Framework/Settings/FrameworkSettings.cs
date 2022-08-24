@@ -15,9 +15,9 @@
  */
 
 using Microsoft.Extensions.Configuration;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
-using Sif.Framework.Model.Settings;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Requests;
+using Sif.Framework.Models.Settings;
 using Tardigrade.Framework.Extensions;
 
 namespace Sif.Framework.Settings

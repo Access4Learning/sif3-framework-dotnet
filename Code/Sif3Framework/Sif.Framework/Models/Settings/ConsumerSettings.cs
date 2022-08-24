@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
     /// <summary>
     /// This class represents Consumer settings that are stored in the SifFramework.config custom configuration file.

@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,12 @@
 
 using System.Configuration;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
-
     /// <summary>
     /// Represents the "consumer" section within a configuration file.
     /// </summary>
-    class ConsumerSection : ConfigurationSection, ISessionsSection
+    public class ConsumerSection : ConfigurationSection, ISessionsSection
     {
         public const string SectionReference = "consumer";
 
@@ -30,16 +29,7 @@ namespace Sif.Framework.Model.Settings
         /// sessions child element.
         /// </summary>
         [ConfigurationProperty(SessionsElementCollection.ElementCollectionReference)]
-        public SessionsElementCollection Sessions
-        {
-
-            get
-            {
-                return (SessionsElementCollection)base[SessionsElementCollection.ElementCollectionReference];
-            }
-
-        }
-
+        public SessionsElementCollection Sessions =>
+            (SessionsElementCollection)base[SessionsElementCollection.ElementCollectionReference];
     }
-
 }

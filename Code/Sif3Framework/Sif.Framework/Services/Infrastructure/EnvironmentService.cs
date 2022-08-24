@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
 using Sif.Framework.Utils;
 using System;
 using System.Linq;
 using Tardigrade.Framework.Exceptions;
 using Tardigrade.Framework.Services;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.Services.Infrastructure
 {
     /// <summary>
     /// Service class for Environment objects.
@@ -71,7 +71,7 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (environmentRegister == null)
             {
-                string errorMessage =
+                var errorMessage =
                     $"Environment register with [applicationKey:{item.ApplicationInfo.ApplicationKey}|solutionId:{item.SolutionId ?? "<null>"}|instanceId:{item.InstanceId ?? "<null>"}|userToken:{item.UserToken ?? "<null>"}] does NOT exist.";
                 throw new NotFoundException(errorMessage);
             }

@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     /// <summary>
     /// The following Environment elements/properties are mandatory according to the SIF specification:

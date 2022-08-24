@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Exceptions;
+﻿using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
 
-namespace Sif.Framework.Service.Functional
+namespace Sif.Framework.Services.Functional
 {
     /// <summary>
     /// <see cref="IPhaseActions"/>

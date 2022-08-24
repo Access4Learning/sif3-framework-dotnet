@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Settings;
+using Sif.Framework.Models.Settings;
 using System;
 
 namespace Sif.Framework.Utils

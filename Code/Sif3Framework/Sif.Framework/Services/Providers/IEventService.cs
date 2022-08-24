@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Events;
+using Sif.Framework.Models.Events;
 
-namespace Sif.Framework.Service.Providers
+namespace Sif.Framework.Services.Providers
 {
     /// <summary>
     /// This interface defines operations associated with SIF Events.
@@ -29,7 +29,7 @@ namespace Sif.Framework.Service.Providers
         /// </summary>
         /// <param name="zoneId">Zone associated with the event iterator.</param>
         /// <param name="contextId">Zone context.</param>
-        /// <exception cref="Model.Exceptions.EventException">Error retrieving iterator of SIF Events.</exception>
+        /// <exception cref="Models.Exceptions.EventException">Error retrieving iterator of SIF Events.</exception>
         /// <returns>Iterator of SIF Events (should not be null).</returns>
         IEventIterator<TMultiple> GetEventIterator(string zoneId = null, string contextId = null);
     }

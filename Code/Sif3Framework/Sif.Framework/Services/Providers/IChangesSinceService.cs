@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Parameters;
+using Sif.Framework.Models.Parameters;
 
-namespace Sif.Framework.Service.Providers
+namespace Sif.Framework.Services.Providers
 {
     /// <summary>
     /// This interface defines operations associated with the "Changes Since" mechanism.
@@ -42,8 +42,8 @@ namespace Sif.Framework.Service.Providers
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">One or more parameters are invalid.</exception>
-        /// <exception cref="Model.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
-        /// <exception cref="Model.Exceptions.QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Models.Exceptions.ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="Models.Exceptions.QueryException">Error retrieving objects.</exception>
         /// <returns>Retrieved objects.</returns>
         TMultiple RetrieveChangesSince(
             string changesSinceMarker,

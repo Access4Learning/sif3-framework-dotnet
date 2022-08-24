@@ -15,12 +15,12 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Service.Authentication;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Services.Authentication;
 using System;
 using System.Net.Http.Headers;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNet.Services.Authentication
 {

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     /// <summary>
     /// The following Phase elements/properties are mandatory according to the SIF specification:

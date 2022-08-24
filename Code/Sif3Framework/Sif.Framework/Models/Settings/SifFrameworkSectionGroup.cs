@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,12 @@
 
 using System.Configuration;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
-
     /// <summary>
     /// Represents a group of related SIF Framework sections within a configuration file.
     /// </summary>
-    sealed class SifFrameworkSectionGroup : ConfigurationSectionGroup
+    public sealed class SifFrameworkSectionGroup : ConfigurationSectionGroup
     {
         public const string SectionGroupReference = "sifFramework";
 
@@ -30,30 +29,12 @@ namespace Sif.Framework.Model.Settings
         /// consumer child element.
         /// </summary>
         [ConfigurationProperty(ConsumerSection.SectionReference)]
-        public ConsumerSection ConsumerSettings
-        {
-
-            get
-            {
-                return (ConsumerSection)base.Sections[ConsumerSection.SectionReference];
-            }
-
-        }
+        public ConsumerSection ConsumerSettings => (ConsumerSection)Sections[ConsumerSection.SectionReference];
 
         /// <summary>
         /// provider child element.
         /// </summary>
         [ConfigurationProperty(ProviderSection.SectionReference)]
-        public ProviderSection ProviderSettings
-        {
-
-            get
-            {
-                return (ProviderSection)base.Sections[ProviderSection.SectionReference];
-            }
-
-        }
-
+        public ProviderSection ProviderSettings => (ProviderSection)Sections[ProviderSection.SectionReference];
     }
-
 }

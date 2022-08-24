@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Service.Providers
+namespace Sif.Framework.Services.Providers
 {
     /// <summary>
     /// This interface defines the services available for Providers of SIF data model objects.

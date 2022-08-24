@@ -16,7 +16,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sif.Framework.Service.Authentication;
+using Sif.Framework.Services.Authentication;
 using Tardigrade.Framework.AspNetCore.Extensions;
 using Tardigrade.Framework.Exceptions;
 using Tardigrade.Framework.Extensions;

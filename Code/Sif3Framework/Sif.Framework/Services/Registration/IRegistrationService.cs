@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.Infrastructure;
 
-namespace Sif.Framework.Service.Registration
+namespace Sif.Framework.Services.Registration
 {
-
     /// <summary>
     /// This class represents operations for registering and unregistering a service (Consumer or Provider) with an
     /// Environment service (i.e. SIF 3 Broker, Environment Provider).
     /// </summary>
     public interface IRegistrationService
     {
-
         /// <summary>
         /// Authorisation token generated from registration.
         /// </summary>
@@ -41,7 +39,7 @@ namespace Sif.Framework.Service.Registration
         /// Register service with an Environment service (Broker or Environment Provider). This must be the first
         /// method called, and only once. Subsequent calls are ignored.
         /// </summary>
-        /// <exception cref="Model.Exceptions.RegistrationException">Error occurred during registration.</exception>
+        /// <exception cref="Models.Exceptions.RegistrationException">Error occurred during registration.</exception>
         Environment Register();
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace Sif.Framework.Service.Registration
         /// method called, and only once. Subsequent calls are ignored.
         /// </summary>
         /// <param name="environment">Environment used for registration.</param>
-        /// <exception cref="Model.Exceptions.RegistrationException">Error occurred during registration.</exception>
+        /// <exception cref="Models.Exceptions.RegistrationException">Error occurred during registration.</exception>
         Environment Register(ref Environment environment);
 
         /// <summary>
@@ -59,7 +57,5 @@ namespace Sif.Framework.Service.Registration
         /// <param name="deleteOnUnregister">If true, remove session data on unregister. If false, maintain session
         /// data. If null, use the setting stored in SifFramework.config.</param>
         void Unregister(bool? deleteOnUnregister = null);
-
     }
-
 }

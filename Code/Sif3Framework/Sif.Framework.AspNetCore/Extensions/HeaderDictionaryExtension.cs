@@ -17,7 +17,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Parameters;
+using Sif.Framework.Models.Parameters;
 
 namespace Sif.Framework.AspNetCore.Extensions;
 

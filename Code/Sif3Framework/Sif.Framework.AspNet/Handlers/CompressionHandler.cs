@@ -15,7 +15,7 @@
  */
 
 using Sif.Framework.AspNet.Contents;
-using Sif.Framework.Service.Compression;
+using Sif.Framework.Services.Compression;
 using System;
 using System.Collections.Generic;
 using System.Linq;

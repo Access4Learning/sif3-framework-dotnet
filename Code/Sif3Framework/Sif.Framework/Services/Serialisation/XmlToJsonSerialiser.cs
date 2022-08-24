@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Service.Serialisation
+namespace Sif.Framework.Services.Serialisation
 {
     /// <summary>
-    /// A serialiser that serialises an object to XML and then JSON, and deserialises JSON to XML and
+    /// A serialiser that serialises an object to XML and then JSON, and deserializes JSON to XML and
     /// then an object.
     /// </summary>
     /// <typeparam name="T">Type of the object to serialise/deserialise.</typeparam>
@@ -56,11 +56,11 @@ namespace Sif.Framework.Service.Serialisation
         /// </summary>
         public T Deserialise(Stream stream)
         {
-            T obj = default(T);
+            var obj = default(T);
 
             if (stream != null)
             {
-                using (StreamReader streamReader = new StreamReader(stream))
+                using (var streamReader = new StreamReader(stream))
                 {
                     string json = streamReader.ReadToEnd();
 
@@ -87,7 +87,7 @@ namespace Sif.Framework.Service.Serialisation
         /// </summary>
         public T Deserialise(string str)
         {
-            T obj = default(T);
+            var obj = default(T);
 
             if (!string.IsNullOrWhiteSpace(str))
             {
@@ -112,7 +112,7 @@ namespace Sif.Framework.Service.Serialisation
                 Serialise(obj, out Stream stream);
                 stream.Position = 0;
 
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     str = reader.ReadToEnd();
                 }
@@ -134,9 +134,9 @@ namespace Sif.Framework.Service.Serialisation
                 {
                     string xml;
 
-                    using (StringWriter stringWriter = new StringWriter())
+                    using (var stringWriter = new StringWriter())
                     {
-                        using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter))
+                        using (var xmlWriter = XmlWriter.Create(stringWriter))
                         {
                             // Serialise the object into an XML string.
                             xmlSerialiser.Serialize(xmlWriter, obj);
@@ -155,12 +155,12 @@ namespace Sif.Framework.Service.Serialisation
                     xml = xElement.ToString();
 
                     // Convert the XML document into a JSON string.
-                    XmlDocument xmlDocument = new XmlDocument();
+                    var xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(xml);
                     string json = JsonConvert.SerializeXmlNode(xmlDocument);
 
                     // Write the JSON string to the stream.
-                    byte[] buf = System.Text.Encoding.Default.GetBytes(json);
+                    byte[] buf = Encoding.Default.GetBytes(json);
                     stream.Write(buf, 0, buf.Length);
                     stream.Flush();
                 }

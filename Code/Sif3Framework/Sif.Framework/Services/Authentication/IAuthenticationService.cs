@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.Services.Authentication
 {
     /// <summary>
     /// This class contains operations for service authentication.

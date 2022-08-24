@@ -15,23 +15,23 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Mapper;
-using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Mapper;
+using Sif.Framework.Services.Serialisation;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Linq;
 using System.Net;
 using System.Xml;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Registration
+namespace Sif.Framework.Services.Registration
 {
     /// <inheritdoc cref="IRegistrationService" />
     public class RegistrationService : IRegistrationService

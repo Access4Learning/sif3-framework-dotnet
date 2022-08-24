@@ -15,8 +15,8 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Service.Mapper;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Services.Mapper;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 using System.IO;
@@ -117,7 +117,7 @@ public static class DataFactory
 
     public static ProvisionedZone ProvisionedZone => new()
     {
-        Services = new List<Model.Infrastructure.Service> { ServiceSchool, ServiceStudent },
+        Services = new List<Service> { ServiceSchool, ServiceStudent },
         SifId = "Sif3DemoZone1"
     };
 
@@ -131,7 +131,7 @@ public static class DataFactory
         new() { Type = "UPDATE", Value = "APPROVED" }
     };
 
-    public static Model.Infrastructure.Service ServiceSchool => new()
+    public static Service ServiceSchool => new()
     {
         ContextId = "DEFAULT",
         Name = "SchoolInfos",
@@ -139,7 +139,7 @@ public static class DataFactory
         Type = "OBJECT"
     };
 
-    public static Model.Infrastructure.Service ServiceStudent => new()
+    public static Service ServiceStudent => new()
     {
         ContextId = "DEFAULT",
         Name = "StudentPersonals",

@@ -16,7 +16,7 @@
 
 using Sif.Specification.Infrastructure;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.Services.Infrastructure
 {
     public interface IEnvironmentDtoService : ISifService<environmentType>
     {

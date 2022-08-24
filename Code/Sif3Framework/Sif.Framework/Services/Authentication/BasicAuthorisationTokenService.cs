@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.Exceptions;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.Exceptions;
 using System;
 using System.Text;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.Services.Authentication
 {
     /// <summary>
     /// Implementation of the authorisation token service based upon Basic authentication.

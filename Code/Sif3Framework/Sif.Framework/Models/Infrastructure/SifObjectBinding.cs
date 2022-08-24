@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
+using Sif.Framework.Models.DataModels;
 using System;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     /// <summary>
     /// TODO Currently not supported in the ASP.NET Core version of the SIF Framework.

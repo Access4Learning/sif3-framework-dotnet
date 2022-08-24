@@ -15,9 +15,9 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Sessions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Sessions;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.EntityFrameworkCore.Data;
 
@@ -41,7 +41,7 @@ public class SifFrameworkDbContext : DbContext
     public virtual DbSet<Property> Properties => Set<Property>();
     public virtual DbSet<ProvisionedZone> ProvisionedZones => Set<ProvisionedZone>();
     public virtual DbSet<Right> Rights => Set<Right>();
-    public virtual DbSet<Model.Infrastructure.Service> Services => Set<Model.Infrastructure.Service>();
+    public virtual DbSet<Service> Services => Set<Service>();
     public virtual DbSet<Session> Sessions => Set<Session>();
     public virtual DbSet<Zone> Zones => Set<Zone>();
 
@@ -243,7 +243,7 @@ public class SifFrameworkDbContext : DbContext
             entity.Property(e => e.Value).HasColumnName("VALUE");
         });
 
-        modelBuilder.Entity<Model.Infrastructure.Service>(entity =>
+        modelBuilder.Entity<Service>(entity =>
         {
             entity.ToTable("SERVICE");
 

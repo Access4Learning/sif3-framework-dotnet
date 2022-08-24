@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Service.Serialisation
+namespace Sif.Framework.Services.Serialisation
 {
     /// <summary>
     /// Wrapper for the Microsoft XmlSerializer.
     /// <see cref="XmlSerializer"/>
     /// </summary>
-    /// <typeparam name="T">Type of the object being serialised/deserialised.</typeparam>
+    /// <typeparam name="T">Type of the object being serialised/deserialized.</typeparam>
     public class XmlSerialiser<T> : XmlSerializer, ISerialiser<T>
     {
         /// <summary>
@@ -46,7 +46,7 @@ namespace Sif.Framework.Service.Serialisation
         /// </summary>
         public T Deserialise(Stream stream)
         {
-            T obj = default(T);
+            var obj = default(T);
 
             if (stream != null)
             {
@@ -61,7 +61,7 @@ namespace Sif.Framework.Service.Serialisation
         /// </summary>
         public T Deserialise(string str)
         {
-            T obj = default(T);
+            var obj = default(T);
 
             if (!string.IsNullOrWhiteSpace(str))
             {
@@ -105,7 +105,7 @@ namespace Sif.Framework.Service.Serialisation
                 Serialise(obj, out Stream stream);
                 stream.Position = 0;
 
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     str = reader.ReadToEnd();
                 }

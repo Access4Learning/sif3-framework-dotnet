@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Requests;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
     /// <summary>
     /// This interface represents SIF Framework settings.
@@ -135,7 +135,7 @@ namespace Sif.Framework.Model.Settings
         bool JobTimeoutEnabled { get; }
 
         /// <summary>
-        /// How often to check for timedout jobs in seconds. Default 60.
+        /// How often to check for timed out jobs in seconds. Default 60.
         /// </summary>
         int JobTimeoutFrequency { get; }
     }

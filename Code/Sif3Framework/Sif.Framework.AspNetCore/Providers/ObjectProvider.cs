@@ -17,16 +17,16 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sif.Framework.AspNetCore.Extensions;
-using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Mapper;
-using Sif.Framework.Service.Providers;
-using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Responses;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Mapper;
+using Sif.Framework.Services.Providers;
+using Sif.Framework.Services.Serialisation;
+using Sif.Framework.Services.Sessions;
 using Sif.Specification.Infrastructure;
 
 namespace Sif.Framework.AspNetCore.Providers;

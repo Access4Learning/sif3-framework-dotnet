@@ -20,11 +20,11 @@ using Sif.Framework.EntityFrameworkCore.Data;
 using Sif.Framework.EntityFrameworkCore.Persistence;
 using Sif.Framework.Mappers;
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Infrastructure;
 using Tardigrade.Framework.EntityFrameworkCore;
 using Tardigrade.Framework.Persistence;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 const string DatabaseEngineKey = "database.engine";
 

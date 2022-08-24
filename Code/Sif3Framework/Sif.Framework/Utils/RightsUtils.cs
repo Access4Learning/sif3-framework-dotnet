@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 

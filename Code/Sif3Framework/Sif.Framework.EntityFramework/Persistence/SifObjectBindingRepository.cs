@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
 using System;
 using System.Collections.Generic;

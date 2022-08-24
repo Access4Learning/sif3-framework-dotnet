@@ -17,12 +17,12 @@
 using Microsoft.AspNetCore.Http;
 using Sif.Framework.AspNetCore.Extensions;
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Authorisation;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Authorisation;
 using Sif.Framework.Utils;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNetCore.Services.Authorisation;
 
@@ -98,8 +98,8 @@ public class AuthorisationService : IAuthorisationService<IHeaderDictionary>
         string serviceName,
         ProvisionedZone zone)
     {
-        Model.Infrastructure.Service? service =
-            (from Model.Infrastructure.Service s in zone.Services
+        Service? service =
+            (from Service s in zone.Services
              where s.Type.Equals(serviceType) && s.Name.Equals(serviceName)
              select s).FirstOrDefault();
 

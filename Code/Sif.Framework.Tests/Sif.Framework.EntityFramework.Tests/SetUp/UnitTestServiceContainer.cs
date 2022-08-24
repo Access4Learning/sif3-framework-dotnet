@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Sif.Framework.EntityFramework.Data;
-using Sif.Framework.Model.Sessions;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Sessions;
+using Sif.Framework.Services.Sessions;
 using System;
 using System.Data.Entity;
 using Tardigrade.Framework.EntityFramework;

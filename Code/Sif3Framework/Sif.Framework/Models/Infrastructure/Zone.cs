@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     public class Zone : IHasUniqueIdentifier<long>
     {

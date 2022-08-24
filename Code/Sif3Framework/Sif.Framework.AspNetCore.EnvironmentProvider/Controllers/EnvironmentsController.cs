@@ -16,12 +16,12 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Infrastructure;
 using Sif.Specification.Infrastructure;
 using Tardigrade.Framework.AspNetCore.Extensions;
 using Tardigrade.Framework.Exceptions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNetCore.EnvironmentProvider.Controllers;
 

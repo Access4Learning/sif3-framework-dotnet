@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,9 +17,8 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Sif.Framework.Model.Exceptions
+namespace Sif.Framework.Models.Exceptions
 {
-
     /// <summary>
     /// This exception represents the situation where a Consumer or Provider has already been registered with the
     /// Environment Provider.
@@ -27,43 +26,28 @@ namespace Sif.Framework.Model.Exceptions
     [Serializable]
     public class AlreadyRegisteredException : BaseException
     {
-
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Exceptions.BaseException()"/>
-        /// </summary>
+        /// <inheritdoc />
         public AlreadyRegisteredException()
             : base("Consumer or Provider has already been registered with the Environment Provider.")
         {
-
         }
 
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Exceptions.BaseException(System.String)"/>
-        /// </summary>
+        /// <inheritdoc />
         public AlreadyRegisteredException(string message)
             : base(message)
         {
-
         }
 
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Exceptions.BaseException(System.String, System.Exception)"/>
-        /// </summary>
+        /// <inheritdoc />
         public AlreadyRegisteredException(string message, Exception innerException)
             : base(message, innerException)
         {
-
         }
 
-        /// <summary>
-        /// <see cref="Sif.Framework.Model.Exceptions.BaseException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)"/>
-        /// </summary>
+        /// <inheritdoc />
         protected AlreadyRegisteredException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-
         }
-
     }
-
 }

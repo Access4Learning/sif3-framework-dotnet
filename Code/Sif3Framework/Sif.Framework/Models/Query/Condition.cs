@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-using System;
-
-namespace Sif.Framework.Model.Query
+namespace Sif.Framework.Models.Query
 {
-
     /// <summary>
     /// Query or filter condition.
     /// </summary>
     public class Condition
     {
-
         /// <summary>
         /// Operator applicable for the condition.
         /// </summary>
@@ -36,7 +32,7 @@ namespace Sif.Framework.Model.Query
         /// <summary>
         /// Property that defines the left side of the condition.
         /// </summary>
-        public String Left { get; set; }
+        public string Left { get; set; }
 
         /// <summary>
         /// Operator for each side of the condition.
@@ -46,8 +42,6 @@ namespace Sif.Framework.Model.Query
         /// <summary>
         /// Property that defines the right side of the condition.
         /// </summary>
-        public String Right { get; set; }
-
+        public string Right { get; set; }
     }
-
 }

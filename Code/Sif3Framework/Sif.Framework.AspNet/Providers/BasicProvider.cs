@@ -16,14 +16,14 @@
 
 using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Providers;
-using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Providers;
+using Sif.Framework.Services.Serialisation;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;

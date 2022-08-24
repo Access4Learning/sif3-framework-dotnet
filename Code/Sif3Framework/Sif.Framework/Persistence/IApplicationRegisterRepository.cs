@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Tardigrade.Framework.Persistence;
 
 namespace Sif.Framework.Persistence

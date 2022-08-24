@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Mapper;
+using Sif.Framework.Services.Mapper;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Linq;
 using Tardigrade.Framework.Exceptions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.Services.Infrastructure
 {
     /// <summary>
     /// Service class for Environment objects.
@@ -76,7 +76,7 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (environmentRegister == null)
             {
-                string errorMessage =
+                var errorMessage =
                     $"Environment register with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}] does NOT exist.";
                 throw new NotFoundException(errorMessage);
             }
@@ -91,7 +91,7 @@ namespace Sif.Framework.Service.Infrastructure
 
             if (environment != null)
             {
-                string errorMessage =
+                var errorMessage =
                     $"A session token already exists for environment with [applicationKey:{item.applicationInfo.applicationKey}|solutionId:{item.solutionId ?? "<null>"}|instanceId:{item.instanceId ?? "<null>"}|userToken:{item.userToken ?? "<null>"}].";
                 throw new AlreadyExistsException(errorMessage);
             }

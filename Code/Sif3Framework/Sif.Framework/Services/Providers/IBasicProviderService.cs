@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace Sif.Framework.Service.Providers
+namespace Sif.Framework.Services.Providers
 {
     /// <summary>
     /// This is a convenience interface that defines the services available for Providers of SIF data model objects

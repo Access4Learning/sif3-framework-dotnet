@@ -15,9 +15,9 @@
  */
 
 using AutoMapper;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
-using Sif.Framework.Model.Responses;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Requests;
+using Sif.Framework.Models.Responses;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 using System.Xml;
@@ -56,8 +56,8 @@ namespace Sif.Framework.Mappers
             CreateMap<Right, rightType>()
                 .ReverseMap();
 
-            CreateMap<Model.Infrastructure.Service, serviceType>();
-            CreateMap<serviceType, Model.Infrastructure.Service>()
+            CreateMap<Service, serviceType>();
+            CreateMap<serviceType, Service>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<Zone, zoneType>()

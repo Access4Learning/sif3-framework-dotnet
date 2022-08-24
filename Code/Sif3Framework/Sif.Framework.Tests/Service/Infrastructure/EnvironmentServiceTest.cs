@@ -17,10 +17,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sif.Framework.NHibernate.Persistence;
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Infrastructure;
+using Sif.Framework.Services.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Tests.Service.Infrastructure
 {

@@ -15,9 +15,9 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Service.Mapper;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Responses;
+using Sif.Framework.Services.Mapper;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;
 
@@ -144,7 +144,7 @@ namespace Sif.Framework.Tests.Service.Mapper
                 Assert.AreEqual(sourceProvisionedZone.SifId, destination.provisionedZones[index].id);
                 var sourceIndex = 0;
 
-                foreach (Model.Infrastructure.Service sourceService in sourceProvisionedZone.Services)
+                foreach (Models.Infrastructure.Service sourceService in sourceProvisionedZone.Services)
                 {
                     Assert.AreEqual(
                         sourceService.ContextId,

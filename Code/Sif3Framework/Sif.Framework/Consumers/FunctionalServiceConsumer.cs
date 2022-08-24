@@ -16,21 +16,21 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Mapper;
-using Sif.Framework.Service.Registration;
-using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Responses;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Mapper;
+using Sif.Framework.Services.Registration;
+using Sif.Framework.Services.Serialisation;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
@@ -676,7 +676,7 @@ namespace Sif.Framework.Consumers
             return DeserialiseSingle<PhaseState, stateType>(xml);
         }
 
-        private Model.Infrastructure.Service CheckJob(Job job, string zoneId = null)
+        private Service CheckJob(Job job, string zoneId = null)
         {
             if (job == null)
             {
@@ -688,7 +688,7 @@ namespace Sif.Framework.Consumers
                 throw new ArgumentException("Job name must be specified.");
             }
 
-            Model.Infrastructure.Service service = ZoneUtils.GetService(
+            Service service = ZoneUtils.GetService(
                 registrationService.CurrentEnvironment.GetTargetZone(zoneId),
                 job.Name + "s",
                 ServiceType.FUNCTIONAL);
@@ -704,7 +704,7 @@ namespace Sif.Framework.Consumers
 
         private void CheckJob(Job job, RightType right, string zoneId = null, bool ignoreId = false)
         {
-            Model.Infrastructure.Service service = CheckJob(job, zoneId);
+            Service service = CheckJob(job, zoneId);
 
             if (!ignoreId && !right.Equals(RightType.CREATE) && job.Id == null)
             {

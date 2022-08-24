@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Requests;
+using Sif.Framework.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Sif.Framework.Service.Serialisation
+namespace Sif.Framework.Services.Serialisation
 {
     /// <summary>
-    /// Factory of serialisers.
+    /// Factory of serializers.
     /// </summary>
     public static class SerialiserFactory
     {
-        private static readonly Dictionary<int, ISerialiser> jsonSerializers = new Dictionary<int, ISerialiser>();
-        private static readonly Dictionary<int, ISerialiser> xmlSerializers = new Dictionary<int, ISerialiser>();
+        private static readonly Dictionary<int, ISerialiser> JsonSerializers = new Dictionary<int, ISerialiser>();
+        private static readonly Dictionary<int, ISerialiser> XmlSerializers = new Dictionary<int, ISerialiser>();
 
         /// <summary>
         /// Generate an index key for the serialiser collection cache.
@@ -39,8 +39,8 @@ namespace Sif.Framework.Service.Serialisation
         {
             unchecked
             {
-                int hashcode = 17;
-                hashcode = hashcode * 31 + type.FullName.GetHashCode();
+                var hashcode = 17;
+                if (type.FullName != null) hashcode = hashcode * 31 + type.FullName.GetHashCode();
                 hashcode = hashcode * 31 + rootAttribute.GetHashCode();
                 return hashcode;
             }
@@ -51,7 +51,7 @@ namespace Sif.Framework.Service.Serialisation
         /// </summary>
         /// <typeparam name="T">Type of the object associated with the serialiser.</typeparam>
         /// <param name="rootAttribute">XML root attribute associated with the serialiser (if specified).</param>
-        /// <returns>JOSN serialiser.</returns>
+        /// <returns>JSON serialiser.</returns>
         public static ISerialiser<T> GetJsonSerialiser<T>(XmlRootAttribute rootAttribute = null)
         {
             ISerialiser<T> serialiser;
@@ -64,14 +64,14 @@ namespace Sif.Framework.Service.Serialisation
             {
                 int serialiserKey = GenerateKey(typeof(T), rootAttribute);
 
-                if (jsonSerializers.TryGetValue(serialiserKey, out ISerialiser jsonSerializer))
+                if (JsonSerializers.TryGetValue(serialiserKey, out ISerialiser jsonSerializer))
                 {
                     serialiser = (ISerialiser<T>)jsonSerializer;
                 }
                 else
                 {
                     serialiser = new XmlToJsonSerialiser<T>(rootAttribute);
-                    jsonSerializers.Add(serialiserKey, (XmlToJsonSerialiser<T>)serialiser);
+                    JsonSerializers.Add(serialiserKey, (XmlToJsonSerialiser<T>)serialiser);
                 }
             }
 
@@ -82,11 +82,12 @@ namespace Sif.Framework.Service.Serialisation
         /// Retrieve an appropriate JSON serialiser based on the specified accepted content type.
         /// </summary>
         /// <typeparam name="T">Type of the object associated with the serialiser.</typeparam>
+        /// <param name="accept">Accepted content type.</param>
         /// <param name="rootAttribute">XML root attribute associated with the serialiser (if specified).</param>
         /// <returns>An appropriate serialiser for the accepted content type.</returns>
         public static ISerialiser<T> GetSerialiser<T>(Accept accept, XmlRootAttribute rootAttribute = null)
         {
-            ISerialiser<T> serialiser = null;
+            ISerialiser<T> serialiser;
 
             switch (accept)
             {
@@ -97,6 +98,9 @@ namespace Sif.Framework.Service.Serialisation
                 case Accept.XML:
                     serialiser = GetXmlSerialiser<T>(rootAttribute);
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(accept), accept, null);
             }
 
             return serialiser;
@@ -106,11 +110,12 @@ namespace Sif.Framework.Service.Serialisation
         /// Retrieve an appropriate JSON serialiser based on the specified content type.
         /// </summary>
         /// <typeparam name="T">Type of the object associated with the serialiser.</typeparam>
+        /// <param name="contentType">Content type.</param>
         /// <param name="rootAttribute">XML root attribute associated with the serialiser (if specified).</param>
         /// <returns>An appropriate serialiser for the content type.</returns>
         public static ISerialiser<T> GetSerialiser<T>(ContentType contentType, XmlRootAttribute rootAttribute = null)
         {
-            ISerialiser<T> serialiser = null;
+            ISerialiser<T> serialiser;
 
             switch (contentType)
             {
@@ -121,6 +126,9 @@ namespace Sif.Framework.Service.Serialisation
                 case ContentType.XML:
                     serialiser = GetXmlSerialiser<T>(rootAttribute);
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(contentType), contentType, null);
             }
 
             return serialiser;
@@ -144,14 +152,14 @@ namespace Sif.Framework.Service.Serialisation
             {
                 int serialiserKey = GenerateKey(typeof(T), rootAttribute);
 
-                if (xmlSerializers.TryGetValue(serialiserKey, out ISerialiser xmlSerializer))
+                if (XmlSerializers.TryGetValue(serialiserKey, out ISerialiser xmlSerializer))
                 {
                     serialiser = (ISerialiser<T>)xmlSerializer;
                 }
                 else
                 {
                     serialiser = new XmlSerialiser<T>(rootAttribute);
-                    xmlSerializers.Add(serialiserKey, (XmlSerialiser<T>)serialiser);
+                    XmlSerializers.Add(serialiserKey, (XmlSerialiser<T>)serialiser);
                 }
             }
 

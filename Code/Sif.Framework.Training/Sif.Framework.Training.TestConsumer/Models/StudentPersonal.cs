@@ -1,4 +1,4 @@
-﻿using Sif.Framework.Model.DataModels;
+﻿using Sif.Framework.Models.DataModels;
 using Sif.Specification.DataModel.Au;
 using System.Xml.Serialization;
 

@@ -17,7 +17,7 @@
 using System.IO;
 using System.IO.Compression;
 
-namespace Sif.Framework.Service.Compression
+namespace Sif.Framework.Services.Compression
 {
     /// <summary>
     /// Compressor for handling the "gzip" encoding type.

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
-using Sif.Framework.Service.Mapper;
+using Sif.Framework.Services.Mapper;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tardigrade.Framework.Persistence;
 
-namespace Sif.Framework.Service.Functional
+namespace Sif.Framework.Services.Functional
 {
     /// <summary>
     /// The abstract Functional Service implementation that a functional services would normally extend.

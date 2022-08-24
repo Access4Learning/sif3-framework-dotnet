@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Service.Mapper;
+using Sif.Framework.Services.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tardigrade.Framework.Models.Domain;
 using Tardigrade.Framework.Persistence;
 
-namespace Sif.Framework.Service
+namespace Sif.Framework.Services
 {
     /// <inheritdoc />
     public abstract class SifService<TDto, TEntity> : ISifService<TDto>

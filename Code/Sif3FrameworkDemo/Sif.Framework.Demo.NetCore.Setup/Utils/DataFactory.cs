@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Service.Mapper;
-using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Services.Mapper;
+using Sif.Framework.Services.Serialisation;
 using Sif.Specification.Infrastructure;
 using System.Collections.ObjectModel;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Demo.NetCore.Setup.Utils;
 

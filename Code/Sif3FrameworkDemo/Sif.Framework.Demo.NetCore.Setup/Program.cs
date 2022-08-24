@@ -21,7 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Sif.Framework.Demo.NetCore.Setup.Utils;
 using Sif.Framework.EntityFrameworkCore.Data;
 using Sif.Framework.EntityFrameworkCore.Persistence;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
 using Tardigrade.Framework.EntityFrameworkCore.Extensions;
 

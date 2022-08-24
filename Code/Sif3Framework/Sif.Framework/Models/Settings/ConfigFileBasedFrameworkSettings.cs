@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Requests;
 using System;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
     /// <summary>
     /// This class represents settings that are stored in the SifFramework.config custom configuration file.
@@ -51,7 +51,7 @@ namespace Sif.Framework.Model.Settings
             }
             catch (FormatException)
             {
-                string message =
+                var message =
                     $"The valid values for the {setting.Key} setting are \"true\" or \"false\". The value \"{setting.Value}\" is not valid.";
 
                 throw new ConfigurationErrorsException(message);
@@ -80,7 +80,7 @@ namespace Sif.Framework.Model.Settings
             }
             catch (FormatException)
             {
-                string message = $"The value \"{setting.Value}\" is not a valid integer for the {setting.Key} setting.";
+                var message = $"The value \"{setting.Value}\" is not a valid integer for the {setting.Key} setting.";
 
                 throw new ConfigurationErrorsException(message);
             }
@@ -183,7 +183,7 @@ namespace Sif.Framework.Model.Settings
                     return Accept.JSON;
                 }
 
-                string message =
+                var message =
                     $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
 
                 throw new ConfigurationErrorsException(message);
@@ -231,7 +231,7 @@ namespace Sif.Framework.Model.Settings
                     return ContentType.JSON;
                 }
 
-                string message =
+                var message =
                     $"The valid values for the {settingKey} setting are \"XML\" or \"JSON\". The value \"{settingValue}\" is not valid.";
 
                 throw new ConfigurationErrorsException(message);
@@ -275,7 +275,7 @@ namespace Sif.Framework.Model.Settings
                     return EnvironmentType.DIRECT;
                 }
 
-                string message =
+                var message =
                     $"The valid values for the {settingKey} setting are \"BROKERED\" or \"DIRECT\". The value \"{settingValue}\" is not valid.";
 
                 throw new ConfigurationErrorsException(message);

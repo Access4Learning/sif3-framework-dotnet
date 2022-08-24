@@ -16,7 +16,7 @@
 
 using Sif.Framework.Extensions;
 
-namespace Sif.Framework.Model.Parameters
+namespace Sif.Framework.Models.Parameters
 {
     /// <summary>
     /// Message parameter associated with a Result Set Order request.

@@ -15,8 +15,8 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Service.Authentication;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Services.Authentication;
 using System;
 
 namespace Sif.Framework.Tests.Service.Authentication

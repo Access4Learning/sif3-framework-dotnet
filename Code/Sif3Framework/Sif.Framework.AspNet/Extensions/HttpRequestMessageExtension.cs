@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Parameters;
+using Sif.Framework.Models.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,33 +14,30 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Settings;
-using System;
+using Sif.Framework.Models.Settings;
 using System.Configuration;
 
-namespace Sif.Framework.Service.Sessions
+namespace Sif.Framework.Services.Sessions
 {
-
     /// <summary>
     /// This class represents operations associated with Consumer sessions that are stored in the SifFramework.config
     /// custom configuration file.
     /// </summary>
-    class ConsumerSessionService : ConfigFileBasedSessionService
+    public class ConsumerSessionService : ConfigFileBasedSessionService
     {
-
         /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ConfigFileBasedSessionService.SessionsSection"/>
+        /// <see cref="ConfigFileBasedSessionService.SessionsSection"/>
         /// </summary>
         protected override ISessionsSection SessionsSection
         {
-
             get
             {
-                SifFrameworkSectionGroup sifFrameworkSectionGroup = (SifFrameworkSectionGroup)Configuration.GetSectionGroup(SifFrameworkSectionGroup.SectionGroupReference);
+                var sifFrameworkSectionGroup = (SifFrameworkSectionGroup)Configuration.GetSectionGroup(SifFrameworkSectionGroup.SectionGroupReference);
 
                 if (sifFrameworkSectionGroup == null)
                 {
-                    string message = String.Format("The <sectionGroup name=\"{0}\" ... /> element is missing from the configuration file {1}.", SifFrameworkSectionGroup.SectionGroupReference, Configuration.FilePath);
+                    var message =
+                        $"The <sectionGroup name=\"{SifFrameworkSectionGroup.SectionGroupReference}\" ... /> element is missing from the configuration file {Configuration.FilePath}.";
                     throw new ConfigurationErrorsException(message);
                 }
 
@@ -48,24 +45,13 @@ namespace Sif.Framework.Service.Sessions
 
                 if (sessionsSection == null)
                 {
-                    string message = String.Format("The <section name=\"{0}\" ... /> element is missing from the configuration file {1}.", ConsumerSection.SectionReference, Configuration.FilePath);
+                    var message =
+                        $"The <section name=\"{ConsumerSection.SectionReference}\" ... /> element is missing from the configuration file {Configuration.FilePath}.";
                     throw new ConfigurationErrorsException(message);
                 }
 
                 return sessionsSection;
             }
-
         }
-
-        /// <summary>
-        /// <see cref="Sif.Framework.Service.Sessions.ConfigFileBasedSessionService.ConfigFileBasedSessionService()"/>
-        /// </summary>
-        public ConsumerSessionService()
-            : base()
-        {
-
-        }
-
     }
-
 }

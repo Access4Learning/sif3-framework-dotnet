@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Responses;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Responses;
 
-namespace Sif.Framework.Service.Providers
+namespace Sif.Framework.Services.Providers
 {
     /// <summary>
     /// In addition to the operations provided by the IProviderService interface, this interface defines operations for
@@ -35,10 +35,10 @@ namespace Sif.Framework.Service.Providers
         /// <param name="zoneId">Zone associated with the request.</param>
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
-        /// <exception cref="Model.Exceptions.AlreadyExistsException">Object already exists.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.AlreadyExistsException">Object already exists.</exception>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.CreateException">Error creating object.</exception>
-        /// <exception cref="Model.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
+        /// <exception cref="Models.Exceptions.CreateException">Error creating object.</exception>
+        /// <exception cref="Models.Exceptions.RejectedException">Create operation not valid for the given object.</exception>
         /// <returns>Response containing status of each object created.</returns>
         MultipleCreateResponse Create(
             TMultiple obj,
@@ -55,8 +55,8 @@ namespace Sif.Framework.Service.Providers
         /// <param name="contextId">Zone context.</param>
         /// <param name="requestParameters">Additional parameters associated with the request.</param>
         /// <exception cref="System.ArgumentException">Parameter is invalid.</exception>
-        /// <exception cref="Model.Exceptions.NotFoundException">Object to update not found.</exception>
-        /// <exception cref="Model.Exceptions.UpdateException">Error updating objects.</exception>
+        /// <exception cref="Tardigrade.Framework.Exceptions.NotFoundException">Object to update not found.</exception>
+        /// <exception cref="Models.Exceptions.UpdateException">Error updating objects.</exception>
         /// <returns>Response containing status of each object updated.</returns>
         MultipleUpdateResponse Update(
             TMultiple obj,

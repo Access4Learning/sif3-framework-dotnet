@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 
 using Sif.Framework.Demo.Au.Consumer.Consumers;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using System;
 
@@ -25,7 +25,7 @@ namespace Sif.Framework.Demo.Au.Consumer
     internal class EventConsumerApp : ConsoleApp
     {
         private static readonly slf4net.ILogger Log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static void Main()
         {

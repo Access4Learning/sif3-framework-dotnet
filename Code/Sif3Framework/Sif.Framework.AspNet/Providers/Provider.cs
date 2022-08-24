@@ -19,21 +19,21 @@ using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.AspNet.Services.Authentication;
 using Sif.Framework.AspNet.Services.Authorisation;
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Authentication;
-using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Events;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Model.Requests;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Authorisation;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Providers;
-using Sif.Framework.Service.Registration;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Events;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Models.Requests;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Authorisation;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Providers;
+using Sif.Framework.Services.Registration;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
@@ -44,6 +44,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNet.Providers
 {
@@ -876,7 +877,7 @@ namespace Sif.Framework.AspNet.Providers
                     }
                     else
                     {
-                        Model.Infrastructure.Environment environment = registrationService.Register();
+                        Environment environment = registrationService.Register();
 
                         // Retrieve the current Authorisation Token.
                         AuthorisationToken token = registrationService.AuthorisationToken;

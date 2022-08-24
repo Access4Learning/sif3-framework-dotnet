@@ -15,7 +15,7 @@
  */
 
 using NHibernate.Type;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 
 namespace Sif.Framework.NHibernate.Types
 {

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Model.Events
+namespace Sif.Framework.Models.Events
 {
     /// <summary>
     /// This interface defines serialisation operations for SIF Event payloads.
     /// </summary>
     /// <typeparam name="TMultiple">Type that defines a SIF Events entity.</typeparam>
-    public interface IEventPayloadSerialisable<TMultiple>
+    public interface IEventPayloadSerialisable<in TMultiple>
     {
         /// <summary>
         /// Serialise a SIF Events entity.

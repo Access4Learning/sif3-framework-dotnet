@@ -15,12 +15,12 @@
  */
 
 using Microsoft.AspNetCore.Http;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Sessions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Sessions;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNetCore.Services.Authentication
 {
@@ -84,7 +84,7 @@ namespace Sif.Framework.AspNetCore.Services.Authentication
             return applicationRegister?.SharedSecret;
         }
 
-        /// <inheritdoc cref="Framework.Service.Authentication.IAuthenticationService{THeaders}.VerifyAuthenticationHeader(THeaders)" />
+        /// <inheritdoc cref="Framework.Services.Authentication.IAuthenticationService{THeaders}.VerifyAuthenticationHeader(THeaders)" />
         public override bool VerifyAuthenticationHeader(IHeaderDictionary headers)
         {
             string storedSessionToken = _sessionService.RetrieveSessionToken(

@@ -18,14 +18,14 @@
 using Sif.Framework.AspNet.ModelBinders;
 using Sif.Framework.AspNet.Services.Authentication;
 using Sif.Framework.Extensions;
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service;
-using Sif.Framework.Service.Authentication;
-using Sif.Framework.Service.Functional;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Functional;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
@@ -37,7 +37,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 using Tardigrade.Framework.Exceptions;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNet.Providers
 {
@@ -1007,8 +1007,8 @@ namespace Sif.Framework.AspNet.Providers
         /// <returns>An array of declared rights</returns>
         private ICollection<Right> GetRights(string serviceName, ProvisionedZone zone)
         {
-            Model.Infrastructure.Service service =
-                (from Model.Infrastructure.Service s in zone.Services
+            Service service =
+                (from Service s in zone.Services
                  where s.Type.Equals(ServiceType.FUNCTIONAL.ToString()) && s.Name.Equals(serviceName)
                  select s)
                 .FirstOrDefault();

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
 using System;
 using System.Configuration;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Utils
 {

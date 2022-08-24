@@ -15,7 +15,7 @@
  */
 
 using NHibernate;
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
 using System;
 using Tardigrade.Framework.Exceptions;

@@ -15,7 +15,7 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Services.Serialisation;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System.Collections.Generic;

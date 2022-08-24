@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Model.Authentication
+namespace Sif.Framework.Models.Authentication
 {
     /// <summary>
     /// Authorisation token used for application authentication.

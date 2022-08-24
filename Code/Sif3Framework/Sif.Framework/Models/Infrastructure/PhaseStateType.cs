@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Sif.Framework.Model.Infrastructure
+namespace Sif.Framework.Models.Infrastructure
 {
     /// <summary>
     /// Enumeration of permitted phase states defined in the SIF 3.2 specification

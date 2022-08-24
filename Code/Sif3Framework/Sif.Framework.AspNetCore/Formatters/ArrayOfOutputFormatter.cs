@@ -15,7 +15,7 @@
  */
 
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Services.Serialisation;
 using System.Xml;
 using System.Xml.Serialization;
 

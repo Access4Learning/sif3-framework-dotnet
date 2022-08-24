@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Exceptions;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Service.Infrastructure;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Services.Infrastructure;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.AspNetCore.Services.Authentication;
 
@@ -35,7 +35,7 @@ public class DirectAuthenticationService : AuthenticationService
         _environmentService = environmentService;
     }
 
-    /// <inheritdoc cref="Framework.Service.Authentication.IAuthenticationService{THeaders}.GetEnvironmentBySessionToken(string)" />
+    /// <inheritdoc cref="Framework.Services.Authentication.IAuthenticationService{THeaders}.GetEnvironmentBySessionToken(string)" />
     public override Environment GetEnvironmentBySessionToken(string sessionToken)
     {
         return _environmentService.RetrieveBySessionToken(sessionToken);

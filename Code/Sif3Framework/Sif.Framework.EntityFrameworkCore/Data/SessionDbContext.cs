@@ -15,7 +15,7 @@
  */
 
 using Microsoft.EntityFrameworkCore;
-using Sif.Framework.Model.Sessions;
+using Sif.Framework.Models.Sessions;
 
 namespace Sif.Framework.EntityFrameworkCore.Data;
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sif.Framework.AspNetCore.Providers;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Infrastructure;
-using Sif.Framework.Service.Providers;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Providers;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Training.TestProvider.Models;
 
 namespace Sif.Framework.Training.TestProvider.Controllers;

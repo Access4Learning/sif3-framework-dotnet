@@ -16,9 +16,9 @@
 
 using System;
 using Tardigrade.Framework.Services;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.Services.Infrastructure
 {
     /// <summary>
     /// Service interface for operations associated with the Environment object.

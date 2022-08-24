@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Tardigrade.Framework.Services;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.Services.Infrastructure
 {
     /// <summary>
     /// Service interface for operations associated with the EnvironmentRegister object.

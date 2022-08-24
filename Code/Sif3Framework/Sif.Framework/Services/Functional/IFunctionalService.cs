@@ -1,13 +1,13 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2017 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Specification.Infrastructure;
 using System;
 
-namespace Sif.Framework.Service.Functional
+namespace Sif.Framework.Services.Functional
 {
     /// <summary>
     /// Interface that Functional services must implement
@@ -93,7 +93,7 @@ namespace Sif.Framework.Service.Functional
         /// Method that is run once to abort this service's thread in the FunctionalServiceProviderFactory.
         /// </summary>
         void Shutdown();
-        
+
         /// <summary>
         /// Extends the timeout of the specified job the by given duration.
         /// </summary>

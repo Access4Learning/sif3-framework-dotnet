@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Utils;
-using Sif.Framework.Model.Events;
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Service.Providers;
+using Sif.Framework.Models.Events;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Services.Providers;
 using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
@@ -27,36 +27,35 @@ using System.Linq;
 
 namespace Sif.Framework.Demo.Au.Provider.Services
 {
-    public class StudentPersonalService : IBasicProviderService<StudentPersonal>, IChangesSinceService<List<StudentPersonal>>, IEventService<List<StudentPersonal>>
+    public class StudentPersonalService :
+        IBasicProviderService<StudentPersonal>,
+        IChangesSinceService<List<StudentPersonal>>,
+        IEventService<List<StudentPersonal>>
     {
-        private const string changesSincePrefix = "ver.";
+        private const string ChangesSincePrefix = "ver.";
+
+        private static readonly Random Random = new Random();
+        private static readonly IDictionary<string, StudentPersonal> StudentsCache;
+
+        private static readonly IDictionary<string, IDictionary<string, StudentPersonal>> StudentsChangedCache =
+            new Dictionary<string, IDictionary<string, StudentPersonal>>();
 
         private static int changesSinceNumber = 1;
-        private static Random random = new Random();
-        private static IDictionary<string, StudentPersonal> studentsCache = new Dictionary<string, StudentPersonal>();
-        private static IDictionary<string, IDictionary<string, StudentPersonal>> studentsChangedCache = new Dictionary<string, IDictionary<string, StudentPersonal>>();
 
-        public string ChangesSinceMarker
-        {
-            get
-            {
-                return string.Format("{0}{1}", changesSincePrefix, changesSinceNumber);
-            }
-        }
+        public string ChangesSinceMarker => string.Format("{0}{1}", ChangesSincePrefix, changesSinceNumber);
 
         public string NextChangesSinceMarker
         {
             get
             {
                 changesSinceNumber++;
-                return string.Format("{0}{1}", changesSincePrefix, changesSinceNumber);
+                return string.Format("{0}{1}", ChangesSincePrefix, changesSinceNumber);
             }
         }
 
         private static StudentPersonal CreateBartSimpson()
         {
-            string[] text = new string[]
-            {
+            string[] text = {
                 @"<MedicalCondition>
                     <ConditionID>Unique Medical Condition ID</ConditionID>
                     <Condition>Condition</Condition>
@@ -65,27 +64,47 @@ namespace Sif.Framework.Demo.Au.Provider.Services
                 </MedicalCondition>"
             };
 
-            SIF_ExtendedElementsTypeSIF_ExtendedElement extendedElement = new SIF_ExtendedElementsTypeSIF_ExtendedElement { Name = "MedicalConditions", Text = text };
-            SIF_ExtendedElementsTypeSIF_ExtendedElement[] extendedElements = new SIF_ExtendedElementsTypeSIF_ExtendedElement[] { extendedElement };
-            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
-            PersonInfoType personInfo = new PersonInfoType { Name = name };
-            StudentPersonal studentPersonal = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = "666", PersonInfo = personInfo, SIF_ExtendedElements = extendedElements };
+            var extendedElement =
+                new SIF_ExtendedElementsTypeSIF_ExtendedElement { Name = "MedicalConditions", Text = text };
+            SIF_ExtendedElementsTypeSIF_ExtendedElement[] extendedElements = { extendedElement };
+            var name =
+                new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = "Simpson", GivenName = "Bart" };
+            var personInfo = new PersonInfoType { Name = name };
+
+            var studentPersonal = new StudentPersonal
+            {
+                RefId = Guid.NewGuid().ToString(),
+                LocalId = "666",
+                PersonInfo = personInfo,
+                SIF_ExtendedElements = extendedElements
+            };
 
             return studentPersonal;
         }
 
         private static StudentPersonal CreateStudent()
         {
-            NameOfRecordType name = new NameOfRecordType { Type = NameOfRecordTypeType.LGL, FamilyName = RandomNameGenerator.FamilyName, GivenName = RandomNameGenerator.GivenName };
+            var name = new NameOfRecordType
+            {
+                Type = NameOfRecordTypeType.LGL,
+                FamilyName = RandomNameGenerator.FamilyName,
+                GivenName = RandomNameGenerator.GivenName
+            };
 
-            EmailType[] emails = new EmailType[2]
+            var emails = new[]
             {
                 new EmailType {Type = AUCodeSetsEmailTypeType.Item01, Value = $"{name.GivenName}01@gmail.com"},
                 new EmailType {Type = AUCodeSetsEmailTypeType.Item02, Value = $"{name.GivenName}02@gmail.com"}
             };
 
-            PersonInfoType personInfo = new PersonInfoType { Name = name, EmailList = emails };
-            StudentPersonal studentPersonal = new StudentPersonal { RefId = Guid.NewGuid().ToString(), LocalId = random.Next(10000, 99999).ToString(), PersonInfo = personInfo };
+            var personInfo = new PersonInfoType { Name = name, EmailList = emails };
+
+            var studentPersonal = new StudentPersonal
+            {
+                RefId = Guid.NewGuid().ToString(),
+                LocalId = Random.Next(10000, 99999).ToString(),
+                PersonInfo = personInfo
+            };
 
             return studentPersonal;
         }
@@ -99,7 +118,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
                 StudentPersonal bartSimpson = CreateBartSimpson();
                 studentPersonalsCache.Add(bartSimpson.RefId, bartSimpson);
 
-                for (int i = 2; i <= count; i++)
+                for (var i = 2; i <= count; i++)
                 {
                     StudentPersonal studentPersonal = CreateStudent();
                     studentPersonalsCache.Add(studentPersonal.RefId, studentPersonal);
@@ -111,9 +130,9 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         static StudentPersonalService()
         {
-            studentsCache = CreateStudents(20);
-            studentsChangedCache.Add("ver.1", CreateStudents(10));
-            studentsChangedCache.Add("ver.2", CreateStudents(3));
+            StudentsCache = CreateStudents(20);
+            StudentsChangedCache.Add("ver.1", CreateStudents(10));
+            StudentsChangedCache.Add("ver.2", CreateStudents(3));
         }
 
         public StudentPersonal Create(
@@ -125,11 +144,11 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         {
             if (!mustUseAdvisory.HasValue || !mustUseAdvisory.Value)
             {
-                string refId = Guid.NewGuid().ToString();
+                var refId = Guid.NewGuid().ToString();
                 obj.RefId = refId;
             }
 
-            studentsCache.Add(obj.RefId, obj);
+            StudentsCache.Add(obj.RefId, obj);
 
             return obj;
         }
@@ -140,7 +159,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            if (!studentsCache.TryGetValue(refId, out StudentPersonal student))
+            if (!StudentsCache.TryGetValue(refId, out StudentPersonal student))
             {
                 student = null;
             }
@@ -155,19 +174,19 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            List<StudentPersonal> retrievedStudents = new List<StudentPersonal>();
+            var retrievedStudents = new List<StudentPersonal>();
 
             if ((zoneId == null && contextId == null) || ("Gov".Equals(zoneId) && "Curr".Equals(contextId)))
             {
-                List<StudentPersonal> allStudents = new List<StudentPersonal>();
+                var allStudents = new List<StudentPersonal>();
 
                 if (requestParameters.Any(p => RequestParameterType.where.ToString().Equals(p.Name)))
                 {
-                    allStudents.Add(studentsCache.Values.FirstOrDefault());
+                    allStudents.Add(StudentsCache.Values.FirstOrDefault());
                 }
                 else
                 {
-                    allStudents.AddRange(studentsCache.Values);
+                    allStudents.AddRange(StudentsCache.Values);
                 }
 
                 if (pageIndex.HasValue && pageSize.HasValue)
@@ -175,16 +194,16 @@ namespace Sif.Framework.Demo.Au.Provider.Services
                     uint index = pageIndex.Value * pageSize.Value;
                     uint count = pageSize.Value;
 
-                    if (studentsCache.Values.Count < (index + count))
+                    if (StudentsCache.Values.Count < (index + count))
                     {
-                        count = (uint)studentsCache.Values.Count - index;
+                        count = (uint)StudentsCache.Values.Count - index;
                     }
                     else
                     {
                         count = pageSize.Value;
                     }
 
-                    if (index <= studentsCache.Values.Count)
+                    if (index <= StudentsCache.Values.Count)
                     {
                         retrievedStudents = allStudents.GetRange((int)index, (int)count);
                     }
@@ -206,11 +225,12 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            List<StudentPersonal> students = new List<StudentPersonal>();
+            var students = new List<StudentPersonal>();
 
-            foreach (StudentPersonal student in studentsCache.Values)
+            foreach (StudentPersonal student in StudentsCache.Values)
             {
-                if (student.PersonInfo.Name.FamilyName.Equals(obj.PersonInfo.Name.FamilyName) && student.PersonInfo.Name.GivenName.Equals(obj.PersonInfo.Name.GivenName))
+                if (student.PersonInfo.Name.FamilyName.Equals(obj.PersonInfo.Name.FamilyName) &&
+                    student.PersonInfo.Name.GivenName.Equals(obj.PersonInfo.Name.GivenName))
                 {
                     students.Add(student);
                 }
@@ -227,7 +247,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            List<StudentPersonal> students = new List<StudentPersonal>
+            var students = new List<StudentPersonal>
             {
                 CreateBartSimpson()
             };
@@ -248,7 +268,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
                 throw new ArgumentException(nameof(changesSinceMarker));
             }
 
-            if (!studentsChangedCache.TryGetValue(changesSinceMarker, out IDictionary<string, StudentPersonal> students))
+            if (!StudentsChangedCache.TryGetValue(changesSinceMarker, out IDictionary<string, StudentPersonal> students))
             {
                 students = new Dictionary<string, StudentPersonal>();
             }
@@ -262,10 +282,10 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            if (studentsCache.ContainsKey(obj.RefId))
+            if (StudentsCache.ContainsKey(obj.RefId))
             {
-                studentsCache.Remove(obj.RefId);
-                studentsCache.Add(obj.RefId, obj);
+                StudentsCache.Remove(obj.RefId);
+                StudentsCache.Add(obj.RefId, obj);
             }
         }
 
@@ -275,7 +295,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            studentsCache.Remove(refId);
+            StudentsCache.Remove(refId);
         }
 
         public IEventIterator<List<StudentPersonal>> GetEventIterator(string zoneId = null, string contextId = null)

@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sif.Framework.Service
+namespace Sif.Framework.Services
 {
     /// <summary>
     /// Service interface for CRUD operations based on Data Transfer Objects (DTOs).

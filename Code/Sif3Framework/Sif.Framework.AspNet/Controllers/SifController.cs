@@ -15,8 +15,8 @@
  */
 
 using Sif.Framework.AspNet.ModelBinders;
-using Sif.Framework.Service;
-using Sif.Framework.Service.Authentication;
+using Sif.Framework.Services;
+using Sif.Framework.Services.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Net;

@@ -16,7 +16,7 @@
 
 using System;
 using Tardigrade.Framework.Persistence;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Persistence
 {

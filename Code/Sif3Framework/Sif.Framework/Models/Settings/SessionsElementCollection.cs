@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright 2015 Systemic Pty Ltd
- * 
+ * Copyright 2022 Systemic Pty Ltd
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,14 +16,13 @@
 
 using System.Configuration;
 
-namespace Sif.Framework.Model.Settings
+namespace Sif.Framework.Models.Settings
 {
-
     /// <summary>
     /// Represents the "sessions" configuration element containing a collection of child "session" elements.
     /// </summary>
     [ConfigurationCollection(typeof(SessionElement), AddItemName = SessionElement.ElementReference, CollectionType = ConfigurationElementCollectionType.BasicMap)]
-    class SessionsElementCollection : ConfigurationElementCollection
+    public class SessionsElementCollection : ConfigurationElementCollection
     {
         public const string ElementCollectionReference = "sessions";
 
@@ -32,25 +31,19 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         /// <param name="index">Index into the collection.</param>
         /// <returns>Session element at the specified index.</returns>
-        SessionElement this[int index]
+        private SessionElement this[int index]
         {
-
-            get
-            {
-                return (SessionElement)base.BaseGet(index);
-            }
+            get => (SessionElement)BaseGet(index);
 
             set
             {
-
-                if (base.BaseGet(index) != null)
+                if (BaseGet(index) != null)
                 {
-                    base.BaseRemoveAt(index);
+                    BaseRemoveAt(index);
                 }
 
                 base.BaseAdd(index, value);
             }
-
         }
 
         /// <summary>
@@ -58,18 +51,10 @@ namespace Sif.Framework.Model.Settings
         /// </summary>
         /// <param name="name">Index into the collection.</param>
         /// <returns>Session element at the specified index.</returns>
-        public new SessionElement this[string name]
-        {
-
-            get
-            {
-                return (SessionElement)base.BaseGet(name);
-            }
-
-        }
+        public new SessionElement this[string name] => (SessionElement)BaseGet(name);
 
         /// <summary>
-        /// <see cref="System.Configuration.CreateNewElement()"/>
+        /// <see cref="ConfigurationElementCollection.CreateNewElement()"/>
         /// </summary>
         protected override ConfigurationElement CreateNewElement()
         {
@@ -77,7 +62,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="System.Configuration.GetElementKey(System.Configuration.ConfigurationElement)"/>
+        /// <see cref="ConfigurationElementCollection.GetElementKey(ConfigurationElement)"/>
         /// </summary>
         protected override object GetElementKey(ConfigurationElement element)
         {
@@ -85,7 +70,7 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="System.Configuration.ConfigurationElementCollection.BaseAdd(System.Configuration.ConfigurationElement)"/>
+        /// <see cref="ConfigurationElementCollection.BaseAdd(ConfigurationElement)"/>
         /// </summary>
         public void Add(SessionElement session)
         {
@@ -93,46 +78,44 @@ namespace Sif.Framework.Model.Settings
         }
 
         /// <summary>
-        /// <see cref="System.Configuration.ConfigurationElementCollection.BaseClear()"/>
+        /// <see cref="ConfigurationElementCollection.BaseClear()"/>
         /// </summary>
         public void Clear()
         {
-            base.BaseClear();
+            BaseClear();
         }
 
         /// <summary>
-        /// <see cref="System.Configuration.ConfigurationElementCollection.BaseGetKey(System.Int32)"/>
+        /// <see cref="ConfigurationElementCollection.BaseGetKey(int)"/>
         /// </summary>
         public string GetKey(int index)
         {
-            return (string)base.BaseGetKey(index);
+            return (string)BaseGetKey(index);
         }
 
         /// <summary>
-        /// <see cref="System.Configuration.ConfigurationElementCollection.BaseRemove(System.String)"/>
+        /// <see cref="ConfigurationElementCollection.BaseRemove(object)"/>
         /// </summary>
         public void Remove(string name)
         {
-            base.BaseRemove(name);
+            BaseRemove(name);
         }
 
         /// <summary>
         /// Removes the passed session element from the collection.
-        /// <see cref="System.Configuration.ConfigurationElementCollection.BaseRemove(System.Object)"/>
+        /// <see cref="ConfigurationElementCollection.BaseRemove(object)"/>
         /// </summary>
         public void Remove(SessionElement session)
         {
-            base.BaseRemove(GetElementKey(session));
+            BaseRemove(GetElementKey(session));
         }
 
         /// <summary>
-        /// <see cref="System.Configuration.ConfigurationElementCollection.RemoveAt(System.Int32)"/>
+        /// <see cref="ConfigurationElementCollection.BaseRemoveAt(int)"/>
         /// </summary>
         public void RemoveAt(int index)
         {
-            base.BaseRemoveAt(index);
+            BaseRemoveAt(index);
         }
-
     }
-
 }

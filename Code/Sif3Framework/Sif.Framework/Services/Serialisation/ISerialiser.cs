@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 using System.IO;
 
-namespace Sif.Framework.Service.Serialisation
+namespace Sif.Framework.Services.Serialisation
 {
     /// <summary>
-    /// Interface for serialisers.
+    /// Interface for serializers.
     /// </summary>
     public interface ISerialiser
     {
@@ -35,14 +35,14 @@ namespace Sif.Framework.Service.Serialisation
         /// Deserializes the contents of the specified stream.
         /// </summary>
         /// <param name="stream">Stream that contains the content to deserialise.</param>
-        /// <returns>Deserialised object if content exists; null otherwise.</returns>
+        /// <returns>Deserialized object if content exists; null otherwise.</returns>
         T Deserialise(Stream stream);
 
         /// <summary>
         /// Deserializes the contents of the specified string.
         /// </summary>
         /// <param name="str">String that contains the content to deserialise.</param>
-        /// <returns>Deserialised object if content exists; null otherwise.</returns>
+        /// <returns>Deserialized object if content exists; null otherwise.</returns>
         T Deserialise(string str);
 
         /// <summary>

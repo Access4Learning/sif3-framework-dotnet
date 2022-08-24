@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
+using Sif.Framework.Models.Infrastructure;
 using Sif.Framework.Persistence;
 using Tardigrade.Framework.Services;
 
-namespace Sif.Framework.Service.Infrastructure
+namespace Sif.Framework.Services.Infrastructure
 {
     public class EnvironmentRegisterService : ObjectService<EnvironmentRegister, long>, IEnvironmentRegisterService
     {

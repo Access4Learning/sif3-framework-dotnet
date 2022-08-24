@@ -15,8 +15,8 @@
  */
 
 using Sif.Framework.Extensions;
-using Sif.Framework.Service;
-using Sif.Framework.Service.Functional;
+using Sif.Framework.Services;
+using Sif.Framework.Services.Functional;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Net;

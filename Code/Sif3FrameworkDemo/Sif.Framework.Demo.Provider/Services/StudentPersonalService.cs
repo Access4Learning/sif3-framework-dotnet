@@ -16,10 +16,10 @@
 
 using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Demo.Provider.Utils;
-using Sif.Framework.Model.Events;
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Service.Providers;
+using Sif.Framework.Models.Events;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Services.Providers;
 using Sif.Specification.DataModel.Au;
 
 namespace Sif.Framework.Demo.Provider.Services;

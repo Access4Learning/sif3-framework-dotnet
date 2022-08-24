@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Model.Infrastructure">
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Models.Infrastructure">
   <class name="ApplicationRegister" table="APPLICATION_REGISTER" lazy="false">
     <id name="Id" column="APPLICATION_REGISTER_ID">
       <generator class="native" />
@@ -8,7 +8,7 @@
     <property name="SharedSecret" column="SHARED_SECRET" length="256" />
     <set name="EnvironmentRegisters" table="APPLICATION_ENVIRONMENT_REGISTERS" cascade="all" lazy="false">
       <key column="APPLICATION_REGISTER_ID" />
-      <many-to-many column="ENVIRONMENT_REGISTER_ID" class="Sif.Framework.Model.Infrastructure.EnvironmentRegister" />
+      <many-to-many column="ENVIRONMENT_REGISTER_ID" class="Sif.Framework.Models.Infrastructure.EnvironmentRegister" />
     </set>
   </class>
 </hibernate-mapping>

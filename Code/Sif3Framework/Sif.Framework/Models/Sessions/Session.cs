@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Tardigrade.Framework.Models.Domain;
 
-namespace Sif.Framework.Model.Sessions
+namespace Sif.Framework.Models.Sessions
 {
     /// <summary>
     /// Session data associated with Consumer/Provider interaction with an Environment Provider or Broker.

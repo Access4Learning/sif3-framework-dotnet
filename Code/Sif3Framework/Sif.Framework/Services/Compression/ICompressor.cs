@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 using System.IO;
 
-namespace Sif.Framework.Service.Compression
+namespace Sif.Framework.Services.Compression
 {
     /// <summary>
     /// Interface for stream compressors.

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Authentication;
+using Sif.Framework.Models.Authentication;
 
-namespace Sif.Framework.Service.Authentication
+namespace Sif.Framework.Services.Authentication
 {
     /// <summary>
     /// Delegate method for retrieving the shared secret used for authentication.
@@ -47,7 +47,7 @@ namespace Sif.Framework.Service.Authentication
         /// <param name="sessionToken">Session token extracted from the authorisation token.</param>
         /// <returns>True if the authorisation token is valid; false otherwise.</returns>
         /// <exception cref="System.ArgumentNullException">getSharedSecret is null.</exception>
-        /// <exception cref="Model.Exceptions.InvalidAuthorisationTokenException">authorisationToken is null, not recognised or invalid.</exception>
+        /// <exception cref="Models.Exceptions.InvalidAuthorisationTokenException">authorisationToken is null, not recognised or invalid.</exception>
         bool Verify(AuthorisationToken authorisationToken, GetSharedSecret getSharedSecret, out string sessionToken);
     }
 }

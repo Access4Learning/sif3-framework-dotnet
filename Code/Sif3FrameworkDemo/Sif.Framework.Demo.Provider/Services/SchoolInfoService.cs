@@ -15,9 +15,9 @@
  */
 
 using Sif.Framework.Demo.Provider.Models;
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Service.Providers;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Services.Providers;
 
 namespace Sif.Framework.Demo.Provider.Services;
 

@@ -16,7 +16,7 @@
 
 using Sif.Framework.Demo.Provider.Models;
 using Sif.Framework.Demo.Provider.Utils;
-using Sif.Framework.Model.Events;
+using Sif.Framework.Models.Events;
 using Sif.Specification.DataModel.Au;
 
 namespace Sif.Framework.Demo.Provider.Services;

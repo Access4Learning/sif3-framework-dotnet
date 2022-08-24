@@ -16,8 +16,8 @@
 
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Consumer.Models;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 
 namespace Sif.Framework.Demo.Consumer.Consumers;
 
