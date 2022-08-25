@@ -75,15 +75,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+    <PackageReference Include="Sif.Framework.EntityFrameworkCore" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Scripts\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj" />
   </ItemGroup>
 
 </Project>

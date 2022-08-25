@@ -157,6 +157,18 @@
     <Reference Include="Remotion.Linq.EagerFetching, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.EagerFetching.2.2.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
+    <Reference Include="Sif.Framework, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.6.0.0\lib\netstandard2.0\Sif.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Framework.AspNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.AspNet.1.0.0\lib\net472\Sif.Framework.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Framework.EntityFramework, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.EntityFramework.2.0.0\lib\net472\Sif.Framework.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sif.Framework.NHibernate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sif.Framework.NHibernate.1.0.0\lib\netstandard2.0\Sif.Framework.NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Sif.Specification.DataModel.Au, Version=3.4.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sif.Specification.DataModel.Au.3.4.8\lib\netstandard2.0\Sif.Specification.DataModel.Au.dll</HintPath>
     </Reference>
@@ -347,24 +359,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.AspNet\Sif.Framework.AspNet.csproj">
-      <Project>{1d206098-c59a-4a91-9898-e9eb83cb3290}</Project>
-      <Name>Sif.Framework.AspNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj">
-      <Project>{f7887a59-f773-4b75-946d-0376dc3c9c62}</Project>
-      <Name>Sif.Framework.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj">
-      <Project>{0e6f775a-adda-4cb0-bd05-c40760976a6e}</Project>
-      <Name>Sif.Framework.NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
-      <Project>{39603f9e-58bc-4fb0-a5b5-243c4c4ea08c}</Project>
-      <Name>Sif.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
