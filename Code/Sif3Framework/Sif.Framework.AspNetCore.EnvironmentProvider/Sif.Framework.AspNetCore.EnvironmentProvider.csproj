@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Version>1.0.0</Version>
+    <Authors>Rafidzal Rafiq</Authors>
+    <Company>Systemic Pty Ltd</Company>
+    <Product>SIF Framework Environment Provider (ASP.NET Core)</Product>
+    <Description>Environment Provider infrastructure service.</Description>
+    <Copyright>Copyright © Systemic Pty Ltd 2022</Copyright>
+    <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>SIF framework</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+    <PackageReference Include="Tardigrade.Framework.AspNetCore" Version="6.1.1" />
+    <PackageReference Include="Tardigrade.Framework.EntityFrameworkCore" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sif.Framework.AspNetCore\Sif.Framework.AspNetCore.csproj" />
+    <ProjectReference Include="..\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

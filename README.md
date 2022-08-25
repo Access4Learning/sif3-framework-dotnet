@@ -1,4 +1,4 @@
-> Copyright 2021 Systemic Pty Ltd
+> Copyright 2022 Systemic Pty Ltd
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -14,31 +14,92 @@
 
 ## Summary
 
-The SIF3 Framework is a .NET framework that enables developers to efficiently implement SIF3 Services (Consumers and/or Providers). It fully encapsulates the low level SIF3 Infrastructure. It also provides a basic Environment Provider which is core to SIF3.
+The SIF Framework is an SDK that enables developers to efficiently implement Service Consumers and Object Service Providers that comply with the [SIF standard](https://data.a4l.org). It fully encapsulates the low-level implementation details of the specifications that make up the standard. The SIF Framework also provides a reference implementation of an Environment Provider, a core component for operating in a Direct Zone.
 
-The framework includes a demo Solution that illustrates how to use it.
+The SIF Framework includes demonstration projects that provide examples of its use.
 
 ### Getting started
 
-To get started using this framework, read the *Sif3Framework .NET Developer's Guide.doc* and *Sif3Framework .NET Demo Usage Guide.doc* documents under the Documentation directory.
+To get started using the SIF Framework, read the *SIF Framework Setup Guide.docx* document under the *Documentation\Developer Guides* directory.
 
 ### Pre-requisites
 
-The SIF3 Framework library is a .NET Standard project that supports multiple versions of .NET Framework (4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2). If you do not have all these versions installed, you will need to edit the Sif.Framework.csproj project file to reflect your installation. Multiple versions are targeted for the benefit of NuGet package deployment.
+The SIF Framework supports the following versions of .NET:
 
-For more information regarding support for multiple versions, refer to the article [Target frameworks](https://docs.microsoft.com/en-us/dotnet/standard/frameworks).
+- .NET Standard 2.0
+- .NET Framework 4.7.2
+- .NET 6
 
-The SIF3 Framework has been developed on Visual Studio Community 2017.
+These versions were targeted to provide some degree of NuGet package backward compatibility. Versions prior to these are not supported.
 
-### Contributing to this framework
-
-See the [wiki associated with this repository](https://github.com/Access4Learning/sif3-framework-dotnet/wiki) for information on: 
-
-* contributing to this framework 
-* the coding style to be used and
-* the structure of the SIF 3 Framework repositories
+For .NET 6 support, Visual Studio 2022 is required. The SIF Framework is currently maintained using Visual Studio Community 2022.
 
 ## Version control history
+
+**Aug 25, 2022 - 6.0.0 Upgraded to support .NET 6 and Entity Framework Core**
+
+- GENERAL CHANGES
+  - Created Sif.Framework technology specific projects for ASP.NET Core and Entity Framework Core.
+    - Sif.Framework.AspNetCore
+    - Sif.Framework.EntityFrameworkCore
+  - Created a new Environment Provider project based upon ASP.NET Core.
+    - Sif.Framework.AspNetCore.EnvironmentProvider
+  - Added unit tests for Entity Framework Core specific code.
+  - Added training projects to supplement the documented training exercises.
+    - Sif.Framework.Training.TestConsumer
+    - Sif.Framework.Training.TestProvider
+  - Refactored methods from the EnvironmentUtils, HttpUtils and ProviderUtils classes into corresponding extension methods.
+  - Fixed error managment issues in the SessionService class.
+  - Updated the demo projects to .NET Framework 4.7.2.
+    - Sif.Framework.Demo.Au.Consumer
+  - Replace some exception classes with equivalent exception classes from the Tardigrade.Framework NuGet package.
+  - Created documentation specific to the ASP.NET Core version of the SIF Framework.
+  - Created demo set-up, Consumer and Provider projects specific to the ASP.NET Core version of the SIF Framework.
+    - Sif.Framework.Demo.Consumer
+    - Sif.Framework.Demo.NetCore.Setup
+    - Sif.Framework.Demo.Provider
+  - Created shell scripts to run the ASP.NET Core demo projects.
+  - Upgraded all ASP.NET Web API, Demo and Unit Test projects from .NET Framework 4.6.1 to 4.7.2.
+  - Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
+  - Corrected a return type design issue with the IEnvironmentService interface.
+  - Updated the DbContext to eager load all relationships.
+  - Updated the ArrayOfOutputFormatter class constructor to accept a string rather than the IFrameworkSettings interface.
+  - Deprecating the following classes:
+    - Model/Settings/ConfigFileBasedFrameworkSettings
+    - Model/Settings/ConsumerSettings
+    - Model/Settings/ProviderSettings
+    - Utils/SettingsManager
+  - Updated XML documentation in classes.
+  - Updated third-party NuGet packages.
+  - General code clean-up.
+- CHANGES AFFECTING BACKWARD COMPATIBILITY
+  - Added .NET 6 as a Target Framework to the Sif.Framework project and dropped .NET Framework 4.7.2.
+  - Removed .NET Framework 4.6.1 as a Target Framework from all SDK-style library projects.
+  - Deprecated the IPersistable interface for the IHasUniqueIdentitifer interface from the Tardigrade.Framework NuGet package.
+  - Re-designed the ISifService interface.
+  - Re-designed the IAuthorisationService and IAuthenticationService interfaces.
+  - Infrastructure model objects that referenced associations using an IDictionary have been refactored to use ICollection instead. These changes have been reflected in the NHibernate mapping files and AutoMapper mappings.
+    - Environment
+    - EnvironmentRegister
+    - Job
+    - Phase
+    - Service
+    - Zone
+  - Re-ordered the constructor parameters for the RequestParameter class.
+  - Replaced references to the IGenericRepository interface with the IRepository interface from the Tardigrade.Framework NuGet package.
+  - Replaced references to the IGenericService interface with the IObjectService interface from the Tardigrade.Framework NuGet package.
+  - Replaced references to the GenericService class with the ObjectService class from the Tardigrade.Framework NuGet package.
+  - Refactored the constructor of all infrastructure service classes to allow for injection of repositories and services.
+  - Updated the NHibernate mapping for the Environment class to save the EnvironmentType enum property as a string rather than integer.
+- CHANGES WHICH BREAK BACKWARD COMPATIBILITY WITH IMPLEMENTED CONSUMERS AND PROVIDERS
+  - Split the Sif.Framework project into multiple technology specific projects for ASP.NET Web API, Entity Framework and NHibernate.
+    - Sif.Framework.AspNet
+    - Sif.Framework.EntityFramework
+    - Sif.Framework.NHibernate
+  - Renamed the Sif.Framework.Model namespace to Sif.Framework.Models.
+  - Renamed the Sif.Framework.Service namespace to Sif.Framework.Services.
+  - Removed the Sif.Framework.EntityFramework.Services.Sessions namespace and migrated classes to Sif.Framework.Services.Sessions.
+  - Updated all Controllers/Providers so that services are passed to the constructor as opposed to instantiated by the Controller/Provider.
 
 **May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
 
@@ -48,6 +109,7 @@ See the [wiki associated with this repository](https://github.com/Access4Learnin
 - Updated the AU Demo Consumer and Provider projects to enable the use of the session service.
 - Created unit tests for the session service.
 - Performed general code improvements based upon ReSharper recommendations.
+- Removed redundant SharedLibs directory.
 
 **Apr 25, 2021 - 4.0.1 Updated to the official release of the SIF AU 3.4.8 Data Model**
 

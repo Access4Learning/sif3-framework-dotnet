@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Requests;
+using Sif.Framework.Models.Settings;
 using Sif.Framework.Settings;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Requests;
-using Sif.Framework.Model.Settings;
 using Tardigrade.Framework.Configurations;
 using Tardigrade.Framework.EntityFramework.Configurations;
 using Xunit;

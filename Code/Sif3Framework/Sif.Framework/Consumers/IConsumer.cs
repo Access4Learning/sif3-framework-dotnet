@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Model.Responses;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Models.Responses;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Consumers

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using Tardigrade.Framework.Exceptions;
 
 namespace Sif.Framework.Demo.Broker.Controllers
 {
     public class EventsProvider : BasicProvider<StudentPersonal>
     {
         private readonly slf4net.ILogger log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public EventsProvider() : base(new StudentPersonalService(), SettingsManager.ProviderSettings)
         {

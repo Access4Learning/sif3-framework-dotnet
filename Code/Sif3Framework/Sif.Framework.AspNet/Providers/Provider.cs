@@ -1,0 +1,939 @@
+﻿/*
+ * Copyright 2022 Systemic Pty Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using Sif.Framework.AspNet.Extensions;
+using Sif.Framework.AspNet.ModelBinders;
+using Sif.Framework.AspNet.Services.Authentication;
+using Sif.Framework.AspNet.Services.Authorisation;
+using Sif.Framework.Extensions;
+using Sif.Framework.Models.Authentication;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Events;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Models.Requests;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Authentication;
+using Sif.Framework.Services.Authorisation;
+using Sif.Framework.Services.Infrastructure;
+using Sif.Framework.Services.Providers;
+using Sif.Framework.Services.Registration;
+using Sif.Framework.Services.Sessions;
+using Sif.Framework.Utils;
+using Sif.Specification.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Web.Http;
+using Tardigrade.Framework.Exceptions;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
+
+namespace Sif.Framework.AspNet.Providers
+{
+    /// <summary>
+    /// This class defines a Provider of SIF data model objects.
+    /// </summary>
+    /// <typeparam name="TSingle">Type that defines a single object entity.</typeparam>
+    /// <typeparam name="TMultiple">Type that defines a multiple objects entity.</typeparam>
+    public abstract class Provider<TSingle, TMultiple>
+        : ApiController, IProvider<TSingle, TMultiple, string>, IEventPayloadSerialisable<TMultiple>
+        where TSingle : ISifRefId<string>
+    {
+        private readonly ISessionService sessionService;
+
+        /// <summary>
+        /// Accepted content type (XML or JSON) for a message payload.
+        /// </summary>
+        protected Accept Accept => ProviderSettings.Accept;
+
+        /// <summary>
+        /// Service used for request authentication.
+        /// </summary>
+        protected IAuthenticationService<HttpRequestHeaders> AuthenticationService { get; }
+
+        /// <summary>
+        /// Service used for request authorisation.
+        /// </summary>
+        protected IAuthorisationService<HttpRequestHeaders> AuthorisationService { get; }
+
+        /// <summary>
+        /// Content type (XML or JSON) of the message payload.
+        /// </summary>
+        protected ContentType ContentType => ProviderSettings.ContentType;
+
+        /// <summary>
+        /// Application settings associated with the Provider.
+        /// </summary>
+        protected IFrameworkSettings ProviderSettings { get; }
+
+        /// <summary>
+        /// Object service associated with this Provider.
+        /// </summary>
+        protected IProviderService<TSingle, TMultiple> Service { get; }
+
+        /// <summary>
+        /// Name of the SIF data model that the Provider is based on, e.g. SchoolInfo, StudentPersonal, etc.
+        /// </summary>
+        protected virtual string TypeName => typeof(TSingle).Name;
+
+        /// <summary>
+        /// Create an instance based on the specified service.
+        /// </summary>
+        /// <param name="service">Service used for managing the object type.</param>
+        /// <param name="applicationRegisterService">Application register service.</param>
+        /// <param name="environmentService">Environment service.</param>
+        /// <param name="settings">Provider settings. If null, Provider settings will be read from the SifFramework.config file.</param>
+        /// <param name="sessionService">Provider session service. If null, the Provider session will be stored in the SifFramework.config file.</param>
+        /// <exception cref="ArgumentNullException">service is null.</exception>
+        protected Provider(
+            IProviderService<TSingle, TMultiple> service,
+            IApplicationRegisterService applicationRegisterService,
+            IEnvironmentService environmentService,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+        {
+            Service = service ?? throw new ArgumentNullException(nameof(service));
+            ProviderSettings = settings ?? SettingsManager.ProviderSettings;
+            this.sessionService = sessionService ?? SessionsManager.ProviderSessionService;
+
+            switch (ProviderSettings.EnvironmentType)
+            {
+                case EnvironmentType.BROKERED:
+                    AuthenticationService = new BrokeredAuthenticationService(
+                        applicationRegisterService,
+                        environmentService,
+                        ProviderSettings,
+                        this.sessionService);
+                    break;
+
+                case EnvironmentType.DIRECT:
+                default:
+                    AuthenticationService =
+                        new DirectAuthenticationService(applicationRegisterService, environmentService);
+                    break;
+            }
+
+            AuthorisationService = new AuthorisationService(AuthenticationService);
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TTSingle, string[], string[])" />
+        public virtual IHttpActionResult Post(
+            TSingle obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.CREATE))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                bool hasAdvisoryId = !string.IsNullOrWhiteSpace(obj.RefId);
+                bool? mustUseAdvisory = Request.Headers.GetMustUseAdvisory();
+
+                if (mustUseAdvisory.HasValue)
+                {
+                    if (mustUseAdvisory.Value && !hasAdvisoryId)
+                    {
+                        result = BadRequest(
+                            $"Request failed for object {TypeName} as object ID is not provided, but mustUseAdvisory is true.");
+                    }
+                    else
+                    {
+                        RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                        TSingle createdObject =
+                            Service.Create(obj, mustUseAdvisory, zoneId?[0], contextId?[0], requestParameters);
+                        string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
+                        result = Created(uri, createdObject);
+                    }
+                }
+                else
+                {
+                    RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                    TSingle createdObject = Service.Create(obj, null, zoneId?[0], contextId?[0], requestParameters);
+                    string uri = Url.Link("DefaultApi", new { controller = TypeName, id = createdObject.RefId });
+                    result = Created(uri, createdObject);
+                }
+            }
+            catch (AlreadyExistsException)
+            {
+                result = Conflict();
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest($"Object to create of type {TypeName} is invalid.\n{e.Message}");
+            }
+            catch (CreateException e)
+            {
+                result = BadRequest($"Request failed for object {TypeName}.\n{e.Message}");
+            }
+            catch (RejectedException e)
+            {
+                result = this.NotFound(
+                    $"Create request rejected for object {TypeName} with ID of {obj.RefId}.\n{e.Message}");
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest($"Request failed for object {TypeName}.\n{e.Message}");
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Post(TMultiple, string[], string[])" />
+        public abstract IHttpActionResult Post(TMultiple obj, string[] zoneId = null, string[] contextId = null);
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TPrimaryKey, string[], string[])" />
+        public virtual IHttpActionResult Get(
+            [FromUri(Name = "id")] string refId,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if (Request.Headers.HasPagingHeaders())
+            {
+                return StatusCode(HttpStatusCode.MethodNotAllowed);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                TSingle obj = Service.Retrieve(refId, zoneId?[0], contextId?[0], requestParameters);
+
+                if (obj == null)
+                {
+                    result = StatusCode(HttpStatusCode.NoContent);
+                }
+                else
+                {
+                    result = Ok(obj);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest($"Invalid argument: id={refId}.\n{e.Message}");
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest($"Request failed for object {TypeName} with ID of {refId}.\n{e.Message}");
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve all objects.
+        /// </summary>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <exception cref="ArgumentException">One or more parameters of the Provider service call are invalid.</exception>
+        /// <exception cref="ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Exception">Catch all for exceptions thrown by the implementation of the Provider service interface.</exception>
+        /// <returns>All objects.</returns>
+        private IHttpActionResult GetAll(string zoneId, string contextId)
+        {
+            if (Request.Headers.HasMethodOverrideHeader())
+            {
+                return BadRequest("GET (Query by Example) request failed due to missing payload.");
+            }
+
+            uint? navigationPage = Request.Headers.GetNavigationPage();
+            uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+            TMultiple items =
+                Service.Retrieve(navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
+            IHttpActionResult result;
+
+            if (items == null)
+            {
+                result = StatusCode(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                result = Ok(items);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve objects based on the Changes Since marker.
+        /// </summary>
+        /// <param name="changesSinceMarker">Changes Since marker.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <exception cref="ArgumentException">One or more parameters of the Provider service call are invalid.</exception>
+        /// <exception cref="ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Exception">Catch all for exceptions thrown by the implementation of the Provider service interface.</exception>
+        /// <returns>Objects associated with the Changes Since marker.</returns>
+        private IHttpActionResult GetChangesSince(string changesSinceMarker, string zoneId, string contextId)
+        {
+            if (Request.Headers.HasMethodOverrideHeader())
+            {
+                return BadRequest("The Changes Since marker is not applicable for a GET (Query by Example) request.");
+            }
+
+            bool changesSinceRequested = !string.IsNullOrWhiteSpace(changesSinceMarker);
+            var changesSinceService = Service as IChangesSinceService<TMultiple>;
+            bool changesSinceSupported = changesSinceService != null;
+
+            if (changesSinceRequested && !changesSinceSupported)
+            {
+                return BadRequest("The Changes Since request is not supported.");
+            }
+
+            uint? navigationPage = Request.Headers.GetNavigationPage();
+            uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+            TMultiple items = changesSinceService.RetrieveChangesSince(
+                changesSinceMarker,
+                navigationPage,
+                navigationPageSize,
+                zoneId,
+                contextId,
+                requestParameters);
+            IHttpActionResult result;
+
+            if (items == null)
+            {
+                result = StatusCode(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                result = Ok(items);
+            }
+
+            bool pagedRequest = navigationPage.HasValue && navigationPageSize.HasValue;
+            bool firstPage = navigationPage == 1;
+
+            if (pagedRequest && !firstPage) return result;
+
+            // Changes Since marker is only returned for non-paged requests or the first page of a paged request.
+            try
+            {
+                result = result.AddHeader(
+                    "changesSinceMarker",
+                    changesSinceService.NextChangesSinceMarker ?? string.Empty);
+            }
+            catch (Exception)
+            {
+                throw new QueryException(
+                    "Implementation to retrieve the next Changes Since marker returned an error.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve objects using Query by Example.
+        /// </summary>
+        /// <param name="obj">Example object.</param>
+        /// <param name="zoneId">Zone associated with the request.</param>
+        /// <param name="contextId">Zone context.</param>
+        /// <exception cref="ArgumentException">One or more parameters of the Provider service call are invalid.</exception>
+        /// <exception cref="ContentTooLargeException">Too many objects to return.</exception>
+        /// <exception cref="QueryException">Error retrieving objects.</exception>
+        /// <exception cref="Exception">Catch all for exceptions thrown by the implementation of the Provider service interface.</exception>
+        /// <returns>Objects which match the Query by Example.</returns>
+        private IHttpActionResult GetQueryByExample(TSingle obj, string zoneId, string contextId)
+        {
+            if (!Request.Headers.HasMethodOverrideHeader())
+            {
+                return BadRequest("GET (Query by Example) request failed due to a missing method override header.");
+            }
+
+            uint? navigationPage = Request.Headers.GetNavigationPage();
+            uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
+            RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+            TMultiple items =
+                Service.Retrieve(obj, navigationPage, navigationPageSize, zoneId, contextId, requestParameters);
+            IHttpActionResult result;
+
+            if (items == null)
+            {
+                result = StatusCode(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                result = Ok(items);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(TTSingle, string, string[], string[])" />
+        public virtual IHttpActionResult Get(
+            TSingle obj,
+            string changesSinceMarker = null,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if (!Request.Headers.ValidatePagingParameters(out string errorMessage))
+            {
+                return BadRequest(errorMessage);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                if (obj == null)
+                {
+                    result = changesSinceMarker == null
+                        ? GetAll(zoneId?[0], contextId?[0])
+                        : GetChangesSince(changesSinceMarker, zoneId?[0], contextId?[0]);
+                }
+                else
+                {
+                    result = GetQueryByExample(obj, zoneId?[0], contextId?[0]);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest($"One or more parameters of the GET request are invalid.\n{e.Message}");
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest($"GET request failed for object {TypeName}.\n{e.Message}");
+            }
+            catch (ContentTooLargeException)
+            {
+                result = StatusCode(HttpStatusCode.RequestEntityTooLarge);
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Get(string, string, string, string, string, string, string[], string[])" />
+        public virtual IHttpActionResult Get(
+            string object1,
+            [FromUri(Name = "id1")] string refId1,
+            string object2 = null,
+            [FromUri(Name = "id2")] string refId2 = null,
+            string object3 = null,
+            [FromUri(Name = "id3")] string refId3 = null,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            string serviceName;
+
+            if (object3 != null)
+            {
+                serviceName = $"{object1}/{{}}/{object2}/{{}}/{object3}/{{}}/{TypeName}s";
+            }
+            else if (object2 != null)
+            {
+                serviceName = $"{object1}/{{}}/{object2}/{{}}/{TypeName}s";
+            }
+            else
+            {
+                serviceName = $"{object1}/{{}}/{TypeName}s";
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, serviceName, RightType.QUERY))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if (!Request.Headers.ValidatePagingParameters(out string errorMessage))
+            {
+                return BadRequest(errorMessage);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                IList<EqualCondition> conditions =
+                    new List<EqualCondition> { new EqualCondition { Left = object1, Right = refId1 } };
+
+                if (!string.IsNullOrWhiteSpace(object2))
+                {
+                    conditions.Add(new EqualCondition { Left = object2, Right = refId2 });
+
+                    if (!string.IsNullOrWhiteSpace(object3))
+                    {
+                        conditions.Add(new EqualCondition { Left = object3, Right = refId3 });
+                    }
+                }
+
+                uint? navigationPage = Request.Headers.GetNavigationPage();
+                uint? navigationPageSize = Request.Headers.GetNavigationPageSize();
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                TMultiple items = Service.Retrieve(
+                    conditions,
+                    navigationPage,
+                    navigationPageSize,
+                    zoneId?[0],
+                    contextId?[0],
+                    requestParameters);
+
+                if (items == null)
+                {
+                    result = StatusCode(HttpStatusCode.NoContent);
+                }
+                else
+                {
+                    result = Ok(items);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest($"One or more conditions are invalid.\n{e.Message}");
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest($"Service Path GET request failed for object {TypeName}.\n{e.Message}");
+            }
+            catch (ContentTooLargeException)
+            {
+                result = StatusCode(HttpStatusCode.RequestEntityTooLarge);
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TPrimaryKey, TTSingle, string[], string[])" />
+        public virtual IHttpActionResult Put(
+            [FromUri(Name = "id")] string refId,
+            TSingle obj,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.UPDATE))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if (string.IsNullOrWhiteSpace(refId) || obj == null || !refId.Equals(obj.RefId))
+            {
+                return BadRequest(
+                    "The refId in the update request does not match the SIF identifier of the object provided.");
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                Service.Update(obj, zoneId?[0], contextId?[0], requestParameters);
+                result = StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest($"Object to update of type {TypeName} is invalid.\n{e.Message}");
+            }
+            catch (NotFoundException e)
+            {
+                result = this.NotFound($"Object {TypeName} with ID of {refId} not found.\n{e.Message}");
+            }
+            catch (UpdateException e)
+            {
+                result = BadRequest($"Request failed for object {TypeName} with ID of {refId}.\n{e.Message}");
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Put(TMultiple, string[], string[])" />
+        public abstract IHttpActionResult Put(TMultiple obj, string[] zoneId = null, string[] contextId = null);
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(TPrimaryKey, string[], string[])" />
+        public virtual IHttpActionResult Delete(
+            [FromUri(Name = "id")] string refId,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                Service.Delete(refId, zoneId?[0], contextId?[0], requestParameters);
+                result = StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest($"Invalid argument: id={refId}.\n{e.Message}");
+            }
+            catch (DeleteException e)
+            {
+                result = BadRequest($"Request failed for object {TypeName} with ID of {refId}.\n{e.Message}");
+            }
+            catch (NotFoundException e)
+            {
+                result = this.NotFound($"Object {TypeName} with ID of {refId} not found.\n{e.Message}");
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Delete(deleteRequestType, string[], string[])" />
+        public virtual IHttpActionResult Delete(
+            deleteRequestType deleteRequest,
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.DELETE))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            ICollection<deleteStatus> deleteStatuses = new List<deleteStatus>();
+
+            try
+            {
+                foreach (deleteIdType deleteId in deleteRequest.deletes)
+                {
+                    var status = new deleteStatus
+                    {
+                        id = deleteId.id
+                    };
+
+                    try
+                    {
+                        RequestParameter[] requestParameters = Request.GetQueryParameters().ToArray();
+                        Service.Delete(deleteId.id, zoneId?[0], contextId?[0], requestParameters);
+                        status.statusCode = ((int)HttpStatusCode.NoContent).ToString();
+                    }
+                    catch (ArgumentException e)
+                    {
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Invalid argument: id={deleteId.id}.\n{e.Message}");
+                        status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
+                    }
+                    catch (DeleteException e)
+                    {
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.BadRequest,
+                            TypeName,
+                            $"Request failed for object {TypeName} with ID of {deleteId.id}.\n{e.Message}");
+                        status.statusCode = ((int)HttpStatusCode.BadRequest).ToString();
+                    }
+                    catch (NotFoundException e)
+                    {
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.NotFound,
+                            TypeName,
+                            $"Object {TypeName} with ID of {deleteId.id} not found.\n{e.Message}");
+                        status.statusCode = ((int)HttpStatusCode.NotFound).ToString();
+                    }
+                    catch (Exception e)
+                    {
+                        status.error = ProviderUtils.CreateError(
+                            HttpStatusCode.InternalServerError,
+                            TypeName,
+                            $"Request failed for object {TypeName} with ID of {deleteId.id}.\n{e.Message}");
+                        status.statusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    }
+
+                    deleteStatuses.Add(status);
+                }
+            }
+            catch (Exception)
+            {
+                // Need to ignore exceptions otherwise it would not be possible to return status records of processed objects.
+            }
+
+            var deleteResponse = new deleteResponseType { deletes = deleteStatuses.ToArray() };
+
+            return Ok(deleteResponse);
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.Head(string[], string[])" />
+        [HttpHead]
+        public virtual IHttpActionResult Head(
+            [MatrixParameter] string[] zoneId = null,
+            [MatrixParameter] string[] contextId = null)
+        {
+            if (!AuthenticationService.VerifyAuthenticationHeader(Request.Headers, out string sessionToken))
+            {
+                return Unauthorized();
+            }
+
+            // Check ACLs and return StatusCode(HttpStatusCode.Forbidden) if appropriate.
+            if (!AuthorisationService.IsAuthorised(Request.Headers, sessionToken, $"{TypeName}s", RightType.QUERY))
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
+            if (!Request.Headers.ValidatePagingParameters(out string errorMessage))
+            {
+                return BadRequest(errorMessage);
+            }
+
+            if ((zoneId != null && zoneId.Length != 1) || (contextId != null && contextId.Length != 1))
+            {
+                return BadRequest($"Request failed for object {TypeName} as Zone and/or Context are invalid.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                result = GetAll(zoneId?[0], contextId?[0]).ClearContent();
+
+                if (Service is ISupportsChangesSince supportsChangesSince)
+                {
+                    result = result.AddHeader(
+                        "changesSinceMarker",
+                        supportsChangesSince.ChangesSinceMarker ?? string.Empty);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest(
+                    $"One or more parameters of the GET request (associated with the HEAD request) are invalid.\n{e.Message}");
+            }
+            catch (QueryException e)
+            {
+                result = BadRequest($"HEAD request failed for object {TypeName}.\n{e.Message}");
+            }
+            catch (ContentTooLargeException)
+            {
+                result = StatusCode(HttpStatusCode.RequestEntityTooLarge);
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IProvider{TTSingle,TMultiple,TPrimaryKey}.BroadcastEvents(string, string)" />
+        [HttpGet]
+        public virtual IHttpActionResult BroadcastEvents(string zoneId = null, string contextId = null)
+        {
+            var eventService = Service as IEventService<TMultiple>;
+            bool eventsSupported = eventService != null;
+
+            if (!eventsSupported)
+            {
+                return BadRequest("Support for SIF Events has not been implemented.");
+            }
+
+            IHttpActionResult result;
+
+            try
+            {
+                IRegistrationService registrationService = RegistrationManager.GetProviderRegistrationService(
+                    ProviderSettings,
+                    sessionService);
+
+                if (registrationService is NoRegistrationService)
+                {
+                    result = BadRequest("SIF Events are only supported in a BROKERED environment.");
+                }
+                else
+                {
+                    IEventIterator<TMultiple> eventIterator = eventService.GetEventIterator(zoneId, contextId);
+
+                    if (eventIterator == null)
+                    {
+                        result = BadRequest("SIF Events implementation is not valid.");
+                    }
+                    else
+                    {
+                        Environment environment = registrationService.Register();
+
+                        // Retrieve the current Authorisation Token.
+                        AuthorisationToken token = registrationService.AuthorisationToken;
+
+                        // Retrieve the EventsConnector endpoint URL.
+                        string url = environment.ParseServiceUrl(
+                            ServiceType.UTILITY,
+                            InfrastructureServiceNames.eventsConnector);
+
+                        while (eventIterator.HasNext())
+                        {
+                            SifEvent<TMultiple> sifEvent = eventIterator.GetNext();
+
+                            var requestHeaders = new NameValueCollection
+                            {
+                                { EventParameterType.eventAction.ToDescription(), sifEvent.EventAction.ToDescription() },
+                                { EventParameterType.messageId.ToDescription(), sifEvent.Id.ToString() },
+                                { EventParameterType.messageType.ToDescription(), "EVENT" },
+                                { EventParameterType.serviceName.ToDescription(), $"{TypeName}s" }
+                            };
+
+                            switch (sifEvent.EventAction)
+                            {
+                                case EventAction.UPDATE_FULL:
+                                    requestHeaders.Add(EventParameterType.Replacement.ToDescription(), "FULL");
+                                    break;
+
+                                case EventAction.UPDATE_PARTIAL:
+                                    requestHeaders.Add(EventParameterType.Replacement.ToDescription(), "PARTIAL");
+                                    break;
+                            }
+
+                            string requestBody = SerialiseEvents(sifEvent.SifObjects);
+                            HttpUtils.PostRequest(
+                                url,
+                                token,
+                                requestBody,
+                                ProviderSettings.CompressPayload,
+                                contentTypeOverride: ContentType.ToDescription(),
+                                acceptOverride: Accept.ToDescription(),
+                                requestHeaders: requestHeaders);
+                        }
+
+                        result = Ok();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = InternalServerError(e);
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc cref="IEventPayloadSerialisable{TMultiple}.SerialiseEvents(TMultiple)" />
+        public abstract string SerialiseEvents(TMultiple obj);
+    }
+}

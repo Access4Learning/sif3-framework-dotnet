@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 using Bogus;
-using Sif.Framework.Model.Sessions;
+using Sif.Framework.Models.Sessions;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -26,7 +26,7 @@ namespace Sif.Framework.Shared
         private const char LowercaseZ = '\x7a';
         private const char Zero = '\x30';
 
-        private static readonly string[] SifType = {"Consumer", "Provider"};
+        private static readonly string[] SifType = { "Consumer", "Provider" };
 
         private static readonly Faker<Session> FakeSessions = new Faker<Session>()
             .RuleFor(
@@ -43,6 +43,6 @@ namespace Sif.Framework.Shared
 
         public static Session CreateSession() => FakeSessions.Generate();
 
-        public static IList<Session> CreateSessions(uint count) => FakeSessions.Generate((int) count);
+        public static IList<Session> CreateSessions(uint count) => FakeSessions.Generate((int)count);
     }
 }

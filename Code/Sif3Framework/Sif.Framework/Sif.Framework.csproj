@@ -1,79 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net472;net461</TargetFrameworks>
-    <Version>5.0.0</Version>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>6.0.0</Version>
     <Authors>Rafidzal Rafiq</Authors>
     <Company>Systemic Pty Ltd</Company>
     <Product>SIF Framework library</Product>
     <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
-    <Copyright>Copyright © Systemic Pty Ltd 2021</Copyright>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Copyright>Copyright © Systemic Pty Ltd 2022</Copyright>
     <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>SIF framework</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Job.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Property.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Right.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Service.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
-    <None Remove="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationInfo.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ApplicationRegister.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Environment.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\EnvironmentRegister.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\InfrastructureService.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Job.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Phase.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\PhaseState.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProductIdentity.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Property.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\ProvisionedZone.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Right.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Service.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\SifObjectBinding.hbm.xml" />
-    <EmbeddedResource Include="Persistence\NHibernate\Mapping\Zone.hbm.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
-    <PackageReference Include="NHibernate" Version="5.3.5" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="Sif.Specification.Infrastructure" Version="3.2.1" />
     <PackageReference Include="slf4net" Version="1.1.0" />
-    <PackageReference Include="Tardigrade.Framework" Version="11.1.0" />
+    <PackageReference Include="Tardigrade.Framework" Version="15.1.0" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>NET461;NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
-    <DefineConstants>NET472;NETFULL</DefineConstants>
-  </PropertyGroup>
 
 </Project>

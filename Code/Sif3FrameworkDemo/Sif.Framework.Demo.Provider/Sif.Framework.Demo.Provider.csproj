@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+    <PackageReference Include="Sif.Framework.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="Sif.Framework.EntityFrameworkCore" Version="1.0.0" />
+    <PackageReference Include="Sif.Specification.DataModel.Au" Version="3.4.8" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,13 @@
 
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
-    /// <inheritdoc />
-    internal class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
+    public class StudentPersonalConsumer : BasicConsumer<StudentPersonal>
     {
-        /// <inheritdoc />
-        public StudentPersonalConsumer(
-            Environment environment,
-            IFrameworkSettings settings = null,
-            ISessionService sessionService = null)
-            : base(environment, settings, sessionService)
-        {
-        }
-
-        /// <inheritdoc />
         public StudentPersonalConsumer(
             string applicationKey,
             string instanceId = null,

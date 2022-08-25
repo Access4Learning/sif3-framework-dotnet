@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Models.Infrastructure">
+  <class name="EnvironmentRegister" table="ENVIRONMENT_REGISTER" lazy="false">
+    <id name="Id" column="ENVIRONMENT_REGISTER_ID">
+      <generator class="native" />
+    </id>
+    <property name="ApplicationKey" column="APPLICATION_KEY" length="256" />
+    <property name="InstanceId" column="INSTANCE_ID" length="256" />
+    <property name="SolutionId" column="SOLUTION_ID" length="256" />
+    <property name="UserToken" column="USER_TOKEN" length="256" />
+    <many-to-one name="DefaultZone" column="ZONE_ID" class="Sif.Framework.Models.Infrastructure.Zone" cascade="all" fetch="join" />
+    <bag name="InfrastructureServices" cascade="all" lazy="false">
+      <key column="ENVIRONMENT_REGISTER_ID" />
+      <one-to-many class="Sif.Framework.Models.Infrastructure.InfrastructureService" />
+    </bag>
+    <bag name="ProvisionedZones" cascade="all" lazy="false">
+      <key column="ENVIRONMENT_REGISTER_ID" />
+      <one-to-many class="Sif.Framework.Models.Infrastructure.ProvisionedZone" />
+    </bag>
+  </class>
+</hibernate-mapping>

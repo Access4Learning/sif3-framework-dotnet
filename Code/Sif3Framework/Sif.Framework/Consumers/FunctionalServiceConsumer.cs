@@ -1,6 +1,6 @@
 ﻿/*
  * Crown Copyright © Department for Education (UK) 2016
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Mapper;
-using Sif.Framework.Service.Registration;
-using Sif.Framework.Service.Serialisation;
-using Sif.Framework.Service.Sessions;
+using Sif.Framework.Extensions;
+using Sif.Framework.Models.Exceptions;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Responses;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Mapper;
+using Sif.Framework.Services.Registration;
+using Sif.Framework.Services.Serialisation;
+using Sif.Framework.Services.Sessions;
 using Sif.Framework.Utils;
 using Sif.Specification.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Http;
-using Environment = Sif.Framework.Model.Infrastructure.Environment;
+using Environment = Sif.Framework.Models.Infrastructure.Environment;
 
 namespace Sif.Framework.Consumers
 {
@@ -39,7 +40,7 @@ namespace Sif.Framework.Consumers
     public class FunctionalServiceConsumer
     {
         private static readonly slf4net.ILogger Log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private readonly RegistrationService registrationService;
 
@@ -183,7 +184,7 @@ namespace Sif.Framework.Consumers
         /// <returns>A string in the form {http/https}://{domain:port}/{servicesConnectorPath}/{jobName}s.</returns>
         protected virtual string GetUrlPrefix(string jobName)
         {
-            return EnvironmentUtils.ParseServiceUrl(EnvironmentTemplate, ServiceType.FUNCTIONAL) + "/" + jobName + "s";
+            return $"{EnvironmentTemplate.ParseServiceUrl(ServiceType.FUNCTIONAL)}/{jobName}s";
         }
 
         /// <summary>
@@ -413,7 +414,7 @@ namespace Sif.Framework.Consumers
             CheckRegistered();
             CheckJob(job, RightType.UPDATE, zoneId);
 
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
+            throw new UpdateException("HttpStatusCode.Forbidden");
         }
 
         /// <summary>
@@ -428,7 +429,7 @@ namespace Sif.Framework.Consumers
             CheckRegistered();
             CheckJobs(jobs, RightType.UPDATE, zoneId);
 
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
+            throw new UpdateException("HttpStatusCode.Forbidden");
         }
 
         /// <summary>
@@ -675,20 +676,20 @@ namespace Sif.Framework.Consumers
             return DeserialiseSingle<PhaseState, stateType>(xml);
         }
 
-        private Model.Infrastructure.Service CheckJob(Job job, string zoneId = null)
+        private Service CheckJob(Job job, string zoneId = null)
         {
             if (job == null)
             {
                 throw new ArgumentException("Job cannot be null.");
             }
 
-            if (StringUtils.IsEmpty(job.Name))
+            if (string.IsNullOrWhiteSpace(job.Name))
             {
                 throw new ArgumentException("Job name must be specified.");
             }
 
-            Model.Infrastructure.Service service = ZoneUtils.GetService(
-                EnvironmentUtils.GetTargetZone(registrationService.CurrentEnvironment, zoneId),
+            Service service = ZoneUtils.GetService(
+                registrationService.CurrentEnvironment.GetTargetZone(zoneId),
                 job.Name + "s",
                 ServiceType.FUNCTIONAL);
 
@@ -703,14 +704,16 @@ namespace Sif.Framework.Consumers
 
         private void CheckJob(Job job, RightType right, string zoneId = null, bool ignoreId = false)
         {
-            Model.Infrastructure.Service service = CheckJob(job, zoneId);
+            Service service = CheckJob(job, zoneId);
 
             if (!ignoreId && !right.Equals(RightType.CREATE) && job.Id == null)
             {
                 throw new ArgumentException("Job must have an Id for any non-creation operation");
             }
 
-            if (service.Rights[right.ToString()].Value.Equals(RightValue.REJECTED.ToString()))
+            string rightValue = service.Rights.FirstOrDefault(r => r.Type == right.ToString())?.Value;
+
+            if (rightValue == null || rightValue.Equals(RightValue.REJECTED.ToString()))
             {
                 throw new ArgumentException(
                     "The attempted operation is not permitted in the ACL of the current environment");
@@ -730,7 +733,7 @@ namespace Sif.Framework.Consumers
             {
                 CheckJob(job, right, zoneId);
 
-                if (StringUtils.IsEmpty(name))
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     name = job.Name;
                 }

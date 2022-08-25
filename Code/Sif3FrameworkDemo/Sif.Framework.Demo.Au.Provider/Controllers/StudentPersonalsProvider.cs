@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+using Sif.Framework.AspNet.ModelBinders;
+using Sif.Framework.AspNet.Providers;
 using Sif.Framework.Demo.Au.Provider.Models;
 using Sif.Framework.Demo.Au.Provider.Services;
 using Sif.Framework.Demo.Au.Provider.Utils;
-using Sif.Framework.Providers;
-using Sif.Framework.WebApi.ModelBinders;
+using Sif.Framework.NHibernate.Persistence;
+using Sif.Framework.Services.Infrastructure;
 using System.Web.Http;
 
 namespace Sif.Framework.Demo.Au.Provider.Controllers
@@ -27,13 +29,19 @@ namespace Sif.Framework.Demo.Au.Provider.Controllers
     {
         public StudentPersonalsProvider() : base(
             new StudentPersonalService(),
+            new ApplicationRegisterService(new ApplicationRegisterRepository()),
+            new EnvironmentService(
+                new EnvironmentRepository(),
+                new EnvironmentRegisterService(new EnvironmentRegisterRepository())),
             FrameworkConfigFactory.CreateSettings(),
             FrameworkConfigFactory.CreateSessionService())
         {
         }
 
         [Route("~/api/StudentPersonals/StudentPersonal")]
-        public override IHttpActionResult Post(StudentPersonal obj, [MatrixParameter] string[] zoneId = null,
+        public override IHttpActionResult Post(
+            StudentPersonal obj,
+            [MatrixParameter] string[] zoneId = null,
             [MatrixParameter] string[] contextId = null)
         {
             return base.Post(obj, zoneId, contextId);

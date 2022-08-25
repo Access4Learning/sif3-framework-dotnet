@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,19 @@
  */
 
 using Sif.Framework.Demo.Au.Provider.Models;
-using Sif.Framework.Model.Parameters;
-using Sif.Framework.Model.Query;
-using Sif.Framework.Service.Providers;
+using Sif.Framework.Models.Parameters;
+using Sif.Framework.Models.Query;
+using Sif.Framework.Services.Providers;
 using Sif.Specification.DataModel.Au;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sif.Framework.Demo.Au.Provider.Services
 {
     public class StudentSchoolEnrollmentService : IBasicProviderService<StudentSchoolEnrollment>
     {
-        private static IDictionary<string, StudentSchoolEnrollment> enrollmentsCache = new Dictionary<string, StudentSchoolEnrollment>();
+        private static readonly IDictionary<string, StudentSchoolEnrollment> EnrollmentsCache;
 
         private static StudentSchoolEnrollment CreateEnrollment()
         {
@@ -46,7 +47,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
         {
             IDictionary<string, StudentSchoolEnrollment> enrollmentsCache = new Dictionary<string, StudentSchoolEnrollment>();
 
-            for (int i = 1; i <= count; i++)
+            for (var i = 1; i <= count; i++)
             {
                 StudentSchoolEnrollment enrollment = CreateEnrollment();
                 enrollmentsCache.Add(enrollment.RefId, enrollment);
@@ -57,7 +58,7 @@ namespace Sif.Framework.Demo.Au.Provider.Services
 
         static StudentSchoolEnrollmentService()
         {
-            enrollmentsCache = CreateEnrollments(5);
+            EnrollmentsCache = CreateEnrollments(5);
         }
 
         public StudentSchoolEnrollment Create(
@@ -106,17 +107,10 @@ namespace Sif.Framework.Demo.Au.Provider.Services
             string contextId = null,
             params RequestParameter[] requestParameters)
         {
-            List<StudentSchoolEnrollment> enrollments = new List<StudentSchoolEnrollment>();
-
-            foreach (StudentSchoolEnrollment enrollment in enrollmentsCache.Values)
-            {
-                if (enrollment.YearLevel.Code.Equals(obj?.YearLevel.Code))
-                {
-                    enrollments.Add(enrollment);
-                }
-            }
-
-            return enrollments;
+            return EnrollmentsCache
+                .Values
+                .Where(enrollment => enrollment.YearLevel.Code.Equals(obj?.YearLevel.Code))
+                .ToList();
         }
 
         public List<StudentSchoolEnrollment> Retrieve(

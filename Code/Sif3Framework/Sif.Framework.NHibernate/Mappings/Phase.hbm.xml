@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Models.Infrastructure">
+  <class name="Phase" table="PHASE">
+    <id name="Id" column="PHASE_ID">
+      <generator class="native" />
+    </id>
+    <property name="Name" column="NAME" length="128" />
+    <bag name="States" table="PHASE_STATES" cascade="all" lazy="false">
+      <key column="PHASE_ID" />
+      <one-to-many class="Sif.Framework.Models.Infrastructure.PhaseState" />
+    </bag>
+    <property name="Required" column="REQUIRED" type="Boolean" />
+    <bag name="StatesRights" cascade="all" lazy="false">
+      <key column="PHASE_ID" />
+      <one-to-many class="Sif.Framework.Models.Infrastructure.Right" />
+    </bag>
+    <bag name="Rights" cascade="all" lazy="false">
+      <key column="PHASE_ID" />
+      <one-to-many class="Sif.Framework.Models.Infrastructure.Right" />
+    </bag>
+  </class>
+</hibernate-mapping>

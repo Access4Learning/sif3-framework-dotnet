@@ -1,12 +1,12 @@
 ﻿/*
  * Copyright 2017 Systemic Pty Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +25,7 @@ using System.Linq;
 
 namespace Sif.Framework.Demo.Hits.Consumer
 {
-
-    class ConsumerApp
+    internal class ConsumerApp
     {
         private static readonly slf4net.ILogger log = slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -39,7 +38,7 @@ namespace Sif.Framework.Demo.Hits.Consumer
             return schoolCollection;
         }
 
-        void RunSchoolInfoConsumer()
+        private void RunSchoolInfoConsumer()
         {
             SchoolInfoConsumer schoolInfoConsumer = new SchoolInfoConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
             schoolInfoConsumer.Register();
@@ -53,12 +52,10 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
                 if (allSchools != null)
                 {
-
                     foreach (SchoolInfo school in allSchools)
                     {
                         if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " has a RefId of " + school.RefId + ".");
                     }
-
                 }
 
                 // Create multiple schools.
@@ -110,9 +107,7 @@ namespace Sif.Framework.Demo.Hits.Consumer
                     {
                         if (log.IsInfoEnabled) log.Info("School " + school.SchoolName + " with RefId of " + school.RefId + " FAILED deletion.");
                     }
-
                 }
-
             }
             catch (Exception e)
             {
@@ -122,10 +117,9 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 schoolInfoConsumer.Unregister();
             }
-
         }
 
-        void RunStaffPersonalConsumer()
+        private void RunStaffPersonalConsumer()
         {
             StaffPersonalConsumer staffPersonalConsumer = new StaffPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
             staffPersonalConsumer.Register();
@@ -141,14 +135,11 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
                 if (staffPersonals != null)
                 {
-
                     foreach (StaffPersonal staffPersonal in staffPersonals)
                     {
                         if (log.IsInfoEnabled) log.Info("Staff name is " + staffPersonal.PersonInfo.Name.GivenName + " " + staffPersonal.PersonInfo.Name.FamilyName);
                     }
-
                 }
-
             }
             catch (Exception e)
             {
@@ -158,10 +149,9 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 staffPersonalConsumer.Unregister();
             }
-
         }
 
-        void RunStudentContactRelationshipConsumer()
+        private void RunStudentContactRelationshipConsumer()
         {
             StudentContactRelationshipConsumer consumer = new StudentContactRelationshipConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
             consumer.Register();
@@ -174,14 +164,11 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
                 if (relationships != null)
                 {
-
                     foreach (StudentContactRelationship relationship in relationships)
                     {
                         if (log.IsInfoEnabled) log.Info($"Student {relationship.StudentPersonalRefId} has {relationship.StudentContactPersonalRefId} as a registered contact.");
                     }
-
                 }
-
             }
             catch (Exception e)
             {
@@ -191,10 +178,9 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 consumer.Unregister();
             }
-
         }
 
-        void RunStudentPersonalConsumer()
+        private void RunStudentPersonalConsumer()
         {
             StudentPersonalConsumer studentPersonalConsumer = new StudentPersonalConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
             studentPersonalConsumer.Register();
@@ -207,14 +193,11 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
                 if (studentPersonals != null)
                 {
-
                     foreach (StudentPersonal studentPersonal in studentPersonals)
                     {
                         if (log.IsInfoEnabled) log.Info("Student name is " + studentPersonal.PersonInfo.Name.GivenName + " " + studentPersonal.PersonInfo.Name.FamilyName);
                     }
-
                 }
-
             }
             catch (Exception e)
             {
@@ -224,10 +207,9 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 studentPersonalConsumer.Unregister();
             }
-
         }
 
-        void RunWellbeingCharacteristicConsumer()
+        private void RunWellbeingCharacteristicConsumer()
         {
             WellbeingCharacteristicConsumer consumer = new WellbeingCharacteristicConsumer(SettingsManager.ConsumerSettings.ApplicationKey, SettingsManager.ConsumerSettings.InstanceId, SettingsManager.ConsumerSettings.UserToken, SettingsManager.ConsumerSettings.SolutionId);
             consumer.Register();
@@ -240,14 +222,11 @@ namespace Sif.Framework.Demo.Hits.Consumer
 
                 if (characteristics != null)
                 {
-
                     foreach (WellbeingCharacteristic characteristic in characteristics)
                     {
                         if (log.IsInfoEnabled) log.Info($"Wellbeing characteristic is for student {characteristic.StudentPersonalRefId}.");
                     }
-
                 }
-
             }
             catch (Exception e)
             {
@@ -257,10 +236,9 @@ namespace Sif.Framework.Demo.Hits.Consumer
             {
                 consumer.Unregister();
             }
-
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             ConsumerApp app = new ConsumerApp();
 
@@ -280,7 +258,5 @@ namespace Sif.Framework.Demo.Hits.Consumer
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
         }
-
     }
-
 }

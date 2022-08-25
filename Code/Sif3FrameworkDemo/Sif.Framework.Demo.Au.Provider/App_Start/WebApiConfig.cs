@@ -1,7 +1,7 @@
-﻿using Sif.Framework.WebApi;
-using Sif.Framework.WebApi.ControllerSelectors;
-using Sif.Framework.WebApi.Handlers;
-using Sif.Framework.WebApi.RouteConstraints;
+﻿using Sif.Framework.AspNet.ControllerSelectors;
+using Sif.Framework.AspNet.ControllerTypeResolvers;
+using Sif.Framework.AspNet.Handlers;
+using Sif.Framework.AspNet.RouteConstraints;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
@@ -16,49 +16,45 @@ namespace Sif.Framework.Demo.Au.Provider
             // Web API configuration and services
 
             // Register the SegmentPrefixConstraint for matching an exact segment prefix.
-            DefaultInlineConstraintResolver constraintResolver = new DefaultInlineConstraintResolver();
+            var constraintResolver = new DefaultInlineConstraintResolver();
             constraintResolver.ConstraintMap.Add("SegmentPrefix", typeof(SegmentPrefixConstraint));
 
             // Web API routes
             config.MapHttpAttributeRoutes(constraintResolver);
 
             config.Routes.MapHttpRoute(
-                name: "UriPathExtensionApi",
-                routeTemplate: "api/{controller}.{ext}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                "UriPathExtensionApi",
+                "api/{controller}.{ext}/{id}",
+                new { id = RouteParameter.Optional }
             );
 
             config.Routes.MapHttpRoute(
-                name: "ServicePathApi3",
-                routeTemplate: "api/{object1}/{id1}/{object2}/{id2}/{object3}/{id3}/{controller}"
+                "ServicePathApi3",
+                "api/{object1}/{id1}/{object2}/{id2}/{object3}/{id3}/{controller}"
             );
 
-            config.Routes.MapHttpRoute(
-                name: "ServicePathApi2",
-                routeTemplate: "api/{object1}/{id1}/{object2}/{id2}/{controller}"
-            );
+            config.Routes.MapHttpRoute("ServicePathApi2", "api/{object1}/{id1}/{object2}/{id2}/{controller}");
 
-            config.Routes.MapHttpRoute(
-                name: "ServicePathApi1",
-                routeTemplate: "api/{object1}/{id1}/{controller}"
-            );
+            config.Routes.MapHttpRoute("ServicePathApi1", "api/{object1}/{id1}/{controller}");
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
 
             config.MessageHandlers.Insert(0, new CompressionHandler());
             config.MessageHandlers.Add(new MethodOverrideHandler());
 
-            config.Services.Replace(typeof(IHttpControllerTypeResolver), new ServiceProviderHttpControllerTypeResolver());
+            config.Services.Replace(
+                typeof(IHttpControllerTypeResolver),
+                new ServiceProviderHttpControllerTypeResolver());
 
-            FieldInfo suffix = typeof(DefaultHttpControllerSelector).GetField("ControllerSuffix", BindingFlags.Static | BindingFlags.Public);
+            FieldInfo suffix = typeof(DefaultHttpControllerSelector)
+                .GetField("ControllerSuffix", BindingFlags.Static | BindingFlags.Public);
+
             if (suffix != null) suffix.SetValue(null, "Provider");
 
             // Replace the default controller selector with a custom one which recognises matrix parameters.
-            config.Services.Replace(typeof(IHttpControllerSelector), new ServiceProviderHttpControllerSelector(config));
+            config.Services.Replace(
+                typeof(IHttpControllerSelector),
+                new ServiceProviderHttpControllerSelector(config));
         }
     }
 }

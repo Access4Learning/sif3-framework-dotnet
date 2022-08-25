@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net461</TargetFrameworks>
+    <TargetFramework>net472</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0</Version>
     <Authors>Rafidzal Rafiq</Authors>
     <Company>Systemic Pty Ltd</Company>
-    <Product>SIF Framework library (Entity Framework Integration)</Product>
+    <Product>SIF Framework library (Entity Framework integration)</Product>
     <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
-    <Copyright>Copyright © Systemic Pty Ltd 2021</Copyright>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Copyright>Copyright © Systemic Pty Ltd 2022</Copyright>
     <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>SIF framework</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tardigrade.Framework.EntityFramework" Version="11.1.0" />
+    <PackageReference Include="Tardigrade.Framework.EntityFramework" Version="13.0.0" />
   </ItemGroup>
 
 </Project>
