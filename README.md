@@ -36,97 +36,70 @@ For .NET 6 support, Visual Studio 2022 is required. The SIF Framework is current
 
 ## Version control history
 
-**??? ??, 2022 - 6.0.0 Upgraded to support .NET 6 and Entity Framework Core**
+**Aug 25, 2022 - 6.0.0 Upgraded to support .NET 6 and Entity Framework Core**
 
-- Made the IEnvironmentRepository interface public.
-- _***Backward Incompatibility***_ Updated the EnvironmentService class constructor to add an IEnvironmentRepository interface.
-- _***Backward Incompatibility***_ Deprecated the IPersistable interface for the IHasUniqueIdentitifer interface from the Tardigrade.Framework NuGet package.
-- Created a new project to hold ASP.NET (.NET Framework) specific code - Sif.Framework.AspNet. Moved all ASP.NET specific code from the Sif.Framework project to this new project.
-- Created a new project to NHibernate specific code - Sif.Framework.NHibernate. Moved all NHIbernate specific code from the Sif.Framework project to this new project.
-- _***Backward Incompatibility***_ Updated the EnvironmentsController.cs class from the Sif.Framework.EnvironmentProvider project to reference the Sif.Framework.AspNet project. The constructor now accepts an IEnvironmentService interface rather then constructing it's own.
-- _***Backward Incompatibility***_ Updated all Controllers/Providers so that services are passed to the constructor as opposed to instantiated by the Controller/Provider.
-- _***Backward Incompatibility***_ Added .NET 6 as a Target Framework to the Sif.Framework project.
-- _***Backward Incompatibility***_ Removed .NET Framework 4.6.1 as a Target Framework from all SDK-style library projects.
-- _***Backward Incompatibility***_ Upgraded all ASP.NET Web API, Demo and Unit Test projects from .NET Framework 4.6.1 to 4.7.2.
-- Created a new Environment Provider project for ASP.NET Core - Sif.Framework.AspNetCore.EnvironmentProvider.
--  Updated the following service class constructors to add appropriate repository interfaces:
-   - ApplicationRegisterService
-   - EnvironmentRegisterService
-   - EnvironmentService
-- Copied the SIF Provider code from the Sif.Framework project to the Sif.Framework.AspNet project.
-- Refactored methods from the EnvironmentUtils.cs and HttpUtils.cs classes into corresponding extension methods.
-- Removed the StringUtils.cs class.
-- Code clean-up of SIF Consumers.
-- _***Backward Incompatibility***_ Deleted the Providers and WebApi directory (and associated ASP.NET Web API specific code) from the Sif.Framework project. Refactored all referenced code from the Sif.Framework and demo projects.
-- Returned the IProvider.cs interface from the Sif.Framework.AspNet project back to the Sif.Framework project.
-- Moved ASP.NET Web API specific extension code from the Sif.Framework project to the Sif.Framework.AspNet project.
-- _***Backward Incompatibility***_ Dropped support for the .NET Framework 4.7.2 target from the Sif.Framework project.
-- _***Backward Incompatibility***_ Removed the ASP.NET Web API specific NuGet packages from the Sif.Framework project - Microsoft.AspNet.WebApi.Core, Microsoft.AspNet.WebApi.WebHost.
-- _***Backward Incompatibility***_ Moved remaining ASP.NET Web API specific classes from the Sif.Framework project to the Sif.Framework.AspNet project.
-- Resolved runtime issues with the ASP.NET Core Providers.
-- Temporarily commented out code associated with Query by Example and Query by Service Path.
-- Created an ASP.NET Core Provider demo project that uses NHibernate.
-- Moved the IProvider.cs interface back from the Sif.Framework project to the Sif.Framework.AspNet project.
-- Deleted the NHibernate mapping files and repositories from the Sif.Framework project.
-- Updated the NHibernate mapping files to reference the new Sif.Framework.NHibernate assembly.
-- References to NHibernate specific code now use Sif.Framework.NHibernate.
-- Updated the way the EnvironmentProviderSessionFactory class finds the SifFramework.cfg.xml file.
-- Created an XML formatter to remove the ArrayOf prefix and append an "s" postfix when serialising a collection of objects.
-- Updated the Provider to allow specification of the Response content from the URL.
-- Temporarily commented out sections of the demo AU ConsumerApp until the ASP.NET Core version of the demo Provider can be fully implemented.
-- Added an EntityFrameworkCore specific integration project - Tardigrade.Framework.EntityFrameworkCore.
-- Created demo setup data files for the AU Consumer to connect to the ASP.NET Core demo Provider.
-- Deprecated and deleted the IGenericRepository interface in-lieu of the IRepository interface from the Tardigrade.Framework NuGet package. This required the removal of bulk operations and retrieval by example object.
-- Deprecated and deleted the IGenericService interface in-lieu of the IObjectService interface from the Tardigrade.Framework NuGet package.
-- Removed redundant TEntity generic parameter from the ISifService interface.
-- Removed redundant zoneId and contextId parameters from all methods of the ISifService interface.
-- Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
-- Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
-- Implemented required repositories for the Sif.Framework.EntityFramework project.
-- Implemented required repositories for the Sif.Framework.EntityFrameworkCore project.
-- Updated the repositories in Sif.Framework.NHibernate to ensure consistency of thrown exceptions.
-- Moved the SessionService.cs class from the Sif.Framework.EntityFramework project to the Sif.Framework project.
-- Updated third-party NuGet packages in the Sif.Framework.EntityFramework.Tests project.
-- Created a unit test project for Entity Framework Core functionality - Sif.Framework.EntityFrameworkCore.Tests.
-- Created new SIF Infrastructure models based upon Entity Framework Core.
-- Created a DbContext based upon Entity Framework Core.
-- Created initial unit tests for Infrastructure model repositories.
-- Re-designed database relationships for Infrastructure models via the DbContext.
-- _***Backward Incompatibility***_ Refactored the Rights property of the Service model to an ICollection instead of an IDictionary. Updated all references accordingly.
-- _***Backward Incompatibility***_ Refactored the Properties property of the Zone model to an ICollection instead of an IDictionary. Updated all references accordingly.
-- _***Backward Incompatibility***_ Refactored the InfrastructureServices property of the Environment and EnvironmentRegister models to an ICollection instead of an IDictionary. Updated all references accordingly.
-- _***Backward Incompatibility***_ Refactored the ProvisionedZones property of the Environment and EnvironmentRegister models to an ICollection instead of an IDictionary. Updated all references accordingly.
-- _***Backward Incompatibility***_ Refactored the Phases property of the Job model to an ICollection instead of an IDictionary. Updated all references accordingly.
-- _***Backward Incompatibility***_ Refactored the Rights and StatesRights properties of the Phase model to an ICollection instead of an IDictionary. Updated all references accordingly.
-- Created an ASP.NET Core implementation of the demo Setup project.
-- _***Backward Incompatibility***_ Corrected a return type design issue with the IEnvironmentService interface.
-- _***Backward Incompatibility***_ Updated the Create() method of EnvironmentService to use an environment register.
-- Updated the DbContext to eager load all relationships.
-- Created an ASP.NET Core implementation of the EnvironmentProvider.
-- Updated the Type property of the Environment class in Entity Framework Core to match that used by NHibernate.
-- Updated the NHibernate mapping for the Environment class to save the EnvironmentType enum property as a string rather than integer.
-- Created XML serializer input formatters to allow the ASP.NET Core SIF Providers (Controllers) to recognise the required SIF namespaces on data models when serializing method parameters.
-- Created ASP.NET Core middleware to manage method overrides.
-- Implemented multiple create and update operations for ASP.NET Core SIF Providers (Controllers).- Created a new demo project for ASP.NET Core SIF Providers (based upon the AU SIF Data Models).
-- Updated the ArrayOfOutputFormatter class constructor to accept a string rather than the IFrameworkSettings interface.
-- Added the Session data model to the SifFrameworkDbContext configuration.
-- Deprecating the following classes:
-  - Model/Settings/ConfigFileBasedFrameworkSettings
-  - Model/Settings/ConsumerSettings
-  - Model/Settings/ProviderSettings
-  - Utils/SettingsManager
-- Fixed incorrect namespace in the Sif.Framework.Tests project.
-- Removed constructors from the Insfrastructure model classes.
-- Removed the IComparable intergace from the Service class.
-- Code clean-up of the Sif.Framework.Tests project.
-- Updated XML documentation in classes.
-- Updated third-party NuGet packages.
-- General code clean-up.
-- Updated the SifInputFormatter to use the existing XmlRootAttribute of the passed type.
-- Fixed an issue with the MethodOverrideMiddleware configuration on start up.
-- Updated the ConsumerApp to return code for deleting multiple students.
-- Created shell scripts for running the ASP.NET Core demo projects.
-- Created a demo project for an ASP.NET Core SIF Consumer.
+- GENERAL CHANGES
+  - Created Sif.Framework technology specific projects for ASP.NET Core and Entity Framework Core.
+    - Sif.Framework.AspNetCore
+    - Sif.Framework.EntityFrameworkCore
+  - Created a new Environment Provider project based upon ASP.NET Core.
+    - Sif.Framework.AspNetCore.EnvironmentProvider
+  - Added unit tests for Entity Framework Core specific code.
+  - Added training projects to supplement the documented training exercises.
+    - Sif.Framework.Training.TestConsumer
+    - Sif.Framework.Training.TestProvider
+  - Refactored methods from the EnvironmentUtils, HttpUtils and ProviderUtils classes into corresponding extension methods.
+  - Fixed error managment issues in the SessionService class.
+  - Updated the demo projects to .NET Framework 4.7.2.
+    - Sif.Framework.Demo.Au.Consumer
+  - Replace some exception classes with equivalent exception classes from the Tardigrade.Framework NuGet package.
+  - Created documentation specific to the ASP.NET Core version of the SIF Framework.
+  - Created demo set-up, Consumer and Provider projects specific to the ASP.NET Core version of the SIF Framework.
+    - Sif.Framework.Demo.Consumer
+    - Sif.Framework.Demo.NetCore.Setup
+    - Sif.Framework.Demo.Provider
+  - Created shell scripts to run the ASP.NET Core demo projects.
+  - Upgraded all ASP.NET Web API, Demo and Unit Test projects from .NET Framework 4.6.1 to 4.7.2.
+  - Split the functionality of EnvironmentService into 2 classes to better reflect the original intent of the service - EnvironmentService and EnvironmentDtoService. Updated references to reflect this change.
+  - Corrected a return type design issue with the IEnvironmentService interface.
+  - Updated the DbContext to eager load all relationships.
+  - Updated the ArrayOfOutputFormatter class constructor to accept a string rather than the IFrameworkSettings interface.
+  - Deprecating the following classes:
+    - Model/Settings/ConfigFileBasedFrameworkSettings
+    - Model/Settings/ConsumerSettings
+    - Model/Settings/ProviderSettings
+    - Utils/SettingsManager
+  - Updated XML documentation in classes.
+  - Updated third-party NuGet packages.
+  - General code clean-up.
+- CHANGES AFFECTING BACKWARD COMPATIBILITY
+  - Added .NET 6 as a Target Framework to the Sif.Framework project and dropped .NET Framework 4.7.2.
+  - Removed .NET Framework 4.6.1 as a Target Framework from all SDK-style library projects.
+  - Deprecated the IPersistable interface for the IHasUniqueIdentitifer interface from the Tardigrade.Framework NuGet package.
+  - Re-designed the ISifService interface.
+  - Re-designed the IAuthorisationService and IAuthenticationService interfaces.
+  - Infrastructure model objects that referenced associations using an IDictionary have been refactored to use ICollection instead. These changes have been reflected in the NHibernate mapping files and AutoMapper mappings.
+    - Environment
+    - EnvironmentRegister
+    - Job
+    - Phase
+    - Service
+    - Zone
+  - Re-ordered the constructor parameters for the RequestParameter class.
+  - Replaced references to the IGenericRepository interface with the IRepository interface from the Tardigrade.Framework NuGet package.
+  - Replaced references to the IGenericService interface with the IObjectService interface from the Tardigrade.Framework NuGet package.
+  - Replaced references to the GenericService class with the ObjectService class from the Tardigrade.Framework NuGet package.
+  - Refactored the constructor of all infrastructure service classes to allow for injection of repositories and services.
+  - Updated the NHibernate mapping for the Environment class to save the EnvironmentType enum property as a string rather than integer.
+- CHANGES WHICH BREAK BACKWARD COMPATIBILITY WITH IMPLEMENTED CONSUMERS AND PROVIDERS
+  - Split the Sif.Framework project into multiple technology specific projects for ASP.NET Web API, Entity Framework and NHibernate.
+    - Sif.Framework.AspNet
+    - Sif.Framework.EntityFramework
+    - Sif.Framework.NHibernate
+  - Renamed the Sif.Framework.Model namespace to Sif.Framework.Models.
+  - Renamed the Sif.Framework.Service namespace to Sif.Framework.Services.
+  - Removed the Sif.Framework.EntityFramework.Services.Sessions namespace and migrated classes to Sif.Framework.Services.Sessions.
+  - Updated all Controllers/Providers so that services are passed to the constructor as opposed to instantiated by the Controller/Provider.
 
 **May 26, 2021 - 5.0.0 Enabled session tokens to be stored in a database**
 
