@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,83 +16,102 @@
 
 using Sif.Framework.Consumers;
 using Sif.Framework.Demo.Au.Consumer.Models;
-using Sif.Framework.Model.Responses;
-using Sif.Framework.Model.Settings;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Responses;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Demo.Au.Consumer.Consumers
 {
+    /// <inheritdoc />
     internal class StudentPersonalEventConsumer : BasicEventConsumer<StudentPersonal>
     {
-        private readonly slf4net.ILogger log =
-            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly slf4net.ILogger Log =
+            slf4net.LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
+        /// <inheritdoc />
         public StudentPersonalEventConsumer(
-            Model.Infrastructure.Environment environment,
-            IFrameworkSettings settings = null)
-            : base(environment, settings)
+            Environment environment,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(environment, settings, sessionService)
         {
         }
 
+        /// <inheritdoc />
         public StudentPersonalEventConsumer(
             string applicationKey,
             string instanceId = null,
             string userToken = null,
             string solutionId = null,
-            IFrameworkSettings settings = null)
-            : base(applicationKey, instanceId, userToken, solutionId, settings)
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(applicationKey, instanceId, userToken, solutionId, settings, sessionService)
         {
         }
 
-        public override void OnCreateEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        /// <inheritdoc />
+        public override void OnCreateEvent(
+            List<StudentPersonal> students,
+            string zoneId = null,
+            string contextId = null)
         {
-            if (log.IsDebugEnabled) log.Debug("*** OnCreateEvent handler called ...");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+            if (Log.IsDebugEnabled) Log.Debug("*** OnCreateEvent handler called ...");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Context ID is {contextId}.");
 
-            foreach (StudentPersonal student in objs)
+            foreach (StudentPersonal student in students)
             {
-                if (log.IsDebugEnabled)
-                    log.Debug(
+                if (Log.IsDebugEnabled)
+                    Log.Debug(
                         $"*** >>> Student created is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
             }
         }
 
-        public override void OnDeleteEvent(List<StudentPersonal> objs, string zoneId = null, string contextId = null)
+        /// <inheritdoc />
+        public override void OnDeleteEvent(
+            List<StudentPersonal> students,
+            string zoneId = null,
+            string contextId = null)
         {
-            if (log.IsDebugEnabled) log.Debug("*** OnDeleteEvent handler called ...");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+            if (Log.IsDebugEnabled) Log.Debug("*** OnDeleteEvent handler called ...");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Context ID is {contextId}.");
 
-            foreach (StudentPersonal student in objs)
+            foreach (StudentPersonal student in students)
             {
-                if (log.IsDebugEnabled)
-                    log.Debug(
+                if (Log.IsDebugEnabled)
+                    Log.Debug(
                         $"*** >>> Student deleted is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
             }
         }
 
+        /// <inheritdoc />
         public override void OnErrorEvent(ResponseError error, string zoneId = null, string contextId = null)
         {
-            if (log.IsDebugEnabled) log.Debug("*** OnErrorEvent handler called ...");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
-
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Error: {error.Message}.");
+            if (Log.IsDebugEnabled) Log.Debug("*** OnErrorEvent handler called ...");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Context ID is {contextId}.");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Error: {error.Message}.");
         }
 
-        public override void OnUpdateEvent(List<StudentPersonal> objs, bool partialUpdate, string zoneId = null,
+        /// <inheritdoc />
+        public override void OnUpdateEvent(
+            List<StudentPersonal> students,
+            bool partialUpdate,
+            string zoneId = null,
             string contextId = null)
         {
-            if (log.IsDebugEnabled) log.Debug("*** OnUpdateEvent handler called ...");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Partial update is {partialUpdate}.");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Zone ID is {zoneId}.");
-            if (log.IsDebugEnabled) log.Debug($"*** >>> Context ID is {contextId}.");
+            if (Log.IsDebugEnabled) Log.Debug("*** OnUpdateEvent handler called ...");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Partial update is {partialUpdate}.");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Zone ID is {zoneId}.");
+            if (Log.IsDebugEnabled) Log.Debug($"*** >>> Context ID is {contextId}.");
 
-            foreach (StudentPersonal student in objs)
+            foreach (StudentPersonal student in students)
             {
-                if (log.IsDebugEnabled)
-                    log.Debug(
+                if (Log.IsDebugEnabled)
+                    Log.Debug(
                         $"*** >>> Student updated is {student.PersonInfo.Name.GivenName} {student.PersonInfo.Name.FamilyName}.");
             }
         }

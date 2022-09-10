@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Sif.Framework" namespace="Sif.Framework.Models.Infrastructure">
+  <class name="Zone" table="ZONE">
+    <id name="Id" column="ZONE_ID">
+      <generator class="native" />
+    </id>
+    <property name="SifId" column="SIF_ID" length="64" />
+    <property name="Description" column="DESCRIPTION" length="256" />
+    <bag name="Properties" cascade="all" lazy="false">
+      <key column="ZONE_ID" />
+      <one-to-many class="Sif.Framework.Models.Infrastructure.Property" />
+    </bag>
+  </class>
+</hibernate-mapping>

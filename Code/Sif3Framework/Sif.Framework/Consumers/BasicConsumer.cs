@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Infrastructure;
-using Sif.Framework.Model.Settings;
-using Sif.Framework.Service.Serialisation;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Serialisation;
+using Sif.Framework.Services.Sessions;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -30,23 +31,24 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="T">Type that defines a SIF data model object.</typeparam>
     public class BasicConsumer<T> : Consumer<T, List<T>, string>, IBasicConsumer<T> where T : ISifRefId<string>
     {
-        /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}">Consumer</see>
-        /// </summary>
-        protected BasicConsumer(Environment environment, IFrameworkSettings settings = null) : base(environment, settings)
+        /// <inheritdoc />
+        protected BasicConsumer(
+            Environment environment,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(environment, settings, sessionService)
         {
         }
 
-        /// <summary>
-        /// <see cref="Consumer{TSingle,TMultiple,TPrimaryKey}">Consumer</see>
-        /// </summary>
+        /// <inheritdoc />
         public BasicConsumer(
             string applicationKey,
             string instanceId = null,
             string userToken = null,
             string solutionId = null,
-            IFrameworkSettings settings = null)
-            : base(applicationKey, instanceId, userToken, solutionId, settings)
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(applicationKey, instanceId, userToken, solutionId, settings, sessionService)
         {
         }
 

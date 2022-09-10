@@ -1,13 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFramework.Tests", "Sif.Framework.EntityFramework.Tests\Sif.Framework.EntityFramework.Tests.csproj", "{F4546D54-E46E-4D8D-9A8F-FFDC67C54E1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Tests", "Sif.Framework.Tests\Sif.Framework.Tests.csproj", "{2BCC7798-CA9C-42B5-971B-4374DB30D4F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework", "..\Sif3Framework\Sif.Framework\Sif.Framework.csproj", "{2B13D050-AA2C-45A6-BA26-8B2706B7E227}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFramework", "..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj", "{983BB129-0FCF-4800-BC80-36DA09706A9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.Shared", "Sif.Framework.Shared\Sif.Framework.Shared.csproj", "{76D0F674-1662-49B6-A2C2-E5A871562628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sif.Framework.EntityFrameworkCore.Tests", "Sif.Framework.EntityFrameworkCore.Tests\Sif.Framework.EntityFrameworkCore.Tests.csproj", "{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.EntityFrameworkCore", "..\Sif3Framework\Sif.Framework.EntityFrameworkCore\Sif.Framework.EntityFrameworkCore.csproj", "{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sif.Framework.NHibernate", "..\Sif3Framework\Sif.Framework.NHibernate\Sif.Framework.NHibernate.csproj", "{D8B683EB-9CA3-4B5F-8350-95C000F186EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +37,26 @@ Global
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B13D050-AA2C-45A6-BA26-8B2706B7E227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{983BB129-0FCF-4800-BC80-36DA09706A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76D0F674-1662-49B6-A2C2-E5A871562628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57CC5EB-63D8-4E6F-8086-2905DE1D1C80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A76B4B-40CB-47D0-8E35-9A761D97D3F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B683EB-9CA3-4B5F-8350-95C000F186EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

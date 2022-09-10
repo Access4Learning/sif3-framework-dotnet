@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>Rafidzal Rafiq</Authors>
+    <Company>Systemic Pty Ltd</Company>
+    <Product>SIF Framework library (NHibernate integration)</Product>
+    <Description>Core library of the SIF Framework based on SIF Infrastructure 3.2.1.</Description>
+    <Copyright>Copyright © Systemic Pty Ltd 2022</Copyright>
+    <PackageProjectUrl>https://github.com/nsip/sif3-framework-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nsip/sif3-framework-dotnet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>SIF framework</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Mappings\ApplicationInfo.hbm.xml" />
+    <None Remove="Mappings\ApplicationRegister.hbm.xml" />
+    <None Remove="Mappings\Environment.hbm.xml" />
+    <None Remove="Mappings\EnvironmentRegister.hbm.xml" />
+    <None Remove="Mappings\InfrastructureService.hbm.xml" />
+    <None Remove="Mappings\Job.hbm.xml" />
+    <None Remove="Mappings\Phase.hbm.xml" />
+    <None Remove="Mappings\PhaseState.hbm.xml" />
+    <None Remove="Mappings\ProductIdentity.hbm.xml" />
+    <None Remove="Mappings\Property.hbm.xml" />
+    <None Remove="Mappings\ProvisionedZone.hbm.xml" />
+    <None Remove="Mappings\Right.hbm.xml" />
+    <None Remove="Mappings\Service.hbm.xml" />
+    <None Remove="Mappings\SifObjectBinding.hbm.xml" />
+    <None Remove="Mappings\Zone.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\ApplicationInfo.hbm.xml" />
+    <EmbeddedResource Include="Mappings\ApplicationRegister.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Environment.hbm.xml" />
+    <EmbeddedResource Include="Mappings\EnvironmentRegister.hbm.xml" />
+    <EmbeddedResource Include="Mappings\InfrastructureService.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Job.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Phase.hbm.xml" />
+    <EmbeddedResource Include="Mappings\PhaseState.hbm.xml" />
+    <EmbeddedResource Include="Mappings\ProductIdentity.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Property.hbm.xml" />
+    <EmbeddedResource Include="Mappings\ProvisionedZone.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Right.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Service.hbm.xml" />
+    <EmbeddedResource Include="Mappings\SifObjectBinding.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Zone.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NHibernate" Version="5.3.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sif.Framework\Sif.Framework.csproj" />
+  </ItemGroup>
+
+</Project>

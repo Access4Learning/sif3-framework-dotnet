@@ -43,16 +43,19 @@
   <ItemGroup>
     <Compile Include="FrameworkSettingsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionTest.cs" />
+    <Compile Include="SetUp\UnitTestFixture.cs" />
+    <Compile Include="SetUp\UnitTestServiceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions">
-      <Version>5.0.0</Version>
+      <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.113.7</Version>
+      <Version>1.0.115.5</Version>
     </PackageReference>
     <PackageReference Include="Tardigrade.Framework.EntityFramework">
-      <Version>11.1.0</Version>
+      <Version>13.0.0</Version>
     </PackageReference>
     <PackageReference Include="xunit">
       <Version>2.4.1</Version>
@@ -70,9 +73,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sif3Framework\Sif.Framework.EntityFramework\Sif.Framework.EntityFramework.csproj">
+      <Project>{983bb129-0fcf-4800-bc80-36da09706a9c}</Project>
+      <Name>Sif.Framework.EntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sif3Framework\Sif.Framework\Sif.Framework.csproj">
       <Project>{2b13d050-aa2c-45a6-ba26-8b2706b7e227}</Project>
       <Name>Sif.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sif.Framework.Shared\Sif.Framework.Shared.csproj">
+      <Project>{76d0f674-1662-49b6-a2c2-e5a871562628}</Project>
+      <Name>Sif.Framework.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

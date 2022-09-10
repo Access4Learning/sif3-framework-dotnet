@@ -1,6 +1,6 @@
-﻿using Sif.Framework.Utils;
-using Sif.Framework.WebApi;
-using Sif.Framework.WebApi.MediaTypeFormatters;
+﻿using Sif.Framework.AspNet.Handlers;
+using Sif.Framework.AspNet.Loggers;
+using Sif.Framework.AspNet.MediaTypeFormatters;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
@@ -16,7 +16,9 @@ namespace Sif.Framework.EnvironmentProvider
             // URL Postfix Extension: Update the configuration to recognise postfix extensions and map known
             // extensions to MIME Types. Additional changes to WebApiConfig.cs are required to fully enable this
             // feature.
-            GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping("json", "application/json");
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.AddUriPathExtensionMapping(
+                "json",
+                "application/json");
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.AddUriPathExtensionMapping("xml", "text/xml");
 
             // XML Serialisation: Define the specific XML serialiser to use to ensure that SIF Data Model Objects (as
@@ -31,13 +33,16 @@ namespace Sif.Framework.EnvironmentProvider
             };
             xmlToJsonFormatter.AddUriPathExtensionMapping("json", "application/json");
             GlobalConfiguration.Configuration.Formatters.Add(xmlToJsonFormatter);
-            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.JsonFormatter);
+            GlobalConfiguration.Configuration.Formatters.Remove(
+                GlobalConfiguration.Configuration.Formatters.JsonFormatter);
 
             // Configure global exception loggers for unexpected errors.
             GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
 
             // Configure a global exception handler for unexpected errors.
-            GlobalConfiguration.Configuration.Services.Replace(typeof(IExceptionHandler), new GlobalUnexpectedExceptionHandler());
+            GlobalConfiguration.Configuration.Services.Replace(
+                typeof(IExceptionHandler),
+                new GlobalUnexpectedExceptionHandler());
         }
     }
 }

@@ -42,6 +42,6 @@
     <!-- Properties that are not specific to a database type -->
     <property name="show_sql">false</property>
     <!-- Mapping files -->
-    <mapping assembly="Sif.Framework"/>
+    <mapping assembly="Sif.Framework.NHibernate"/>
   </session-factory>
 </hibernate-configuration>

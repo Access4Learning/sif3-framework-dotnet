@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Systemic Pty Ltd
+ * Copyright 2022 Systemic Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-using Sif.Framework.Model.DataModels;
-using Sif.Framework.Model.Settings;
+using Sif.Framework.Models.DataModels;
+using Sif.Framework.Models.Infrastructure;
+using Sif.Framework.Models.Settings;
+using Sif.Framework.Services.Sessions;
 using System.Collections.Generic;
 
 namespace Sif.Framework.Consumers
@@ -27,24 +29,24 @@ namespace Sif.Framework.Consumers
     /// <typeparam name="T">Type that defines a SIF data model object.</typeparam>
     public abstract class BasicEventConsumer<T> : EventConsumer<T, List<T>, string> where T : ISifRefId<string>
     {
-        /// <summary>
-        /// <see cref="EventConsumer{TSingle,TMultiple,TPrimaryKey}">EventConsumer</see>
-        /// </summary>
-        protected BasicEventConsumer(Model.Infrastructure.Environment environment, IFrameworkSettings settings = null)
-            : base(environment, settings)
+        /// <inheritdoc />
+        protected BasicEventConsumer(
+            Environment environment,
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(environment, settings, sessionService)
         {
         }
 
-        /// <summary>
-        /// <see cref="EventConsumer{TSingle,TMultiple,TPrimaryKey}">EventConsumer</see>
-        /// </summary>
+        /// <inheritdoc />
         protected BasicEventConsumer(
             string applicationKey,
             string instanceId = null,
             string userToken = null,
             string solutionId = null,
-            IFrameworkSettings settings = null)
-            : base(applicationKey, instanceId, userToken, solutionId, settings)
+            IFrameworkSettings settings = null,
+            ISessionService sessionService = null)
+            : base(applicationKey, instanceId, userToken, solutionId, settings, sessionService)
         {
         }
     }

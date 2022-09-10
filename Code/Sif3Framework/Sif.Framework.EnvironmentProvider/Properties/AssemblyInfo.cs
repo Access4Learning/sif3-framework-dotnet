@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Environment Provider infrastructure service.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Systemic Pty Ltd")]
-[assembly: AssemblyProduct("Sif.Framework.EnvironmentProvider")]
-[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2020")]
+[assembly: AssemblyProduct("SIF Framework Environment Provider (ASP.NET)")]
+[assembly: AssemblyCopyright("Copyright © Systemic Pty Ltd 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.2.1.13")]
-[assembly: AssemblyFileVersion("3.2.1.13")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]
